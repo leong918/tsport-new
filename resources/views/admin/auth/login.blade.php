@@ -15,30 +15,30 @@
       crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body class="mb-0">
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
     <div class="bg-light min-vh-100 d-flex flex-row align-items-center dark:bg-transparent">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5">
             <div class="card-group d-block d-md-flex row">
               <div class="card col-md-7 p-4 mb-0">
-                {{ html()->form('POST', '/login')->open() }}
+                {{ html()->form('POST', route("admin.login.post"))->open() }}
                 <div class="card-body">
                   <h1>Login</h1>
                   <p class="text-medium-emphasis">Sign In to your account</p>
                   <div class="input-group mb-3"><span class="input-group-text">
                       <i class="fa-solid fa-user"></i></span>
-                    <input class="form-control" type="text" placeholder="Username">
+                    <input class="form-control" name="username" type="text" placeholder="Username">
                   </div>
                   <div class="input-group mb-3"><span class="input-group-text">
                       <i class="fa-solid fa-lock"></i></span>
-                    <input class="form-control" type="password" placeholder="Password">
+                    <input class="form-control" name="password" type="password" placeholder="Password">
                   </div>
                   <div class="row mb-2">
                     <div class="col-7">
                       <div class="input-group">
                         <span class="input-group-text"><i class="fa-solid fa-shield"></i></span>
-                        <input class="form-control" type="text" placeholder="Captcha">
+                        <input class="form-control" name="captcha" type="text" placeholder="Captcha">
                       </div>
                     </div>
                     <div class="col-5 d-flex align-items-center justify-content-between">
@@ -56,7 +56,7 @@
                   </div>
                   <div class="row">
                     <div class="col-6">
-                      <button class="btn btn-primary px-4" type="button">Login</button>
+                      <button class="btn btn-primary px-4" type="submit">Login</button>
                     </div>
                   </div>
                 </div>

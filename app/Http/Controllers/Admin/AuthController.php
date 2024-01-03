@@ -19,7 +19,7 @@ class AuthController extends BaseController
         $remember = $request->has('remember') ?? false;
 
         $credentials = $request->only('username', 'password');
-        if (Auth::guard('admin')->attempt($credentials + ['status' => Admin::STATUS['ACTIVE']], $remember)) {
+            if (Auth::guard('admin')->attempt($credentials + ['status' => Admin::STATUS['ACTIVE']], $remember)) {
             // Authentication passed...
             return redirect()->intended(route('admin.dashboard'));
         }

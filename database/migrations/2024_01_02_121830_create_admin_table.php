@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string("password", 100);
             $table->tinyInteger("status")->default(1);
             $table->rememberToken();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
