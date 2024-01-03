@@ -21,6 +21,7 @@
         <div class="row justify-content-center">
           <div class="col-lg-5">
             <div class="card-group d-block d-md-flex row">
+              <x-alert />
               <div class="card col-md-7 p-4 mb-0">
                 {{ html()->form('POST', route("admin.login.post"))->open() }}
                 <div class="card-body">

@@ -25,4 +25,10 @@ class AuthController extends BaseController
         }
         throw new GeneralException('Failed to login, please try again');
     }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect(route('admin.login'))->with('success', 'Successfully logged out');
+    }
 }

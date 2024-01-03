@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f0fb67c82f4b16e8177d47d4011468e",
+    "content-hash": "7bcd35ccfaea4e07c622835c498b098c",
     "packages": [
         {
             "name": "brick/math",
@@ -5888,6 +5888,50 @@
                 }
             ],
             "time": "2022-03-08T17:03:00+00:00"
+        },
+        {
+            "name": "vvinners/vapi",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vvinners/vapi.git",
+                "reference": "af77eb8dac867f9f00b12f6373adcfafa1aaead1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vvinners/vapi/zipball/af77eb8dac867f9f00b12f6373adcfafa1aaead1",
+                "reference": "af77eb8dac867f9f00b12f6373adcfafa1aaead1",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "VVinners\\Vapi\\VapiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "VVinners\\Vapi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Tan",
+                    "email": "marktan@vvinners.com"
+                }
+            ],
+            "description": "An enhanced version return response of API JSON. Aim to standardize the return api data format.",
+            "support": {
+                "issues": "https://github.com/vvinners/vapi/issues",
+                "source": "https://github.com/vvinners/vapi/tree/v2.1.0"
+            },
+            "time": "2022-12-22T22:14:05+00:00"
         },
         {
             "name": "webmozart/assert",

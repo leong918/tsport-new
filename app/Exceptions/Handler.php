@@ -3,7 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use Illuminate\Session\TokenMismatchException;
+use VVinners\Vapi\Api;
 
 class Handler extends ExceptionHandler
 {
@@ -23,8 +24,28 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (GeneralException $err, $request) {
+            $api = new Api();
+            if ($request->ajax()) {
+                return $api->response(null, $err->getMessage());
+            }
+            return $this->redirectBackWithError($err);
         });
+
+        $this->renderable(function (TokenMismatchException $err) {
+            return $this->redirectBackWithError($err);
+        });
+    }
+
+    /**
+     * Handle error thrown and redirect back with flash message
+     *
+     * @param GeneralException $exception
+     *
+     * @return void
+     */
+    protected function redirectBackWithError($exception)
+    {
+        return back()->with('error', $exception->getMessage())->withInput();
     }
 }
