@@ -19,7 +19,7 @@
     <div class="bg-light min-vh-100 d-flex flex-row align-items-center dark:bg-transparent">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-lg-5">
+          <div class="col-lg-6">
             <div class="card-group d-block d-md-flex row">
               <x-alert />
               <div class="card col-md-7 p-4 mb-0">

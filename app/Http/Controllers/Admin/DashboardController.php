@@ -6,6 +6,6 @@ class DashboardController extends BaseController
 {
     public function index()
     {
-        return $this->view('dashboard.index');
+        return $this->view('layout.app');
     }
 }
