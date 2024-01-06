@@ -14,7 +14,7 @@
       integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
       crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
-  <body class="mb-0">
+  <body class="mb-0" id="admin-body">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
     <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
       <div class="sidebar-brand d-none d-md-flex">

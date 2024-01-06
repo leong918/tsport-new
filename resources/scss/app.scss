@@ -1,4 +1,6 @@
-@import "coreui/coreui.scss";
+#admin-body {
+  @import "coreui/coreui.scss";
+}
 
 body {
   // background-color: yellow;
@@ -6,4 +8,9 @@ body {
   .test {
     color: red;
   }
+}
+
+html, body {
+  margin: 0 auto;
+  overflow-x: hidden;
 }
