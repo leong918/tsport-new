@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Admin extends Authenticatable
 {
@@ -15,18 +16,6 @@ class Admin extends Authenticatable
     public const STATUS = [
         'ACTIVE' => 1,
         'INACTIVE' => 0,
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'username' => 'required',
-        'password' => 'required',
-        'name' => 'required',
-        'email' => 'required',
     ];
 
     protected $table = 'admin';
@@ -55,10 +44,20 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $casts = [
+        
     ];
 
-    public function setPasswordAttribute($value)
+    protected function password(): Attribute
     {
-        return $this->attributes['password'] = Hash::make($value);
+        return Attribute::make(
+            set: fn (string $value) => Hash::make($value),
+        );
+    }
+
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
+        );
     }
 }

@@ -2,7 +2,7 @@
 
 @section("content")
 
-<div class="container-lg">
+<div class="container-fluid">
     <div class="row">
     <div class="col-sm-6 col-lg-3">
         <div class="card mb-4 text-white bg-primary-gradient">

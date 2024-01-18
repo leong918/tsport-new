@@ -15,7 +15,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // require_once 'admin.php';
+        require_once 'admin.php';
         // require_once 'setting.php';
     });
 });

@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\View\Components\Alert;
+use Illuminate\Foundation\AliasLoader;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,37 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // dynamic initiate alias based on model files
+        $loader = AliasLoader::getInstance();
+        $models = $this->getAllModels();
+        foreach ($models as $model) {
+            $loader->alias($model, "\App\Models\\${model}");
+        }
+
         Blade::component('alert', Alert::class);
+    }
+
+    private function getAllModels()
+    {
+        $path = app_path() . '/Models';
+        return $this->getModels($path);
+    }
+
+    private function getModels($path)
+    {
+        $out = [];
+        $results = scandir($path);
+        foreach ($results as $result) {
+            if ($result === '.' or $result === '..') {
+                continue;
+            }
+            $filename = $path . '/' . $result;
+            if (is_dir($filename)) {
+                $out = array_merge($out, $this->getModels($filename));
+            } else {
+                $out[] = basename(substr($filename, 0, -4));
+            }
+        }
+        return $out;
     }
 }

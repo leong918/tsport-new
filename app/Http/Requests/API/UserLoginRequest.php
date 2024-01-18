@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Form\Admin;
+namespace App\Http\Requests\API;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
+use App\Http\Requests\ApiRequest;
 
-class AdminLoginRequest extends FormRequest
+class UserLoginRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,11 +22,8 @@ class AdminLoginRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array
+    public function rules()
     {
-        return [
-            'username' => 'required',
-            'password' => 'required',
-        ];
+        return User::$rules;
     }
 }

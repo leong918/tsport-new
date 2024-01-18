@@ -16,7 +16,7 @@
             </ul>
         </div>
         <div class="right-content d-flex align-items-center">
-            <ul class="header-nav me-3">
+            <ul class="header-nav me-2">
                 <li class="nav-item dropdown d-md-down-none"><a class="nav-link" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fa-solid fa-bell icon icon-lg my-1 mx-2"></i>
                     <span class="badge rounded-pill position-absolute top-0 end-0 bg-info-gradient">7</span></a>
