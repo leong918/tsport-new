@@ -16,7 +16,7 @@
             </ul>
         </div>
         <div class="right-content d-flex align-items-center">
-            <ul class="header-nav me-2">
+            <ul class="header-nav">
                 <li class="nav-item dropdown d-md-down-none"><a class="nav-link" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fa-solid fa-bell icon icon-lg my-1 mx-2"></i>
                     <span class="badge rounded-pill position-absolute top-0 end-0 bg-info-gradient">7</span></a>
@@ -54,6 +54,20 @@
                         <div class="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>
                         <div class="small text-medium-emphasis text-truncate">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt...</div>
                         </div></a><a class="dropdown-item text-center border-top" href="#"><strong>View all messages</strong></a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="header-nav">
+                <li class="nav-item dropdown d-md-down-none"><a class="nav-link" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-globe icon icon-lg my-1 mx-2"></i></a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg">
+                        @php
+                        $langs = config("lang");
+                        @endphp
+                        @foreach ($langs as $key => $lang)
+                        <a href="{{ url()->current() }}?lang={{ $key }}"
+                            class="dropdown-item">{{ $lang }}</a>
+                        @endforeach
                     </div>
                 </li>
             </ul>

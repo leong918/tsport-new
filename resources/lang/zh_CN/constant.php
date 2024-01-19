@@ -2,7 +2,7 @@
 
 return [
 
-    'ACTIVE' => 'Active',
-    'INACTIVE' => 'Inactive',
+    'ACTIVE' => '活跃',
+    'INACTIVE' => '不活跃',
 
 ];
