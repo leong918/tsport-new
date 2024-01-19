@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\GeneralException;
-use App\Http\Requests\Form\CreateAdminRequest;
-use App\Http\Requests\Form\UpdateAdminRequest;
+use App\Http\Requests\Form\Admin\CreateAdminRequest;
+use App\Http\Requests\Form\Admin\UpdateAdminRequest;
 use App\Repositories\AdminRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +28,7 @@ class AdminController extends BaseController
                 ->addColumn('status', function ($model) {
                     $route = route('admin.admin.status.post', ['id' => $model->id]);
                     $status = $model->status;
-                    return view('shared.status', compact('route', 'status'));
+                    return $this->view('admin.status', compact('route', 'status', 'model'));
                 })
                 ->addColumn('action', function ($model) {
                     return $this->view('admin.action', compact('model'));

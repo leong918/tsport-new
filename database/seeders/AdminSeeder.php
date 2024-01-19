@@ -19,6 +19,12 @@ class AdminSeeder extends Seeder
                 'password' => '123123',
                 'status' => 1
             ],
+            [
+                'name' => 'Jeff',
+                'username' => 'jeff',
+                'password' => '123123',
+                'status' => 1
+            ],
         ];
 
         foreach ($admins as $admin) {

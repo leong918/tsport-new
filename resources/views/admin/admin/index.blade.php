@@ -84,15 +84,17 @@
             $('table tbody').on('click', '.btn-delete', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
-                swal.queue([{
-                    title: '{{ __('page.txt_confirm') }}',
-                    text: '{{ __('page.txt_no_revert') }}',
-                    type: 'warning',
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This action is not able to be reverted.',
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: '{{ __('page.txt_delete') }}',
-                    cancelButtonText: '{{ __('page.txt_cancel') }}',
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        confirmButton: "btn btn-success me-2",
+                        cancelButton: "btn btn-danger ms-2"
+                    },
                     buttonsStyling: false,
                     showLoaderOnConfirm: true,
                     preConfirm: (response) => {
@@ -103,21 +105,19 @@
                                 })
                                 .catch((e) => {
                                     console.error("error ", e)
-                                    swal.showValidationMessage(
+                                    Swal.showValidationMessage(
                                         `Request failed: ${e}`
                                     );
                                 })
                         }
                     },
                     allowOutsideClick: () => !swal.isLoading()
-                }]).then((result) => {
+                }).then((result) => {
                     if (result.value) {
-                        swal.fire({
-                            title: '{{ __('page.deleted') }}',
-                            text: '{{ __('page.txt_deleted') }}',
-                            type: 'success',
-                            confirmButtonClass: 'btn btn-success',
-                            confirmButtonText: '{{ __('page.ok') }}',
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'Record deleted successfully!',
+                            icon: 'success',
                         });
                         // reload datatables
                         table.ajax.reload();
@@ -128,15 +128,17 @@
             //status toggle 
             $('table tbody').on('click', '.btn-status', function() {
                 var url = $(this).data("url");
-                swal.queue([{
-                    title: '{{ __('page.txt_confirm') }}',
-                    text: '{{ __('page.txt_status_record') }}',
-                    type: 'warning',
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This action is not able to be reverted.',
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: '{{ __('page.txt_status_confirm') }}',
-                    cancelButtonText: '{{ __('page.txt_cancel') }}',
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
+                    confirmButtonText: 'Yes, change it!',
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        confirmButton: "btn btn-success me-2",
+                        cancelButton: "btn btn-danger ms-2"
+                    },
                     buttonsStyling: false,
                     showLoaderOnConfirm: true,
                     preConfirm: (response) => {
@@ -147,20 +149,19 @@
                                 })
                                 .catch((e) => {
                                     console.error("error ", e)
-                                    swal.showValidationMessage(
+                                    Swal.showValidationMessage(
                                         `Request failed: ${e}`
                                     );
                                 })
                         }
                     },
                     allowOutsideClick: () => !swal.isLoading()
-                }]).then((result) => {
+                }).then((result) => {
                     if (result.value) {
-                        swal.fire({
-                            title: '{{ __('page.status_updated') }}',
-                            text: '{{ __('page.txt_status_updated') }}',
-                            type: 'success',
-                            confirmButtonClass: 'btn btn-success',
+                        Swal.fire({
+                            title: 'Updated!',
+                            text: 'Record updated successfully!',
+                            icon: 'success',
                         });
                         // reload datatables
                         table.ajax.reload();

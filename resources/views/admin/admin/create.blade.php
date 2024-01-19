@@ -11,11 +11,11 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    {{ Form::open(["url" => route("admin.admin.create.post"), "method" => "POST"]) }}
+                                    {{ html()->form('POST', route("admin.admin.create.post"))->open() }}
                                     
-                                    @include("admin.default.admin.fields")
+                                    @include("admin.admin.fields")
 
-                                    {{ Form::close() }}
+                                    {{ html()->form()->close() }}
                                 </div>
                             </div>
                         </div>

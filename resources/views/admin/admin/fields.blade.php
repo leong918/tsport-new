@@ -16,7 +16,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Status') }}
-            {{ html()->select('status')->options(Admin::STATUS)->class('form-control')->required() }}
+            {{ html()->select('status')->options(renderSelect(Admin::STATUS))->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
