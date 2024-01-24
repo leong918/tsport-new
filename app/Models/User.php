@@ -21,9 +21,12 @@ class User extends Authenticatable
      * @var array
      */
     public static $rules = [
+        'user' => 'required',
         'email' => 'required',
         'password' => 'required',
     ];
+
+    protected $table = 'user';
 
     /**
      * The attributes that are mass assignable.
@@ -31,13 +34,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'username',
         'email',
+        'phone_no',
+        'dob',
         'password',
-        'api_token',
-        'status',
-        'login_at',
+        'referral_email',
+        'referral_phone_no',
     ];
 
     /**
@@ -46,8 +51,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
     ];
 
     /**
