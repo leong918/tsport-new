@@ -1,3 +1,8 @@
+@php
+    $adminMenuRepository = new \App\Repositories\AdminMenuRepository(new \Illuminate\Container\Container);
+    $sidebar_item = $adminMenuRepository->getMenuByType();
+@endphp
+
 <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
         VVinners
@@ -7,12 +12,16 @@
             <i class="fa-solid fa-chart-bar nav-icon"></i>
              Dashboard<span class="badge bg-info-gradient ms-auto">NEW</span></a></li>
         <li class="nav-title">System Config</li>
+        @foreach($sidebar_item['system_config'] as $parent_item)
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
-            <i class="fa-solid fa-user-gear nav-icon"></i> Admin</a>
+            <i class="{{ $parent_item->icon }} nav-icon"></i> {{ $parent_item->title }}</a>
+            @foreach($parent_item->child_item as $child_item)
             <ul class="nav-group-items">
-                <li class="nav-item"><a class="nav-link" href="{{ route('admin.admin.index') }}"><span class="nav-icon"></span> Admin List</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route($child_item->url) }}"><span class="nav-icon"></span> {{ $child_item->title }}</a></li>
             </ul>
+            @endforeach
         </li>
+        @endforeach
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>
