@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use App\Repositories\UserRepository;
 
@@ -14,10 +15,15 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'User',
+                'first_name' => 'User',
+                'last_name' => 'ABC',
+                'username' => 'userABC',
                 'email' => 'user@gmail.com',
+                'phone_no' => '60123456789',
+                'dob' => Carbon::now()->format('Y-m-d H:i:s'),
                 'password' => '123123',
-                'status' => 1
+                'referral_email' => 'referral@gmail.com',
+                'referral_phone_no' => '60112223333' 
             ],
         ];
 
