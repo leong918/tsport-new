@@ -17,6 +17,11 @@ class Brand extends Model
      */
     public static $rules = [];
 
+    public const STATUS = [
+        'ACTIVE' => 1,
+        'INACTIVE' => 0,
+    ];
+    
     protected $table = 'brand';
 
     /**
@@ -53,5 +58,10 @@ class Brand extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
+    }
+
+    public function brandDescription()
+    {
+        return $this->hasMany(BrandDescription::class);
     }
 }
