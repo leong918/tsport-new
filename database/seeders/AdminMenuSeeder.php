@@ -32,6 +32,24 @@ class AdminMenuSeeder extends Seeder
                 'sort' => 1,
                 'status' => 1
             ],
+            [
+                'parent_id' => null,
+                'title' => 'Product & Category',
+                'icon' => 'fa-solid fa-folder-open',
+                'url' => null,
+                'type' => 'shop',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 3,
+                'title' => 'Brand List',
+                'icon' => null,
+                'url' => 'admin.brand.index',
+                'type' => 'shop',
+                'sort' => 1,
+                'status' => 1
+            ],
         ];
 
         foreach ($adminMenus as $adminMenu) {
