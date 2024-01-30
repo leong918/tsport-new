@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /**
  * Only applied for CONST status get from model
  *
@@ -30,4 +32,22 @@ function getPublicIP()
     }
 
     return $ip;
+}
+
+function unzipFile(string $pathToSource, string $pathSaveTo)
+{
+    $zip = new \ZipArchive();
+    if ($zip->open(str_replace("//", "/", $pathToSource)) === true) {
+        $zip->extractTo($pathSaveTo);
+        return $zip->close();
+    }
+    return false;
+}
+
+function getPluginNamespace(string $key)
+{
+    $key = Str::camel($key);
+    $key = ucfirst($key);
+
+    return '\App\Plugins\\' . $key;
 }

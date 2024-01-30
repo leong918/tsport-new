@@ -22,6 +22,11 @@
             @endforeach
         </li>
         @endforeach
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.plugin.index') }}">
+                <i class="fa-solid fa-download nav-icon"></i> Plugin
+            </a>
+        </li>
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>

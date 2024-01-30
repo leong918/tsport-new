@@ -11,18 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admin_menu', function (Blueprint $table) {
+        Schema::create('plugin', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('parent_id')->nullable();
-            $table->string('title');
-            $table->string('icon')->nullable();
-            $table->string('url')->nullable();
-            $table->string('type')->nullable();
-            $table->string('key')->nullable();
-            $table->integer('sort');
+            $table->string('key');
+            $table->string('group');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -31,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admin_menu');
+        Schema::dropIfExists('plugin');
     }
 };
