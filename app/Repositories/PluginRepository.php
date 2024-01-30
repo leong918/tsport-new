@@ -89,11 +89,6 @@ class PluginRepository extends BaseRepository
             return redirect()->back()->with('error', 'Error! Plugin failed to unzip.');
         }
 
-        $data = new Plugin();
-        $data->key = $configKey;
-        $data->group = $configGroup;
-        $data->save();
-
         return redirect()->back()->with('success', 'Plugin Installed Successfully!');
     }
 
