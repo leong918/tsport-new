@@ -60,12 +60,12 @@ class PluginRepository extends BaseRepository
                 $pluginExist = Plugin::where('config_key', $configKey)->first();
                 if ($pluginExist) {
                     File::deleteDirectory(storage_path('tmp/'.$pathTemp));
-                    return redirect()->back()->with('error', 'Error! Plugin installed before.');
+                    return redirect()->back()->with('error', 'Error! Plugin exist.');
                 }
 
                 $pathPlugin = $configGroup . '/' . $configKey;
 
-                //Valication Done
+                //Validation Done
                 try {
                     //Copy Directory from temporary path to real path
                     File::copyDirectory(storage_path('tmp/'.$pathTemp.'/'.$folderName.'/public'), public_path($pathPlugin));
