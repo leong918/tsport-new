@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('key');
             $table->string('group');
-            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

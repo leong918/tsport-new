@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use App\Models\Plugin;
 
 /**
  * Only applied for CONST status get from model
@@ -50,4 +51,9 @@ function getPluginNamespace(string $key)
     $key = ucfirst($key);
 
     return '\App\Plugins\\' . $key;
+}
+
+function checkExistPlugin(string $key)
+{
+    return Plugin::where('key', $key)->first();
 }
