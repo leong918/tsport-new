@@ -24,15 +24,6 @@ class AdminMenuSeeder extends Seeder
                 'status' => 1
             ],
             [
-                'parent_id' => 1,
-                'title' => 'Admin List',
-                'icon' => null,
-                'url' => 'admin.admin.index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
                 'parent_id' => null,
                 'title' => 'Product & Category',
                 'icon' => 'fa-solid fa-folder-open',
@@ -42,7 +33,16 @@ class AdminMenuSeeder extends Seeder
                 'status' => 1
             ],
             [
-                'parent_id' => 3,
+                'parent_id' => 1,
+                'title' => 'Admin List',
+                'icon' => null,
+                'url' => 'admin.admin.index',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 2,
                 'title' => 'Brand List',
                 'icon' => null,
                 'url' => 'admin.brand.index',

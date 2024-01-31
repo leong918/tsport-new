@@ -29,7 +29,19 @@ class AppServiceProvider extends ServiceProvider
             $loader->alias($model, "\App\Models\\${model}");
         }
 
+        // define component in blade
         Blade::component('alert', Alert::class);
+
+        // load plugin provider
+        try {
+            foreach (glob(app_path() . '/Plugins/*/*/Provider.php') as $filename) {
+                require_once $filename;
+            }
+        } catch (\Throwable $e) {
+            $msg = 'Message: ' .$e->getMessage().' - Line: '.$e->getLine().' - File: '.$e->getFile();
+            echo $msg;
+            exit;
+        }
     }
 
     private function getAllModels()
