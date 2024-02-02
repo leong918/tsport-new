@@ -54,4 +54,19 @@ class Category extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
+
+    public function categoryDescription()
+    {
+        return $this->hasMany(CategoryDescription::class);
+    }
+
+    public function chineseDescription()
+    {
+        return $this->hasOne(CategoryDescription::class)->where('language','cn');
+    }
+
+    public function englishDescription()
+    {
+        return $this->hasOne(CategoryDescription::class)->where('language','en');
+    }
 }
