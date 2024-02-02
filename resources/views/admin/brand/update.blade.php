@@ -11,7 +11,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    {{ html()->model($model)->form('PUT', route("admin.brand.update.put", ["id" => $model->id]))->acceptsFiles()->open() }}
+                                    {{ html()->model($model)->form('PUT', route("admin.brand.update.put", ["id" => $model->id]))->acceptsFiles()->id('brand')->open() }}
 
                                     @include("admin.brand.fields")
 

@@ -11,7 +11,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    {{ html()->form('POST', route("admin.brand.create.post"))->acceptsFiles()->open()  }}
+                                    {{ html()->form('POST', route("admin.brand.create.post"))->acceptsFiles()->id('brand')->open()  }}
                                     
                                     @include("admin.brand.fields")
 

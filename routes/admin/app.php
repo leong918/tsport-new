@@ -17,6 +17,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
 
         require_once 'admin.php';
         require_once 'brand.php';
+        require_once 'category.php';
+        require_once 'product.php';
         // require_once 'setting.php';
     });
 });

@@ -54,4 +54,9 @@ class BrandDescription extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 }

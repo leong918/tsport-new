@@ -29,7 +29,7 @@
     </div>
 </div>
 
-{{-- <div class="row">
+<div class="row">
     <div class="card-header mb-3"><strong>Language</strong> </div>
     <div class="col-md-6 mb-3">
         <div class="mb-3">
@@ -37,41 +37,27 @@
             <table class="table table-striped border">
                 <thead>
                     <tr>
-                        <th scope="col">{{__('page.title')}}</th>
+                        <th scope="col">{{__('page.name')}}</th>
                         <th scope="col">{{__('page.description')}}</th>
                     </tr>
                 </thead>
                 <tbody >
                     <tr>
+                        @if(isset($model))
+                        <td>
+                            {{ html()->text('language[en][name]')->value($model->englishDescription->name)->placeholder('Enter name')->class('form-control')->required() }}
+                        </td>
+                        <td>
+                            {{ html()->textarea('language[en][description]')->value($model->englishDescription->description)->class('form-control wysiwyg') }}
+                        </td>
+                        @else
                         <td>
                             {{ html()->text('language[en][name]')->placeholder('Enter name')->class('form-control')->required() }}
                         </td>
                         <td>
                             {{ html()->textarea('language[en][description]')->class('form-control wysiwyg') }}
                         </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-md-6 mb-3">
-        <div class="mb-3">
-            <div class="mb-1"><p>Malay Description</p></div>
-            <table class="table table-striped border">
-                <thead>
-                    <tr>
-                        <th scope="col">{{__('page.title')}}</th>
-                        <th scope="col">{{__('page.description')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            {{ html()->text('language[bm][name]')->placeholder('Enter name')->class('form-control')->required() }}
-                        </td>
-                        <td>
-                            {{ html()->textarea('language[bm][description]')->class('form-control wysiwyg') }}
-                        </td>
+                        @endif
                     </tr>
                 </tbody>
             </table>
@@ -83,24 +69,33 @@
             <table class="table table-striped border">
                 <thead>
                     <tr>
-                        <th scope="col">{{__('page.title')}}</th>
+                        <th scope="col">{{__('page.name')}}</th>
                         <th scope="col">{{__('page.description')}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        @if(isset($model))
                         <td>
-                            {{ html()->text('language[ch][name]')->placeholder('Enter name')->class('form-control')->required() }}
+                            {{ html()->text('language[cn][name]')->value($model->chineseDescription->name)->placeholder('Enter name')->class('form-control')->required() }}
                         </td>
                         <td>
-                            {{ html()->textarea('language[ch][description]')->class('form-control wysiwyg') }}
+                            {{ html()->textarea('language[cn][description]')->value($model->chineseDescription->description)->class('form-control wysiwyg') }}
                         </td>
+                        @else
+                        <td>
+                            {{ html()->text('language[cn][name]')->placeholder('Enter name')->class('form-control')->required() }}
+                        </td>
+                        <td>
+                            {{ html()->textarea('language[cn][description]')->class('form-control wysiwyg') }}
+                        </td>
+                        @endif
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</div> --}}
+</div>
 <div class="mb-3 float-end">
     <a href="{{ route("admin.brand.index") }}" class="btn btn-warning">Cancel</a>
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -174,9 +169,11 @@
 
     tinymce.init(editor_config);
 </script>
-{{-- <script>
+<script>
         $("#brand").submit(function(e) {
             e.preventDefault();
+
+            tinymce.triggerSave();
 
             var url = $(this).attr('action');
 
@@ -215,5 +212,5 @@
             });
         });
 
-</script> --}}
+</script>
 @endsection
