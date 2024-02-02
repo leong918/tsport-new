@@ -31,7 +31,7 @@ class BrandController extends BaseController
                 ->addColumn('status', function ($model) {
                     $route = route('admin.brand.status.post', ['id' => $model->id]);
                     $status = $model->status;
-                    return $this->view('shared.status', compact('route', 'status', 'model'));
+                    return view('shared.status', compact('route', 'status', 'model'));
                 })
                 ->addColumn('action', function ($model) {
                     return $this->view('brand.action', compact('model'));

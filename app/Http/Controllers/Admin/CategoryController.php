@@ -27,7 +27,7 @@ class CategoryController extends BaseController
                 ->addColumn('status', function ($model) {
                     $route = route('admin.category.status.post', ['id' => $model->id]);
                     $status = $model->status;
-                    return $this->view('shared.status', compact('route', 'status', 'model'));
+                    return view('shared.status', compact('route', 'status', 'model'));
                 })
                 ->addColumn('action', function ($model) {
                     return $this->view('category.action', compact('model'));
