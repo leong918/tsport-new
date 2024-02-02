@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->string('url')->nullable();
             $table->string('type')->nullable();
+            $table->string('key')->nullable();
             $table->integer('sort');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

@@ -41,4 +41,9 @@ class AdminMenuRepository extends BaseRepository
 
         return $parent_menus;
     }
+
+    public function getMenuByKey($key)
+    {
+        return AdminMenu::where('key', $key)->first();
+    }
 }

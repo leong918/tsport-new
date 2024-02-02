@@ -16,6 +16,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         require_once 'admin.php';
+        require_once 'plugin.php';
         require_once 'brand.php';
         require_once 'category.php';
         require_once 'product.php';
