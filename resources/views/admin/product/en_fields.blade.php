@@ -7,7 +7,7 @@
                 </tr>
                 <tr>
                     <td>
-                        {{ html()->text('language[en][name]')->value(isset($model) && $model->name ? $model->name : "")->placeholder('Enter name')->class('form-control')->required() }}
+                        {{ html()->text('language[en][name]')->value(isset($model) && $model->enDescription ? $model->enDescription->name : "")->placeholder('Enter name')->class('form-control')->required() }}
                     </td>
                 </tr>
                 <tr>

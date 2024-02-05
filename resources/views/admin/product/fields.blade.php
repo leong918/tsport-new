@@ -1,6 +1,6 @@
 <x-alert />
 
-<div class="row mb-5">
+<div class="row">
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Name') }}

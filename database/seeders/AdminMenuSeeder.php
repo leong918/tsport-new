@@ -33,6 +33,24 @@ class AdminMenuSeeder extends Seeder
                 'status' => 1
             ],
             [
+                'parent_id' => null,
+                'title' => 'Blog',
+                'icon' => 'fa-solid fa-blog',
+                'url' => null,
+                'type' => 'shop',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => null,
+                'title' => 'Currency',
+                'icon' => 'fa-solid fa-dollar-sign',
+                'url' => null,
+                'type' => 'shop',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
                 'parent_id' => 1,
                 'title' => 'Admin List',
                 'icon' => null,
@@ -64,6 +82,24 @@ class AdminMenuSeeder extends Seeder
                 'title' => 'Brand List',
                 'icon' => null,
                 'url' => 'admin.brand.index',
+                'type' => 'shop',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 3,
+                'title' => 'Blog List',
+                'icon' => null,
+                'url' => 'admin.blog.index',
+                'type' => 'shop',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 4,
+                'title' => 'Currency List',
+                'icon' => null,
+                'url' => 'admin.currency.index',
                 'type' => 'shop',
                 'sort' => 1,
                 'status' => 1

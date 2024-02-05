@@ -6,15 +6,32 @@
         <div class="fade-in">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="row">
+                    <div class="row mb-5">
+                        {{ html()->form('POST', route("admin.product.create.post"))->acceptsFiles()->id('product')->open()  }}
                         <div class="col-sm-12">
-                            {{ html()->form('POST', route("admin.product.create.post"))->acceptsFiles()->id('product')->open()  }}
                             <div class="card mb-3">
                                 <div class="card-header"><strong>Product</strong> </div>
                                 <div class="card-body">
                                     @include("admin.product.fields")
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="row mb-3">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <strong>Product Price</strong> 
+                                            <button type="button" id="add_product_price" class="btn btn-primary permission float-end">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-body priceInputWrapper">
+                                            @include("admin.product.price_fields")
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>  
                         </div>
                         <div class="col-sm-12">
                             <div class="row">
@@ -42,8 +59,7 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
-                            {{ html()->form()->close() }}
-                        </div>
+                        {{ html()->form()->close() }}
                     </div>
                 </div>  
             </div>

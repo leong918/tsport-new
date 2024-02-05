@@ -8,7 +8,7 @@
                 <div class="col-sm-12">
                     <div class="row">
                         <div class="col-sm-12">
-                            {{ html()->model($model)->form('PUT', route("admin.category.update.put", ["id" => $model->id]))->acceptsFiles()->id('brand')->open() }}
+                            {{ html()->model($model)->form('PUT', route("admin.category.update.put", ["id" => $model->id]))->acceptsFiles()->id('category')->open() }}
                             <div class="card mb-3">
                                 <div class="card-header"><strong>Category</strong> </div>
                                 <div class="card-body">

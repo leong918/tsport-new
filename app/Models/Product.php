@@ -75,6 +75,11 @@ class Product extends Model
         return $this->hasMany(ProductRelated::class);
     }
 
+    public function productPrice()
+    {
+        return $this->hasMany(productPrice::class);
+    }
+
     public function cnDescription()
     {
         return $this->hasOne(ProductDescription::class)->where('language','cn');

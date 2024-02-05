@@ -49,6 +49,7 @@ class ProductRepository extends BaseRepository
     public function createProduct(array $input)
     {
         $this->verifyDescription($input);
+        $this->checkDuplicate($input);
 
         $input['alias'] = $this->removeSpecialCharacters($input['name']);
 
@@ -61,6 +62,9 @@ class ProductRepository extends BaseRepository
             $productRelatedRepository->createProductRelated($input, $model->id);
         }
 
+        $productPriceRepository = new ProductPriceRepository(new Container());
+        $productPriceRepository->createProductPrice($input, $model->id);
+
         $productImageRepository = new ProductImageRepository(new Container());
         $productImageRepository->createProductImage($input, $model->id);
 
@@ -70,9 +74,9 @@ class ProductRepository extends BaseRepository
 
     public function updateProduct(array $input, int $id)
     {
-
+        $this->checkDuplicate($input);
         $input['alias'] = $this->removeSpecialCharacters($input['name']);
-
+        
         $model = Product::findOrFail($id);
         $model->fill($input);
         $model->save();
@@ -87,6 +91,9 @@ class ProductRepository extends BaseRepository
             $productImageRepository->createProductImage($input, $model->id);
         }
 
+        $productPriceRepository = new ProductPriceRepository(new Container());
+        $productPriceRepository->createProductPrice($input, $model->id);
+        
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
     }
@@ -127,5 +134,21 @@ class ProductRepository extends BaseRepository
     public function removeSpecialCharacters(string $string){
         $string = preg_replace('/\s+/', '-', $string);
         return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
+    }
+
+    public function checkDuplicate($input) {
+        $currencyIds = [];
+        foreach ($input['product_price'] as $product) {
+            $currencyIds[] = $product['currency_id'];
+        }
+        $valueCounts = array_count_values($currencyIds);
+        $duplicates = array_filter($valueCounts, function($count) {
+            return $count > 1;
+        });
+        
+        if(count($duplicates) > 0){
+            throw new \Exception(__('Product Price has duplicate currency'));
+        }
+
     }
 }
