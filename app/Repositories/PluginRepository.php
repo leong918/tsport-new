@@ -95,11 +95,16 @@ class PluginRepository extends BaseRepository
     private function uploadLocalFile($file, $filePath)
     {
         $fileName = $file->getClientOriginalName();
-        return Storage::putFileAs($filePath, $file, $fileName, 'public');
+        return Storage::putFileAs($filePath, $file, $fileName, 'tmp');
     }
 
     public function getActivePlugin($key)
     {
         return Plugin::where('key', $key)->first();
+    }
+
+    public function getListing()
+    {
+        return Plugin::query()->orderBy('created_at', 'desc');
     }
 }
