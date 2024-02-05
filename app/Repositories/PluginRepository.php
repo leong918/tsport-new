@@ -97,4 +97,9 @@ class PluginRepository extends BaseRepository
         $fileName = $file->getClientOriginalName();
         return Storage::putFileAs($filePath, $file, $fileName, 'public');
     }
+
+    public function getActivePlugin($key)
+    {
+        return Plugin::where('key', $key)->first();
+    }
 }

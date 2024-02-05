@@ -17,7 +17,7 @@
                                 <strong>Install Plugin</strong>
                             </div>
                             <div class="card-body table-listing table-responsive">
-                                {{ html()->form('POST', route("admin.plugin.install"))->open() }}
+                                {{ html()->form('POST', route("admin.plugin.install"))->acceptsFiles()->open() }}
                                     <div class="row">
                                         <div class="col-md-12 search-filter">
                                             {{ html()->file('plugin')->class('form-control')->required() }}
