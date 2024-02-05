@@ -1,10 +1,16 @@
 <x-alert />
 
-<div class="row">
+<div class="row mb-5">
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Name') }}
             {{ html()->text('name')->placeholder('Enter name')->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Type') }}
+            {{ html()->text('type')->placeholder('Enter type')->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
@@ -17,14 +23,6 @@
         <div class="mb-3">
             {{ html()->label('Status') }}
             {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="mb-3">
-            {{ html()->label('Image') }}
-            {{ html()->file('image')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
-            <br />
-            <img class="img-fluid" {{isset($model) && $model->image ? 'src='.$model->image : ''}} />
         </div>
     </div>
 </div>
@@ -97,47 +95,47 @@
     tinymce.init(editor_config);
 </script>
 <script>
-    $("#brand").submit(function(e) {
-        e.preventDefault();
+        $("#category").submit(function(e) {
+            e.preventDefault();
 
-        tinymce.triggerSave();
+            tinymce.triggerSave();
 
-        var url = $(this).attr('action');
+            var url = $(this).attr('action');
 
-        let formData = new FormData(this);
+            let formData = new FormData(this);
 
-        $(".form-control-file").each(function() {
-            formData.append($(this).attr("name"), $(this)[0].files[0]);
-        })
+            $(".form-control-file").each(function() {
+                formData.append($(this).attr("name"), $(this)[0].files[0]);
+            })
 
-        axios({
-            method: "post",
-            url: url,
-            data: formData,
-            headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then(response => {
-            swal.fire({
-                title: '{{__("page.news_added")}}',
-                text: '{{__("page.txt_news_added")}}',
-                type: 'success',
-                confirmButtonClass: 'btn btn-success',
+            axios({
+                method: "post",
+                url: url,
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+            .then(response => {
+                swal.fire({
+                    title: '{{__("page.category_added")}}',
+                    text: '{{__("page.txt_category_added")}}',
+                    type: 'success',
+                    confirmButtonClass: 'btn btn-success',
+                        confirmButtonText: '{{__("page.ok")}}',
+                });
+                setTimeout(function(){
+                    window.location.replace('/admin/category/index');
+                }, 1000);
+            })
+            .catch(error => {
+                swal.fire({
+                    title: '{{__("page.category_fail_add")}}',
+                    text: error.response.data.msg,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: '{{__("page.ok")}}',
-            });
-            setTimeout(function(){
-                window.location.replace('/admin/brand/index');
-            }, 1000);
-        })
-        .catch(error => {
-            swal.fire({
-                title: '{{__("page.brand_fail_add")}}',
-                text: error.response.data.msg,
-                type: 'error',
-                confirmButtonClass: 'btn btn-danger',
-                confirmButtonText: '{{__("page.ok")}}',
+                });
             });
         });
-    });
 
 </script>
 @endsection

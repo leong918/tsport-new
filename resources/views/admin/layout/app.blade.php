@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
       integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
       crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @yield('style')
-  </head>
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.0.0-rc.1/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-styrHw5ARomA8xPUVXJSXXchmA9xX4sqIeUqZtGkcT2zBp/DidIW1GYUNVO5FbmJ" crossorigin="anonymous">    </head>
   <body class="mb-0" id="admin-body">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
     @include('admin.layout.sidebar')
@@ -29,6 +28,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.0.0-rc.1/dist/js/coreui.bundle.min.js" integrity="sha384-KW7wTEji2ZsXsIoA4O34wfu6+kd/92iZmHLLSbrfj3D5JlgAJNWobqk0VRB2UvIK" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     @section('script')
     @show
   </body>

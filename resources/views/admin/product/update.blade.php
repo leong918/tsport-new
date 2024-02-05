@@ -7,14 +7,31 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="row">
+                        {{ html()->model($model)->form('PUT', route("admin.product.update.put", ["id" => $model->id]))->acceptsFiles()->id('product')->open() }}
                         <div class="col-sm-12">
-                            {{ html()->form('POST', route("admin.brand.create.post"))->acceptsFiles()->id('brand')->open()  }}
                             <div class="card mb-3">
-                                <div class="card-header"><strong>Brand</strong> </div>
+                                <div class="card-header"><strong>product</strong> </div>
                                 <div class="card-body">
-                                    @include("admin.brand.fields")
+                                    @include("admin.product.fields")
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="row mb-3">
+                                <div class="col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <strong>Product Price</strong> 
+                                            <button type="button" id="add_product_price" class="btn btn-primary permission float-end">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-body priceInputWrapper">
+                                            @include("admin.product.price_fields")
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>  
                         </div>
                         <div class="col-sm-12">
                             <div class="row">
@@ -22,7 +39,7 @@
                                     <div class="card">
                                         <div class="card-header"><strong>English</strong> </div>
                                         <div class="card-body">
-                                            @include("admin.brand.en_fields")
+                                            @include("admin.product.en_fields")
                                         </div>
                                     </div>
                                 </div>                        
@@ -30,7 +47,7 @@
                                     <div class="card">
                                         <div class="card-header"><strong>Chinese</strong></div>
                                         <div class="card-body">
-                                            @include("admin.brand.cn_fields")
+                                            @include("admin.product.cn_fields")
                                         </div>
                                     </div>
                                 </div>
@@ -42,10 +59,13 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
-                            {{ html()->form()->close() }}
-                        </div>
+
+
+                        {{ html()->form()->close() }}
                     </div>
-                </div>  
+                </div>
+                <!-- /.col-->
+                
             </div>
         </div>
     </div>

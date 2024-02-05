@@ -59,4 +59,39 @@ class Product extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
+
+    public function productDescription()
+    {
+        return $this->hasMany(ProductDescription::class);
+    }
+
+    public function productImage()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+
+    public function productRelated()
+    {
+        return $this->hasMany(ProductRelated::class);
+    }
+
+    public function productPrice()
+    {
+        return $this->hasMany(productPrice::class);
+    }
+
+    public function cnDescription()
+    {
+        return $this->hasOne(ProductDescription::class)->where('language','cn');
+    }
+
+    public function enDescription()
+    {
+        return $this->hasOne(ProductDescription::class)->where('language','en');
+    }
+
+    public function checkProductRelated($product_id, $related_product_id)
+    {
+        return ProductRelated::where(['product_id' => $product_id, 'related_product_id' => $related_product_id])->exists();
+    }
 }

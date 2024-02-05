@@ -7,6 +7,7 @@ use App\Http\Requests\Form\Brand\CreateBrandRequest;
 use App\Repositories\BrandRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class BrandController extends BaseController
 {
@@ -30,7 +31,7 @@ class BrandController extends BaseController
                 ->addColumn('status', function ($model) {
                     $route = route('admin.brand.status.post', ['id' => $model->id]);
                     $status = $model->status;
-                    return $this->view('brand.status', compact('route', 'status', 'model'));
+                    return view('shared.status', compact('route', 'status', 'model'));
                 })
                 ->addColumn('action', function ($model) {
                     return $this->view('brand.action', compact('model'));
@@ -48,7 +49,15 @@ class BrandController extends BaseController
 
     public function store(CreateBrandRequest $request)
     {
-        $this->brandRepository->createBrand($request->all());
+        DB::beginTransaction();
+        try {
+            $this->brandRepository->createBrand($request->all());
+            DB::commit();
+            return $this->response();
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return response()->json(['msg' => $exception->getMessage()], 500);
+        }
         return redirect(route('admin.brand.index'))->with('success', "Successfully create brand {$request->name}");
     }
 
@@ -61,7 +70,15 @@ class BrandController extends BaseController
 
     public function update(UpdateBrandRequest $request, int $id)
     {
-        $this->brandRepository->updateBrand($request->all(), $id);
+        DB::beginTransaction();
+        try {
+            $this->brandRepository->updateBrand($request->all(), $id);
+            DB::commit();
+            return $this->response();
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return response()->json(['msg' => $exception->getMessage()], 500);
+        }
         return redirect(route('admin.brand.index'))->with('success', "Successfully update brand {$request->name}");
     }
 
@@ -73,7 +90,6 @@ class BrandController extends BaseController
 
     public function toggleStatus(int $id)
     {
-        // $this->authorizeForUser(Auth::guard('admin')->user(), 'self-deny', $id);
         $this->brandRepository->toggleStatus($id);
     }
 }
