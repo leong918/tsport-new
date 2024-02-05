@@ -60,12 +60,12 @@ class Category extends Model
         return $this->hasMany(CategoryDescription::class);
     }
 
-    public function chineseDescription()
+    public function cnDescription()
     {
         return $this->hasOne(CategoryDescription::class)->where('language','cn');
     }
 
-    public function englishDescription()
+    public function enDescription()
     {
         return $this->hasOne(CategoryDescription::class)->where('language','en');
     }

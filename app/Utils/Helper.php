@@ -57,3 +57,16 @@ function checkExistPlugin(string $key)
 {
     return Plugin::where('key', $key)->first();
 }
+
+function formalizeDropdown($data, $key, $value, $subValue = null)
+{
+    $result = [];
+    for ($i=0; $i<count($data); $i++) {
+        if ($subValue) {
+            $result[$data[$i]->$key] = $data[$i]->$value.' ('.$data[$i]->$subValue.')';
+        } else {
+            $result[$data[$i]->$key] = $data[$i]->$value;
+        }
+    }
+    return $result;
+}

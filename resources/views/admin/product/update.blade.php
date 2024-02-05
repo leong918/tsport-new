@@ -8,11 +8,11 @@
                 <div class="col-sm-12">
                     <div class="row">
                         <div class="col-sm-12">
-                            {{ html()->form('POST', route("admin.brand.create.post"))->acceptsFiles()->id('brand')->open()  }}
+                        {{ html()->model($model)->form('PUT', route("admin.product.update.put", ["id" => $model->id]))->acceptsFiles()->id('product')->open() }}
                             <div class="card mb-3">
-                                <div class="card-header"><strong>Brand</strong> </div>
+                                <div class="card-header"><strong>product</strong> </div>
                                 <div class="card-body">
-                                    @include("admin.brand.fields")
+                                    @include("admin.product.fields")
                                 </div>
                             </div>
                         </div>
@@ -22,7 +22,7 @@
                                     <div class="card">
                                         <div class="card-header"><strong>English</strong> </div>
                                         <div class="card-body">
-                                            @include("admin.brand.en_fields")
+                                            @include("admin.product.en_fields")
                                         </div>
                                     </div>
                                 </div>                        
@@ -30,7 +30,7 @@
                                     <div class="card">
                                         <div class="card-header"><strong>Chinese</strong></div>
                                         <div class="card-body">
-                                            @include("admin.brand.cn_fields")
+                                            @include("admin.product.cn_fields")
                                         </div>
                                     </div>
                                 </div>
@@ -42,10 +42,13 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
+
                             {{ html()->form()->close() }}
                         </div>
                     </div>
-                </div>  
+                </div>
+                <!-- /.col-->
+                
             </div>
         </div>
     </div>

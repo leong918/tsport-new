@@ -27,80 +27,6 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="card-header mb-3"><strong>Language</strong> </div>
-    <div class="col-md-6 mb-3">
-        <div class="mb-3">
-            <div class="mb-1"><p>English Description</p></div>
-            <table class="table table-striped border">
-                <thead>
-                    <tr>
-                        <th scope="col">{{__('page.name')}}</th>
-                        <th scope="col">{{__('page.description')}}</th>
-                    </tr>
-                </thead>
-                <tbody >
-                    <tr>
-                        @if(isset($model))
-                        <td>
-                            {{ html()->text('language[en][name]')->value($model->englishDescription->name)->placeholder('Enter name')->class('form-control')->required() }}
-                        </td>
-                        <td>
-                            {{ html()->textarea('language[en][description]')->value($model->englishDescription->description)->class('form-control wysiwyg') }}
-                        </td>
-                        @else
-                        <td>
-                            {{ html()->text('language[en][name]')->placeholder('Enter name')->class('form-control')->required() }}
-                        </td>
-                        <td>
-                            {{ html()->textarea('language[en][description]')->class('form-control wysiwyg') }}
-                        </td>
-                        @endif
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <div class="col-md-6 mb-3">
-        <div class="mb-3">
-            <div class="mb-1"><p>Chinese Description</p></div>
-            <table class="table table-striped border">
-                <thead>
-                    <tr>
-                        <th scope="col">{{__('page.name')}}</th>
-                        <th scope="col">{{__('page.description')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        @if(isset($model))
-                        <td>
-                            {{ html()->text('language[cn][name]')->value($model->chineseDescription->name)->placeholder('Enter name')->class('form-control')->required() }}
-                        </td>
-                        <td>
-                            {{ html()->textarea('language[cn][description]')->value($model->chineseDescription->description)->class('form-control wysiwyg') }}
-                        </td>
-                        @else
-                        <td>
-                            {{ html()->text('language[cn][name]')->placeholder('Enter name')->class('form-control')->required() }}
-                        </td>
-                        <td>
-                            {{ html()->textarea('language[cn][description]')->class('form-control wysiwyg') }}
-                        </td>
-                        @endif
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<div class="mb-3 float-end">
-    <a href="{{ route("admin.category.index") }}" class="btn btn-warning">Cancel</a>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</div>
-
-
 @section('script')
 @parent
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
@@ -197,7 +123,7 @@
                         confirmButtonText: '{{__("page.ok")}}',
                 });
                 setTimeout(function(){
-                    window.location.replace('/admin/brand/index');
+                    window.location.replace('/admin/category/index');
                 }, 1000);
             })
             .catch(error => {

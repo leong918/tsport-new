@@ -35,6 +35,11 @@ class CategoryRepository extends BaseRepository
     {
         return Category::query()->orderBy('created_at', 'desc');
     }
+    
+    public function dropdown(string $key = 'id')
+    {
+        return formalizeDropdown(Category::all(), $key, 'name');
+    }
 
     public function createCategory(array $input)
     {

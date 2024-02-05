@@ -1,10 +1,38 @@
 <x-alert />
 
-<div class="row">
+<div class="row mb-5">
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Name') }}
             {{ html()->text('name')->placeholder('Enter name')->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('SKU') }}
+            {{ html()->text('sku')->placeholder('Enter SKU')->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Category ID') }}
+            {{ html()->select('category_id')->options($categoryDropdown)->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Brand ID') }}
+            {{ html()->select('brand_id')->options($brandDropdown)->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Related Product') }}
+            <select class="form-multi-select" name="product_related[]" multiple data-coreui-search="true">
+                @foreach($productDropdown as $product_id => $product_name)
+                    <option value={{$product_id}} {{isset($model) && $model->checkProductRelated($product_id, $model->id) ? 'selected' : ''}}>{{$product_name}}</option>
+                @endforeach
+            </select>
         </div>
     </div>
     <div class="col-md-6">
@@ -21,14 +49,33 @@
     </div>
     <div class="col-md-6">
         <div class="mb-3">
+            {{ html()->label('Best Seller') }}
+            {{ html()->select('is_best_seller')->options(['Yes','No'])->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('New') }}
+            {{ html()->select('is_new')->options(['Yes','No'])->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
             {{ html()->label('Image') }}
-            {{ html()->file('image')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
+            {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control')->required(isset($model) && $model->productImage->count() > 0 ? false : true)}}
             <br />
-            <img class="img-fluid" {{isset($model) && $model->image ? 'src='.$model->image : ''}} />
+            @if(isset($model) && $model->productImage->count() > 0)
+            <div class="row">
+                @foreach($model->productImage as $image)
+                    <div class="col-3">
+                        <img class="img-fluid" src={{ $image->url }} />
+                    </div>
+                @endforeach
+            </div>
+            @endif
         </div>
     </div>
 </div>
-
 @section('script')
 @parent
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
@@ -95,49 +142,47 @@
     };
 
     tinymce.init(editor_config);
-</script>
-<script>
-    $("#brand").submit(function(e) {
-        e.preventDefault();
 
-        tinymce.triggerSave();
+    $("#product").submit(function(e) {
+            e.preventDefault();
 
-        var url = $(this).attr('action');
+            tinymce.triggerSave();
 
-        let formData = new FormData(this);
+            var url = $(this).attr('action');
 
-        $(".form-control-file").each(function() {
-            formData.append($(this).attr("name"), $(this)[0].files[0]);
-        })
+            let formData = new FormData(this);
 
-        axios({
-            method: "post",
-            url: url,
-            data: formData,
-            headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then(response => {
-            swal.fire({
-                title: '{{__("page.news_added")}}',
-                text: '{{__("page.txt_news_added")}}',
-                type: 'success',
-                confirmButtonClass: 'btn btn-success',
+            $(".form-control-file").each(function() {
+                formData.append($(this).attr("name"), $(this)[0].files[0]);
+            })
+
+            axios({
+                method: "post",
+                url: url,
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+            .then(response => {
+                swal.fire({
+                    title: '{{__("page.product_added")}}',
+                    text: '{{__("page.txt_product_added")}}',
+                    type: 'success',
+                    confirmButtonClass: 'btn btn-success',
+                        confirmButtonText: '{{__("page.ok")}}',
+                });
+                setTimeout(function(){
+                    window.location.replace('/admin/product/index');
+                }, 1000);
+            })
+            .catch(error => {
+                swal.fire({
+                    title: '{{__("page.product_fail_add")}}',
+                    text: error.response.data.msg,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: '{{__("page.ok")}}',
-            });
-            setTimeout(function(){
-                window.location.replace('/admin/brand/index');
-            }, 1000);
-        })
-        .catch(error => {
-            swal.fire({
-                title: '{{__("page.brand_fail_add")}}',
-                text: error.response.data.msg,
-                type: 'error',
-                confirmButtonClass: 'btn btn-danger',
-                confirmButtonText: '{{__("page.ok")}}',
+                });
             });
         });
-    });
-
 </script>
 @endsection
