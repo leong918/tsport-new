@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Plugin;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
 class PluginRepository extends BaseRepository
@@ -47,6 +46,7 @@ class PluginRepository extends BaseRepository
                 $folderName = explode('/', $folderName[0]);
                 $folderName = end($folderName);
 
+                $config = json_decode(file_get_contents($checkConfig[0]), true);
                 $configGroup = $config['configGroup'] ?? '';
                 $configKey = $config['configKey'] ?? '';
 
@@ -57,7 +57,7 @@ class PluginRepository extends BaseRepository
                 }
 
                 //Check plugin exist
-                $pluginExist = Plugin::where('config_key', $configKey)->first();
+                $pluginExist = Plugin::where('key', $configKey)->first();
                 if ($pluginExist) {
                     File::deleteDirectory(storage_path('tmp/'.$pathTemp));
                     return redirect()->back()->with('error', 'Error! Plugin exist.');
@@ -95,7 +95,7 @@ class PluginRepository extends BaseRepository
     private function uploadLocalFile($file, $filePath)
     {
         $fileName = $file->getClientOriginalName();
-        return Storage::putFileAs($filePath, $file, $fileName, 'tmp');
+        return $file->storeAs($filePath, $fileName, 'tmp');
     }
 
     public function getActivePlugin($key)
