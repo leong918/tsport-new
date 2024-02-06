@@ -42,4 +42,10 @@ class PluginController extends BaseController
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    public function destroy(int $id)
+    {
+        $this->pluginRepository->deleteById($id);
+        return $this->response();
+    }
 }

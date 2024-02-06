@@ -53,14 +53,14 @@ class PluginRepository extends BaseRepository
                 //Process if plugin config incorect
                 if (!$configGroup || !$configKey) {
                     File::deleteDirectory(storage_path('tmp/' . $pathTemp));
-                    return redirect()->back()->with('error', 'Error! Config format wrong.');
+                    throw new \Exception('Error! Config format wrong.');
                 }
 
                 //Check plugin exist
                 $pluginExist = Plugin::where('key', $configKey)->first();
                 if ($pluginExist) {
                     File::deleteDirectory(storage_path('tmp/'.$pathTemp));
-                    return redirect()->back()->with('error', 'Error! Plugin exist.');
+                    throw new \Exception('Error! Plugin exist.');
                 }
 
                 $pathPlugin = $configGroup . '/' . $configKey;
@@ -73,23 +73,20 @@ class PluginRepository extends BaseRepository
                     File::deleteDirectory(storage_path('tmp/'.$pathTemp));
 
                     $configNamespace = getPluginNamespace($configKey) . '\AppConfig';
-                    $response = (new $configNamespace)->install();
-                    if (!is_array($response) || $response['error'] == 1) {
-                        return redirect()->back()->with('error', $response['msg']);
-                    }
+                    (new $configNamespace)->install();
                 } catch (\Throwable $e) {
                     File::deleteDirectory(storage_path('tmp/'.$pathTemp));
-                    return redirect()->back()->with('error', $e->getMessage());
+                    throw new \Exception($e->getMessage());
                 }
             } else {
                 File::deleteDirectory(storage_path('tmp/'.$pathTemp));
-                return redirect()->back()->with('error', 'Error! Config file not exist.');
+                throw new \Exception('Error! Config file not exist.');
             }
         } else {
-            return redirect()->back()->with('error', 'Error! Plugin failed to unzip.');
+            throw new \Exception('Error! Plugin failed to unzip.');
         }
 
-        return redirect()->back()->with('success', 'Plugin Installed Successfully!');
+        throw new \Exception('Plugin Installed Successfully!');
     }
 
     private function uploadLocalFile($file, $filePath)
@@ -106,5 +103,19 @@ class PluginRepository extends BaseRepository
     public function getListing()
     {
         return Plugin::query()->orderBy('created_at', 'desc');
+    }
+
+    public function deleteById($id)
+    {
+        $plugin = Plugin::find($id);
+
+        $configNamespace = getPluginNamespace($plugin->key) . '\AppConfig';
+        (new $configNamespace)->uninstall();
+
+        $pathPlugin = $plugin->group . '/' . $plugin->key;
+        File::deleteDirectory(public_path($pathPlugin));
+        File::deleteDirectory(app_path($pathPlugin));
+
+        $plugin->delete();
     }
 }

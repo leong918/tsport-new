@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         // load plugin provider
         try {
-            foreach (glob(app_path() . '/Plugins/*/*/Provider.php') as $filename) {
+            foreach (glob(app_path() . '/Plugins/*/Provider.php') as $filename) {
                 require_once $filename;
             }
         } catch (\Throwable $e) {
