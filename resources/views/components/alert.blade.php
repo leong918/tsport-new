@@ -30,7 +30,7 @@
     <div class="alert alert-dark" role="alert">{{ session('dark') }}</div>
 @endif
 
-@if ($errors->any())
+@if (isset($errors) && $errors->any())
     <div class="alert alert-danger alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         @if (count($errors->all()) <= 1)

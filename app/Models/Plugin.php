@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Plugin extends Model
 {
@@ -12,7 +13,8 @@ class Plugin extends Model
     protected $table = 'plugin';
 
     protected $fillable = [
-        'name',
+        'key',
+        'group',
         'status',
     ];
 
@@ -24,4 +26,11 @@ class Plugin extends Model
     protected $casts = [
         
     ];
+
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
+        );
+    }
 }
