@@ -40,18 +40,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/tempus-dominus.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/jQuery-provider.js"></script>
 <script>
-
     var dateString = '{{ isset($model) && $model->published_at ? $model->published_at : '' }}'; 
     if(dateString){
         var date = new Date(dateString);
     }else{
         var date = new Date();
     }
-
     var day = date.getDate();
     var month = date.getMonth() + 1; 
     var year = date.getFullYear();
-
     var published_at = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
 
     $(document).ready(function() { 

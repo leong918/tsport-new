@@ -3,7 +3,7 @@
 @section('style')
     @parent
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/css/tempus-dominus.css"/>
-{{-- @endsection --}}
+@endsection
 
 @section("content")
 <main class="c-main">
@@ -52,8 +52,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.col-->
-                
             </div>
         </div>
     </div>
