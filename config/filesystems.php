@@ -57,6 +57,11 @@ return [
             'visibility' => 'public',
         ],
 
+        'tmp' => [
+            'driver' => 'local',
+            'root' => storage_path('tmp'),
+            'url' => '',
+        ],
     ],
 
     /*

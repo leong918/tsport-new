@@ -17,13 +17,13 @@
                                 <strong>Install Plugin</strong>
                             </div>
                             <div class="card-body table-listing table-responsive">
-                                {{ html()->form('POST', route("admin.plugin.install"))->open() }}
+                                {{ html()->form('POST', route("admin.plugin.install"))->acceptsFiles()->open() }}
                                     <div class="row">
                                         <div class="col-md-12 search-filter">
                                             {{ html()->file('plugin')->class('form-control')->required() }}
                                         </div>
                                         <div class="col-md-12 text-right mt-3">
-                                            <button type="button" class="btn btn-primary w-100" id="form-submit">Install</button>
+                                            <button type="submit" class="btn btn-primary w-100" id="form-submit">Install</button>
                                         </div>
                                     </div>
                                 {{ html()->form()->close() }}
@@ -40,9 +40,8 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Username</th>
-                                            <th>Status</th>
+                                            <th>Key</th>
+                                            <th>Group</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
                                         </tr>
@@ -70,19 +69,15 @@
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
-                    url: '{!! route('admin.admin.index') !!}'
+                    url: '{!! route('admin.plugin.index') !!}'
                 },
                 columns: [{
-                        data: 'name',
-                        name: 'name'
+                        data: 'key',
+                        name: 'key'
                     },
                     {
-                        data: 'username',
-                        name: 'username'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
+                        data: 'group',
+                        name: 'group'
                     },
                     {
                         data: 'created_at',
@@ -134,50 +129,6 @@
                         Swal.fire({
                             title: 'Deleted!',
                             text: 'Record deleted successfully!',
-                            icon: 'success',
-                        });
-                        // reload datatables
-                        table.ajax.reload();
-                    }
-                });
-            });
-
-            //status toggle 
-            $('table tbody').on('click', '.btn-status', function() {
-                var url = $(this).data("url");
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'This action is not able to be reverted.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, change it!',
-                    cancelButtonText: 'Cancel',
-                    customClass: {
-                        confirmButton: "btn btn-success me-2",
-                        cancelButton: "btn btn-danger ms-2"
-                    },
-                    buttonsStyling: false,
-                    showLoaderOnConfirm: true,
-                    preConfirm: (response) => {
-                        if (response) {
-                            return axios.post(url, {})
-                                .then(() => {
-                                    table.ajax.reload();
-                                })
-                                .catch((e) => {
-                                    console.error("error ", e)
-                                    Swal.showValidationMessage(
-                                        `Request failed: ${e}`
-                                    );
-                                })
-                        }
-                    },
-                    allowOutsideClick: () => !swal.isLoading()
-                }).then((result) => {
-                    if (result.value) {
-                        Swal.fire({
-                            title: 'Updated!',
-                            text: 'Record updated successfully!',
                             icon: 'success',
                         });
                         // reload datatables
