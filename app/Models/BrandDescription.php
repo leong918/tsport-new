@@ -55,7 +55,7 @@ class BrandDescription extends Model
         );
     }
 
-    public function brand()
+    protected function brand()
     {
         return $this->belongsTo(Brand::class);
     }

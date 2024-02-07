@@ -55,17 +55,17 @@ class Category extends Model
         );
     }
 
-    public function categoryDescription()
+    protected function categoryDescription()
     {
         return $this->hasMany(CategoryDescription::class);
     }
 
-    public function cnDescription()
+    protected function cnDescription()
     {
         return $this->hasOne(CategoryDescription::class)->where('language','cn');
     }
 
-    public function enDescription()
+    protected function enDescription()
     {
         return $this->hasOne(CategoryDescription::class)->where('language','en');
     }

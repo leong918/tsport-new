@@ -60,17 +60,17 @@ class Brand extends Model
         );
     }
 
-    public function brandDescription()
+    protected function brandDescription()
     {
         return $this->hasMany(BrandDescription::class);
+    
     }
-
-    public function cnDescription()
+    protected function cnDescription()
     {
         return $this->hasOne(BrandDescription::class)->where('language','cn');
     }
 
-    public function enDescription()
+    protected function enDescription()
     {
         return $this->hasOne(BrandDescription::class)->where('language','en');
     }

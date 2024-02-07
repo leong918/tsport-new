@@ -95,8 +95,7 @@
     };
 
     tinymce.init(editor_config);
-</script>
-<script>
+
     $("#brand").submit(function(e) {
         e.preventDefault();
 
@@ -138,6 +137,5 @@
             });
         });
     });
-
 </script>
 @endsection

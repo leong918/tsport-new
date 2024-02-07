@@ -1,5 +1,11 @@
 @extends('admin.layout.app')
 
+@section('style')
+    @parent
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.0.0-rc.1/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-styrHw5ARomA8xPUVXJSXXchmA9xX4sqIeUqZtGkcT2zBp/DidIW1GYUNVO5FbmJ" crossorigin="anonymous">
+@endsection
+
+
 @section("content")
 <main class="c-main">
     <div class="container-fluid">

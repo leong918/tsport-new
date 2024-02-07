@@ -60,37 +60,37 @@ class Product extends Model
         );
     }
 
-    public function productDescription()
+    protected function productDescription()
     {
         return $this->hasMany(ProductDescription::class);
     }
 
-    public function productImage()
+    protected function productImage()
     {
         return $this->hasMany(ProductImage::class);
     }
 
-    public function productRelated()
+    protected function productRelated()
     {
         return $this->hasMany(ProductRelated::class);
     }
 
-    public function productPrice()
+    protected function productPrice()
     {
         return $this->hasMany(productPrice::class);
     }
 
-    public function cnDescription()
+    protected function cnDescription()
     {
         return $this->hasOne(ProductDescription::class)->where('language','cn');
     }
 
-    public function enDescription()
+    protected function enDescription()
     {
         return $this->hasOne(ProductDescription::class)->where('language','en');
     }
 
-    public function checkProductRelated($product_id, $related_product_id)
+    protected function checkProductRelated($product_id, $related_product_id)
     {
         return ProductRelated::where(['product_id' => $product_id, 'related_product_id' => $related_product_id])->exists();
     }

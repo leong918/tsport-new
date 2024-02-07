@@ -27,7 +27,7 @@ class CreateBlogRequest extends FormRequest
             'name' => 'required',
             'status' => 'required',
             'sort' => 'required',
-            'published_ats' => 'required',
+            'published_at' => 'required',
         ];
     }
 }

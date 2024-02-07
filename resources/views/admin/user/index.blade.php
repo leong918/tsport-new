@@ -14,8 +14,8 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong>Brand</strong>
-                                <a href="{{ route("admin.brand.create") }}" class="btn btn-primary permission float-end">
+                                <strong>User</strong>
+                                <a href="{{ route("admin.user.create") }}" class="btn btn-primary permission float-end">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
@@ -23,8 +23,8 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Image</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
@@ -53,15 +53,15 @@
                     autoWidth: false,
                     serverSide: true,
                     ajax: {
-                        url: '{!! route('admin.brand.index') !!}'
+                        url: '{!! route('admin.user.index') !!}'
                     },
                     columns: [{
-                            data: 'name',
-                            name: 'name'
+                            data: 'username',
+                            name: 'username'
                         },
                         {
-                            data: 'image',
-                            name: 'image'
+                            data: 'email',
+                            name: 'email'
                         },
                         {
                             data: 'status',
