@@ -8,10 +8,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>ecommerce-boilerplate</title>
     {{-- css --}}
-    <link type="text/css" rel="stylesheet" href="{{ mix('assets/web/default/app.css') }}" />
 </head>
 
 <body>
+@vite(['resources/scss/web/app.scss', 'resources/js/web/app.js'])
         {{-- section header --}}
         @include('web.layout.header')
         {{-- end header --}}
@@ -22,7 +22,6 @@
         @include('web.layout.footer')
         {{-- end footer --}}
     @section('script')
-        <script type="text/javascript" src="{{ mix('assets/web/app.js') }}"></script>
     @show
 </body>
 
