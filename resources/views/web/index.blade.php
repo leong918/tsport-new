@@ -1,6 +1,6 @@
 @extends('web.layout.app')
 @section('content')
-<div>
+<div class="title">
     web index
 </div>
 @endsection
