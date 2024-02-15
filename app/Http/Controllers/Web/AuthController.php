@@ -25,6 +25,16 @@ class AuthController extends BaseController
         throw new Exception('Failed to login, please try again');
     }
 
+    public function register()
+    {
+        return $this->view('auth.register');
+    }
+
+    public function forgotPassword()
+    {
+        return $this->view('auth.forgot_password');
+    }
+
     public function logout()
     {
         Auth::logout();

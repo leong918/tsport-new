@@ -19,5 +19,7 @@ Route::get('get_captcha', function (\Mews\Captcha\Captcha $captcha) {
 
 Route::group(['middleware' => ['web']], function () {
     require_once 'web/app.php';
+    require_once 'web/about.php';
+    require_once 'web/account.php';
     require_once 'admin/app.php';
 });
