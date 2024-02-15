@@ -8,4 +8,12 @@ class AppController extends BaseController
     {
         return $this->view('index');
     }
+    public function product()
+    {
+        return $this->view('product');
+    }
+    public function productDetail()
+    {
+        return $this->view('product_detail');
+    }
 }

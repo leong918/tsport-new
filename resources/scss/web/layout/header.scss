@@ -110,7 +110,7 @@
 
     button.nav-link::after{
         content: "";
-        background-image: url('/assets/img/navigation/arrow-down.png');
+        background-image: url('/public/assets/web/assets/img/navigation/arrow-down.png');
         background-size: contain; 
         background-repeat: no-repeat;   
         display: inline-block;
@@ -123,7 +123,7 @@
 
     button.nav-link:hover::after {
         content: "";
-        background-image: url('/assets/img/navigation/arrow-up.png'); 
+        background-image: url('/public/assets/web/assets/img/navigation/arrow-up.png'); 
     }
 
     .account-nav{
