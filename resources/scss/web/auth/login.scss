@@ -1,0 +1,135 @@
+#login{
+    min-height: 80vh;
+    background-color: #FCFBF9;
+    padding: 30px 0 180px 0;
+    font-family: "RecklessNeue-Light";
+
+    @media (max-width: 767px) {
+        min-height: auto;
+    }
+
+    .mb-40{
+        margin-bottom: 40px;
+    }
+
+    button{
+        font-family: "BanglaSangam-Regular";
+        letter-spacing: 1px;
+        padding: 12px 0 8px 0;
+        font-size: 13px;
+    }
+
+    .container{
+        .login-wrapper{
+            width:100%;
+            max-width: 650px;
+            .login-title{
+                color:#6B5B41;
+                font-size: 30px;
+                text-align: center;
+                margin-bottom: 40px;
+            }
+    
+            .login-container{
+                background-color: #F7F3EE;
+                padding: 50px 70px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                @media (max-width: 767px) {
+                    padding: 30px;
+                }
+
+                
+                .input-container{
+                    position: relative;
+                    input[type=text]{
+                        width: 100%;
+                        padding-top: 20px;
+                        padding-bottom: 5px;
+                        padding-left: 5px;
+                        background: transparent;
+                        border: none;
+                        border-bottom: 1px solid #9A835E;
+                        color:#6B5B41;
+                        font-size: 15px;
+
+                        &:focus{
+                            outline: none;
+
+                            ~ .placeholder-label{
+                                top:0;
+                                color:#9A835E;
+                            }
+                        }
+                    }
+    
+                    .placeholder-label{
+                        color:#C4B9A6;
+                        font-size: 15px;
+                        position: absolute;
+                        top: 5px;
+                        left: 0;
+                        pointer-events: none;
+                        transition: transform 0.3s ease-out;
+                        transform-origin: 0 0;
+                        padding-left:5px;
+                    }
+                }
+
+
+                .forgot-password{
+                    text-decoration: none;
+                    color: black;
+                    font-size: 12px;
+                    padding-left:5px;
+                }
+
+                .login-button{
+                    margin-top: 40px;
+                    background-color: #9A835E;
+                    border: 1px solid #9A835E;
+                    color: white;
+                    width: 80%;
+
+                    &:hover{
+                        background-color: white;
+                        color: #9A835E;
+                    }
+                }
+            }
+
+            .register-wrapper{
+                margin-top: 40px;
+                width:100%;
+                max-width: 650px;
+                padding: 0px 70px;
+
+                @media (max-width: 767px) {
+                    padding: 0 30px;
+                }
+
+                .register-desc{
+                    text-align: center;
+                    font-size: 12px;
+                    font-family: "ChironSungHK-Medium";
+                }
+                .register-button{
+                    margin-top: 20px;
+                    background-color: white;
+                    border: 1px solid #9A835E;
+                    color: #9A835E;
+                    width: 80%;
+
+                    &:hover{
+                        background-color: #9A835E;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+
+
+}
