@@ -16,28 +16,20 @@ class AppController extends BaseController
     {
         return $this->view('product_detail');
     }
-    public function about()
+    public function bestSeller()
     {
-        return $this->view('about');
+        return $this->view('best_seller');
     }
-    public function aboutContact()
+    public function brand()
     {
-        return $this->view('about_contact');
+        return $this->view('brand');
     }
-    public function aboutMembership()
+    public function blog()
     {
-        return $this->view('about_membership');
+        return $this->view('blog');
     }
-    public function aboutPoint()
+    public function blogDetail()
     {
-        return $this->view('about_points');
-    }
-    public function aboutShipping()
-    {
-        return $this->view('about_shipping');
-    }
-    public function aboutTnc()
-    {
-        return $this->view('about_tnc');
+        return $this->view('blog_detail');
     }
 }

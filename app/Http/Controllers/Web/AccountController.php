@@ -20,4 +20,8 @@ class AccountController extends BaseController
     {
         return $this->view('account.account_order_detail');
     }
+    public function accountPoints()
+    {
+        return $this->view('account.account_point');
+    }
 }

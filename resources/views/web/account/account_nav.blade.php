@@ -3,7 +3,7 @@
         <div class="nav-inner">
             <img src="{{asset('assets/web/assets/img/account_nav/account_detail.png')}}" alt="">
             <div class="nav-title">
-                <a href="#">Account Details</a>
+                <a href="{{route('account.details')}}">Account Details</a>
             </div>
         </div>
     </div>
@@ -11,7 +11,7 @@
         <div class="nav-inner">
             <img src="{{asset('assets/web/assets/img/account_nav/addresses.png')}}" alt="">
             <div class="nav-title">
-                <a href="#">Addresses</a>
+                <a href="{{route('account.address')}}">Addresses</a>
             </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="nav-inner">
             <img src="{{asset('assets/web/assets/img/account_nav/orders.png')}}" alt="">
             <div class="nav-title">
-                <a href="#">Orders</a>
+                <a href="{{route('account.order')}}">Orders</a>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
         <div class="nav-inner">
             <img src="{{asset('assets/web/assets/img/account_nav/points.png')}}" alt="">
             <div class="nav-title">
-                <a href="#">Points</a>
+                <a href="{{route('account.point')}}">Points</a>
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
         <div class="nav-inner">
             <img src="{{asset('assets/web/assets/img/account_nav/log_out.png')}}" alt="">
             <div class="nav-title">
-                <a href="#">Log Out</a>
+                <a href="{{route('account.details')}}">Log Out</a>
             </div>
         </div>
     </div>
