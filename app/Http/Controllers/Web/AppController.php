@@ -16,6 +16,10 @@ class AppController extends BaseController
     {
         return $this->view('product_detail');
     }
+    public function productNew()
+    {
+        return $this->view('product_new');
+    }
     public function bestSeller()
     {
         return $this->view('best_seller');
@@ -31,5 +35,13 @@ class AppController extends BaseController
     public function blogDetail()
     {
         return $this->view('blog_detail');
+    }
+    public function voucher()
+    {
+        return $this->view('voucher');
+    }
+    public function howTo()
+    {
+        return $this->view('how_to');
     }
 }
