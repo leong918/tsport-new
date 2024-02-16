@@ -17,7 +17,7 @@
                 <div class="col-md-5 d-none d-md-block"></div>
                 <!--navbar-logo-->
                 <div class="col-8 col-md-2 text-center">
-                    <a class="navbar-brand p-0 m-0" href="#">
+                    <a class="navbar-brand p-0 m-0" href="{{route('web.home')}}">
                         <img src="{{asset('assets/web/assets/img/navigation/logo.png')}}" alt="Bootstrap" width="140px" height="auto">
                     </a>
                 </div>
@@ -29,7 +29,7 @@
                     <a class="navbar-wishlist" href="#" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/wishlist-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-my-account-icon" href="#" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="navbar-my-account-icon" href="{{route('web.login')}}" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                     <div class="dropdown-menu dropdown-menu-acc" aria-labelledby="dropdownMenuButton">
@@ -74,7 +74,7 @@
                             </div>
                         </a>
                     </div>
-                    <a class="navbar-cart-icon" href="#" type="button">
+                    <a class="navbar-cart-icon" href="{{route('cart.shopping_cart')}}" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/cart.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
 
@@ -99,11 +99,11 @@
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown nav-brand">
                             <button class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Brands
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-brand">
                                 <li><a class="dropdown-item" href="#">Ve Oola</a></li>
                                 <li><a class="dropdown-item" href="#">Lovinah</a></li>
                                 <li><a class="dropdown-item" href="#">Josh Rosebrook</a></li>
@@ -130,25 +130,25 @@
                             <a class="nav-link" href="#">Hair & Body</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Blog</a>
+                            <a class="nav-link" href="{{route('web.blog')}}">Blog</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <button class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="nav-link nav-about" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 About
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Membership</a></li>
-                                <li><a class="dropdown-item" href="#">Point to Cash Programme</a></li>
-                                <li><a class="dropdown-item" href="#">Contact</a></li>
-                                <li><a class="dropdown-item" href="#">Terms & Conditions</a></li>
-                                <li><a class="dropdown-item" href="#">Shipping Info</a></li>
+                            <ul class="dropdown-menu dropdown-about">
+                                <li><a class="dropdown-item" href="{{route('about.membership')}}">Membership</a></li>
+                                <li><a class="dropdown-item" href="{{route('about.points')}}">Point to Cash Programme</a></li>
+                                <li><a class="dropdown-item" href="{{route('about.contact')}}">Contact</a></li>
+                                <li><a class="dropdown-item" href="{{route('about.tnc')}}">Terms & Conditions</a></li>
+                                <li><a class="dropdown-item" href="{{route('about.shipping')}}">Shipping Info</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">下單及享用優惠教學</a>
+                            <a class="nav-link" href="{{route('web.how_to')}}">下單及享用優惠教學</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">消費券 Consumption Voucher</a>
+                            <a class="nav-link" href="{{route('web.voucher')}}">消費券 Consumption Voucher</a>
                         </li>
                     </ul>
                 </div>
@@ -156,3 +156,28 @@
         </div>
     </nav>
 </div>
+@push('scripts')
+<script type="text/javascript">
+$('.offcanvas-body .nav-brand').on('mouseenter', function(){
+    $('.dropdown-brand').addClass('show');
+})
+
+$('.offcanvas-body .nav-brand').on('mouseleave', function(){
+    $('.dropdown-brand').removeClass('show');
+})
+$('.offcanvas-body .nav-about').on('mouseenter', function(){
+    $('.dropdown-about').addClass('show');
+})
+
+$('.dropdown-about').on('mouseenter', function(){
+    $('.dropdown-about').addClass('show');
+})
+
+$('.offcanvas-body .nav-about').on('mouseleave', function(){
+    $('.dropdown-about').removeClass('show');
+})
+$('.dropdown-about').on('mouseleave', function(){
+    $('.dropdown-about').removeClass('show');
+})
+</script>
+@endpush

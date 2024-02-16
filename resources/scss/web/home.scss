@@ -1325,6 +1325,9 @@
     //buttons animation
     .discover-button button.btn.btn-primary,
     .explore-button button.btn.btn-primary,
+    .discover-button a,
+    .explore-button a,
+    .more-button a,
     .more-button button.btn.btn-primary {
         --bs-btn-padding-y: 14px;
         --bs-btn-font-size: 10px;
@@ -1346,7 +1349,10 @@
     }
 
     .discover-button button.btn.btn-primary:hover,
+    .discover-button a:hover,
     .explore-button button.btn.btn-primary:hover,
+    .explore-button a:hover,
+    .more-button a:hover,
     .more-button button.btn.btn-primary:hover {
         color: #F1EDE3;
         background-position: left;
@@ -1361,7 +1367,10 @@
 
     //diffrent color same function as above
     .discover-button button.btn.btn-primary#discover-now,
+    .discover-button a,
     .explore-button button.btn.btn-primary#explore-now,
+    .explore-button a,
+    .more-button a,
     .more-button button.btn.btn-primary#blog-view-more {
         background: #FCFBF9;
         background: linear-gradient(to left, #FCFBF9 50%, #6B5B41 50%) right;
@@ -1380,7 +1389,10 @@
     }
 
     .discover-button button.btn.btn-primary#discover-now:hover,
+    .discover-button a:hover,
     .explore-button button.btn.btn-primary#explore-now:hover,
+    .explore-button a:hover,
+    .more-button a:hover,
     .more-button button.btn.btn-primary#blog-view-more:hover {
         color: #FCFBF9;
         background-position: left;

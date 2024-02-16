@@ -763,7 +763,7 @@
                             <div class="oval">
                                 <div class="main-title">BEST SELLER</div>
                                 <div class="explore-button">
-                                    <button class="btn btn-primary" id="explore-now" type="button">EXPLORE NOW</button>
+                                    <a class="btn btn-primary" id="explore-now" type="button" href="{{route('web.best_seller')}}">EXPLORE NOW</a>
                                 </div>
                             </div>
                         </div>
@@ -785,7 +785,7 @@
                             <div class="oval">
                                 <div class="main-text">NEW</div>
                                 <div class="discover-button">
-                                    <button class="btn btn-primary" id="discover-now" type="button">DISCOVER NOW</button>
+                                    <a class="btn btn-primary" id="discover-now" href="{{route('web.product_new')}}">DISCOVER NOW</a>
                                 </div>
                             </div>
                         </div>
@@ -1215,7 +1215,7 @@
                 </div>
             </div>
             <div class="more-button">
-                <button class="btn btn-primary" id="blog-view-more" type="button">MORE</button>
+                <a class="btn btn-primary" id="blog-view-more" href="{{route('web.blog')}}">MORE</a>
             </div>
         </div>
     </div>
