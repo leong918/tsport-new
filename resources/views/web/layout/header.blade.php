@@ -1,6 +1,6 @@
 <div id="header">
     <!--floating-button-->
-    <a class="floating-img-button" href="#">
+    <a class="floating-img-button" href="https://wa.me/85254422598" target="_blank">
         <img class="show" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-1.png')}}" alt="Bootstrap">
         <img class="hide" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-2.png')}}" alt="Bootstrap">
     </a>
