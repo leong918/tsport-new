@@ -2,15 +2,15 @@
     <div class="container fixed-bottom">
         <div class="row" id="first-row">
             <div class="col-12 col-xl-2 col-lg-2 col-md-2 col-sm-12 text-center">
-                <a class="text-body-secondary" href="#">
+                <a class="text-body-secondary" href="{{route('web.home')}}">
                     <img src="{{asset('assets/web/assets/img/footer/logo.png')}}" alt="Bootstrap">
                 </a>
             </div>
             <div class="col-12 col-xl-2 col-lg-2 col-md-2 col-sm-6">
                 <div class="footer-primary">COMPANY</div>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Contact</a></li>
+                    <li class="nav-item mb-2"><a href="{{route('about.index')}}" class="nav-link p-0 text-body-secondary">About</a></li>
+                    <li class="nav-item mb-2"><a href="{{route('about.contact')}}" class="nav-link p-0 text-body-secondary">Contact</a></li>
                 </ul>
             </div>
             <div class="col-12 col-xl-2 col-lg-2 col-md-2 col-sm-6">
@@ -18,11 +18,11 @@
                     <p5>CUSTOMER SERVICES</p5>
                 </div>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">下單及享用優惠教學</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Membership</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Points to Cash Programme</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">My account</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Shipping Info</a></li>
+                    <li class="nav-item mb-2"><a href="{{route('web.how_to')}}" class="nav-link p-0 text-body-secondary">下單及享用優惠教學</a></li>
+                    <li class="nav-item mb-2"><a href="{{route('about.membership')}}" class="nav-link p-0 text-body-secondary">Membership</a></li>
+                    <li class="nav-item mb-2"><a href="{{route('about.points')}}" class="nav-link p-0 text-body-secondary">Points to Cash Programme</a></li>
+                    <li class="nav-item mb-2"><a href="{{ (Auth::user()) ? route('account.info') : route('web.login') }}" class="nav-link p-0 text-body-secondary">My account</a></li>
+                    <li class="nav-item mb-2"><a href="{{route('about.shipping')}}" class="nav-link p-0 text-body-secondary">Shipping Info</a></li>
                 </ul>
             </div>
             <div class="col-12 col-xl-3 col-lg-3 col-md-3 col-sm-6">
@@ -45,7 +45,7 @@
                         <p class="footer-primary-info">PHONE</p>
                     </div>
                     <div class="col-12 col-xl-8 col-lg-7 col-md-12">
-                        <p class="nav-item mb-3 nav-link p-0 text-body-secondary">+85254422598</p>
+                        <a class="nav-item mb-3 nav-link p-0 text-body-secondary" href="tel:+85254422598">+85254422598</a>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@
                         <p class="footer-primary-info">EMAIL</p>
                     </div>
                     <div class="col-12 col-xl-8 col-lg-7 col-md-12">
-                        <p class="nav-item mb-3 nav-link p-0 text-body-secondary">tcdistributorship@gmail.com</p>
+                        <a class="nav-item mb-3 nav-link p-0 text-body-secondary" href="mailto:tcdistributorship@gmail.com">tcdistributorship@gmail.com</a>
                     </div>
                 </div>
 
@@ -63,7 +63,7 @@
                         <p class="footer-primary-info">WEBSITE</p>
                     </div>
                     <div class="col-12 col-xl-8 col-lg-7 col-md-12">
-                        <p class="nav-item mb-3 nav-link p-0 text-body-secondary">http://www.tag.concept.com</p>
+                        <a class="nav-item mb-3 nav-link p-0 text-body-secondary" href="http://www.tag-concept.com">http://www.tag-concept.com</a>
                     </div>
                 </div>
             </div>
