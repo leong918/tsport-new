@@ -21,7 +21,7 @@
                     <li class="nav-item mb-2"><a href="{{route('web.how_to')}}" class="nav-link p-0 text-body-secondary">下單及享用優惠教學</a></li>
                     <li class="nav-item mb-2"><a href="{{route('about.membership')}}" class="nav-link p-0 text-body-secondary">Membership</a></li>
                     <li class="nav-item mb-2"><a href="{{route('about.points')}}" class="nav-link p-0 text-body-secondary">Points to Cash Programme</a></li>
-                    <li class="nav-item mb-2"><a href="{{ (Auth::user()) ? route('account.info') : route('web.login') }}" class="nav-link p-0 text-body-secondary">My account</a></li>
+                    <li class="nav-item mb-2"><a href="{{ (Auth::user()) ? route('account.details') : route('web.login') }}" class="nav-link p-0 text-body-secondary">My account</a></li>
                     <li class="nav-item mb-2"><a href="{{route('about.shipping')}}" class="nav-link p-0 text-body-secondary">Shipping Info</a></li>
                 </ul>
             </div>

@@ -1403,4 +1403,11 @@
             height: 75px;
         }
     }
+    #explore-now, #discover-now, #blog-view-more{
+        @media only screen and (max-width:767px){
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 }

@@ -29,11 +29,14 @@
                     <a class="navbar-wishlist" href="#" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/wishlist-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-my-account-icon" href="{{route('web.login')}}" type="button" id="dropdownMenuButton" data-bs-toggle="{{Auth::user() ? 'dropdown' : ''}}" aria-haspopup="{{(Auth::user()) ? 'true' : ''}}" aria-expanded="{{(Auth::user()) ? 'false' : ''}}">
+                    <a class="navbar-my-account-icon nav-acc-mobile" href="{{Auth::user() ? route('account.details') : route('web.login')}}" type="{{Auth::user() ? 'button' : ''}}" id="dropdownMenuButton" data-bs-toggle="{{Auth::user() ? 'dropdown' : ''}}" aria-haspopup="{{(Auth::user()) ? 'true' : ''}}" aria-expanded="{{(Auth::user()) ? 'false' : ''}}">
+                        <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
+                    </a>
+                    <a class="navbar-my-account-icon nav-acc-desktop" href="{{Auth::user() ? route('account.details') : route('web.login')}}">
                         <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                     <div class="dropdown-menu dropdown-menu-acc" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{route('account.details')}}">
                             <div class="account-nav active">
                                 <img src="{{asset('assets/web/assets/img/account_nav/account_detail.png')}}" alt="">
                                 <div class="nav-title">
@@ -41,7 +44,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{route('account.address')}}">
                             <div class="account-nav active">
                                 <img src="{{asset('assets/web/assets/img/account_nav/addresses.png')}}" alt="">
                                 <div class="nav-title">
@@ -49,7 +52,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{route('account.order')}}">
                             <div class="account-nav active">
                                 <img src="{{asset('assets/web/assets/img/account_nav/orders.png')}}" alt="">
                                 <div class="nav-title">
@@ -57,7 +60,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{route('account.point')}}">
                             <div class="account-nav active">
                                 <img src="{{asset('assets/web/assets/img/account_nav/points.png')}}" alt="">
                                 <div class="nav-title">
@@ -65,7 +68,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{route('web.logout')}}">
                             <div class="account-nav active">
                                 <img src="{{asset('assets/web/assets/img/account_nav/log_out.png')}}" alt="">
                                 <div class="nav-title">

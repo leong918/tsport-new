@@ -21,8 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     public static $rules = [
-        'user' => 'required',
-        'email' => 'required',
+        'phone_no' => 'required',
         'password' => 'required',
     ];
 

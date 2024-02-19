@@ -157,4 +157,17 @@
             display: none;
         }
     }
+    .nav-acc-mobile{
+        @media only screen and (min-width:1200px){
+            display: none;
+        }
+    }
+    .nav-acc-desktop{
+        @media only screen and (max-width:1199px){
+            display: none;
+        }
+    }
+    .nav-acc-mobile,.nav-acc-desktop{
+        text-decoration: none;
+    }
 }

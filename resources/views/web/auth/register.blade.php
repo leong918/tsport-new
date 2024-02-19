@@ -5,23 +5,24 @@
         <div class="row justify-content-center">
             <div class="register-wrapper">
                 <div class="register-title">Create Account</div>
+                {{ Form::open(["url" => route("web.doRegister"), "method" => "POST"]) }}
                 <div class="register-container">
                     <div>
                         <div class="mb-40 input-container">
-                            <input type="text" placeholder=" " required/>
+                            {{ Form::text('first_name', null, array('required' => true, 'placeholder' => '')) }}
                             <label class="placeholder-label">First Name *</label>
                         </div>
                         <div class="mb-40 input-container">
-                            <input type="text" placeholder=" " required/>
+                            {{ Form::text('last_name', null, array('required' => true, 'placeholder' => '')) }}
                             <label class="placeholder-label">Last Name *</label>
                         </div>
                         <div class="mb-20 input-container">
-                            <input type="text" placeholder=" " required/>
+                            {{ Form::email('email', null, array('required' => true, 'placeholder' => '')) }}
                             <label class="placeholder-label">Email *</label>
                             <div class="input-desc">cannot be changed after becoming a member</div>
                         </div>
                         <div class="mb-20 input-container">
-                            <input type="text" placeholder=" " required/>
+                            {{ Form::number('phone_no', null, array('required' => true, 'placeholder' => '')) }}
                             <label class="placeholder-label">Phone no. *</label>
                             <div class="input-desc">cannot be changed after becoming a member</div>
                         </div>
@@ -45,19 +46,19 @@
                             <div class="input-desc">cannot be changed after becoming a member</div>
                         </div>
                         <div class="mb-40 input-container">
-                            <input type="password" placeholder=" " required/>
+                            {{ Form::password('password', null, array('required' => true, 'placeholder' => '')) }}
                             <label class="placeholder-label">Password *</label>
                         </div>
                         <div class="mb-40 input-container">
-                            <input type="password" placeholder=" " required/>
+                            {{ Form::password('confirm_password', null, array('required' => true, 'placeholder' => '')) }}
                             <label class="placeholder-label">Confirm Password *</label>
                         </div>
                         <div class="mb-40 input-container">
-                            <input type="text" placeholder=" "/>
+                            {{ Form::email('text', null, array('required' => true, 'placeholder' => '')) }}
                             <label class="placeholder-label">Referrer email</label>
                         </div>
                         <div class="mb-40 input-container">
-                            <input type="text" placeholder=" "/>
+                            {{ Form::text('ref_phone_no', null, array('required' => true, 'placeholder' => '')) }}
                             <label class="placeholder-label">Referrer phone no.</label>
                         </div>
                         <div class="tnc-wrapper">
@@ -66,7 +67,7 @@
                             </div>
                             <div class="tnc">
                                 <label class="container">*Please accept our Terms & Conditions
-                                    <input type="checkbox" name="checkbox" required>
+                                    {{ Form::hidden('tnc', null, array('required' => true, 'placeholder' => '')) }}
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
@@ -76,6 +77,7 @@
                         <button class="register-button">CREATE ACCOUNT</button>
                     </div>
                 </div>
+                {{Form::close()}}
                 <div class="login-wrapper">
                     <div class="login-desc">Already have an account?</div>
                     <div class="d-flex justify-content-center">

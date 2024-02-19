@@ -35,7 +35,7 @@
         <div class="nav-inner">
             <img src="{{asset('assets/web/assets/img/account_nav/log_out.png')}}" alt="">
             <div class="nav-title">
-                <a href="{{route('account.details')}}">Log Out</a>
+                <a href="{{route('web.logout')}}">Log Out</a>
             </div>
         </div>
     </div>

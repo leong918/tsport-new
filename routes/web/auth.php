@@ -7,5 +7,6 @@ Route::group(['namespace' => 'Web'], function () {
     Route::post('login', [AuthController::class, 'doLogin'])->name('web.doLogin');
     Route::get('logout', [AuthController::class, 'logout'])->name('web.logout');
     Route::get('register', [AuthController::class, 'register'])->name('web.register');
+    Route::post('register', [AuthController::class, 'doRegister'])->name('web.doRegister');
     Route::get('forgot_password', [AuthController::class, 'forgotPassword'])->name('web.forgot_password');
 });
