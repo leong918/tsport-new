@@ -71,13 +71,13 @@
                             //     top:0;
                             // }
                         }
-                        &:not(:placeholder-shown) {
+                        // &:not(:placeholder-shown) {
                             
-                            ~ .placeholder-label{
-                                color:#9A835E;
-                                top:0;
-                            }
-                        }
+                        //     ~ .placeholder-label{
+                        //         color:#9A835E;
+                        //         top:0;
+                        //     }
+                        // }
                     }
 
                     .placeholder-label{

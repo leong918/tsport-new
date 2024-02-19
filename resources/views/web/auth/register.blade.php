@@ -46,7 +46,7 @@
                             <div class="input-desc">cannot be changed after becoming a member</div>
                         </div>
                         <div class="mb-40 input-container">
-                            {{ Form::password('password', null, array('required' => true, 'placeholder' => '')) }}
+                            {{ Form::password('password', null, array('required' => true, 'placeholder' => 'eee')) }}
                             <label class="placeholder-label">Password *</label>
                         </div>
                         <div class="mb-40 input-container">
