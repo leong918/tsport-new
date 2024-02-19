@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('product_price', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id');
-            $table->string("url");
+            $table->bigInteger('currency_id');
+            $table->string("code");
+            $table->decimal("price", 16,2);
             $table->timestamps();
             $table->softDeletes();
         });

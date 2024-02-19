@@ -32,6 +32,35 @@ class UserRepository extends BaseRepository
         return User::class;
     }
 
+    public function getListing()
+    {
+        return User::query()->orderBy('created_at', 'desc');
+    }
+
+    public function createUser(array $input)
+    {
+        $input['dob']= Carbon::createFromFormat('d/m/Y', $input['dob']);
+        $input['dob'] = Carbon::parse($input['dob']);
+
+        $model = new User();
+        $model->fill($input);
+        $model->save();
+    }
+
+    public function updateUser(array $input, int $id)
+    {
+        $input['dob']= Carbon::createFromFormat('d/m/Y', $input['dob']);
+        $input['dob'] = Carbon::parse($input['dob']);
+
+        if (trim($input['password']) === '') {
+            unset($input['password']);
+        }
+
+        $model = User::findOrFail($id);
+        $model->fill($input);
+        $model->save();
+    }
+
     public function updateSession($user_id)
     {
         $new_api_token = (string) Str::uuid();
@@ -56,5 +85,12 @@ class UserRepository extends BaseRepository
                 'login_at'
             )
             ->first();
+    }
+
+    public function toggleStatus(int $id)
+    {
+        $model = User::find($id);
+        $model->status = !$model->status;
+        $model->save();
     }
 }

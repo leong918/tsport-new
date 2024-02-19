@@ -10,6 +10,12 @@ class Blog extends Model
 {
     use SoftDeletes;
 
+    public const STATUS = [
+        'ACTIVE' => 1,
+        'INACTIVE' => 0,
+    ];
+    
+    
     /**
      * Validation rules
      *
@@ -17,7 +23,7 @@ class Blog extends Model
      */
     public static $rules = [];
 
-    protected $table = 'product';
+    protected $table = 'blog';
 
     /**
      * The attributes that are mass assignable.
@@ -53,5 +59,20 @@ class Blog extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
+    }
+
+    protected function blogDetail()
+    {
+        return $this->hasMany(BlogDetail::class);
+    }
+
+    protected function enBlogDetail()
+    {
+        return $this->hasOne(BlogDetail::class)->where('language','en');
+    }
+
+    protected function cnBlogDetail()
+    {
+        return $this->hasOne(BlogDetail::class)->where('language','cn');
     }
 }
