@@ -15,7 +15,7 @@
                             <input type="text" required/>
                             <label class="placeholder-label">Password *</label>
                         </div>
-                        <a href="#" class="forgot-password">Forgot your password?</a>
+                        <a href="{{route('web.forgot_password')}}" class="forgot-password">Forgot your password?</a>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button class="login-button">LOGIN</button>
@@ -24,7 +24,7 @@
                 <div class="register-wrapper">
                     <div class="register-desc">註冊裝戶可獲得10積分，首次下單即可快用。 </div>
                     <div class="d-flex justify-content-center">
-                        <button class="register-button">CREATE ACCOUNT</button>
+                        <a class="register-button" href="{{route('web.register')}}">CREATE ACCOUNT</a>
                     </div>
                 </div>
             </div>

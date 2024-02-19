@@ -29,7 +29,7 @@
                     <a class="navbar-wishlist" href="#" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/wishlist-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-my-account-icon" href="{{route('web.login')}}" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="navbar-my-account-icon" href="{{route('web.login')}}" type="button" id="dropdownMenuButton" data-bs-toggle="{{Auth::user() ? 'dropdown' : ''}}" aria-haspopup="{{(Auth::user()) ? 'true' : ''}}" aria-expanded="{{(Auth::user()) ? 'false' : ''}}">
                         <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                     <div class="dropdown-menu dropdown-menu-acc" aria-labelledby="dropdownMenuButton">

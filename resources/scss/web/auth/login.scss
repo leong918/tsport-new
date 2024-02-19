@@ -121,7 +121,13 @@
                     border: 1px solid #9A835E;
                     color: #9A835E;
                     width: 80%;
-
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 13px;
+                    text-decoration: none;
+                    font-family: "BanglaSangam-Regular";
+                    font-size: 13px;
                     &:hover{
                         background-color: #9A835E;
                         color: white;
