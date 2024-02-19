@@ -10,6 +10,11 @@ class Currency extends Model
 {
     use SoftDeletes;
 
+    public const STATUS = [
+        'ACTIVE' => 1,
+        'INACTIVE' => 0,
+    ];
+    
     /**
      * Validation rules
      *

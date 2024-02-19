@@ -43,6 +43,7 @@ class User extends Authenticatable
         'password',
         'referral_email',
         'referral_phone_no',
+        'status'
     ];
 
     /**

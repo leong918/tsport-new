@@ -55,4 +55,9 @@ class BlogDetail extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
+    
+    protected function blog()
+    {
+        return $this->belongsTo(Blog::class);
+    }
 }
