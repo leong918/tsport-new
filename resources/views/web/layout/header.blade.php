@@ -160,24 +160,30 @@
 <script type="text/javascript">
 $('.offcanvas-body .nav-brand').on('mouseenter', function(){
     $('.dropdown-brand').addClass('show');
+    $(this).find('.nav-link').addClass('nav-mouseinout');
 })
 
 $('.offcanvas-body .nav-brand').on('mouseleave', function(){
     $('.dropdown-brand').removeClass('show');
+    $(this).find('.nav-link').removeClass('nav-mouseinout');
 })
 $('.offcanvas-body .nav-about').on('mouseenter', function(){
     $('.dropdown-about').addClass('show');
+    $(this).addClass('nav-mouseinout');
 })
 
 $('.dropdown-about').on('mouseenter', function(){
     $('.dropdown-about').addClass('show');
+    $('.nav-about').addClass('nav-mouseinout');
 })
 
 $('.offcanvas-body .nav-about').on('mouseleave', function(){
     $('.dropdown-about').removeClass('show');
+    $(this).find('.nav-link').removeClass('nav-mouseinout');
 })
 $('.dropdown-about').on('mouseleave', function(){
     $('.dropdown-about').removeClass('show');
+    $('.nav-about').removeClass('nav-mouseinout');
 })
 </script>
 @endpush

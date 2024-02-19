@@ -121,9 +121,22 @@
         transition: all 0.3s ease;
     }
 
-    button.nav-link:hover::after {
+    // button.nav-link:hover::after {
+    //     content: "";
+    //     background-image: url('/public/assets/web/assets/img/navigation/arrow-up.png'); 
+    // }
+
+    .nav-mouseinout::after{
         content: "";
-        background-image: url('/public/assets/web/assets/img/navigation/arrow-up.png'); 
+        background-image: url('/public/assets/web/assets/img/navigation/arrow-up.png') !important;
+        background-size: contain; 
+        background-repeat: no-repeat;   
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-left: 10px; 
+        color: transparent;
+        transition: all 0.3s ease;
     }
 
     .account-nav{
