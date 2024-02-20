@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Form\Blog;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class CreateBlogRequest extends FormRequest
 {
@@ -27,7 +29,17 @@ class CreateBlogRequest extends FormRequest
             'name' => 'required',
             'status' => 'required',
             'sort' => 'required',
-            'published_at' => 'required',
+            'published_at' => 'required|date_format:d/m/Y',
         ];
+    }
+
+    // Returning errors as exception
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'msg' => $validator->errors()->first(),
+            ], 500)
+        );
     }
 }

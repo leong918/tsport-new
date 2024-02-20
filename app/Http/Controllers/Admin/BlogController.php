@@ -49,8 +49,15 @@ class BlogController extends BaseController
 
     public function store(CreateBlogRequest $request)
     {
-        $this->blogRepository->createBlog($request->all());
-        return redirect(route('admin.blog.index'))->with('success', "Successfully create blog {$request->name}");
+        DB::beginTransaction();
+        try {
+            $this->blogRepository->createBlog($request->all());
+            DB::commit();
+            return redirect(route('admin.blog.index'))->with('success', "Successfully create blog {$request->name}");
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return response()->json(['msg' => $exception->getMessage()], 500);
+        }
     }
 
     public function edit(int $id)
@@ -61,8 +68,15 @@ class BlogController extends BaseController
 
     public function update(UpdateBlogRequest $request, int $id)
     {
-        $this->blogRepository->updateBlog($request->all(), $id);
-        return redirect(route('admin.blog.index'))->with('success', "Successfully update blog {$request->name}");
+        DB::beginTransaction();
+        try {
+            $this->blogRepository->updateBlog($request->all(), $id);
+            DB::commit();
+            return redirect(route('admin.blog.index'))->with('success', "Successfully update blog {$request->name}");
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return response()->json(['msg' => $exception->getMessage()], 500);
+        }
     }
 
     public function destroy(int $id)

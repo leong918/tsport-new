@@ -46,8 +46,7 @@ class BlogRepository extends BaseRepository
     {
         $this->verifyDescription($input);
 
-        $input['published_at'] = Carbon::parse($input['published_at']);
-
+        $input['published_at'] = Carbon::createFromFormat('d/m/Y', $input['published_at'])->startOfDay();
         $model = new Blog();
         $model->fill($input);
         $model->save();
@@ -60,7 +59,7 @@ class BlogRepository extends BaseRepository
     {
         $this->verifyDescription($input, true);
         
-        $input['published_at'] = Carbon::parse($input['published_at']);
+        $input['published_at'] = Carbon::createFromFormat('d/m/Y', $input['published_at'])->startOfDay();
 
         $model = Blog::findOrFail($id);
         $model->fill($input);
