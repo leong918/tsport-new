@@ -17,6 +17,17 @@ class Category extends Model
      */
     public static $rules = [];
 
+    public const STATUS = [
+        'ACTIVE' => 1,
+        'INACTIVE' => 0,
+    ];
+
+    public const TYPE = [
+        'SKIN CARE' => 'skin_care',
+        'MAKEUP' => 'makeup',
+        'HAIR & BODY' => 'hair_body'
+    ];
+
     protected $table = 'category';
 
     /**
