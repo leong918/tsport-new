@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
             'username' => 'required',
             'email' => 'required',
             'phone_no' => 'required',
-            'dob' => 'required',
+            'dob' => 'required|date_format:d/m/Y',
             'referral_email' => 'required',
             'referral_phone_no' => 'required',
         ];
