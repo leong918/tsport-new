@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ForgotPasswordMail;
 
 class AuthController extends BaseController
 {
@@ -78,9 +80,45 @@ class AuthController extends BaseController
         return $this->view('auth.forgot_password');
     }
 
+    public function doForgotPassword(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'email|required'
+        ]);
+
+        $user = $this->userRepository->makeModel()->where(["email" => $request->email])->first();
+        if (!$user) {
+            Session::flash('swal', [
+                'title' => 'Error',
+                'text' => 'Account Not Found',
+                'type' => 'error'
+            ]);
+            return back()->withInput();
+        }
+
+        $randomString = generateRandomString(10, false);
+        Mail::to($user->email)->send(new ForgotPasswordMail($randomString));
+        return back();
+    }
+
     public function logout()
     {
         Auth::logout();
         return redirect(route('web.login'))->with('success', 'Successfully logged out');
     }
+
+    public function resetPassword()
+    {
+        return $this->view('auth.reset_password');
+    }
+
+    public function doResetPassword(Request $request)
+    {
+        $this->validate($request, [
+            'password' => 'required|min:6|confirmed',
+        ]);
+        
+        return redirect('web.home');
+    }
+
 }

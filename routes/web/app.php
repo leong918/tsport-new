@@ -21,4 +21,7 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('web.logout');
     Route::get('register', [AuthController::class, 'register'])->name('web.register');
     Route::get('forgot_password', [AuthController::class, 'forgotPassword'])->name('web.forgot_password');
+    Route::post('forgot_password', [AuthController::class, 'doForgotPassword'])->name('web.do_forgot_password');
+    Route::get('reset_password', [AuthController::class, 'resetPassword'])->name('web.reset_password');
+    Route::post('reset_password', [AuthController::class, 'doResetPassword'])->name('web.do_reset_password');
 });

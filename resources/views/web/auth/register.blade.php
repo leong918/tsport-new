@@ -83,7 +83,7 @@
                 <div class="login-wrapper">
                     <div class="login-desc">Already have an account?</div>
                     <div class="d-flex justify-content-center">
-                        <button class="login-button">LOGIN</button>
+                        <a class="login-button" href="{{route('web.login')}}">LOGIN</a>
                     </div>
                 </div>
             </div>

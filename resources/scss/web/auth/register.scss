@@ -242,6 +242,13 @@
                     background-color: white;
                     color: #9A835E;
                     width: 90%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 13px;
+                    text-decoration: none;
+                    font-family: "BanglaSangam-Regular";
+                    font-size: 13px;
                     border: 1px solid #9A835E;
 
                     &:hover{
