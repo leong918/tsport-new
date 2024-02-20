@@ -39,18 +39,19 @@ class UserRepository extends BaseRepository
 
     public function createUser(array $input)
     {
-        $input['dob']= Carbon::createFromFormat('d/m/Y', $input['dob']);
-        $input['dob'] = Carbon::parse($input['dob']);
+        // $input['dob']= Carbon::createFromFormat('d/m/Y', $input['dob']);
+        // $input['dob'] = Carbon::parse($input['dob']);
 
         $model = new User();
+        $model->birth_month = $input['birth_month'];
         $model->fill($input);
         $model->save();
     }
 
     public function updateUser(array $input, int $id)
     {
-        $input['dob']= Carbon::createFromFormat('d/m/Y', $input['dob']);
-        $input['dob'] = Carbon::parse($input['dob']);
+        //$input['dob']= Carbon::createFromFormat('d/m/Y', $input['dob']);
+        //$input['dob'] = Carbon::parse($input['dob']);
 
         if (trim($input['password']) === '') {
             unset($input['password']);
