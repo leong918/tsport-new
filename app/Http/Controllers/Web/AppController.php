@@ -8,4 +8,40 @@ class AppController extends BaseController
     {
         return $this->view('index');
     }
+    public function product()
+    {
+        return $this->view('product');
+    }
+    public function productDetail()
+    {
+        return $this->view('product_detail');
+    }
+    public function productNew()
+    {
+        return $this->view('product_new');
+    }
+    public function bestSeller()
+    {
+        return $this->view('best_seller');
+    }
+    public function brand()
+    {
+        return $this->view('brand');
+    }
+    public function blog()
+    {
+        return $this->view('blog');
+    }
+    public function blogDetail()
+    {
+        return $this->view('blog_detail');
+    }
+    public function voucher()
+    {
+        return $this->view('voucher');
+    }
+    public function howTo()
+    {
+        return $this->view('how_to');
+    }
 }

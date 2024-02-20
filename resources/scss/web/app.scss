@@ -1,0 +1,29 @@
+@import "layout/fonts.scss";
+@import "layout/header.scss";
+@import "layout/footer.scss";
+
+@import "home.scss";
+@import "product.scss";
+@import "product_detail.scss";
+@import "brand.scss";
+@import "blog.scss";
+@import "about.scss";
+@import "brand.scss";
+@import "blog.scss";
+@import "voucher.scss";
+@import "how_to.scss";
+//auth
+@import "auth/login.scss";
+@import "auth/register.scss";
+@import "auth/forgot_password.scss";
+//account
+@import "account/account_address.scss";
+@import "account/account_details.scss";
+@import "account/account_order.scss";
+@import "account/account_point.scss";
+//cart and checkout
+@import "cart/checkout.scss";
+@import "cart/complete.scss";
+@import "cart/payment.scss";
+@import "cart/shopping_cart_empty.scss";
+@import "cart/shopping_cart.scss";

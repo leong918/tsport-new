@@ -1,0 +1,250 @@
+#register{
+    min-height: 80vh;
+    background-color: #FCFBF9;
+    padding: 30px 0 180px 0;
+    font-family: "RecklessNeue-Light";
+
+    @media (max-width: 767px) {
+        min-height: auto;
+    }
+
+    .mb-40{
+        margin-bottom: 40px;
+    }
+
+    .mb-20{
+        margin-bottom: 20px;
+    }
+
+    button{
+        font-family: "BanglaSangam-Regular";
+        letter-spacing: 1px;
+        padding: 12px 0 8px 0;
+        font-size: 13px;
+    }
+
+
+    .container{
+        .register-wrapper{
+            width:100%;
+            max-width: 650px;
+            .register-title{
+                color:#6B5B41;
+                font-size: 30px;
+                text-align: center;
+                margin-bottom: 40px;
+            }
+    
+            .register-container{
+                background-color: #F7F3EE;
+                padding: 50px 70px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                @media (max-width: 767px) {
+                    padding: 30px;
+                }
+
+                .input-container{
+                    position: relative;
+                    input[type=text], input[type=password], input[type=email], input[type=number]{
+                        width: 100%;
+                        padding-top: 20px;
+                        padding-bottom: 5px;
+                        padding-left: 5px;
+                        background: transparent;
+                        border: none;
+                        border-bottom: 1px solid #9A835E;
+                        color:#6D5E44;
+                        font-size: 15px;
+
+                        &:focus{
+                            outline: none;
+                            
+                            ~ .placeholder-label{
+                                color:#9A835E;
+                                top:0;
+                            }
+
+                            // &:not(.birth-input) ~ .placeholder-label{
+                            //     top:0;
+                            // }
+                        }
+                        // &:not(:placeholder-shown) {
+                            
+                        //     ~ .placeholder-label{
+                        //         color:#9A835E;
+                        //         top:0;
+                        //     }
+                        // }
+                    }
+
+                    .placeholder-label{
+                        color:#C4B9A6;
+                        font-size: 15px;
+                        position: absolute;
+                        top: 5px;
+                        left: 0;
+                        transition: transform 0.3s ease-out;
+                        transform-origin: 0 0;
+                        padding-left:5px;
+                    }
+
+                    .input-desc{
+                        font-size: 12px;
+                        padding: 5px 5px;
+                    }
+
+                    #month-dropdown{
+                        position: absolute;
+                        visibility:hidden;
+                        width: 100%;
+                        height: 200px;
+                        background-color: white;
+                        list-style: none;
+                        padding:0;
+                        margin: 0;
+                        overflow-y: scroll;
+                        z-index: 1; 
+                        li{
+                            font-size: 15px;
+                            padding: 10px 10px;
+                            &:hover{
+                                background-color: #C4B9A6;
+                            }
+                        }
+
+                        &::-webkit-scrollbar{
+                            display: none;
+                        }
+                    }
+                }
+
+                .tnc-wrapper{
+
+                    .tnc-desc{
+                        color: black;
+                        font-size: 12px;
+                        padding-left:5px;
+                    }
+    
+                    .tnc{
+                        margin-top:20px;
+                        display: flex;
+                        font-size: 12px;
+
+                        .container {
+                            display: block;
+                            position: relative;
+                            padding-left: 35px;
+                            margin-bottom: 12px;
+                            cursor: pointer;
+                            -webkit-user-select: none;
+                            -moz-user-select: none;
+                            -ms-user-select: none;
+                            user-select: none;
+                          }
+                          
+                          /* Hide the browser's default checkbox */
+                          .container input {
+                            position: absolute;
+                            opacity: 0;
+                            cursor: pointer;
+                            height: 0;
+                            width: 0;
+                          }
+                          
+                          /* Create a custom checkbox */
+                          .checkmark {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            height: 20px;
+                            width: 20px;
+                            background-color: #FCFBF9;
+                            border: 1px solid #9A835E;
+                            border-radius: 3px;
+                          }
+                          
+                          /* On mouse-over, add a grey background color */
+                          .container:hover input ~ .checkmark {
+                            background-color: #ccc;
+                          }
+                          
+                          /* When the checkbox is checked, add a blue background */
+                          .container input:checked ~ .checkmark {
+                            // background-color: #2196F3;
+                            border-color: #6D5E44;
+                          }
+                          
+                          /* Create the checkmark/indicator (hidden when not checked) */
+                          .checkmark:after {
+                            content: "";
+                            position: absolute;
+                            display: none;
+                          }
+                          
+                          /* Show the checkmark when checked */
+                          .container input:checked ~ .checkmark:after {
+                            display: block;
+                          }
+                          
+                          /* Style the checkmark/indicator */
+                          .container .checkmark:after {
+                            background-image: url("/assets/img/global/check.png");
+                            background-position: center;
+                            background-size: cover;
+                            width:100%;
+                            height: 100%;
+                            border-width: 0 3px 3px 0;
+                          }
+                    }
+                }
+
+
+                .register-button{
+                    margin-top: 40px;
+                    background-color: #9A835E;
+                    color: white;
+                    width: 90%;
+                    border: 1px solid #9A835E;
+                    &:hover{
+                        background-color: white;
+                        color: #9A835E;
+                    }
+                }
+            }
+
+            .login-wrapper{
+                margin-top: 40px;
+                width:100%;
+                max-width: 650px;
+                padding: 0px 70px;
+
+                @media (max-width: 767px) {
+                    padding: 0 30px;
+                }
+                
+                .login-desc{
+                    text-align: center;
+                    font-size: 12px;
+                }
+                .login-button{
+                    margin-top: 20px;
+                    background-color: white;
+                    color: #9A835E;
+                    width: 90%;
+                    border: 1px solid #9A835E;
+
+                    &:hover{
+                        background-color: #9A835E;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+
+
+}
