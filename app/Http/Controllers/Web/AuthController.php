@@ -45,7 +45,7 @@ class AuthController extends BaseController
             'first_name' => 'required|max:120',
             'last_name' => 'required|max:120',
             'email' => 'required|unique:user',
-            'phone_no' => 'required',
+            'phone_no' => 'required|unique:user',
             'password' => 'required|min:6|confirmed',
             'accept_tnc' => 'required',
         ]);
