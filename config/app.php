@@ -170,7 +170,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
         VVinners\Vapi\VapiServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -186,8 +185,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
-        'Form' => Collective\Html\FormFacade::class,
-        'Html' => Collective\Html\HtmlFacade::class,
     ])->toArray(),
 
 ];
