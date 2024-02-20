@@ -51,8 +51,7 @@ class ProductRepository extends BaseRepository
         $this->verifyDescription($input);
         $this->checkDuplicate($input);
 
-        $input['alias'] = $this->removeSpecialCharacters($input['name']);
-
+        $input['alias'] = strtolower($input['alias']);
         $model = new Product();
         $model->fill($input);
         $model->save();
@@ -75,8 +74,8 @@ class ProductRepository extends BaseRepository
     public function updateProduct(array $input, int $id)
     {
         $this->checkDuplicate($input);
-        $input['alias'] = $this->removeSpecialCharacters($input['name']);
         
+        $input['alias'] = strtolower($input['alias']);
         $model = Product::findOrFail($id);
         $model->fill($input);
         $model->save();

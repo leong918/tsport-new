@@ -90,7 +90,7 @@ class Product extends Model
         return $this->hasOne(ProductDescription::class)->where('language','en');
     }
 
-    protected function checkProductRelated($product_id, $related_product_id)
+    public function checkProductRelated($product_id, $related_product_id)
     {
         return ProductRelated::where(['product_id' => $product_id, 'related_product_id' => $related_product_id])->exists();
     }
