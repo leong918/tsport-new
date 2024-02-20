@@ -132,7 +132,7 @@ class ProductRepository extends BaseRepository
     }
 
     public function removeSpecialCharacters(string $string){
-        $string = preg_replace('/\s+/', '-', $string);
+        $string = preg_replace('/\s+/', '-', strtolower($string));
         return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
     }
 
