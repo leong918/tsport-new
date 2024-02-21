@@ -120,12 +120,12 @@
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function(){
-        $('.collapse-nav-inner').on('shown.bs.collapse', function(){
-            $('.arrow img').css('transform', 'rotate(180deg)');
+        $('.account-nav-mobile .collapse-nav-inner').on('shown.bs.collapse', function(){
+            $('.account-nav-mobile .arrow img').css('transform', 'rotate(180deg)');
         });
 
-        $('.collapse-nav-inner').on('hidden.bs.collapse', function(){
-            $('.arrow img').css('transform', 'rotate(0deg)');
+        $('.account-nav-mobile .collapse-nav-inner').on('hidden.bs.collapse', function(){
+            $('.account-nav-mobile .arrow img').css('transform', 'rotate(0deg)');
         });
     })
 </script>

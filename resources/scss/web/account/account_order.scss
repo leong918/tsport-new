@@ -1012,9 +1012,7 @@
             padding: 25px 15px;
         }
         .table-wrap{
-            @media only screen and (min-width:768px){
-                overflow: auto;
-            }
+            overflow: auto;
         }
         .text-center{
             color: #000000;
@@ -1149,5 +1147,48 @@
         text-decoration: none;
         color: #6B5B40;
         font-weight: 500;
+    }
+}
+
+.top-desktop{
+    @media only screen and (max-width:1199px){
+        display: none !important;
+    }
+}
+.top-mobile{
+    @media only screen and (min-width:1200px){
+        display: none;
+    }
+    .collapse-wrapper{
+        border-bottom: 1px solid rgba(107,91,64,0.3);
+    }
+    .account-nav{
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        padding-bottom: 10px !important;
+        width: 100% !important;
+        position: relative;
+        .arrow{
+            position: absolute;
+            top: 0;
+            right: 0;
+            img{
+                transition: transform 0.3s ease-in-out;
+            }
+        }
+    }
+    
+}
+#collapseExample2{
+    .status{
+        &:first-child{
+            padding-top: 10px;
+        }
+        font-family: "BanglaSangam-Regular";
+        color: #6B5B40;
+        text-transform: uppercase;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
     }
 }
