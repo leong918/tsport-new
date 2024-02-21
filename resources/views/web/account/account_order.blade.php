@@ -153,12 +153,12 @@
     })
 
     $(document).ready(function(){
-        $('.top-mobile .collapse-nav-inner').on('shown.bs.collapse', function(){
-            $('#order-nav .arrow img').css('transform', 'rotate(180deg)');
+        $('#collapseExample2').on('shown.bs.collapse', function(){
+            $('#order-nav .arrow').find('img').css('transform', 'rotate(180deg)');
         });
 
-        $('.top-mobile .collapse-nav-inner').on('hidden.bs.collapse', function(){
-            $('#order-nav .arrow img').css('transform', 'rotate(0deg)');
+        $('#collapseExample2').on('hidden.bs.collapse', function(){
+            $('#order-nav .arrow').find('img').css('transform', 'rotate(0deg)');
         });
     })
 
