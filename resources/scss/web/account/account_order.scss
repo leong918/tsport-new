@@ -197,6 +197,12 @@
             font-size: 16px;
         }
     }
+    .collapse-nav{
+        text-transform: uppercase;
+        text-decoration: none;
+        color: #6B5B40;
+        font-weight: 500;
+    }
 }
 
 #my-order-detail{
@@ -1137,5 +1143,11 @@
     }
     .td-details{
         text-align: end;
+    }
+    .collapse-nav{
+        text-transform: uppercase;
+        text-decoration: none;
+        color: #6B5B40;
+        font-weight: 500;
     }
 }
