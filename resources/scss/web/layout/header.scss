@@ -1,4 +1,9 @@
 #header {  
+    &.active{
+        box-shadow: 0px 0px 5px rgba(109,91,64, 0.2);
+        z-index: 1;
+        position: relative;
+    }
     .functional-wrapper{
         display: flex;
         justify-content: end;

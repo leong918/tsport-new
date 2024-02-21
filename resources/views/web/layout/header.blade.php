@@ -23,7 +23,7 @@
                 </div>
                 <!-- navbar-icon -->
                 <div class="col-4 col-md-5 text-end functional-wrapper">
-                    <a class="navbar-search" href="#" type="button">
+                    <a class="navbar-search" data-bs-toggle="collapse" href="#nav-search-toggle" role="button" aria-expanded="false" aria-controls="collapseExample">
                         <img src="{{asset('assets/web/assets/img/navigation/search-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                     <a class="navbar-wishlist" href="{{route('cart.wishlist')}}" type="button">
