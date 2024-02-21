@@ -22,11 +22,11 @@
                     </a>
                 </div>
                 <!-- navbar-icon -->
-                <div class="col-4 col-md-5 text-end">
+                <div class="col-4 col-md-5 text-end functional-wrapper">
                     <a class="navbar-search" href="#" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/search-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-wishlist" href="#" type="button">
+                    <a class="navbar-wishlist" href="{{route('cart.wishlist')}}" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/wishlist-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                     <a class="navbar-my-account-icon nav-acc-mobile" href="{{Auth::user() ? route('account.details') : route('web.login')}}" type="{{Auth::user() ? 'button' : ''}}" id="dropdownMenuButton" data-bs-toggle="{{Auth::user() ? 'dropdown' : ''}}" aria-haspopup="{{(Auth::user()) ? 'true' : ''}}" aria-expanded="{{(Auth::user()) ? 'false' : ''}}">

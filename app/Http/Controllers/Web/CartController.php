@@ -8,6 +8,10 @@ class CartController extends BaseController
     {
         return $this->view('cart.cart');
     }
+    public function wishlist()
+    {
+        return $this->view('cart.wishlist');
+    }
     public function checkout()
     {
         return $this->view('cart.checkout');

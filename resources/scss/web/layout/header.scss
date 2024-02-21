@@ -1,4 +1,9 @@
 #header {  
+    .functional-wrapper{
+        display: flex;
+        justify-content: end;
+        align-items: center;
+    }
     overflow: hidden;
     .container-fluid.fixed-top {
         background-color: #F7F3EE;
@@ -92,7 +97,6 @@
             text-align:unset !important;
         }
 
-        .navbar-search,
         .navbar-wishlist,
         .navbar-my-account-icon{
             display:none;
@@ -101,7 +105,6 @@
 
     @media (max-width: 767px) {
 
-        .navbar-search,
         .navbar-wishlist,
         .navbar-my-account-icon{
             display: none;
