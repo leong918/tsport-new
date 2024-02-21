@@ -6,16 +6,20 @@ use App\Http\Requests\Form\Web\UserLoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
+use App\Repositories\PasswordResetTokensRepository;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ForgotPasswordMail;
+use Carbon\Carbon;
 
 class AuthController extends BaseController
 {
     protected UserRepository $userRepository;
+    protected PasswordResetTokensRepository $passwordResetTokensRepository;
 
-    public function __construct(UserRepository $userRepository){
+    public function __construct(UserRepository $userRepository, PasswordResetTokensRepository $passwordResetTokensRepository){
         $this->userRepository = $userRepository;
+        $this->passwordResetTokensRepository = $passwordResetTokensRepository;
     }
 
     public function login()
@@ -82,6 +86,7 @@ class AuthController extends BaseController
 
     public function doForgotPassword(Request $request)
     {
+        $data = $request->all();
         $this->validate($request, [
             'email' => 'email|required'
         ]);
@@ -97,7 +102,18 @@ class AuthController extends BaseController
         }
 
         $randomString = generateRandomString(10, false);
+        $resetRecord = [
+            'email' => $data['email'],
+            'token' => $randomString,
+            'created_at' => now(),
+        ];
+        $this->passwordResetTokensRepository->createRecord($resetRecord);
         Mail::to($user->email)->send(new ForgotPasswordMail($randomString));
+        Session::flash('swal', [
+            'title' => 'Success',
+            'text' => 'Reset Mail Successfully Requested.',
+            'type' => 'success'
+        ]);
         return back();
     }
 
@@ -109,16 +125,68 @@ class AuthController extends BaseController
 
     public function resetPassword()
     {
-        return $this->view('auth.reset_password');
+        $token = request('token');
+
+        if(!$token){
+            Session::flash('swal', [
+                'title' => 'Error',
+                'text' => 'Password Reset Token Expired!',
+                'type' => 'error'
+            ]);
+            return redirect(route('web.home'));
+        }
+
+        $tokenRecord = $this->passwordResetTokensRepository->findRecordByToken($token);
+
+        if($tokenRecord){
+            $user = $this->userRepository->getUserByEmail($tokenRecord->email);
+        
+            if ($user && !$this->tokenExpired($tokenRecord->created_at)) {
+                $id = $user->id;
+                return $this->view('auth.reset_password', compact('id'));   
+            } else {
+                if($tokenRecord){
+                    $tokenRecord->delete();
+                }
+                Session::flash('swal', [
+                    'title' => 'Error',
+                    'text' => 'Password Reset Token Expired!',
+                    'type' => 'error'
+                ]);
+                return redirect(route('web.home'));
+            }
+        }
+        else{
+            Session::flash('swal', [
+                'title' => 'Error',
+                'text' => 'Password Reset Token Expired!',
+                'type' => 'error'
+            ]);
+            return redirect(route('web.home'));
+        }
+    }
+
+    private function tokenExpired($createdAt)
+    {
+        return Carbon::parse($createdAt)->addMinutes(15)->isPast();
     }
 
     public function doResetPassword(Request $request)
     {
+        $data = $request->all();
         $this->validate($request, [
             'password' => 'required|min:6|confirmed',
         ]);
-        
-        return redirect('web.home');
+
+        $this->userRepository->updateUser($request->all(), $data['id']);
+
+        Session::flash('swal', [
+            'title' => 'Success',
+            'text' => 'Password Reset Successcully!',
+            'type' => 'success'
+        ]);
+
+        return redirect(route('web.home'));
     }
 
 }

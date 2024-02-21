@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductResetTokens extends Model
+class PasswordResetTokens extends Model
 {
 
     /**
@@ -14,6 +13,7 @@ class ProductResetTokens extends Model
      * @var array
      */
     public static $rules = [];
+    public $timestamps = false;
 
     protected $table = 'password_reset_tokens';
 

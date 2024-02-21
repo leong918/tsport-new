@@ -87,6 +87,9 @@ class UserRepository extends BaseRepository
             )
             ->first();
     }
+    public function getUserByEmail($email){
+        return User::where('email', $email)->first();
+    }
 
     public function toggleStatus(int $id)
     {

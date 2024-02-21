@@ -44,4 +44,8 @@ class PasswordResetTokensRepository extends BaseRepository
         $model->fill($input);
         $model->save();
     }
+
+    public function findRecordByToken($token){
+        return PasswordResetTokens::where('token', $token)->first();
+    }
 }

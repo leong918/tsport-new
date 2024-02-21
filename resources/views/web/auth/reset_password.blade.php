@@ -5,7 +5,9 @@
         <div class="row justify-content-center">
             <div class="forgot-password-wrapper">
                 <div class="forgot-password-title">Reset Password</div>
+                @include('components.alert')
                 {{ html()->form('POST', route("web.do_reset_password"))->acceptsFiles()->id('')->open()  }}
+                {{ html()->hidden('id')->value($id)->placeholder('')->class('') }}
                 <div class="forgot-password-container">
                     <div id="reset-password">
                         <div class="input-container">
