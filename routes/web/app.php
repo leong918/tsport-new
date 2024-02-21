@@ -15,6 +15,7 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('/voucher', [AppController::class, 'voucher'])->name('web.voucher');
     Route::get('/how_to', [AppController::class, 'howTo'])->name('web.how_to');
     Route::get('/new', [AppController::class, 'productNew'])->name('web.product_new');
+    Route::get('/search', [AppController::class, 'search'])->name('web.search');
 
     Route::get('login', [AuthController::class, 'login'])->name('web.login');
     Route::post('login', [AuthController::class, 'doLogin'])->name('web.doLogin');
