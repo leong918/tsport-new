@@ -18,6 +18,7 @@
 @vite(['resources/scss/web/app.scss', 'resources/js/web/app.js'])
         {{-- section header --}}
     @include('web.layout.header')
+    @include('web.search')
         {{-- end header --}}
         {{-- section content --}}
     @yield('content')
@@ -31,14 +32,21 @@
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
-            @if (Session::has('swal'))
-                Swal.fire({
-                    title: '{!! Session::get('swal.title') !!}',
-                    text: '{!! Session::get('swal.text') !!}',
-                    icon: '{!! Session::get('swal.type') !!}',
-                    confirmButtonText: 'OK',
-                });
-            @endif
+    @if (Session::has('swal'))
+        Swal.fire({
+            title: '{!! Session::get('swal.title') !!}',
+            text: '{!! Session::get('swal.text') !!}',
+            icon: '{!! Session::get('swal.type') !!}',
+            confirmButtonText: 'OK',
+        });
+    @endif
+    $('.navbar-search').on('click', function(){
+        $('#header').toggleClass('active');
+    })
+    $('.cross-to-close').on('click', function(){
+        $('#header').removeClass('active');
+        $('#nav-search-toggle').collapse('toggle');
+    })
     </script>
     @stack('scripts')
 </body>

@@ -1,7 +1,6 @@
 @extends('web.layout.app')
 @section('content')
 <div id="home" class="overflow-x-hidden">
-    @include('web.search')
     <!-- Banner container -->
     <div class="banner">
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -1381,13 +1380,5 @@
             },
         }
     });
-
-    $('.navbar-search').on('click', function(){
-        $('#header').toggleClass('active');
-    })
-    $('.cross-to-close').on('click', function(){
-        $('#header').removeClass('active');
-        $('#nav-search-toggle').collapse('toggle');
-    })
 </script>
 @endpush
