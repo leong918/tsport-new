@@ -178,4 +178,22 @@
     .nav-acc-mobile,.nav-acc-desktop{
         text-decoration: none;
     }
+    .nav-logout{
+        display: flex;
+        align-items: center;
+        img{
+            margin-right: 10px;
+            width: 27px;
+            height: 27px;
+        }
+    }
+    hr{
+        color: #6B5B41;
+    }
+    .cross-sidenav{
+        @media only screen and (max-width:1199px){
+            display: flex;
+            justify-content: end;
+        }
+    }
 }

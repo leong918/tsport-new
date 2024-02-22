@@ -29,54 +29,12 @@
                     <a class="navbar-wishlist" href="{{route('cart.wishlist')}}" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/wishlist-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-my-account-icon nav-acc-mobile" href="{{Auth::user() ? route('account.details') : route('web.login')}}" type="{{Auth::user() ? 'button' : ''}}" id="dropdownMenuButton" data-bs-toggle="{{Auth::user() ? 'dropdown' : ''}}" aria-haspopup="{{(Auth::user()) ? 'true' : ''}}" aria-expanded="{{(Auth::user()) ? 'false' : ''}}">
+                    <a class="navbar-my-account-icon nav-acc-mobile" href="{{Auth::user() ? route('account.details') : route('web.login')}}">
                         <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                     <a class="navbar-my-account-icon nav-acc-desktop" href="{{Auth::user() ? route('account.details') : route('web.login')}}">
                         <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <div class="dropdown-menu dropdown-menu-acc" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{route('account.details')}}">
-                            <div class="account-nav active">
-                                <img src="{{asset('assets/web/assets/img/account_nav/account_detail.png')}}" alt="">
-                                <div class="nav-title">
-                                    Account Details
-                                </div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item" href="{{route('account.address')}}">
-                            <div class="account-nav active">
-                                <img src="{{asset('assets/web/assets/img/account_nav/addresses.png')}}" alt="">
-                                <div class="nav-title">
-                                    Addresses
-                                </div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item" href="{{route('account.order')}}">
-                            <div class="account-nav active">
-                                <img src="{{asset('assets/web/assets/img/account_nav/orders.png')}}" alt="">
-                                <div class="nav-title">
-                                    Orders
-                                </div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item" href="{{route('account.point')}}">
-                            <div class="account-nav active">
-                                <img src="{{asset('assets/web/assets/img/account_nav/points.png')}}" alt="">
-                                <div class="nav-title">
-                                    Point
-                                </div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item" href="{{route('web.logout')}}">
-                            <div class="account-nav active">
-                                <img src="{{asset('assets/web/assets/img/account_nav/log_out.png')}}" alt="">
-                                <div class="nav-title">
-                                    Log Out
-                                </div>
-                            </div>
-                        </a>
-                    </div>
                     <a class="navbar-cart-icon" href="{{route('cart.shopping_cart')}}" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/cart.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
@@ -94,7 +52,7 @@
                     <div class="col-6 col-md-10">
                         <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-md-2 cross-sidenav">
                         <a type="button" class="" data-bs-dismiss="offcanvas" aria-label="Close">
                             <img src="{{asset('assets/web/assets/img/navigation/cross.png')}}" alt="Bootstrap" width="30" height="30">
                         </a>
@@ -153,6 +111,30 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('web.voucher')}}">消費券 Consumption Voucher</a>
                         </li>
+                        <hr/>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('cart.wishlist')}}">Wishlist</a>
+                        </li>
+                        @if(Auth::user())
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{Auth::user() ? route('account.details') : route('web.login')}}">My Account</a>
+                        </li>
+                        <hr/>
+                        <li class="nav-item nav-logout">
+                            <a class="nav-link" href="{{route('web.logout')}}">
+                                <img src="{{asset('assets/web/assets/img/account_nav/log_out.png')}}" alt="">
+                                Logout
+                            </a>
+                        </li>
+                        @else
+                        <hr/>
+                        <li class="nav-item nav-logout">
+                            <a class="nav-link" href="{{Auth::user() ? route('account.details') : route('web.login')}}">
+                                <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="">
+                                Login
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </div>
             </div>
