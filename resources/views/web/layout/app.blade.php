@@ -18,10 +18,14 @@
 @vite(['resources/scss/web/app.scss', 'resources/js/web/app.js'])
         {{-- section header --}}
     @include('web.layout.header')
-    @include('web.search')
+    <div id="main-page">
+        @include('web.search')
         {{-- end header --}}
         {{-- section content --}}
-    @yield('content')
+        @yield('content')
+        <div id="sub-pages-overlay">
+        </div>
+    </div>
         {{-- end content --}}
         {{-- section footer --}}
     @include('web.layout.footer')
@@ -42,9 +46,19 @@
     @endif
     $('.navbar-search').on('click', function(){
         $('#header').toggleClass('active');
+        $('#sub-pages-overlay').toggleClass('active');
+        $('body').toggleClass('active');
     })
     $('.cross-to-close').on('click', function(){
         $('#header').removeClass('active');
+        $('#sub-pages-overlay').removeClass('active');
+        $('body').removeClass('active');
+        $('#nav-search-toggle').collapse('toggle');
+    })
+    $('#sub-pages-overlay').on('click', function(){
+        $('#header').removeClass('active');
+        $('#sub-pages-overlay').removeClass('active');
+        $('body').removeClass('active');
         $('#nav-search-toggle').collapse('toggle');
     })
     </script>
