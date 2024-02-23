@@ -44,4 +44,8 @@ class AppController extends BaseController
     {
         return $this->view('how_to');
     }
+    public function search()
+    {
+        return $this->view('search_result');
+    }
 }

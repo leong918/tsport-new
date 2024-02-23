@@ -12,6 +12,7 @@
 @import "blog.scss";
 @import "voucher.scss";
 @import "how_to.scss";
+@import "search.scss";
 //auth
 @import "auth/login.scss";
 @import "auth/register.scss";
@@ -21,9 +22,11 @@
 @import "account/account_details.scss";
 @import "account/account_order.scss";
 @import "account/account_point.scss";
+@import "account/account_nav.scss";
 //cart and checkout
 @import "cart/checkout.scss";
 @import "cart/complete.scss";
 @import "cart/payment.scss";
 @import "cart/shopping_cart_empty.scss";
 @import "cart/shopping_cart.scss";
+@import "cart/wishlist.scss";

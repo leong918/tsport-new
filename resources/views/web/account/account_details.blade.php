@@ -6,9 +6,6 @@
             <div class="col-12">
                 <div class="forgot-password-title">My Account</div>
                 <div class="nav-acc"><a href="#">Home</a> > <a href="#"> My Account </a> > <a href="#"> Account Details </a></div>
-                <div>
-
-                </div>
             </div>
             @include('web.account.account_nav')
             <div class="col-xl-9 col-12">
