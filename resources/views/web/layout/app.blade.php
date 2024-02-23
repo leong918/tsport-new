@@ -67,7 +67,6 @@
         $('#header').removeClass('active');
         $('#sub-pages-overlay').removeClass('active');
         $('body').removeClass('active');
-        $('#nav-search-toggle').collapse('toggle');
         
     })
 
