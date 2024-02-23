@@ -33,6 +33,10 @@
                 }
             }
             border: none;
+            &::placeholder{
+                color: rgba(109,91,64);
+                font-family: "RecklessNeue-Light";
+            }
             &:focus{
                 border: none;
             }
@@ -50,7 +54,7 @@
         @media only screen and (min-width:1200px){
             right: 36%;
         }
-        transform: translate(0, -50%);
+        transform: translate(0, -57%);
         img{
             width: 15px;
         }

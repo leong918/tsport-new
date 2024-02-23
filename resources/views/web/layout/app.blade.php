@@ -25,10 +25,10 @@
         @yield('content')
         <div id="sub-pages-overlay">
         </div>
-    </div>
         {{-- end content --}}
         {{-- section footer --}}
-    @include('web.layout.footer')
+        @include('web.layout.footer')
+    </div>
         {{-- end footer --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
@@ -48,6 +48,7 @@
         $('#header').toggleClass('active');
         $('#sub-pages-overlay').toggleClass('active');
         $('body').toggleClass('active');
+        $('.narber-toggler-concept').attr('type', '');
     })
     $('.cross-to-close').on('click', function(){
         $('#header').removeClass('active');
