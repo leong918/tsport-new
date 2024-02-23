@@ -90,53 +90,37 @@
                 </div>
             </div>
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                    <div class="col-6 col-md-10">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <a type="button" class="" data-bs-dismiss="offcanvas" aria-label="Close">
-                            <img src="{{asset('assets/web/assets/img/navigation/cross.png')}}" alt="Bootstrap" width="30" height="30">
-                        </a>
-                    </div>
+                <div class="offcanvas-header align-self-end">
+                    <a type="button" class="" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <img src="{{asset('assets/web/assets/img/navigation/cross.png')}}" alt="Bootstrap" width="30" height="30">
+                    </a>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item dropdown nav-brand">
+                        <li class="nav-item dropdown">
                             <button class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Brands
                             </button>
                             <ul class="dropdown-menu dropdown-brand">
-                                <li><a class="dropdown-item" href="#">Ve Oola</a></li>
-                                <li><a class="dropdown-item" href="#">Lovinah</a></li>
-                                <li><a class="dropdown-item" href="#">Josh Rosebrook</a></li>
-                                <li><a class="dropdown-item" href="#">Odacite</a></li>
-                                <li><a class="dropdown-item" href="#">Vita Recherche</a></li>
-                                <li><a class="dropdown-item" href="#">Woods Copenhagen</a></li>
-                                <li><a class="dropdown-item" href="#">CS12</a></li>
-                                <li><a class="dropdown-item" href="#">Root Science</a></li>
-                                <li><a class="dropdown-item" href="#">SANGRE DE FRUTA</a></li>
-                                <li><a class="dropdown-item" href="#">RETREATMENT BOTANICS</a></li>
-                                <li><a class="dropdown-item" href="#">IN (INTELLIGENT NUTRIENTS)</a></li>
-                                <li><a class="dropdown-item" href="#">Karmameju</a></li>
-                                <li><a class="dropdown-item" href="#">LA BRUKET</a></li>
-                                <li><a class="dropdown-item" href="#">LERNBERGER STAFSING</a></li>
-                            </ul>
+                                @foreach ($brand_list as $brand)
+                                    <li><a class="dropdown-item" href="{{route('web.brand',['brand_id' => $brand->id ])}}">{{ $brand->name }}</a></li>
+                                @endforeach
+                            </ul> 
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Skincare</a>
+                            <a class="nav-link" href="{{route('web.product',['category_type' => 'skincare'])}}">Skincare</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Makeup</a>
+                            <a class="nav-link" href="{{route('web.product',['category_type' => 'makeup'])}}">Makeup</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Hair & Body</a>
+                            <a class="nav-link" href="{{route('web.product',['category_type' => 'hairbody'])}}">Hair & Body</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('web.blog')}}">Blog</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <button class="nav-link nav-about" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 About
                             </button>
                             <ul class="dropdown-menu dropdown-about">
@@ -159,34 +143,3 @@
         </div>
     </nav>
 </div>
-@push('scripts')
-<script type="text/javascript">
-$('.offcanvas-body .nav-brand').on('mouseenter', function(){
-    $('.dropdown-brand').addClass('show');
-    $(this).find('.nav-link').addClass('nav-mouseinout');
-})
-
-$('.offcanvas-body .nav-brand').on('mouseleave', function(){
-    $('.dropdown-brand').removeClass('show');
-    $(this).find('.nav-link').removeClass('nav-mouseinout');
-})
-$('.offcanvas-body .nav-about').on('mouseenter', function(){
-    $('.dropdown-about').addClass('show');
-    $(this).addClass('nav-mouseinout');
-})
-
-$('.dropdown-about').on('mouseenter', function(){
-    $('.dropdown-about').addClass('show');
-    $('.nav-about').addClass('nav-mouseinout');
-})
-
-$('.offcanvas-body .nav-about').on('mouseleave', function(){
-    $('.dropdown-about').removeClass('show');
-    $(this).find('.nav-link').removeClass('nav-mouseinout');
-})
-$('.dropdown-about').on('mouseleave', function(){
-    $('.dropdown-about').removeClass('show');
-    $('.nav-about').removeClass('nav-mouseinout');
-})
-</script>
-@endpush

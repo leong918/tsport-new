@@ -26,7 +26,9 @@ class ProductPrice extends Model
      */
     protected $fillable = [
         'product_id',
-        'url',
+        'currency_id',
+        'code',
+        'price'
     ];
 
     /**

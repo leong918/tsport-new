@@ -36,6 +36,11 @@ class CategoryRepository extends BaseRepository
         return Category::query()->orderBy('created_at', 'desc');
     }
     
+    public function getListingByCategoryType(string $category_type)
+    {     
+        return Category::where('type',$category_type)->orderBy('created_at', 'desc')->get();
+    }
+
     public function dropdown(string $key = 'id')
     {
         return formalizeDropdown(Category::all(), $key, 'name');

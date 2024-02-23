@@ -10,8 +10,7 @@ class ProductRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -46,6 +45,64 @@ class ProductRepository extends BaseRepository
         return formalizeDropdown(Product::where('id', '!=', $product_id)->get(), $key, 'name');
     }
 
+    public function getProductByCategoryType(string $category_type, string $currency_code, int $category_id = null)
+    {
+        $query =  Product::leftjoin('category', 'product.category_id', '=', 'category.id')
+        ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+        ->whereNull('product_price.deleted_at');
+
+        if($category_id){
+            $query->where(['category.id' => $category_id, 'category.type' => $category_type, 'product_price.code' => $currency_code]);
+        }else{
+            $query->where(['category.type' => $category_type, 'product_price.code' => $currency_code]);
+        }
+
+        return $query->orderBy('product.created_at', 'desc')
+                    ->selectRaw('product.*, product_price.code, product_price.price')
+                    ->get();
+    }
+
+    public function getProductByBrand(int $brand_id)
+    {
+        return Product::leftjoin('category', 'product.category_id', '=', 'category.id')
+                        ->leftjoin('brand', 'product.brand_id', '=', 'brand.id')
+                        ->where('product.brand_id', $brand_id)
+                        ->orderBy('category.name', 'asc')
+                        ->orderBy('product.created_at', 'desc')
+                        ->selectRaw('product.*, category.name as category_name')
+                        ->get();
+    }
+
+    public function getBestSellingProduct($currency_code){
+        return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+                        ->where(['product_price.code' => $currency_code ,'product.is_best_seller' => 1])
+                        ->whereNull('product_price.deleted_at')
+                        ->selectRaw('product.*, product_price.code, product_price.price')
+                        ->get();
+    }
+
+    public function getNewProduct($currency_code){
+        return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+                        ->where(['product_price.code' => $currency_code ,'product.is_new' => 1])
+                        ->whereNull('product_price.deleted_at')
+                        ->selectRaw('product.*, product_price.code, product_price.price')
+                        ->get();
+    }
+
+    public function regroupProductListByCategory($product_list)
+    {
+        $regroup_product_list = array();
+        foreach($product_list as $product){
+            if(!array_key_exists($product->category_name,$regroup_product_list))
+            {
+                $regroup_product_list[$product->category_name] = array($product);
+            }else{
+                array_push($regroup_product_list[$product->category_name],$product);
+            }
+        }
+        return $regroup_product_list;
+    }
+
     public function createProduct(array $input)
     {
         $this->verifyDescription($input);
@@ -55,8 +112,8 @@ class ProductRepository extends BaseRepository
         $model = new Product();
         $model->fill($input);
         $model->save();
-        
-        if(isset($input['product_related'])){
+
+        if (isset($input['product_related'])) {
             $productRelatedRepository = new ProductRelatedRepository(new Container());
             $productRelatedRepository->createProductRelated($input, $model->id);
         }
@@ -74,25 +131,25 @@ class ProductRepository extends BaseRepository
     public function updateProduct(array $input, int $id)
     {
         $this->checkDuplicate($input);
-        
+
         $input['alias'] = strtolower($input['alias']);
         $model = Product::findOrFail($id);
         $model->fill($input);
         $model->save();
 
-        if(isset($input['product_related'])){
+        if (isset($input['product_related'])) {
             $productRelatedRepository = new ProductRelatedRepository(new Container());
             $productRelatedRepository->createProductRelated($input, $model->id);
         }
 
-        if(isset($input['image'])){
+        if (isset($input['image'])) {
             $productImageRepository = new ProductImageRepository(new Container());
             $productImageRepository->createProductImage($input, $model->id);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());
         $productPriceRepository->createProductPrice($input, $model->id);
-        
+
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
     }
@@ -110,44 +167,39 @@ class ProductRepository extends BaseRepository
             $lang = ($key == 'cn' ? 'Chinese' : 'English');
 
             if (isset($language['name']) == false) {
-                throw new \Exception(__('Name for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Name for ' . $lang . ' cannot be empty!'));
             }
             if (isset($language['information']) == false) {
-                throw new \Exception(__('Information for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Information for ' . $lang . ' cannot be empty!'));
             }
             if (isset($language['description']) == false) {
-                throw new \Exception(__('Description for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Description for ' . $lang . ' cannot be empty!'));
             }
             if (isset($language['ingredient']) == false) {
-                throw new \Exception(__('Ingredient for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Ingredient for ' . $lang . ' cannot be empty!'));
             }
             if (isset($language['usage']) == false) {
-                throw new \Exception(__('Usage for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Usage for ' . $lang . ' cannot be empty!'));
             }
             if (isset($language['additional_information']) == false) {
-                throw new \Exception(__('Addtional Information for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Addtional Information for ' . $lang . ' cannot be empty!'));
             }
         }
     }
 
-    public function removeSpecialCharacters(string $string){
-        $string = preg_replace('/\s+/', '-', strtolower($string));
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
-    }
-
-    public function checkDuplicate($input) {
+    public function checkDuplicate($input)
+    {
         $currencyIds = [];
         foreach ($input['product_price'] as $product) {
             $currencyIds[] = $product['currency_id'];
         }
         $valueCounts = array_count_values($currencyIds);
-        $duplicates = array_filter($valueCounts, function($count) {
+        $duplicates = array_filter($valueCounts, function ($count) {
             return $count > 1;
         });
-        
-        if(count($duplicates) > 0){
+
+        if (count($duplicates) > 0) {
             throw new \Exception(__('Product Price has duplicate currency'));
         }
-
     }
 }

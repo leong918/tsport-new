@@ -23,9 +23,9 @@ class Category extends Model
     ];
 
     public const TYPE = [
-        'SKIN CARE' => 'skin_care',
+        'SKIN CARE' => 'skincare',
         'MAKEUP' => 'makeup',
-        'HAIR & BODY' => 'hair_body'
+        'HAIR & BODY' => 'hairbody'
     ];
 
     protected $table = 'category';

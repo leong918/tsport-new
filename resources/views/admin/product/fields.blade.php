@@ -56,13 +56,13 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Best Seller') }}
-            {{ html()->select('is_best_seller')->options(['Yes','No'])->class('form-control')->required() }}
+            {{ html()->select('is_best_seller')->options(['No','Yes'])->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('New') }}
-            {{ html()->select('is_new')->options(['Yes','No'])->class('form-control')->required() }}
+            {{ html()->select('is_new')->options(['No','Yes'])->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
