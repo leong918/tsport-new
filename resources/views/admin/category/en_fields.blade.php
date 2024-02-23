@@ -9,10 +9,10 @@
         <tr>
             <tr>
                 <td>
-                    {{ html()->text('language[cn][name]')->value(isset($model) && $model->enDescription ? $model->enDescription->name : "")->placeholder('Enter name')->class('form-control')->required() }}
+                    {{ html()->text('language[en][name]')->value(isset($model) && $model->enDescription ? $model->enDescription->name : "")->placeholder('Enter name')->class('form-control')->required() }}
                 </td>
                 <td>
-                    {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->enDescription ? $model->enDescription->description : "")->class('form-control wysiwyg') }}
+                    {{ html()->textarea('language[en][description]')->value(isset($model) && $model->enDescription ? $model->enDescription->description : "")->class('form-control wysiwyg') }}
                 </td>
             </tr>
         </tr>

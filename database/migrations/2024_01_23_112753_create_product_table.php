@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigInteger('category_id');
             $table->string("name");
             $table->string("sku");
-            $table->string("alias");
+            $table->string("alias")->unique();
             $table->tinyInteger("status")->default(0);
             $table->integer("sort")->default(0);
             $table->tinyInteger("is_best_seller")->default(0);

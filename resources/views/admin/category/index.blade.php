@@ -24,7 +24,7 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Image</th>
+                                            <th>Type</th>
                                             <th>Status</th>
                                             <th>Sort</th>
                                             <th>Created At</th>

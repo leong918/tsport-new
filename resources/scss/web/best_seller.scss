@@ -1,4 +1,43 @@
-#product{
+#best_seller{
+    background-color: #FCFBF9;
+    .product{
+        .container{
+            @media only screen and (max-width:320px){
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+        .type{
+            font-size: 45px;
+            @media only screen and (min-width:321px){
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            @media only screen and (max-width:767px){
+                font-size: 40px;
+            }
+
+            color: #6B5B40;
+            margin-bottom: 15px;
+            @media only screen and (max-width:767px){
+                font-size: 35px;
+            }
+        }
+    }
+    .tnc{
+        @media only screen and (min-width:321px){
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .tnc-para{
+            padding-bottom: 50px;
+            font-family: "ChironSungHK-Light";
+            .title{
+                font-family: "ChironSungHK-Regular";
+                font-size: 18px;
+            }
+        }
+    }
     font-family: "RecklessNeue-Light";
 
     .product-banner{
@@ -39,7 +78,6 @@
         @media only screen and (max-width:767px){
             padding: 10px 0 180px 0;
         }
-
         .filter-wrapper{
             padding:10px;
             a{
@@ -50,12 +88,12 @@
                 };
             }
         }
+
         #offcanvasNav{
             max-width: 80%;
         }
 
         .nav-wrapper{
-
             .list-title{
                 font-family: "RecklessNeue-Medium";
                 font-size:17px;
@@ -75,8 +113,6 @@
                 text-decoration: none;
                 color:black;
                 font-size:15px;
-                border: none;
-                background: transparent;
 
                 @media only screen and (max-width:767px){
                     font-size: 20px;
@@ -102,14 +138,15 @@
                         margin-top: 50px;
                     }
                 }
-
-                @media only screen and (max-width:767px){
-                    margin-bottom: 40px;
-                }
             }
         }
 
         .product-wrapper {
+            @media only screen and (min-width:1200px){
+                padding-left: 100px;
+                padding-right:100px;
+            }
+
             .product-container {
                 padding-bottom: 30px;
                 position: relative;
@@ -120,16 +157,17 @@
     
             //image change when cover
             .product-container.product-img img {
-                // max-width: 100%;
                 width:100%;
                 height:auto;
             }
-
+            
             .product-container.product-img{
                 .product-image{
                     clip-path: ellipse(100% 100% at 50% 50%);
                     transition: clip-path 0.3s ease-in-out;
                     overflow: hidden;
+                    display:flex;
+                    justify-content: center;
 
                     img.show{
                         transition: transform 0.3s ease-in-out;
@@ -147,16 +185,15 @@
                 }
             }
     
-    
             .wishlist-cart-container img.wishlist-hide,
             .wishlist-cart-container img.wishlist-hover-show,
             .wishlist-cart-container img.cart-hide,
             .wishlist-cart-container img.cart-hover-show {
-                width: 62px;
-
-            @media (max-width: 1500px) {
-                width: 38px;
-            }
+                width: 45%;
+    
+                @media (max-width: 1500px) {
+                    width: 50%;
+                }
             }
     
             .wishlist-cart-container img.wishlist-hide,
@@ -192,13 +229,19 @@
     
             .product-image {
                 img.show{
-                    height: 38vh;  
+                    height: 40vh;  
                     object-fit: cover;
                 }
 
-                @media (max-width: 767px) {
+                @media (min-width: 576px) and (max-width: 767px){
                     img.show{
-                        height: 23vh; 
+                        height: 25vh;  
+                    }
+                }
+
+                @media (max-width: 575px){
+                    img.show{
+                        height: 30vh;  
                     }
                 }
 
@@ -271,6 +314,9 @@
     
                 img.star-rating {
                     width: 115px;
+                    @media only screen and (max-width:280px){
+                        width: 80px;
+                    }
                     height: auto;
                 }
     
@@ -338,7 +384,7 @@
                 @media (max-width: 1024px) {}
     
                 @media (max-width: 767px) {
-                    // font-size: 21px;
+                    font-size: 21px;
                     padding-top: 0px;
                 }
             }

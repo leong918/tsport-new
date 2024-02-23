@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Form\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
 class UpdateProductRequest extends FormRequest
 {
     /**
@@ -27,12 +29,22 @@ class UpdateProductRequest extends FormRequest
             'brand_id' => 'required',
             'category_id' => 'required',
             'name' => 'required',
+            'alias' => ['required',Rule::unique('product')->ignore($this->id),'regex:/^[a-zA-Z0-9\-]+$/'],
             'sku' => 'required',
             'status' => 'required',
             'sort' => 'required',
             'is_best_seller' => 'required',
             'is_new' => 'required',
-            // 'product_price' => 'required',
         ];
+    }
+
+    // Returning errors as exception
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'msg' => $validator->errors()->first(),
+            ], 500)
+        );
     }
 }

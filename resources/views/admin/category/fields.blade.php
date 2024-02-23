@@ -10,7 +10,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Type') }}
-            {{ html()->text('type')->placeholder('Enter type')->class('form-control')->required() }}
+            {{ html()->select('type')->options(renderSelect(Category::TYPE))->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
@@ -22,7 +22,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Status') }}
-            {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
+            {{ html()->select('status')->options(renderSelect(Category::STATUS))->class('form-control')->required() }}
         </div>
     </div>
 </div>

@@ -82,10 +82,13 @@
         align-items: center;
     }
 
-    .navbar-nav .nav-link.show,
-    a.dropdown-item {
+    .navbar-nav a.dropdown-item {
         color: #6B5B41;
         font-family: "RecklessNeue-light";
+
+        &:active{
+            background-color: white;
+        }
     }
 
     li.nav-item .nav-link:hover a.dropdown-item:hover {
@@ -129,22 +132,13 @@
         transition: all 0.3s ease;
     }
 
-    // button.nav-link:hover::after {
-    //     content: "";
-    //     background-image: url('/public/assets/web/assets/img/navigation/arrow-up.png'); 
-    // }
+    button.nav-link:hover, a.nav-link:hover{
+        color:#9a835e;
+    }
 
-    .nav-mouseinout::after{
+    button.nav-link.show::after, button.nav-link:hover::after {
         content: "";
-        background-image: url('/public/assets/web/assets/img/navigation/arrow-up.png') !important;
-        background-size: contain; 
-        background-repeat: no-repeat;   
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-left: 10px; 
-        color: transparent;
-        transition: all 0.3s ease;
+        background-image: url('/public/assets/web/assets/img/navigation/arrow-up.png'); 
     }
 
     .account-nav{
