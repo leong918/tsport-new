@@ -153,40 +153,38 @@
             //image change when cover
             .product-container.product-img img {
                 max-width: 100%;
-                height: auto;
-                transition: clip-path 0.5s ease-in-out, opacity 0.4s ease-in-out;
+                height:auto;
             }
-    
-            .product-img img.hide {
-                clip-path: ellipse(100% 50% at 50% 50%);
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                left: 0px;
-                width: 100%;
-                height: auto;
+            
+            .product-container.product-img{
+                .product-image{
+                    clip-path: ellipse(100% 100% at 50% 50%);
+                    transition: clip-path 0.3s ease-in-out;
+                    overflow: hidden;
+                    img.show{
+                        transition: transform 0.3s ease-in-out;
+                    }
+                }
             }
-    
-            .product-img:hover img.hide {
-                clip-path: none;
-                opacity: 1;
+
+            .product-img:hover {
+                .product-image{
+                    clip-path: ellipse(54% 50% at 50% 50%);
+                    img.show {
+                        transform: scale(1.2);
+                        transform-origin: center center;
+                    }
+                }
             }
-    
-            .product-img:hover img.show {
-                opacity: 0;
-            }
-    
-    
-    
     
             .wishlist-cart-container img.wishlist-hide,
             .wishlist-cart-container img.wishlist-hover-show,
             .wishlist-cart-container img.cart-hide,
             .wishlist-cart-container img.cart-hover-show {
-                width: 62px;
-
+                width: 45%;
+    
                 @media (max-width: 1500px) {
-                    width: 38px;
+                    width: 50%;
                 }
             }
     
@@ -221,20 +219,28 @@
                 }
             }
     
-            .product-image:hover {
-                .wishlist-cart-container {
-                    position: absolute;
-                    opacity: 1;
-                    bottom: 35px;
-    
-                    @media (max-width: 1024px) {
-                        display: none;
-                    }
-    
-                    @media (max-width: 767px) {
-                        display: none;
+            .product-image {
+                img.show{
+                    height: 38vh;  
+                    object-fit: cover;
+                }
+
+                &:hover{
+                    .wishlist-cart-container {
+                        position: absolute;
+                        opacity: 1;
+                        bottom: 35px;
+        
+                        @media (max-width: 1024px) {
+                            display: none;
+                        }
+        
+                        @media (max-width: 767px) {
+                            display: none;
+                        }
                     }
                 }
+
             }
     
             .wishlist-container {

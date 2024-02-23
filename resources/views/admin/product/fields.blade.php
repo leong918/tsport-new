@@ -4,7 +4,13 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Name') }}
-            {{ html()->text('name')->placeholder('Enter name')->class('form-control')->required() }}
+            {{ html()->text('name')->id('productName')->placeholder('Enter name')->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Alias') }}
+            {{ html()->text('alias')->id('alias')->placeholder('Enter alias')->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
@@ -50,13 +56,13 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Best Seller') }}
-            {{ html()->select('is_best_seller')->options(['Yes','No'])->class('form-control')->required() }}
+            {{ html()->select('is_best_seller')->options(['No','Yes'])->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('New') }}
-            {{ html()->select('is_new')->options(['Yes','No'])->class('form-control')->required() }}
+            {{ html()->select('is_new')->options(['No','Yes'])->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
@@ -143,6 +149,23 @@
         };
 
         tinymce.init(editor_config);
+
+        //check user typing for product name 
+        var typingTimer;
+        var doneTypingInterval = 500; // Adjust this value as needed (milliseconds)
+
+        $('#productName').keyup(function() {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        });
+
+        function doneTyping() {
+            var inputString = $('#productName').val().trim().toLowerCase().replace(/\s+/g, '-');
+            var organizedString = inputString.replace(/[^A-Za-z0-9\-]/,'');
+
+            $('#alias').val(organizedString);
+        }
+
 
         $("#product").submit(function(e) {
             e.preventDefault();

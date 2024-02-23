@@ -8,7 +8,7 @@ use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Category;
 class CategoryController extends BaseController
 {
     private CategoryRepository $categoryRepository;
@@ -24,6 +24,9 @@ class CategoryController extends BaseController
             $model = $this->categoryRepository->getListing();
 
             return DataTables::of($model)
+                ->editColumn('type', function ($model) {
+                    return array_search($model->type, Category::TYPE);
+                })
                 ->addColumn('status', function ($model) {
                     $route = route('admin.category.status.post', ['id' => $model->id]);
                     $status = $model->status;
