@@ -57,3 +57,7 @@ body{
         visibility: visible;
     }
 }
+
+.offcanvas-backdrop.active {
+    display: none !important;
+}

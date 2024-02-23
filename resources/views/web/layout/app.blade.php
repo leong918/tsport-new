@@ -48,7 +48,6 @@
         $('#header').toggleClass('active');
         $('#sub-pages-overlay').toggleClass('active');
         $('body').toggleClass('active');
-        $('.narber-toggler-concept').attr('type', '');
     })
     $('.cross-to-close').on('click', function(){
         $('#header').removeClass('active');
@@ -61,6 +60,18 @@
         $('#sub-pages-overlay').removeClass('active');
         $('body').removeClass('active');
         $('#nav-search-toggle').collapse('toggle');
+    })
+
+    $('.narber-toggler-concept').on('click', function(){
+        $('#search-navbar').css('z-index', '-1');
+        
+    })
+
+    $('.offcanvas-header a').on('click', function(){
+        $('#search-navbar').css('z-index', '100');
+    })
+    $('body').on('click', function(){
+        $('#search-navbar').css('z-index', '100');
     })
     </script>
     @stack('scripts')
