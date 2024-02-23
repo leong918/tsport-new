@@ -63,16 +63,16 @@
     })
 
     $('.narber-toggler-concept').on('click', function(){
-        $('#search-navbar').css('z-index', '-1');
+        $('#nav-search-toggle').collapse('hide');
         
     })
 
-    $('.offcanvas-header a').on('click', function(){
-        $('#search-navbar').css('z-index', '100');
-    })
-    $('body').on('click', function(){
-        $('#search-navbar').css('z-index', '100');
-    })
+    // $('.offcanvas-header a').on('click', function(){
+    //     $('#search-navbar').css('z-index', '100');
+    // })
+    // $('body').on('click', function(){
+    //     $('#search-navbar').css('z-index', '100');
+    // })
     </script>
     @stack('scripts')
 </body>
