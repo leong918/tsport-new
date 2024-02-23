@@ -64,6 +64,10 @@
 
     $('.narber-toggler-concept').on('click', function(){
         $('#nav-search-toggle').collapse('hide');
+        $('#header').removeClass('active');
+        $('#sub-pages-overlay').removeClass('active');
+        $('body').removeClass('active');
+        $('#nav-search-toggle').collapse('toggle');
         
     })
 
