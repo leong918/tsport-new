@@ -6,16 +6,17 @@
             <div class="login-wrapper">
                 <div class="login-title">Login</div>
                 @include('components.alert')
-                {{ Form::open(["url" => route("web.doLogin"), "method" => "POST"]) }}
+                {{ html()->form('POST', route("web.doLogin"))->acceptsFiles()->id('')->open()  }}
+                
                 @csrf
                 <div class="login-container">
                     <div>
                         <div class="mb-40 input-container">
-                            {{ Form::text('phone_no', null, array('required' => true)) }}
+                            {{ html()->text('phone_no')->placeholder('')->class('')->required() }}
                             <label class="placeholder-label">Phone no. *</label>
                         </div>
                         <div class="input-container">
-                            {{ Form::password('password', null, array('required' => true)) }}
+                            {{ html()->password('password')->placeholder('')->class('')->required() }}
                             <label class="placeholder-label">Password *</label>
                         </div>
                         <a href="{{route('web.forgot_password')}}" class="forgot-password">Forgot your password?</a>
@@ -24,7 +25,7 @@
                         <button class="login-button" type="submit">LOGIN</button>
                     </div>
                 </div>
-                {{ Form::close() }}
+                {{ html()->form()->close() }}
                 <div class="register-wrapper">
                     <div class="register-desc">註冊裝戶可獲得10積分，首次下單即可快用。 </div>
                     <div class="d-flex justify-content-center">

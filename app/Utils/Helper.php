@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Str;
 use App\Models\Plugin;
-
 /**
  * Only applied for CONST status get from model
  *
@@ -69,4 +68,18 @@ function formalizeDropdown($data, $key, $value, $subValue = null)
         }
     }
     return $result;
+}
+
+function generateRandomString($length = 10, $number_only = null)
+{
+    if (!$number_only)
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    else
+        $characters = '0123456789';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
 }

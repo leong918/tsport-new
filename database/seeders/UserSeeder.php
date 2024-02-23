@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
                 'username' => 'userABC',
                 'email' => 'user@gmail.com',
                 'phone_no' => '60123456789',
-                'dob' => Carbon::now()->format('Y-m-d H:i:s'),
+                'birth_month' => 'January',
                 'password' => '123123',
                 'referral_email' => 'referral@gmail.com',
                 'referral_phone_no' => '60112223333' 

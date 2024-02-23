@@ -15,7 +15,37 @@
                 <div class="forgot-password-wrapper">
                     <div class="forgot-password-container">
                         <div class="empty-addr">
-                            <div class="top-status-cate">
+                            <div class="top-status-cate top-desktop">
+                                <div class="status">
+                                    All (1)
+                                </div>
+                                <div class="status">
+                                    On Hold (6)
+                                </div>
+                                <div class="status">
+                                    Completed (0)
+                                </div>
+                                <div class="status">
+                                    Canceled (0)
+                                </div>
+                            </div>
+                            <div class="top-mobile">
+                                <div class="collapse-wrapper">
+                                    <a class="collapse-nav" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        <div class="account-nav" id="order-nav">
+                                            <div class="nav-inner">
+                                                <div class="nav-title status">
+                                                    All (1)
+                                                </div>
+                                                <div class="arrow">
+                                                    <img src="{{asset('assets/web/assets/img/voucher/down.png')}}" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="collapse collapse-nav-inner" id="collapseExample2">
                                 <div class="status">
                                     All (1)
                                 </div>
@@ -121,5 +151,16 @@
     $('.right img').on('mouseleave', function(){
         $(this).attr('src', '{{asset('assets/web/assets/img/account_order/right_1.png')}}');
     })
+
+    $(document).ready(function(){
+        $('#collapseExample2').on('shown.bs.collapse', function(){
+            $('#order-nav .arrow').find('img').css('transform', 'rotate(180deg)');
+        });
+
+        $('#collapseExample2').on('hidden.bs.collapse', function(){
+            $('#order-nav .arrow').find('img').css('transform', 'rotate(0deg)');
+        });
+    })
+
 </script>
 @endpush

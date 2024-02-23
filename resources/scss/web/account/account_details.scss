@@ -1,9 +1,4 @@
 #my-acc{
-    .account-nav-dt{
-        @media only screen and (max-width:1199px){
-            display: none;
-        }
-    }
 
     button{
         font-family: "BanglaSangam-Regular";
@@ -37,7 +32,7 @@
             margin-right: 20px;
         }
         .nav-title{
-            a{
+            div, a{
                 font-family: "BanglaSangam-Regular";
                 text-transform: uppercase;
                 text-decoration: none;
@@ -165,5 +160,11 @@
                 }
             }
         }
+    }
+    .collapse-nav{
+        text-transform: uppercase;
+        text-decoration: none;
+        color: #6B5B40;
+        font-weight: 500;
     }
 }

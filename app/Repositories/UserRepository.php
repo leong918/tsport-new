@@ -39,17 +39,14 @@ class UserRepository extends BaseRepository
 
     public function createUser(array $input)
     {
-        $input['dob']= Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
-
         $model = new User();
+        $model->birth_month = $input['birth_month'];
         $model->fill($input);
         $model->save();
     }
 
     public function updateUser(array $input, int $id)
     {
-        $input['dob']= Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
-
         if (trim($input['password']) === '') {
             unset($input['password']);
         }
@@ -83,6 +80,9 @@ class UserRepository extends BaseRepository
                 'login_at'
             )
             ->first();
+    }
+    public function getUserByEmail($email){
+        return User::where('email', $email)->first();
     }
 
     public function toggleStatus(int $id)
