@@ -74,8 +74,11 @@
             
             var category_id = $(this).data('category-id'); 
             $.ajax({
-                url: "{{ route('web.filter_product_list', ['category_type' => $category_type, 'category_id' => ':category_id']) }}".replace(':category_id', category_id),
+                url: "{{ route('web.filter_product_list', ['category_type' => $category_type]}}",
                 type: 'GET',
+                data:{
+                    category_id: category_id
+                }
                 success: function(response) {
                     $('#productListContainer').html(response); // Update container with filtered data
                 },
