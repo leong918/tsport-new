@@ -110,7 +110,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -145,7 +147,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -180,7 +184,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -215,7 +221,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -250,7 +258,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -309,7 +319,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -344,7 +356,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -379,7 +393,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -414,7 +430,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -449,7 +467,9 @@
                             </div>
                             <div class="product-info">
                                 <div class="rating-wishlist">
-                                    <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
                                 <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -497,7 +517,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -532,7 +554,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -567,7 +591,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -602,7 +628,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -637,7 +665,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -672,7 +702,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -707,7 +739,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -740,7 +774,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -824,7 +860,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -859,7 +897,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -894,7 +934,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -930,7 +972,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -965,7 +1009,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -1003,7 +1049,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -1038,7 +1086,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -1073,7 +1123,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -1108,7 +1160,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -1143,7 +1197,9 @@
                         </div>
                         <div class="product-info">
                             <div class="rating-wishlist">
-                                <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
                                 <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                             </div>
                             <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>

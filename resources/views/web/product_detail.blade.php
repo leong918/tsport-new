@@ -30,16 +30,9 @@
             </div>
             <div class="col-12 col-lg-6 product-wrapper">
                 <div class="row">
-                    <div class="col-12 d-flex reviews-wrapper">
-                        <div class="star-wrapper d-flex justify-content-start">
-                            <div class="d-flex flex-column align-center justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                            <div class="d-flex flex-column align-center justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                            <div class="d-flex flex-column align-center justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                            <div class="d-flex flex-column align-center justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                            <div class="d-flex flex-column align-center justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                        </div>
-                        <div class="d-flex flex-column align-center justify-content-center total-reviews-title"><span>16 customer reviews</span></div>
-                    </div>
+                    @if(function_exists('reviewRenderView'))
+                    {{ reviewRenderView('product_detail_top_review') }}
+                    @endif
                     <div class="col-9">
                         <div class="">
                             <div class="col-10 product-title"><span class="ch-m">[增量升級版］</span>Lovinah Dragon's Blood BHA Cleansing Oil <span class="ch-m">龍血樹温和雙膠囊水楊酸卸妝潔面油100ml</span></div>
@@ -107,9 +100,9 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="false">Additional Information</button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reviews</button>
-                </li>
+                @if(function_exists('reviewRenderView'))
+                {{ reviewRenderView('product_detail_nav_title') }}
+                @endif
             </ul>
             <div class="tab-content description" id="myTabContent">
                 <div class="tab-pane fade show active" id="desciption" role="tabpanel" aria-labelledby="desciption-tab">
@@ -187,171 +180,9 @@
                         <div class="col-9">Using Salicylic Acid In No Higher Than A 2% Concentration Once Or Twice A Day During Pregnancy Is Generally Considered As Safe, We Do However Recommend Pregnant Women Consult A Physician Prior To Use Of Salicylic Acid Product.</div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                    <div class="content-wrapper reviews-title">16 Reviews</div>
-                    <div class="content-wrapper">
-                        <div class="d-flex justify-content-between">
-                            <div class="star-wrapper d-flex justify-content-center">
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                            </div>
-                            <div class="reviews-date">
-                                May 28, 2021
-                            </div>
-                        </div>
-                        <div class="customer-wrapper">
-                            <div><span class="customer-name">Zoo****</span><span class="owner-title"> (Verified Owner)</span></div>
-                        </div>
-                        <div class="customer-comment">
-                            Using Salicylic Acid In No Higher Than A 2% Concentration Once Or Twice A Day During Pregnancy Is Generally Considered As Safe, We Do However
-                            Recommend Pregnant Women Consult A Physician Prior To Use Of Salicylic Acid Product.
-                        </div>
-                    </div>
-                    <div class="content-wrapper">
-                        <div class="d-flex justify-content-between">
-                            <div class="star-wrapper d-flex justify-content-center">
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_2.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_2.png')}}"></div>
-                            </div>
-                            <div class="reviews-date">
-                                May 28, 2021
-                            </div>
-                        </div>
-                        <div class="customer-wrapper">
-                            <div><span class="customer-name">Zoo****</span><span class="owner-title"> (Verified Owner)</span></div>
-                        </div>
-                        <div class="customer-comment">
-                            Using Salicylic Acid In No Higher Than A 2% Concentration Once Or Twice A Day During Pregnancy Is Generally Considered As Safe, We Do However
-                            Recommend Pregnant Women Consult A Physician Prior To Use Of Salicylic Acid Product.
-                        </div>
-                    </div>
-                    <div class="content-wrapper">
-                        <div class="d-flex justify-content-between">
-                            <div class="star-wrapper d-flex justify-content-center">
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                            </div>
-                            <div class="reviews-date">
-                                May 28, 2021
-                            </div>
-                        </div>
-                        <div class="customer-wrapper">
-                            <div><span class="customer-name">Zoo****</span><span class="owner-title"> (Verified Owner)</span></div>
-                        </div>
-                        <div class="customer-comment">
-                            Using Salicylic Acid In No Higher Than A 2% Concentration Once Or Twice A Day During Pregnancy Is Generally Considered As Safe, We Do However
-                            Recommend Pregnant Women Consult A Physician Prior To Use Of Salicylic Acid Product.
-                        </div>
-                    </div>
-                    <div class="content-wrapper">
-                        <div class="d-flex justify-content-between">
-                            <div class="star-wrapper d-flex justify-content-center">
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_2.png')}}"></div>
-                            </div>
-                            <div class="reviews-date">
-                                May 28, 2021
-                            </div>
-                        </div>
-                        <div class="customer-wrapper">
-                            <div><span class="customer-name">Zoo****</span><span class="owner-title"> (Verified Owner)</span></div>
-                        </div>
-                        <div class="customer-comment">
-                            Using Salicylic Acid In No Higher Than A 2% Concentration Once Or Twice A Day During Pregnancy Is Generally Considered As Safe, We Do However
-                            Recommend Pregnant Women Consult A Physician Prior To Use Of Salicylic Acid Product.
-                        </div>
-                    </div>
-                    <div class="content-wrapper">
-                        <div class="d-flex justify-content-between">
-                            <div class="star-wrapper d-flex justify-content-center">
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                            </div>
-                            <div class="reviews-date">
-                                May 28, 2021
-                            </div>
-                        </div>
-                        <div class="customer-wrapper">
-                            <div><span class="customer-name">Zoo****</span><span class="owner-title"> (Verified Owner)</span></div>
-                        </div>
-                        <div class="customer-comment">
-                            Using Salicylic Acid In No Higher Than A 2% Concentration Once Or Twice A Day During Pregnancy Is Generally Considered As Safe, We Do However
-                            Recommend Pregnant Women Consult A Physician Prior To Use Of Salicylic Acid Product.
-                        </div>
-                    </div>
-                    <div class="content-wrapper">
-                        <div class="d-flex justify-content-between">
-                            <div class="star-wrapper d-flex justify-content-center">
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                                <div class="d-flex flex-column justify-content-center"><img src="{{asset('assets/web/assets/img/product_details/star_1.png')}}"></div>
-                            </div>
-                            <div class="reviews-date">
-                                May 28, 2021
-                            </div>
-                        </div>
-                        <div class="customer-wrapper">
-                            <div><span class="customer-name">Zoo****</span><span class="owner-title"> (Verified Owner)</span></div>
-                        </div>
-                        <div class="customer-comment">
-                            Using Salicylic Acid In No Higher Than A 2% Concentration Once Or Twice A Day During Pregnancy Is Generally Considered As Safe, We Do However
-                            Recommend Pregnant Women Consult A Physician Prior To Use Of Salicylic Acid Product.
-                        </div>
-                    </div>
-                    <!-- Pagination -->
-                    <nav aria-label="Page navigation example" class="d-flex justify-content-center">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">
-                                        < </span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><span class="page-link">of</span></li>
-                            <li class="page-item total-page"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <div class="content-wrapper leave-review-wrapper">
-                        <div class="leave-review-title"><strong>Leave A Review</strong></div>
-                        <div class="star-wrapper d-flex justify-content-start">
-                            <div class="d-flex flex-column align-center justify-content-center review-star-control" data-number="1"><img src="{{asset('assets/web/assets/img/product_details/star_2.png')}}"></div>
-                            <div class="d-flex flex-column align-center justify-content-center review-star-control" data-number="2"><img src="{{asset('assets/web/assets/img/product_details/star_2.png')}}"></div>
-                            <div class="d-flex flex-column align-center justify-content-center review-star-control" data-number="3"><img src="{{asset('assets/web/assets/img/product_details/star_2.png')}}"></div>
-                            <div class="d-flex flex-column align-center justify-content-center review-star-control" data-number="4"><img src="{{asset('assets/web/assets/img/product_details/star_2.png')}}"></div>
-                            <div class="d-flex flex-column align-center justify-content-center review-star-control" data-number="5"><img src="{{asset('assets/web/assets/img/product_details/star_2.png')}}"></div>
-                        </div>
-                        <div>
-                            <textarea class="review-textarea" placeholder="Comment"></textarea>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="review-submit-button">POST</button>
-                        </div>
-                    </div>
-                </div>
+                @if(function_exists('reviewRenderView'))
+                {{ reviewRenderView('product_detail_nav_content') }}
+                @endif
             </div>
         </div>
     </div>
@@ -386,7 +217,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -421,7 +254,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -456,7 +291,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -491,7 +328,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -526,7 +365,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -561,7 +402,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -596,7 +439,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
@@ -629,7 +474,9 @@
                     </div>
                     <div class="product-info">
                         <div class="rating-wishlist">
-                            <img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
+                            @if(function_exists('reviewRenderView'))
+                            {{ reviewRenderView('common_star_rating') }}
+                            @endif
                             <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                         </div>
                         <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
