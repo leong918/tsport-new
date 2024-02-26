@@ -109,6 +109,13 @@
             }
         }
 
+        .product-wrapper-padding{
+            @media only screen and (min-width:1200px){
+                padding-left: 100px;
+                padding-right:100px;
+            }
+        }
+
         .product-wrapper {
             .product-container {
                 padding-bottom: 30px;
@@ -117,7 +124,12 @@
                 overflow: hidden;
             }
     
-    
+            .total-count-item{
+                font-family: "RecklessNeue-Medium";
+                margin-bottom: 20px;
+                margin-top: 10px;
+            }
+            
             //image change when cover
             .product-container.product-img img {
                 // max-width: 100%;

@@ -8,6 +8,7 @@ use App\Repositories\BrandRepository;
 use App\Models\Category;
 use App\Repositories\BlogRepository;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class AppController extends BaseController
 {
@@ -28,23 +29,36 @@ class AppController extends BaseController
     {
         return $this->view('index');
     }
-    public function product(string $category_type)
-    {
-        //to get category name
-        $flipped_array = array_flip(Category::TYPE);
-        $category_type_name = strtolower($flipped_array[$category_type]);
-    
-        $category_list = $this->categoryRepository->getListingByCategoryType($category_type);
-        $brand_list = $this->brandRepository->getListing()->get();                                                       
-        $product_list = $this->productRepository->getProductByCategoryType($category_type,'indr');
+    public function product(Request $request, string $category_type = null)
+    {  
+        //product page with filtering
+        if($request->ajax()){
+            if($request->category_id && $category_type){
+                $product_list = $this->productRepository->getProductByCategoryType($category_type,'MYR',$request->category_id);
+                return $this->view('product_list',compact('product_list'));
+            }
+        }
 
-        return $this->view('product',compact('category_type','category_type_name','category_list','brand_list','product_list'));
+        //product page without filtering 
+        if($category_type){
+            $flipped_array = array_flip(Category::TYPE);
+            $category_type_name = strtolower($flipped_array[$category_type]);
+        
+            $category_list = $this->categoryRepository->getListingByCategoryType($category_type,'name')->get();
+            $brand_list = $this->brandRepository->getListing()->get();                                                       
+            $product_list = $this->productRepository->getProductByCategoryType($category_type,'MYR');
+
+            return $this->view('product',compact('category_type','category_type_name','category_list','brand_list','product_list'));
+        }
+
+        //search page
+        if($request->input('search_keyword')){
+            $search_keyword = $request->input('search_keyword');
+            $product_list = $this->productRepository->getProductByKeywords($search_keyword,'MYR');
+            return $this->view('product',compact('product_list','search_keyword'));
+        }
     }
 
-    public function filterProduct(string $category_type, int $category_id){
-        $product_list = $this->productRepository->getProductByCategoryType($category_type,'indr',$category_id);
-        return $this->view('product_list',compact('product_list'));
-    }
 
     public function productDetail()
     {
@@ -52,19 +66,19 @@ class AppController extends BaseController
     }
     public function productNew()
     {
-        $product_list = $this->productRepository->getNewProduct('indr');
+        $product_list = $this->productRepository->getNewProduct('MYR');
         return $this->view('product_new',compact('product_list'));
     }
     public function bestSeller()
     {
-        $product_list = $this->productRepository->getBestSellingProduct('indr');
+        $product_list = $this->productRepository->getBestSellingProduct('MYR');
         return $this->view('best_seller',compact('product_list'));
     }
     public function brand(int $brand_id)
     {
         $brand = $this->brandRepository->find($brand_id);
-        $category_list = $this->categoryRepository->getListing()->get();
-        $retrieve_product_list = $this->productRepository->getProductByBrand($brand_id);
+        $category_list = $this->categoryRepository->getListingByCategoryType(null,'name')->get();
+        $retrieve_product_list = $this->productRepository->getProductByBrand($brand_id,'myr');
         $product_list = $this->productRepository->regroupProductListByCategory($retrieve_product_list);
         return $this->view('brand',compact('brand','category_list','product_list'));
     }

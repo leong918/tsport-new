@@ -28,7 +28,7 @@ class CreateProductRequest extends FormRequest
             'brand_id' => 'required',
             'category_id' => 'required',
             'name' => 'required',
-            'alias' => 'required|unique:product|regex:/^[a-zA-Z0-9\-]+$/',
+            'alias' => 'required|unique:product|regex:/^[\w\p{Han}\-]+$/u',
             'sku' => 'required',
             'status' => 'required',
             'sort' => 'required',

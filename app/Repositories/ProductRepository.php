@@ -45,6 +45,15 @@ class ProductRepository extends BaseRepository
         return formalizeDropdown(Product::where('id', '!=', $product_id)->get(), $key, 'name');
     }
 
+    public function getProductByKeywords(string $keyword, string $currency_code){
+        return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+                        ->where('product_price.code', $currency_code)
+                        ->where('product.name', 'LIKE', '%' . $keyword . '%')
+                        ->orderBy('product.created_at', 'desc')
+                        ->selectRaw('product.*')
+                        ->get();
+    }
+
     public function getProductByCategoryType(string $category_type, string $currency_code, int $category_id = null)
     {
         $query =  Product::leftjoin('category', 'product.category_id', '=', 'category.id')
@@ -62,18 +71,19 @@ class ProductRepository extends BaseRepository
                     ->get();
     }
 
-    public function getProductByBrand(int $brand_id)
+    public function getProductByBrand(int $brand_id, string $currency_code)
     {
         return Product::leftjoin('category', 'product.category_id', '=', 'category.id')
+                        ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
                         ->leftjoin('brand', 'product.brand_id', '=', 'brand.id')
-                        ->where('product.brand_id', $brand_id)
+                        ->where(['brand.id' => $brand_id, 'product_price.code' => $currency_code])
                         ->orderBy('category.name', 'asc')
                         ->orderBy('product.created_at', 'desc')
                         ->selectRaw('product.*, category.name as category_name')
                         ->get();
     }
 
-    public function getBestSellingProduct($currency_code){
+    public function getBestSellingProduct(string $currency_code){
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
                         ->where(['product_price.code' => $currency_code ,'product.is_best_seller' => 1])
                         ->whereNull('product_price.deleted_at')
@@ -81,7 +91,7 @@ class ProductRepository extends BaseRepository
                         ->get();
     }
 
-    public function getNewProduct($currency_code){
+    public function getNewProduct(string $currency_code){
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
                         ->where(['product_price.code' => $currency_code ,'product.is_new' => 1])
                         ->whereNull('product_price.deleted_at')
