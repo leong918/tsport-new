@@ -1,0 +1,14 @@
+<?php
+    $pluginRepository = new \App\Repositories\PluginRepository(new \Illuminate\Container\Container);
+
+    if ($pluginRepository->getActivePlugin('ProductReview')) {
+        $this->loadRoutesFrom(__DIR__.'/Route.php');
+        $this->loadViewsFrom(__DIR__.'/Views', 'product_review');
+
+        if (!function_exists('reviewRenderView')) {
+            function reviewRenderView($blade_name)
+            {
+                return view("product_review::web." . $blade_name);
+            }
+        }
+    }
