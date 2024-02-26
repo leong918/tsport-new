@@ -50,7 +50,7 @@ class ProductRepository extends BaseRepository
                         ->where('product_price.code', $currency_code)
                         ->where('product.name', 'LIKE', '%' . $keyword . '%')
                         ->orderBy('product.created_at', 'desc')
-                        ->selectRaw('product.*')
+                        ->selectRaw('product.*,product_price.code, product_price.price')
                         ->get();
     }
 
@@ -79,7 +79,7 @@ class ProductRepository extends BaseRepository
                         ->where(['brand.id' => $brand_id, 'product_price.code' => $currency_code])
                         ->orderBy('category.name', 'asc')
                         ->orderBy('product.created_at', 'desc')
-                        ->selectRaw('product.*, category.name as category_name')
+                        ->selectRaw('product.*,product_price.code, product_price.price, category.name as category_name')
                         ->get();
     }
 
