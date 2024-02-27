@@ -20,18 +20,3 @@ html, body {
 .btn-status {
   cursor: pointer;
 }
-
-#product{
-  .form-multi-select{
-    padding:0;
-  }
-  
-  .form-multi-select-tag-delete::before{
-    top:-5px;
-  }
-  
-  .form-multi-select-selection{
-    padding: var(--cui-form-multi-select-selection-tags-padding-y) var(--cui-form-multi-select-selection-tags-padding-x);
-    padding-right: var(--cui-form-multi-select-indicator-padding);
-  }
-}
