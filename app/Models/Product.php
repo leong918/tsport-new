@@ -62,10 +62,10 @@ class Product extends Model
 
     public function brand()
     {
-        return $this->belongsTo(Brand::class,'brand_id');
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
-    protected function productDescription()
+    public function productDescription()
     {
         return $this->hasMany(ProductDescription::class);
     }
@@ -75,24 +75,24 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    protected function productRelated()
+    public function productRelated()
     {
         return $this->hasMany(ProductRelated::class);
     }
 
-    protected function productPrice()
+    public function productPrice()
     {
         return $this->hasMany(ProductPrice::class);
     }
 
     public function cnDescription()
     {
-        return $this->hasOne(ProductDescription::class)->where('language','cn');
+        return $this->hasOne(ProductDescription::class)->where('language', 'cn');
     }
 
-    protected function enDescription()
+    public function enDescription()
     {
-        return $this->hasOne(ProductDescription::class)->where('language','en');
+        return $this->hasOne(ProductDescription::class)->where('language', 'en');
     }
 
     public function checkProductRelated($product_id, $related_product_id)
