@@ -1,4 +1,4 @@
-@if(empty($model))
+@if(!isset($model))
     <div class="row productPriceRow">
         <div class="col-md-5">
             <div class="mb-3">
@@ -40,7 +40,7 @@
     @endforeach
 @endif
 @section('script')
-{{-- @parent --}}
+@parent
 <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
 <script id="priceInputContent" type="x-tmpl-mustache">
     <div class="row productPriceRow">
