@@ -330,6 +330,14 @@
                 padding-bottom: 10px;
                 font-family: "RecklessNeue-Medium";
                 color: #6B5B41;
+                text-overflow: ellipsis;
+                height: 4rem;
+                white-space: normal;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                -webkit-line-clamp: 3;
     
                 @media (max-width: 1024px) {
                     font-size: 14px;

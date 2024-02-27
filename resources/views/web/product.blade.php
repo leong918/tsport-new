@@ -60,7 +60,7 @@
                 <div class="product">
                     <div class="container">
                         {!! isset($search_keyword) ? '<div class="total-count-item"> Showing 10 results for "'.$search_keyword.'"</div>' : '' !!}
-                        <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 row-cols-sm-3" id="productListContainer">
+                        <div class="row row-cols-2 {{ isset($category_list) && isset($brand_list) ? 'row-cols-xl-4 row-cols-lg-3' : 'row-cols-lg-4' }} row-cols-md-3 row-cols-sm-3" id="productListContainer">
                             @include("web.product_list")
                         </div>
                     </div>
