@@ -71,13 +71,9 @@ class Category extends Model
         return $this->hasMany(CategoryDescription::class);
     }
 
-    protected function cnDescription()
+    public function getParameters(string $params)
     {
-        return $this->hasOne(CategoryDescription::class)->where('language','cn');
-    }
+        return CategoryDescription::where('language',$params)->first();
+    } 
 
-    protected function enDescription()
-    {
-        return $this->hasOne(CategoryDescription::class)->where('language','en');
-    }
 }

@@ -5,8 +5,8 @@
     <div class="product-banner">
         <img src="{{asset('assets/web/assets/img/product/product_bg.png')}}" />
         <div class="product-title-wrapper">
-            <div class="product-title text-capitalize">{{ $category_type_name ?? "Search Result" }}</div>
-            <div class="product-nav d-flex justify-content-center"><span>Home</span><span>></span><span class="text-capitalize">{{ $category_type_name ?? "Search Result" }}</span></div>
+            <div class="product-title text-capitalize">{{ $category_type ? renderModelData(Category::TYPE, $category_type):"Search Result" }}</div>
+            <div class="product-nav d-flex justify-content-center"><span>Home</span><span>></span><span class="text-capitalize">{{ $category_type ? renderModelData(Category::TYPE, $category_type):"Search Result"  }}</span></div>
         </div>
     </div>
     <div class="container">

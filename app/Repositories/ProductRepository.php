@@ -45,6 +45,23 @@ class ProductRepository extends BaseRepository
         return formalizeDropdown(Product::where('id', '!=', $product_id)->get(), $key, 'name');
     }
 
+    public function getProductByCurrencyCode(string $currency_code){
+        return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+                        ->where('product_price.code', $currency_code)
+                        ->orderBy('product.created_at', 'desc')
+                        ->selectRaw('product.*,product_price.code, product_price.price');
+    }
+
+    public function getProductByAlias(string $alias, string $currency_code)
+    {
+        return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+                        ->where(['product.alias' => $alias,'product_price.code'=> $currency_code])
+                        ->orderBy('product.created_at', 'desc')
+                        ->selectRaw('product.*,product_price.code, product_price.price')
+                        ->with('category')
+                        ->first();
+    }
+
     public function getProductByKeywords(string $keyword, string $currency_code){
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
                         ->where('product_price.code', $currency_code)

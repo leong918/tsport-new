@@ -5,24 +5,30 @@ namespace App\Http\Controllers\Web;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\BrandRepository;
-use App\Models\Category;
 use App\Repositories\BlogRepository;
+use App\Repositories\BlogCommentRepository;
+use App\Repositories\UserRepository;
 use Carbon\Carbon;
+use App\Http\Requests\Form\BlogComment\CreateBlogCommentRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class AppController extends BaseController
 {
     private CategoryRepository $categoryRepository;
     private ProductRepository $productRepository;
     private BrandRepository $brandRepository;
     private BlogRepository $blogRepository;
+    private BlogCommentRepository $blogCommentRepository;
+    private UserRepository $userRepository;
 
-    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, BlogRepository $blogRepository)
+    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, BlogRepository $blogRepository, BlogCommentRepository $blogCommentRepository,UserRepository $userRepository)
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
         $this->blogRepository = $blogRepository;
+        $this->blogCommentRepository = $blogCommentRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -41,14 +47,11 @@ class AppController extends BaseController
 
         //product page without filtering 
         if($category_type){
-            $flipped_array = array_flip(Category::TYPE);
-            $category_type_name = strtolower($flipped_array[$category_type]);
-        
             $category_list = $this->categoryRepository->getListingByCategoryType($category_type,'name')->get();
             $brand_list = $this->brandRepository->getListing()->get();                                                       
             $product_list = $this->productRepository->getProductByCategoryType($category_type,'MYR');
 
-            return $this->view('product',compact('category_type','category_type_name','category_list','brand_list','product_list'));
+            return $this->view('product',compact('category_type','category_list','brand_list','product_list'));
         }
 
         //search page
@@ -60,9 +63,10 @@ class AppController extends BaseController
     }
 
 
-    public function productDetail()
+    public function productDetail(string $alias)
     {
-        return $this->view('product_detail');
+        $product = $this->productRepository->getProductByAlias($alias, 'MYR');
+        return $this->view('product_detail', compact('product'));
     }
     public function productNew()
     {
@@ -85,16 +89,33 @@ class AppController extends BaseController
     public function blog()
     {
         $blog_list = $this->blogRepository->getListing()->get();
-        foreach ($blog_list as $blog) {
-            $blog->published_at = Carbon::parse($blog->published_at)->format('M j, Y');
-        }
-
         return $this->view('blog', compact('blog_list'));
     }
-    public function blogDetail()
+    public function blogDetail(int $blog_id)
     {
-        return $this->view('blog_detail');
+        $blog = $this->blogRepository->find($blog_id);
+        $product_list = $this->productRepository->getProductByCurrencyCode('myr')->take(2)->get();
+        $blog_list = $this->blogRepository->makeModel()->where('id','!=',$blog_id)->orderBy('created_at','desc')->take(3)->get();
+        return $this->view('blog_detail', compact('blog','product_list','blog_list'));
     }
+
+    public function createBlogComment(CreateBlogCommentRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $user = $this->userRepository->find(auth()->user()->id);
+            $data = $request->all();
+            $data['user_id'] = $user->id;
+            $data['username'] = $user->username;
+            $this->blogCommentRepository->createBlogComment($data);
+            DB::commit();
+            return redirect(route('web.blog_detail',['blog_id' => $request->blog_id]))->with('success', "Blog Comment Posted");
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return response()->json(['msg' => $exception->getMessage()], 500);
+        }
+    }
+
     public function voucher()
     {
         return $this->view('voucher');

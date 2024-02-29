@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 26, 2024 at 09:31 AM
+-- Generation Time: Feb 28, 2024 at 04:44 AM
 -- Server version: 5.7.41
 -- PHP Version: 8.1.21
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ecommerce`
+-- Database: `ecommerce2`
 --
 
 -- --------------------------------------------------------
@@ -129,7 +129,7 @@ CREATE TABLE `blog_comment` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) NOT NULL,
   `blog_id` bigint(20) NOT NULL,
-  `parent_id` bigint(20) NOT NULL,
+  `parent_id` bigint(20) DEFAULT NULL,
   `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `comment` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0',

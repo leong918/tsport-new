@@ -52,4 +52,9 @@ class ProductRelated extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
+
+    public function relatedProduct()
+    {
+        return $this->hasOne(Product::class,'id');
+    }
 }

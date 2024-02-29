@@ -158,19 +158,16 @@
             
             .product-container.product-img{
                 .product-image{
-                    clip-path: ellipse(100% 100% at 50% 50%);
-                    transition: clip-path 0.3s ease-in-out;
                     overflow: hidden;
                     img.show{
-                        transition: transform 0.3s ease-in-out;
+                        clip-path: ellipse(100% 100% at 50% 50%);
+                        transition: clip-path 0.5s, transform 0.3s ease-in-out;
                     }
                 }
-            }
 
-            .product-img:hover {
-                .product-image{
-                    clip-path: ellipse(54% 50% at 50% 50%);
+                .product-image:hover{
                     img.show {
+                        clip-path: ellipse(43% 40% at 50% 50%);
                         transform: scale(1.2);
                         transform-origin: center center;
                     }

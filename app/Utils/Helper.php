@@ -18,6 +18,12 @@ function renderSelect(array $const_array): array
     return $const_array;
 }
 
+function renderModelData(array $const_array, string $array_value)
+{
+    $const_array = array_flip($const_array);
+    return strtolower($const_array[$array_value]);
+}
+
 function getPublicIP()
 {
     $client  = @$_SERVER['HTTP_CLIENT_IP'];

@@ -8,10 +8,10 @@
     <tbody>
         <tr>
             <td>
-                {{ html()->text('language[cn][name]')->value(isset($model) && $model->cnDescription ? $model->cnDescription->name : "")->placeholder('Enter name')->class('form-control')->required() }}
+                {{ html()->text('language[cn][name]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->name : "")->placeholder('Enter name')->class('form-control')->required() }}
             </td>
             <td>
-                {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->cnDescription ? $model->cnDescription->description : "")->class('form-control wysiwyg') }}
+                {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->description : "")->class('form-control wysiwyg') }}
             </td>
         </tr>
     </tbody>

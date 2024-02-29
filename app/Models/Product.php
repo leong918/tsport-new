@@ -65,6 +65,11 @@ class Product extends Model
         return $this->belongsTo(Brand::class, 'brand_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function productDescription()
     {
         return $this->hasMany(ProductDescription::class);
@@ -77,7 +82,7 @@ class Product extends Model
 
     public function productRelated()
     {
-        return $this->hasMany(ProductRelated::class);
+        return $this->hasMany(ProductRelated::class,'related_product_id');
     }
 
     public function productPrice()
@@ -85,15 +90,15 @@ class Product extends Model
         return $this->hasMany(ProductPrice::class);
     }
 
-    public function cnDescription()
+    public function getCurrencyParameters(string $currency)
     {
-        return $this->hasOne(ProductDescription::class)->where('language', 'cn');
+        return $this->productPrice->where('code',$currency)->first();
     }
 
-    public function enDescription()
+    public function getParameters(string $params)
     {
-        return $this->hasOne(ProductDescription::class)->where('language', 'en');
-    }
+        return $this->productDescription->where('language',$params)->first();
+    } 
 
     public function checkProductRelated($product_id, $related_product_id)
     {

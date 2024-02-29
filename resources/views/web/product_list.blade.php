@@ -1,5 +1,5 @@
 @foreach($product_list as $product)
-    <div class="product-container col product-img">
+    <a href="{{route('web.product_detail', ['alias' => $product->alias])}}" class="product-container col product-img">
         <div class="product-image position-relative">
             <img class="show" src="{{$product->productImage()->first()->url}}">
             <div class="wishlist-cart-container">
@@ -33,5 +33,5 @@
                 <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
             </div>
         </div>
-    </div>
+    </a>
 @endforeach
