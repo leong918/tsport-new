@@ -16,6 +16,11 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
 
+    public const STATUS = [
+        'ACTIVE' => 1,
+        'INACTIVE' => 0,
+    ];
+    
     /**
      * Validation rules
      *
@@ -39,7 +44,7 @@ class User extends Authenticatable
         'username',
         'email',
         'phone_no',
-        'dob',
+        'birth_month',
         'password',
         'referral_email',
         'referral_phone_no',

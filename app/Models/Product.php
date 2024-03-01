@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Product extends Model
 {
     use SoftDeletes;
@@ -60,40 +61,45 @@ class Product extends Model
         );
     }
 
-    public function brand()
+    public function brand() : BelongsTo
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
 
-    public function productDescription()
+    public function category() : BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function productDescription() : HasMany
     {
         return $this->hasMany(ProductDescription::class);
     }
 
-    public function productImage()
+    public function productImage() : HasMany
     {
         return $this->hasMany(ProductImage::class);
     }
 
-    public function productRelated()
+    public function productRelated() : HasMany
     {
-        return $this->hasMany(ProductRelated::class);
+        return $this->hasMany(ProductRelated::class,'related_product_id');
     }
 
-    public function productPrice()
+    public function productPrice() : HasMany
     {
         return $this->hasMany(ProductPrice::class);
     }
 
-    public function cnDescription()
+    public function getCurrencyParameters(string $currency)
     {
-        return $this->hasOne(ProductDescription::class)->where('language', 'cn');
+        return $this->productPrice->where('code',$currency)->first();
     }
 
-    public function enDescription()
+    public function getParameters(string $params)
     {
-        return $this->hasOne(ProductDescription::class)->where('language', 'en');
-    }
+        return $this->productDescription->where('language',$params)->first();
+    } 
 
     public function checkProductRelated($product_id, $related_product_id)
     {

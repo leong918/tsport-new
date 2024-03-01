@@ -46,4 +46,11 @@ class BlogCommentRepository extends BaseRepository
     {
         return BlogComment::where('blog_id',$blog_id);
     }
+
+    public function createBlogComment(array $input)
+    {   
+        $model = new BlogComment();
+        $model->fill($input);
+        $model->save();
+    }
 }

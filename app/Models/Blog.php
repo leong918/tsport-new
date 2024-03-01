@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 
 class Blog extends Model
 {
@@ -61,18 +63,28 @@ class Blog extends Model
         );
     }
 
-    protected function blogDetail()
+    protected function blogDetail() : HasMany
     {
         return $this->hasMany(BlogDetail::class);
     }
 
-    protected function enBlogDetail()
+    protected function blogComment(): HasMany
     {
-        return $this->hasOne(BlogDetail::class)->where('language','en');
+        return $this->hasMany(BlogComment::class);
     }
 
-    protected function cnBlogDetail()
+    public function firstLayerBlogComment()
     {
-        return $this->hasOne(BlogDetail::class)->where('language','cn');
+        return $this->blogComment()->whereNull('parent_id')->orderBy('created_at', 'desc')->get();
+    }    
+
+    public function getParameters(string $params)
+    {
+        return $this->blogDetail->where('language',$params)->first();
+    } 
+
+    public function publishedDate()
+    {
+        return Carbon::parse($this->published_at)->format('M j, Y');
     }
 }

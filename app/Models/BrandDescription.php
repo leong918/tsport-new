@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BrandDescription extends Model
 {
@@ -55,7 +56,7 @@ class BrandDescription extends Model
         );
     }
 
-    protected function brand()
+    protected function brand() : BelongsTo
     {
         return $this->belongsTo(Brand::class);
     }

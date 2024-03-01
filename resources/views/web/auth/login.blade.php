@@ -6,7 +6,7 @@
             <div class="login-wrapper">
                 <div class="login-title">Login</div>
                 @include('components.alert')
-                {{ html()->form('POST', route("web.doLogin"))->acceptsFiles()->id('')->open()  }}
+                {{ html()->form('POST', route("web.doLogin"))->id('')->open()  }}
                 
                 @csrf
                 <div class="login-container">

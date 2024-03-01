@@ -6,7 +6,7 @@
             </tr>
             <tr>
                 <td>
-                    {{ html()->text('language[en][name]')->value(isset($model) && $model->enBlogDetail ? $model->enBlogDetail->name : "")->placeholder('Enter name')->class('form-control')->required() }}
+                    {{ html()->text('language[en][name]')->value(isset($model) && $model->getParameters('en') ? $model->getParameters('en')->name : "")->placeholder('Enter name')->class('form-control')->required() }}
                 </td>
             </tr>
             <tr>
@@ -14,10 +14,10 @@
             </tr>
             <tr>
                 <td scope="col">
-                    {{ html()->file('language[en][image]')->accept('image/*')->class('form-control')->required(isset($model) && $model->enBlogDetail ? false : true)}}
-                    {{ html()->hidden('language[en][original_image]')->value(isset($model) && $model->enBlogDetail ? $model->enBlogDetail->image : '') }}
+                    {{ html()->file('language[en][image]')->accept('image/*')->class('form-control')->required(isset($model) && $model->getParameters('en') ? false : true)}}
+                    {{ html()->hidden('language[en][original_image]')->value(isset($model) && $model->getParameters('en') ? $model->getParameters('en')->image : '') }}
                     <div class="text-center my-2">
-                        <img class="img-fluid" {{isset($model) && $model->enBlogDetail ? 'src='.$model->enBlogDetail->image : ''}} />
+                        <img class="img-fluid" {{isset($model) && $model->getParameters('en') ? 'src='.$model->getParameters('en')->image : ''}} />
                     </div>
                 </td>
             </tr>
@@ -26,7 +26,7 @@
             </tr>
             <tr>
                 <td>
-                    {{ html()->textarea('language[en][content]')->value(isset($model) && $model->enBlogDetail ? $model->enBlogDetail->content : "")->class('form-control wysiwyg') }}
+                    {{ html()->textarea('language[en][content]')->value(isset($model) && $model->getParameters('en') ? $model->getParameters('en')->content : "")->class('form-control wysiwyg') }}
                 </td>
             </tr>
         </tr>
