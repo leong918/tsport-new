@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['as' => 'blog.'], function () {
     Route::get('blog/index', [BlogController::class, 'index'])->name('index');
+    Route::get('blog/getBlogComment', [BlogController::class, 'getBlogComment'])->name('getBlogComment');
     Route::get('blog/create', [BlogController::class, 'create'])->name('create');
     Route::post('blog/create', [BlogController::class, 'store'])->name('create.post');
     Route::get('blog/update/{id}', [BlogController::class, 'edit'])->name('update');

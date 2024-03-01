@@ -1,0 +1,301 @@
+#points{
+    .account-nav-dt{
+        @media only screen and (max-width:1199px){
+            display: none;
+        }
+    }
+    .nav-acc{
+        text-align: center;
+        margin-bottom: 40px;
+        a{
+            text-decoration: none;
+            color: #6B5B40;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+    .account-nav{
+        .nav-inner{
+            display: flex;
+            align-items: center;
+        }
+        padding-bottom: 15px;
+        font-family: "BanglaSangam-Regular";
+        padding-left: 20px;
+        padding-right: 20px;
+        width: 85%;
+        img{
+            width: 30px;
+            margin-right: 20px;
+        }
+        .nav-title{
+            a{
+                text-transform: uppercase;
+                text-decoration: none;
+                color: #6B5B40;
+                font-weight: 500;
+            }
+        }
+        &:not(:first-child){
+            margin-top: 15px;
+        }
+    }
+    min-height: 80vh;
+    background-color: #FCFBF9;
+    padding: 30px 0 100px 0;
+    font-family: "RecklessNeue-Light";
+
+    @media (max-width: 767px) {
+        min-height: auto;
+    }
+
+    .mb-40{
+        margin-bottom: 40px;
+    }
+
+    .forgot-password-title{
+        color:#6D5E44;
+        font-size: 38px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .container{
+        .forgot-password-wrapper{
+            .all-form-wrap{
+                margin-top: 20px;
+                .form-wrapper{
+                    margin-bottom: 20px;
+                }
+                .title{
+                    margin-bottom: 20px;
+                    margin-top: 20px;
+                }
+                .titlev2{
+                    margin-bottom: 30px;
+                    margin-top: 30px;
+                }
+            }
+            .title{
+                font-family: "RecklessNeue-Medium";
+                font-weight: 500;
+                color: #6B5B40;
+                font-size: 20px;
+                &:first-child{
+                    margin-bottom: 30px;
+                }
+            }
+            .titlev2{
+                font-family: "RecklessNeue-Medium";
+                font-weight: 500;
+                color: #6B5B40;
+                font-size: 16px;
+                margin-bottom: 10px;
+                &:first-child{
+                    margin-bottom: 30px;
+                }
+            }
+            .forgot-password-container{
+                background-color: #F7F3EE;
+                padding: 30px 45px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding-bottom: 70px;
+
+                @media (max-width: 767px) {
+                    padding: 30px;
+                    padding-bottom: 55px;
+                }
+
+                
+                .input-container{
+                    position: relative;
+
+                    input[type=text],input[type=password]{
+                        width: 100%;
+                        padding-top: 20px;
+                        padding-bottom: 5px;
+                        padding-left: 5px;
+                        background: transparent;
+                        border: none;
+                        border-bottom: 1px solid #9A835E;
+                        color:#6D5E44;
+                        font-size: 15px;
+
+                        &:focus{
+                            outline: none;
+
+                            ~ .placeholder-label{
+                                top:0;
+                                color:#9A835E;
+                            }
+                        }
+                    }
+    
+                    .placeholder-label{
+                        color:#C4B9A6;
+                        font-size: 15px;
+                        position: absolute;
+                        top: 5px;
+                        left: 0;
+                        pointer-events: none;
+                        transition: transform 0.3s ease-out;
+                        transform-origin: 0 0;
+                        padding-left:5px;
+                    }
+                }
+                .button-wrapper{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .login-button{
+                        margin-top: 40px;
+                        background-color: #9A835E;
+                        color: white;
+                        width: 40%;
+                        @media only screen and (max-width:767px){
+                            width: 100%;
+                        }
+                        border: none;
+                        padding: 10px;
+
+                        &:hover{
+                            background-color: white;
+                            color: #9A835E;
+                            box-shadow: 1px 2px#888888;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .empty-addr{
+        @media only screen and (max-width:575px){
+            padding: 60px 15px;
+        }
+        .table-wrap{
+            overflow: auto;
+        }
+        .text-center{
+            color: #000000;
+            font-weight: 700;
+        }
+        .top-status-cate{
+            @media only screen and (max-width:767px){
+                display: block;
+            }
+            display: flex;
+            align-items: center;
+            color: #6B5B40;
+            .title-points{
+                font-size: 20px;
+                font-weight: 700 !important;
+            }
+            .status{
+                font-weight: 600;
+                padding-right: 25px;
+            }
+        }
+        table{
+            width: 100%;
+            margin-top: 40px;
+            tr{
+                &:first-child{
+                    background-color: #F1E9E1;
+                }
+                &:not(:first-child){
+                    border-bottom: 1px solid rgba(107,91,64, 0.5);
+                }
+            }
+            th{
+                padding: 5px 25px;
+                text-transform: uppercase;
+                color: #9A835D;
+                font-family: "BanglaSangam-Regular";
+                font-weight: 500;
+                letter-spacing: 1.2px;
+            }
+            td{
+                padding: 40px 25px;
+                color: #9A835D;
+                font-family: "RecklessNeue-Regular";
+                a{
+                    color: #fff;
+                    background-color: #9A835D;
+                    text-decoration: none;
+                    text-transform: uppercase;
+                    padding: 10px 45px;
+                }
+                .login-button{
+                    margin-top: 40px;
+                    background-color: #9A835E;
+                    color: white;
+                    border: none;
+
+                    &:hover{
+                        background-color: white;
+                        color: #9A835E;
+                        box-shadow: 1px 2px#888888;
+                    }
+                }
+            }
+        }
+        .pagination {
+            display: inline-block;
+            .left-right{
+                border: 1px solid #6B5B40;
+                border-radius: 50%;
+                padding: 0px 6px;
+            }
+            .left{
+                &:hover{
+                    background-color: #6B5B40;
+                }
+            }
+            .right{
+                &:hover{
+                    background-color: #6B5B40;
+                }
+            }
+          }
+          
+          .pagination a {
+            color: #6B5B40;
+            padding: 4px 8px;
+            text-decoration: none;
+            font-family: "BanglaSangam-Regular";
+            img{
+                width: 5px;
+            }
+          }
+        .paginate-wrap{
+            text-align: center;
+            margin-top: 35px;
+        }
+    }
+    .full-addr{
+        padding: 30px;
+        .button-wrapper{
+            @media only screen and (max-width:991px){
+                margin-top: 20px;
+            }
+            justify-content: end !important;
+            .login-button{
+                margin-top: 0 !important;
+                width: 100% !important;
+            }
+        }
+        .addr-display{
+            font-family: "RecklessNeue-Medium";
+            color: #6B5B40;
+            font-size: 16px;
+        }
+    }
+    .collapse-nav{
+        text-transform: uppercase;
+        text-decoration: none;
+        color: #6B5B40;
+        font-weight: 500;
+    }
+}

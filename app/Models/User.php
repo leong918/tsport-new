@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -21,8 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     public static $rules = [
-        'user' => 'required',
-        'email' => 'required',
+        'phone_no' => 'required',
         'password' => 'required',
     ];
 
@@ -43,6 +43,7 @@ class User extends Authenticatable
         'password',
         'referral_email',
         'referral_phone_no',
+        'status'
     ];
 
     /**
@@ -65,5 +66,12 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         return $this->attributes['password'] = Hash::make($value);
+    }
+
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
+        );
     }
 }

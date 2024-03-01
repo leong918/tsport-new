@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('username', 50);
             $table->string('email')->unique()->nullable();
             $table->string('phone_no');
-            $table->timestamp('dob');
+            $table->string('birth_month');
             $table->string('password');
-            $table->string('referral_email');
-            $table->string('referral_phone_no');
+            $table->string('referral_email')->nullable();
+            $table->string('referral_phone_no')->nullable();
             $table->tinyInteger("status")->default(1);
             $table->timestamps();
             $table->softDeletes();

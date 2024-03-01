@@ -32,6 +32,30 @@ class UserRepository extends BaseRepository
         return User::class;
     }
 
+    public function getListing()
+    {
+        return User::query()->orderBy('created_at', 'desc');
+    }
+
+    public function createUser(array $input)
+    {
+        $model = new User();
+        $model->birth_month = $input['birth_month'];
+        $model->fill($input);
+        $model->save();
+    }
+
+    public function updateUser(array $input, int $id)
+    {
+        if (trim($input['password']) === '') {
+            unset($input['password']);
+        }
+
+        $model = User::findOrFail($id);
+        $model->fill($input);
+        $model->save();
+    }
+
     public function updateSession($user_id)
     {
         $new_api_token = (string) Str::uuid();
@@ -56,5 +80,15 @@ class UserRepository extends BaseRepository
                 'login_at'
             )
             ->first();
+    }
+    public function getUserByEmail($email){
+        return User::where('email', $email)->first();
+    }
+
+    public function toggleStatus(int $id)
+    {
+        $model = User::find($id);
+        $model->status = !$model->status;
+        $model->save();
     }
 }

@@ -18,17 +18,10 @@ class PluginController extends BaseController
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $model = $this->pluginRepository->getListing();
+        $installed_plugins = $this->pluginRepository->getInstalledPlugin();
+        $uninstalled_plugins = $this->pluginRepository->getUninstalledPlugin();
 
-            return DataTables::of($model)
-                ->addColumn('action', function ($model) {
-                    return $this->view('plugin.action', compact('model'));
-                })
-                ->make(true);
-        }
-
-        return $this->view('plugin.index');
+        return $this->view('plugin.index', compact('installed_plugins', 'uninstalled_plugins'));
     }
 
     public function install(InstallPluginRequest $request)
@@ -41,5 +34,22 @@ class PluginController extends BaseController
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function reinstall($name)
+    {
+        try {
+            $this->pluginRepository->reinstallPlugin($name);
+
+            return $this->response();
+        } catch (\Exception $e) {
+            return $this->response()->json(['msg' => $e->getMessage()], 500);
+        }
+    }
+
+    public function destroy(int $id)
+    {
+        $this->pluginRepository->deleteById($id);
+        return $this->response();
     }
 }

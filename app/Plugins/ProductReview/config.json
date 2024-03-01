@@ -1,0 +1,7 @@
+{
+    "name": "ProductReview Module",
+    "title": "Product Review",
+    "code": "product_review",
+    "configGroup": "Plugins",
+    "configKey": "ProductReview"
+}

@@ -35,7 +35,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.col-->
                 </div>
             </div>
         </div>
@@ -47,130 +46,128 @@
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
     <script type="text/javascript">
-        $(function() {
-            var table = $('.table').DataTable({
-                bSort: true,
-                processing: true,
-                autoWidth: false,
-                serverSide: true,
-                ajax: {
-                    url: '{!! route('admin.product.index') !!}'
-                },
-                columns: [{
-                        data: 'sku',
-                        name: 'sku'
+        $(document).ready(function() {
+            $(function() {
+                var table = $('.table').DataTable({
+                    bSort: true,
+                    processing: true,
+                    autoWidth: false,
+                    serverSide: true,
+                    ajax: {
+                        url: '{!! route('admin.product.index') !!}'
                     },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status'
-                    },
-                    {
-                        data: 'sort',
-                        name: 'sort'
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        searchable: false,
-                        sortable: false,
-                    }
-                ]
-            });
-
-            // delete record
-            $('table tbody').on('click', '.btn-delete', function(e) {
-                e.preventDefault();
-                var url = $(this).data('url');
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'This action is not able to be reverted.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel',
-                    customClass: {
-                        confirmButton: "btn btn-success me-2",
-                        cancelButton: "btn btn-danger ms-2"
-                    },
-                    buttonsStyling: false,
-                    showLoaderOnConfirm: true,
-                    preConfirm: (response) => {
-                        if (response) {
-                            return axios.delete(url, {})
-                                .then(() => {
-                                    table.ajax.reload();
-                                })
-                                .catch((e) => {
-                                    console.error("error ", e)
-                                    Swal.showValidationMessage(
-                                        `Request failed: ${e}`
-                                    );
-                                })
+                    columns: [{
+                            data: 'sku',
+                            name: 'sku'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'status',
+                            name: 'status'
+                        },
+                        {
+                            data: 'sort',
+                            name: 'sort'
+                        },
+                        {
+                            data: 'created_at',
+                            name: 'created_at'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action',
+                            searchable: false,
+                            sortable: false,
                         }
-                    },
-                    allowOutsideClick: () => !swal.isLoading()
-                }).then((result) => {
-                    if (result.value) {
-                        Swal.fire({
-                            title: 'Deleted!',
-                            text: 'Record deleted successfully!',
-                            icon: 'success',
-                        });
-                        // reload datatables
-                        table.ajax.reload();
-                    }
+                    ]
                 });
-            });
 
-            //status toggle 
-            $('table tbody').on('click', '.btn-status', function() {
-                var url = $(this).data("url");
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'This action is not able to be reverted.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, change it!',
-                    cancelButtonText: 'Cancel',
-                    customClass: {
-                        confirmButton: "btn btn-success me-2",
-                        cancelButton: "btn btn-danger ms-2"
-                    },
-                    buttonsStyling: false,
-                    showLoaderOnConfirm: true,
-                    preConfirm: (response) => {
-                        if (response) {
-                            return axios.post(url, {})
-                                .then(() => {
-                                    table.ajax.reload();
-                                })
-                                .catch((e) => {
-                                    console.error("error ", e)
-                                    Swal.showValidationMessage(
-                                        `Request failed: ${e}`
-                                    );
-                                })
+                $('table tbody').on('click', '.btn-delete', function(e) {
+                    e.preventDefault();
+                    var url = $(this).data('url');
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This action is not able to be reverted.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel',
+                        customClass: {
+                            confirmButton: "btn btn-success me-2",
+                            cancelButton: "btn btn-danger ms-2"
+                        },
+                        buttonsStyling: false,
+                        showLoaderOnConfirm: true,
+                        preConfirm: (response) => {
+                            if (response) {
+                                return axios.delete(url, {})
+                                    .then(() => {
+                                        table.ajax.reload();
+                                    })
+                                    .catch((e) => {
+                                        console.error("error ", e)
+                                        Swal.showValidationMessage(
+                                            `Request failed: ${e}`
+                                        );
+                                    })
+                            }
+                        },
+                        allowOutsideClick: () => !swal.isLoading()
+                    }).then((result) => {
+                        if (result.value) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Record deleted successfully!',
+                                icon: 'success',
+                            });
+                            table.ajax.reload();
                         }
-                    },
-                    allowOutsideClick: () => !swal.isLoading()
-                }).then((result) => {
-                    if (result.value) {
-                        Swal.fire({
-                            title: 'Updated!',
-                            text: 'Record updated successfully!',
-                            icon: 'success',
-                        });
-                        // reload datatables
-                        table.ajax.reload();
-                    }
+                    });
+                });
+
+                $('table tbody').on('click', '.btn-status', function() {
+                    var url = $(this).data("url");
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This action is not able to be reverted.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, change it!',
+                        cancelButtonText: 'Cancel',
+                        customClass: {
+                            confirmButton: "btn btn-success me-2",
+                            cancelButton: "btn btn-danger ms-2"
+                        },
+                        buttonsStyling: false,
+                        showLoaderOnConfirm: true,
+                        preConfirm: (response) => {
+                            if (response) {
+                                return axios.post(url, {})
+                                    .then(() => {
+                                        table.ajax.reload();
+                                    })
+                                    .catch((e) => {
+                                        console.error("error ", e)
+                                        Swal.showValidationMessage(
+                                            `Request failed: ${e}`
+                                        );
+                                    })
+                            }
+                        },
+                        allowOutsideClick: () => !swal.isLoading()
+                    }).then((result) => {
+                        if (result.value) {
+                            Swal.fire({
+                                title: 'Updated!',
+                                text: 'Record updated successfully!',
+                                icon: 'success',
+                            });
+                            table.ajax.reload();
+                        }
+                    });
                 });
             });
         });

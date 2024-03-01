@@ -60,6 +60,11 @@ class Product extends Model
         );
     }
 
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
     public function productDescription()
     {
         return $this->hasMany(ProductDescription::class);
@@ -77,21 +82,22 @@ class Product extends Model
 
     public function productPrice()
     {
-        return $this->hasMany(productPrice::class);
+        return $this->hasMany(ProductPrice::class);
     }
 
     public function cnDescription()
     {
-        return $this->hasOne(ProductDescription::class)->where('language','cn');
+        return $this->hasOne(ProductDescription::class)->where('language', 'cn');
     }
 
     public function enDescription()
     {
-        return $this->hasOne(ProductDescription::class)->where('language','en');
+        return $this->hasOne(ProductDescription::class)->where('language', 'en');
     }
 
     public function checkProductRelated($product_id, $related_product_id)
     {
         return ProductRelated::where(['product_id' => $product_id, 'related_product_id' => $related_product_id])->exists();
     }
+
 }

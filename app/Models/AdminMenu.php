@@ -21,6 +21,7 @@ class AdminMenu extends Model
         'type',
         'sort',
         'status',
+        'key',
     ];
 
     /**

@@ -8,6 +8,10 @@ abstract class ConfigDefault
     public $configKey;
     public $pathPlugin;
     public $title;
+    public $code;
+
+    public $pluginRepository;
+    public $adminMenuRepository;
 
     /**
      * Install app
