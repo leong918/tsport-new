@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProductRelated extends Model
 {
@@ -51,5 +52,10 @@ class ProductRelated extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
+    }
+
+    public function relatedProduct() : HasOne
+    {
+        return $this->hasOne(Product::class,'id');
     }
 }

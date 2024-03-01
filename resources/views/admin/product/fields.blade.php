@@ -224,7 +224,7 @@
 
         function doneTyping() {
             var inputString = $('#productName').val().trim().toLowerCase().replace(/\s+/g, '-');
-            var organizedString = inputString.replace(/[^A-Za-z0-9\-]/,'');
+            var organizedString = inputString.replace(/[^\w\u4E00-\u9FFF\-]/g, '');
 
             $('#alias').val(organizedString);
         }

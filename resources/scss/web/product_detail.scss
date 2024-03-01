@@ -107,14 +107,6 @@
                       }
 
                     }
-                
-                    // .slick-prev {
-                    //   left: -8px;
-                    // }
-                
-                    // .slick-next {
-                    //   right: -13px;
-                    // }
                 }
             
             }
@@ -123,10 +115,19 @@
                 @media screen and (max-width: 991px) {
                     padding: 0px;
                 }
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: contain;
+                .slick-track{
+                    height:60vh;
+                    .slick-slide{
+                        display:flex !important;
+                        justify-content: center;
+                        flex-direction: column;
+
+                        img{
+                            height:100%;
+                            object-fit: cover;
+                        }
+                    }
+
                 }
 
                 .slick-prev img,
@@ -478,6 +479,14 @@
             padding: 50px 0px 20px 0px;
         }
 
+        .swiper{
+            margin-left:125px;
+
+            @media (max-width: 1023px) {
+                margin-left:0px;
+            }
+        }
+
         .product-description {
             text-align: left;
             font-size: 12px;
@@ -485,7 +494,15 @@
             padding-bottom: 10px;
             font-family: "RecklessNeue-Medium";
             color: #6B5B41;
-
+            text-overflow: ellipsis;
+            height: 4rem;
+            white-space: normal;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 3;
+            
             @media (max-width: 1024px) {
                 font-size: 14px;
                 padding-top: 0px;
@@ -566,21 +583,8 @@
             }
         }
 
-        .product-image:hover {
-            .wishlist-cart-container {
-                position: absolute;
-                opacity: 1;
-                bottom: 35px;
 
-                @media (max-width: 1024px) {
-                    display: none;
-                }
 
-                @media (max-width: 767px) {
-                    display: none;
-                }
-            }
-        }
 
         .wishlist-container {
             position: relative;
@@ -674,17 +678,17 @@
     }
 
     //carousel
-    .carousel-indicators button {
-        width: 5px;
-        height: 5px;
-        border-radius: 100%;
-    }
+    // .carousel-indicators button {
+    //     width: 5px;
+    //     height: 5px;
+    //     border-radius: 100%;
+    // }
 
-    .carousel-indicators [data-bs-target] {
-        background-color: #6B5B41;
-        width: 5px;
-        height: 5px;
-    }
+    // .carousel-indicators [data-bs-target] {
+    //     background-color: #6B5B41;
+    //     width: 5px;
+    //     height: 5px;
+    // }
 
 
     //swiper
@@ -712,6 +716,42 @@
         transition: clip-path 0.5s ease-in-out, opacity 0.4s ease-in-out;
     }
 
+    .swiper-slide.new-launches-product-img{
+        text-decoration: none;
+        .product-image{ 
+            overflow: hidden;
+            height:45vh;
+            img.show{
+                width:100%;
+                height:100%;
+                object-fit: cover;
+                clip-path: ellipse(100% 100% at 50% 50%);
+                transition: clip-path 0.5s, transform 0.3s ease-in-out;
+            }
+        }
+
+        .product-image:hover{
+            img.show {
+                clip-path: ellipse(43% 40% at 50% 50%);
+                transform: scale(1.2);
+                transform-origin: center center;
+            }
+            .wishlist-cart-container {
+                position: absolute;
+                opacity: 1;
+                bottom: 35px;
+    
+                @media (max-width: 1024px) {
+                    display: none;
+                }
+    
+                @media (max-width: 767px) {
+                    display: none;
+                }
+            }
+        }
+    }
+
     .swiper-slide img.hide {
         clip-path: ellipse(100% 50% at 50% 50%);
         opacity: 0;
@@ -720,14 +760,6 @@
         left: 0;
     }
 
-    .swiper-slide:hover img.hide {
-        clip-path: none;
-        opacity: 1;
-    }
-
-    .swiper-slide:hover img.show {
-        opacity: 0;
-    }
 
 
     //buttons animation

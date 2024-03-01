@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Form\Product;
+namespace App\Http\Requests\Form\BlogComment;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
-class CreateProductRequest extends FormRequest
+
+
+class CreateBlogCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +27,8 @@ class CreateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'brand_id' => 'required',
-            'category_id' => 'required',
-            'name' => 'required',
-            'alias' => 'required|unique:product|regex:/^[\w\p{Han}\-]+$/u',
-            'sku' => 'required',
-            'status' => 'required',
-            'sort' => 'required',
-            'is_best_seller' => 'required',
-            'is_new' => 'required',
-            // 'product_price' => 'required',
+            'blog_id' => 'required',
+            'comment' => 'required'
         ];
     }
 

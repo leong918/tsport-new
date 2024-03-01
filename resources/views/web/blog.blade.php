@@ -21,13 +21,15 @@
                             <div class="blog-container blog-img">
                                 <div class="blog-block">
                                     <div class="img-block">
-                                        <img src="{{ $blog->cnBlogDetail->image }}">
+                                        <img src="{{ $blog->getParameters('cn')->image }}">
                                     </div>
                                     <div class="blog-description">
-                                        <div class="blog-date">{{ $blog->published_at  }}</div>
+                                        <div class="blog-date">{{ $blog->publishedDate()  }}</div>
                                         <div class="blog-main">{{ $blog->name  }}</div>
                                     </div>
-                                    <div class="blog-button" type="button">READ MORE</div>
+                                    <div class="blog-button-wrapper">
+                                        <a href="{{route('web.blog_detail', ['blog_id' => $blog->id])}}" class="blog-button">READ MORE</a>
+                                    </div>
                                 </div>
                             </div>
                             @endforeach

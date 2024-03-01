@@ -22,7 +22,7 @@
                             <div class="list-title">Category</div>
                             <ul>
                                 @foreach ($category_list as $category)
-                                    <li><a href="#">{{ $category->name }}</a></li>
+                                    <li><button data-target-section="{{ $category->name }}" class="canvas-category-button">{{ $category->name }}</button></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -34,7 +34,7 @@
                     <div class="list-title">Category</div>
                     <ul>
                         @foreach ($category_list as $category)
-                            <li><a href="#{{ $category->name }}">{{ $category->name }}</a></li>
+                            <li><a href="#{{ $category->name }}" >{{ $category->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
@@ -42,7 +42,7 @@
             <div class="col-md-9 product-wrapper" id="targetElement">
                 <div class="tnc">
                     <div class="tnc-para">
-                        {!! $brand->cnDescription->description !!}
+                        {!! $brand->getParameters('cn')->description !!}
                     </div>
                 </div>
                 @foreach($product_list as $category => $category_product_list)
@@ -99,34 +99,50 @@
 @push('scripts')
 <script type="text/javascript">
 $(document).ready(function() {
+
+    $('.canvas-category-button').click(function(e) {
+
+        var targetSection = $(this).data('target-section');
+
+        $('#offcanvasNav').offcanvas('hide');
+
+        $('#offcanvasNav').on('hidden.bs.offcanvas', function () {
+            $('html, body').animate({
+                scrollTop: $('#' + targetSection).offset().top
+            }, 0);
+        });
+    });
+    
   // Set the target element
-  var targetElement = $('#targetElement');
-  var footerElement = $('#footer');
+//   var targetElement = $('#targetElement');
+//   var footerElement = $('#footer');
 
-  // Function to check if the page has scrolled to the target element
-  function isScrolledToElement(element) {
-    var scrollPosition = $(window).scrollTop();
-    var elementOffset = element.offset().top;
+//   // Function to check if the page has scrolled to the target element
+//   function isScrolledToElement(element) {
+//     var scrollPosition = $(window).scrollTop();
+//     var elementOffset = element.offset().top;
 
-    return scrollPosition >= elementOffset;
-  }
+//     return scrollPosition >= elementOffset;
+//   }
 
-  // Event listener for scroll
-  $(window).scroll(function() {
-    // Check if scrolled to the target element
-    if (isScrolledToElement(targetElement)) {
-      $('.category-wrapper').addClass('active');
-      if ($(window).scrollTop() + window.innerHeight >= $('#footer').offset().top) {
-        // Perform your action when the page reaches the footer
-        $('.category-wrapper').css('top', '-100%');
-        }
-        else{
-            $('.category-wrapper').css('top', '0');
-        }
-    } else {
-      $('.category-wrapper').removeClass('active');
-    }
-  });
+//   // Event listener for scroll
+//   $(window).scroll(function() {
+//     // Check if scrolled to the target element
+//     if (isScrolledToElement(targetElement)) {
+//       $('.category-wrapper').addClass('active');
+
+//       if ($(window).scrollTop() + window.innerHeight >= $('#footer').offset().top) {
+//         // Perform your action when the page reaches the footer
+//         $('.category-wrapper').css('top', '-100%');
+//         }
+//         else{
+//             $('.category-wrapper').css('top', '0');
+//         }
+        
+//     } else {
+//       $('.category-wrapper').removeClass('active');
+//     }
+//   });
 });
 
 </script>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BlogDetail extends Model
 {
@@ -56,7 +57,7 @@ class BlogDetail extends Model
         );
     }
     
-    protected function blog()
+    protected function blog() : BelongsTo
     {
         return $this->belongsTo(Blog::class);
     }

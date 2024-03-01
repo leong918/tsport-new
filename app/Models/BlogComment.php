@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BlogComment extends Model
 {
     use SoftDeletes;
@@ -56,4 +58,20 @@ class BlogComment extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
+
+    protected function blog() : BelongsTo
+    {
+        return $this->belongsTo(Blog::class);
+    }
+    
+    public function date()
+    {
+        return Carbon::parse($this->created_at)->format('M j, Y');
+    }
+
+    protected function blogSubComment(): HasMany
+    {
+        return $this->hasMany(BlogComment::class,'parent_id','id');
+    }
+
 }
