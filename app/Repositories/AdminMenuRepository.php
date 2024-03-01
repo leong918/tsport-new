@@ -38,7 +38,7 @@ class AdminMenuRepository extends BaseRepository
                 $parent_menu->child_item = AdminMenu::where('parent_id', $parent_menu->id)->orderBy('sort')->get();
             }
         }
-
+        
         return $parent_menus;
     }
 

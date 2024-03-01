@@ -10,8 +10,7 @@ class PluginRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -59,7 +58,7 @@ class PluginRepository extends BaseRepository
                 //Check plugin exist
                 $pluginExist = Plugin::where('key', $configKey)->first();
                 if ($pluginExist) {
-                    File::deleteDirectory(storage_path('tmp/'.$pathTemp));
+                    File::deleteDirectory(storage_path('tmp/' . $pathTemp));
                     throw new \Exception('Error! Plugin exist.');
                 }
 
@@ -68,18 +67,18 @@ class PluginRepository extends BaseRepository
                 //Validation Done
                 try {
                     //Copy Directory from temporary path to real path
-                    File::copyDirectory(storage_path('tmp/'.$pathTemp.'/'.$folderName.'/public'), public_path($pathPlugin));
-                    File::copyDirectory(storage_path('tmp/'.$pathTemp.'/'.$folderName), app_path($pathPlugin));
-                    File::deleteDirectory(storage_path('tmp/'.$pathTemp));
+                    File::copyDirectory(storage_path('tmp/' . $pathTemp . '/' . $folderName . '/public'), public_path($pathPlugin));
+                    File::copyDirectory(storage_path('tmp/' . $pathTemp . '/' . $folderName), app_path($pathPlugin));
+                    File::deleteDirectory(storage_path('tmp/' . $pathTemp));
 
                     $configNamespace = getPluginNamespace($configKey) . '\AppConfig';
                     (new $configNamespace)->install();
                 } catch (\Throwable $e) {
-                    File::deleteDirectory(storage_path('tmp/'.$pathTemp));
+                    File::deleteDirectory(storage_path('tmp/' . $pathTemp));
                     throw new \Exception($e->getMessage());
                 }
             } else {
-                File::deleteDirectory(storage_path('tmp/'.$pathTemp));
+                File::deleteDirectory(storage_path('tmp/' . $pathTemp));
                 throw new \Exception('Error! Config file not exist.');
             }
         } else {
@@ -87,6 +86,12 @@ class PluginRepository extends BaseRepository
         }
 
         throw new \Exception('Plugin Installed Successfully!');
+    }
+
+    public function reinstallPlugin($name)
+    {
+        $configNamespace = getPluginNamespace($name) . '\AppConfig';
+        (new $configNamespace)->install();
     }
 
     private function uploadLocalFile($file, $filePath)
@@ -103,6 +108,34 @@ class PluginRepository extends BaseRepository
     public function getListing()
     {
         return Plugin::query()->orderBy('created_at', 'desc');
+    }
+
+    public function getInstalledPlugin()
+    {
+        $plugins = Plugin::query()->orderBy('created_at', 'desc')->get();
+        foreach ($plugins as $array_key => $plugin) {
+            $plugin->status = 1;
+            if (!is_dir(__DIR__ . getPluginNamespace($plugin->key))) {
+                unset($plugins[$array_key]);
+            }
+        }
+
+        return $plugins;
+    }
+
+    public function getUninstalledPlugin()
+    {
+        $plugins = scandir(app_path('Plugins'));
+        unset($plugins[0], $plugins[1], $plugins[2]);
+
+        foreach ($plugins as $key => $plugin) {
+            $db_plugin = Plugin::where('key', $plugin)->first();
+            if ($db_plugin) {
+                unset($plugins[$key]);
+            }
+        }
+
+        return $plugins;
     }
 
     public function deleteById($id)
