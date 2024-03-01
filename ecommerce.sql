@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2024 at 04:44 AM
+-- Generation Time: Feb 29, 2024 at 10:18 AM
 -- Server version: 5.7.41
 -- PHP Version: 8.1.21
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ecommerce2`
+-- Database: `ecommerce`
 --
 
 -- --------------------------------------------------------
@@ -109,7 +109,7 @@ CREATE TABLE `blog` (
 
 INSERT INTO `blog` (`id`, `name`, `status`, `sort`, `published_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'Blog 1', 1, 0, '2024-02-25 16:00:00', '2024-02-26 00:56:02', '2024-02-26 00:56:02', NULL),
-(2, 'Blog 2', 1, 0, '2024-02-25 16:00:00', '2024-02-26 00:56:02', '2024-02-26 00:56:02', NULL),
+(2, 'Blog 2', 1, 0, '2024-02-25 16:00:00', '2024-02-26 00:56:02', '2024-02-27 02:00:37', NULL),
 (3, 'Blog 3', 1, 0, '2024-02-25 16:00:00', '2024-02-26 00:56:02', '2024-02-26 00:56:02', NULL),
 (4, 'Blog 4', 1, 0, '2024-02-25 16:00:00', '2024-02-26 00:56:02', '2024-02-26 00:56:02', NULL),
 (5, 'Blog 5', 1, 0, '2024-02-25 16:00:00', '2024-02-26 00:56:02', '2024-02-26 00:56:02', NULL),
@@ -163,8 +163,8 @@ CREATE TABLE `blog_detail` (
 INSERT INTO `blog_detail` (`id`, `blog_id`, `language`, `name`, `image`, `content`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 1, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-26 00:56:03', '2024-02-26 00:56:03', NULL),
 (2, 1, 'cn', '博客1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客1描述</p>', '2024-02-26 00:56:04', '2024-02-26 00:56:04', NULL),
-(3, 2, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-26 00:56:03', '2024-02-26 00:56:03', NULL),
-(4, 2, 'cn', '博客1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客1描述</p>', '2024-02-26 00:56:04', '2024-02-26 00:56:04', NULL),
+(3, 2, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-26 00:56:03', '2024-02-27 02:00:37', '2024-02-27 02:00:37'),
+(4, 2, 'cn', '博客1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客1描述</p>', '2024-02-26 00:56:04', '2024-02-27 02:00:37', '2024-02-27 02:00:37'),
 (5, 3, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-26 00:56:03', '2024-02-26 00:56:03', NULL),
 (6, 3, 'cn', '博客1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客1描述</p>', '2024-02-26 00:56:04', '2024-02-26 00:56:04', NULL),
 (7, 4, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-26 00:56:03', '2024-02-26 00:56:03', NULL),
@@ -180,7 +180,11 @@ INSERT INTO `blog_detail` (`id`, `blog_id`, `language`, `name`, `image`, `conten
 (17, 9, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-26 00:56:03', '2024-02-26 00:56:03', NULL),
 (18, 9, 'cn', '博客1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客1描述</p>', '2024-02-26 00:56:04', '2024-02-26 00:56:04', NULL),
 (19, 10, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-26 00:56:03', '2024-02-26 00:56:03', NULL),
-(20, 10, 'cn', '博客1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客1描述</p>', '2024-02-26 00:56:04', '2024-02-26 00:56:04', NULL);
+(20, 10, 'cn', '博客1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客1描述</p>', '2024-02-26 00:56:04', '2024-02-26 00:56:04', NULL),
+(21, 2, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-27 02:00:37', '2024-02-27 02:00:37', '2024-02-27 02:00:37'),
+(22, 2, 'cn', '博客2', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客2描述</p>', '2024-02-27 02:00:37', '2024-02-27 02:00:37', '2024-02-27 02:00:37'),
+(23, 2, 'en', 'Blog 1', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/ZejLdcCK4MgRXpVlNsvUYNT1aBuNPfwjq8gAq1lY.png', '<p>Blog 1 Description</p>', '2024-02-27 02:00:37', '2024-02-27 02:00:37', NULL),
+(24, 2, 'cn', '博客2', 'https://vvinners-staging.sgp1.digitaloceanspaces.com/blog_detail/s0Z4LSfZFQu6LVfCqMCN8YdyrEojsJ5WXZA8usQM.png', '<p>博客2描述</p>', '2024-02-27 02:00:37', '2024-02-27 02:00:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -466,7 +470,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `brand_id`, `category_id`, `name`, `sku`, `alias`, `status`, `sort`, `is_best_seller`, `is_new`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 'Product 1', '1', 'product-1', 1, 0, 1, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
+(1, 1, 1, '[全新升級配方] LOVINAH DRAGON\'S BLOOD BRIGHTENING+HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML', '1', '全新升級配方-lovinah-dragons-blood-brighteninghydarting-face-tonic-龍血樹抗氧亮肌爽膚水-100ml', 1, 0, 1, 0, '2024-02-23 01:40:17', '2024-02-26 02:16:04', NULL),
 (2, 1, 1, 'Product 2', '2', 'product-2', 1, 0, 1, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
 (3, 1, 1, 'Product 3', '3', 'product-3', 1, 0, 1, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
 (4, 1, 1, 'Product 4', '4', 'product-4', 1, 0, 1, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
@@ -494,8 +498,8 @@ INSERT INTO `product` (`id`, `brand_id`, `category_id`, `name`, `sku`, `alias`, 
 (26, 1, 3, 'Product 26', '26', 'product-26', 1, 0, 0, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
 (27, 1, 3, 'Product 27', '27', 'product-27', 1, 0, 0, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
 (28, 1, 3, 'Product 28', '28', 'product-28', 1, 0, 0, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
-(29, 1, 3, 'Product 29', '29', 'product-29', 1, 0, 0, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
-(30, 1, 3, 'Product 30', '30', 'product-30', 1, 0, 0, 0, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL);
+(29, 1, 3, 'Product 29', '29', 'product-29', 1, 0, 0, 0, '2024-02-24 01:40:17', '2024-02-23 01:40:17', NULL),
+(30, 1, 3, 'Product 30', '30', 'product-30', 1, 0, 0, 0, '2024-02-24 01:40:17', '2024-02-23 01:40:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -523,8 +527,8 @@ CREATE TABLE `product_description` (
 --
 
 INSERT INTO `product_description` (`id`, `product_id`, `language`, `name`, `information`, `description`, `ingredient`, `usage`, `additional_information`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
-(2, 1, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
+(1, 1, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-23 01:40:19', '2024-02-26 02:15:10', '2024-02-26 02:15:10'),
+(2, 1, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-23 01:40:19', '2024-02-26 02:15:10', '2024-02-26 02:15:10'),
 (3, 2, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
 (4, 2, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
 (5, 3, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
@@ -582,7 +586,19 @@ INSERT INTO `product_description` (`id`, `product_id`, `language`, `name`, `info
 (57, 29, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
 (58, 29, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
 (59, 30, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
-(60, 30, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL);
+(60, 30, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
+(61, 1, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-26 02:15:10', '2024-02-26 02:16:04', '2024-02-26 02:16:04'),
+(62, 1, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-26 02:15:10', '2024-02-26 02:16:04', '2024-02-26 02:16:04'),
+(63, 1, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-26 02:16:04', '2024-02-26 20:25:38', '2024-02-26 20:25:38'),
+(64, 1, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-26 02:16:04', '2024-02-26 20:25:38', '2024-02-26 20:25:38'),
+(65, 1, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-26 20:25:38', '2024-02-26 22:03:05', '2024-02-26 22:03:05'),
+(66, 1, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-26 20:25:38', '2024-02-26 22:03:05', '2024-02-26 22:03:05'),
+(67, 1, 'en', 'Product', '<p>Product Information</p>', '<p>Product Description</p>', '<p>Ingredient Description</p>', '<p>Ingredient Usage</p>', '<p>Ingredient Additional Information</p>', '2024-02-26 22:03:05', '2024-02-27 02:39:43', '2024-02-27 02:39:43'),
+(68, 1, 'cn', '产品', '<p>产品内容</p>', '<p>产品描述</p>', '<p>产品成分</p>', '<p>产品功效</p>', '<p>产品附加内容</p>', '2024-02-26 22:03:05', '2024-02-27 02:39:43', '2024-02-27 02:39:43'),
+(69, 1, 'en', 'Product 3', '<p>Product Information 3</p>', '<p>Product Description 3&nbsp;</p>', '<p>Ingredient Description 3</p>', '<p>Ingredient Usage 3</p>', '<p>Ingredient Additional Information 3</p>', '2024-02-27 02:39:43', '2024-02-28 19:00:49', '2024-02-28 19:00:49'),
+(70, 1, 'cn', '产品 3', '<p>产品内容 3</p>', '<p>产品描述 3</p>', '<p>产品成分 3</p>', '<p>产品功效 3</p>', '<p>产品附加内容 3</p>', '2024-02-27 02:39:43', '2024-02-28 19:00:49', '2024-02-28 19:00:49'),
+(71, 1, 'en', 'Product 3', '<p>Product Information 3</p>', '<p>Product Description 3&nbsp;</p>', '<p>Ingredient Description 3</p>', '<p>Ingredient Usage 3</p>', '<p>Ingredient Additional Information 3</p>', '2024-02-28 19:00:49', '2024-02-28 19:00:49', NULL),
+(72, 1, 'cn', '产品 3', '<p>产品内容 3</p>', '<p>产品描述 3</p>', '<p>产品成分 3</p>', '<p>产品功效 3</p>', '<p>产品附加内容 3</p>', '2024-02-28 19:00:49', '2024-02-28 19:00:49', NULL);
 
 -- --------------------------------------------------------
 
@@ -604,7 +620,7 @@ CREATE TABLE `product_image` (
 --
 
 INSERT INTO `product_image` (`id`, `product_id`, `url`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
+(1, 1, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-26 20:25:33', '2024-02-26 20:25:33'),
 (2, 2, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
 (3, 3, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
 (4, 4, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
@@ -633,7 +649,10 @@ INSERT INTO `product_image` (`id`, `product_id`, `url`, `created_at`, `updated_a
 (27, 27, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
 (28, 28, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
 (29, 29, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
-(30, 30, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL);
+(30, 30, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/ozmMqzk3nk3ofnXP7zHuYFYIyxwcm2SnYtRVXiu0.png', '2024-02-23 01:40:19', '2024-02-23 01:40:19', NULL),
+(31, 1, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/YV4wC8EfY2dNLmIoHuW6WUjtLzTcDHaOti2aiGc1.png', '2024-02-26 20:25:35', '2024-02-26 20:25:35', NULL),
+(32, 1, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/FJoGHPrmFRFDtBFjPtCHSz9z9UHS5Cp8MnYfMNsd.png', '2024-02-26 20:25:36', '2024-02-26 20:25:36', NULL),
+(33, 1, 'https://vvinners-staging.sgp1.digitaloceanspaces.com/product/qsH55iDGeTQ8AXaqjdZTSsgH9lCByEw5OmyUjwrK.png', '2024-02-26 20:25:38', '2024-02-26 20:25:38', NULL);
 
 -- --------------------------------------------------------
 
@@ -657,7 +676,7 @@ CREATE TABLE `product_price` (
 --
 
 INSERT INTO `product_price` (`id`, `product_id`, `currency_id`, `code`, `price`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
+(1, 1, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-26 02:15:10', '2024-02-26 02:15:10'),
 (2, 2, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
 (3, 3, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
 (4, 4, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
@@ -686,7 +705,13 @@ INSERT INTO `product_price` (`id`, `product_id`, `currency_id`, `code`, `price`,
 (27, 27, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
 (28, 28, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
 (29, 29, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
-(30, 30, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL);
+(30, 30, 1, 'MYR', 99.00, '2024-02-23 01:40:17', '2024-02-23 01:40:17', NULL),
+(31, 1, 1, 'MYR', 99.00, '2024-02-26 02:15:10', '2024-02-26 02:16:04', '2024-02-26 02:16:04'),
+(32, 1, 1, 'MYR', 99.00, '2024-02-26 02:16:04', '2024-02-26 20:25:38', '2024-02-26 20:25:38'),
+(33, 1, 1, 'MYR', 99.00, '2024-02-26 20:25:38', '2024-02-26 22:03:05', '2024-02-26 22:03:05'),
+(34, 1, 1, 'MYR', 99.00, '2024-02-26 22:03:05', '2024-02-27 02:39:43', '2024-02-27 02:39:43'),
+(35, 1, 1, 'MYR', 99.00, '2024-02-27 02:39:43', '2024-02-28 19:00:49', '2024-02-28 19:00:49'),
+(36, 1, 1, 'MYR', 99.00, '2024-02-28 19:00:49', '2024-02-28 19:00:49', NULL);
 
 -- --------------------------------------------------------
 
@@ -703,6 +728,21 @@ CREATE TABLE `product_related` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `product_related`
+--
+
+INSERT INTO `product_related` (`id`, `product_id`, `related_product_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 2, 1, '2024-02-26 22:03:05', '2024-02-26 22:03:05', NULL),
+(2, 3, 1, '2024-02-26 22:03:05', '2024-02-26 22:03:05', NULL),
+(3, 2, 1, '2024-02-27 02:39:43', '2024-02-27 02:39:43', NULL),
+(4, 3, 1, '2024-02-27 02:39:43', '2024-02-27 02:39:43', NULL),
+(5, 2, 1, '2024-02-28 19:00:49', '2024-02-28 19:00:49', NULL),
+(6, 3, 1, '2024-02-28 19:00:49', '2024-02-28 19:00:49', NULL),
+(7, 6, 1, '2024-02-28 19:00:49', '2024-02-28 19:00:49', NULL),
+(8, 8, 1, '2024-02-28 19:00:49', '2024-02-28 19:00:49', NULL),
+(9, 10, 1, '2024-02-28 19:00:49', '2024-02-28 19:00:49', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -716,7 +756,7 @@ CREATE TABLE `user` (
   `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dob` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `birth_month` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `referral_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `referral_phone_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -730,8 +770,8 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `email`, `phone_no`, `dob`, `password`, `referral_email`, `referral_phone_no`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'User', 'ABC', 'userABC', 'user@gmail.com', '60123456789', '2024-02-23 01:13:29', '$2y$12$azeZVG2EjP5mmexdToxIjeQMqyGUwbp19SKR2GqnZmswy84xLJg/e', 'referral@gmail.com', '60112223333', 1, '2024-02-23 01:13:29', '2024-02-23 01:13:29', NULL);
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `email`, `phone_no`, `birth_month`, `password`, `referral_email`, `referral_phone_no`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'User', 'ABC', 'userABC', 'user@gmail.com', '60123456789', 'January', '$2y$12$azeZVG2EjP5mmexdToxIjeQMqyGUwbp19SKR2GqnZmswy84xLJg/e', 'referral@gmail.com', '60112223333', 1, '2024-02-23 01:13:29', '2024-02-23 01:13:29', NULL);
 
 --
 -- Indexes for dumped tables
@@ -902,7 +942,7 @@ ALTER TABLE `blog_comment`
 -- AUTO_INCREMENT for table `blog_detail`
 --
 ALTER TABLE `blog_detail`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `brand`
@@ -968,25 +1008,25 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `product_description`
 --
 ALTER TABLE `product_description`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `product_price`
 --
 ALTER TABLE `product_price`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `product_related`
 --
 ALTER TABLE `product_related`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user`

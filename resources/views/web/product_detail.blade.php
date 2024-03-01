@@ -14,14 +14,10 @@
             </div>
             <div class="col-12 col-lg-6 row justify-content-between image-wrapper">
                 <div class="col-12 col-lg-2 image-viewer-slider slider-nav p-0">
-                    <div class="d-flex flex-column justify-content-center align-center"><img src="{{asset('assets/web/assets/img/product_details/product_1.png')}}"></div>
-
                     @foreach($product->productImage as $product_image)
                         <div class="d-flex flex-column justify-content-center align-center"><img src="{{ $product_image->url }}"></div>
                     @endforeach                </div>
                 <div class="col-12 col-lg-10 image-viewer slider-for">
-                    <div class=""><img src="{{asset('assets/web/assets/img/product_details/product_1.png')}}"></div>
-
                     @foreach($product->productImage as $product_image)
                         <div class=""><img src="{{$product_image->url}}"></div>
                     @endforeach
@@ -120,7 +116,7 @@
             <div class="swiper-wrapper">
                 @if($product->productRelated->count())
                     @foreach($product->productRelated as $productRelated)
-                        <div class="swiper-slide new-launches-product-img">
+                        <a href="{{route('web.product_detail', ['alias' => $productRelated->relatedProduct->alias])}}" class="swiper-slide new-launches-product-img">
                             <div class="product-image position-relative">
                                 <img class="show" src="{{ $productRelated->relatedProduct->productImage->first()->url }}">
                                 <div class="wishlist-cart-container">
@@ -155,7 +151,7 @@
                                     <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 @endif
             </div>

@@ -22,7 +22,7 @@
                             <div class="list-title">Category</div>
                             <ul>
                                 @foreach ($category_list as $category)
-                                    <li><a href="#" class="category-btn">{{ $category->name }}</a></li>
+                                    <li><a href="#" class="category-btn" data-category-id={{ $category->id}}>{{ $category->name }}</a></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -74,6 +74,9 @@
     $(document).ready(function() {
         $('.category-btn').click(function(){
             event.preventDefault();
+            if ($('#offcanvasNav').offcanvas('isOpen')) {
+                $('#offcanvasNav').offcanvas('hide');
+            }
             var category_id = $(this).data('category-id');
             @if(!empty($category_type))
                 axios.get('{{ route('web.product', ['category_type' => $category_type]) }}', {params: { category_id: category_id }})

@@ -40,7 +40,6 @@ class UserRepository extends BaseRepository
     public function createUser(array $input)
     {
         $model = new User();
-        $model->birth_month = $input['birth_month'];
         $model->fill($input);
         $model->save();
     }

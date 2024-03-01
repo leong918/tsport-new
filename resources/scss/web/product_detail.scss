@@ -481,6 +481,10 @@
 
         .swiper{
             margin-left:125px;
+
+            @media (max-width: 1023px) {
+                margin-left:0px;
+            }
         }
 
         .product-description {
@@ -713,6 +717,7 @@
     }
 
     .swiper-slide.new-launches-product-img{
+        text-decoration: none;
         .product-image{ 
             overflow: hidden;
             height:45vh;

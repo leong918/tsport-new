@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Brand extends Model
 {
@@ -60,7 +61,7 @@ class Brand extends Model
         );
     }
 
-    protected function brandDescription()
+    protected function brandDescription() : HasMany
     {
         return $this->hasMany(BrandDescription::class);
     
@@ -71,7 +72,7 @@ class Brand extends Model
         return BrandDescription::where('language',$params)->first();
     } 
 
-    public function product()
+    public function product() : HasMany
     {
         return $this->hasMany(Product::class,'id');
     }
