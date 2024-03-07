@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 @endsection
-</style>
 <x-alert />
 <div class="col-sm-12">
     <div class="card mb-3">
@@ -71,7 +70,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3 related-product-wrapper">
+                    <div class="mb-3">
                         {{ html()->label('Related Product') }}
                         <select class="form-select" id="product-related-select" name="product_related[]"  data-placeholder="Choose related product" multiple>
                             @foreach($productDropdown as $product_id => $product_name)
@@ -151,7 +150,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
 <script>
     $(document).ready(function() { 
-
         $('#product-related-select').select2({
             theme: "bootstrap-5",
             width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
