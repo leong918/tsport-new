@@ -3,7 +3,8 @@
         <tbody >
             <tr>
                 <tr>
-                    <td scope="col">{{__('page.name')}}</td>
+                    {{-- <td scope="col">{{__('page.name')}}</td> --}}
+                    <td scope="col">{{__('Name')}}</td>
                 </tr>
                 <tr>
                     <td>
@@ -11,7 +12,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col">{{__('page.information')}}</td>
+                    {{-- <td scope="col">{{__('page.information')}}</td> --}}
+                    <td scope="col">{{__('Information')}}</td>
                 </tr>
                 <tr>
                     <td>
@@ -19,7 +21,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col">{{__('page.description')}}</td>
+                    {{-- <td scope="col">{{__('page.description')}}</td> --}}
+                    <td scope="col">{{__('Description')}}</td>
                 </tr>
                 <tr>
                     <td>
@@ -27,7 +30,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col">{{__('page.ingredient')}}</td>
+                    {{-- <td scope="col">{{__('page.ingredient')}}</td> --}}
+                    <td scope="col">{{__('Ingredient')}}</td>
                 </tr>
                 <tr>
                     <td>
@@ -35,7 +39,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col">{{__('page.usage')}}</td>
+                    {{-- <td scope="col">{{__('page.usage')}}</td> --}}
+                    <td scope="col">{{__('Usage')}}</td>
                 </tr>
                 <tr>
                     <td>
@@ -43,7 +48,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col">{{__('page.additional_information')}}</td>
+                    {{-- <td scope="col">{{__('page.additional_information')}}</td> --}}
+                    <td scope="col">{{__('Additional Information')}}</td>
                 </tr>
                 <tr>
                     <td>

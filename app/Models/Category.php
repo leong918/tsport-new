@@ -23,12 +23,6 @@ class Category extends Model
         'INACTIVE' => 0,
     ];
 
-    public const TYPE = [
-        'SKIN CARE' => 'skincare',
-        'MAKEUP' => 'makeup',
-        'HAIR & BODY' => 'hairbody'
-    ];
-
     protected $table = 'category';
 
     /**
@@ -37,8 +31,9 @@ class Category extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'parent_category_id',
         'name',
-        'type',
+        'image',
         'status',
         'sort',
     ];
@@ -74,7 +69,7 @@ class Category extends Model
 
     public function getParameters(string $params)
     {
-        return CategoryDescription::where('language',$params)->first();
+        return $this->categoryDescription->where('language',$params)->first();
     } 
 
 }

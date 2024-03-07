@@ -35,23 +35,27 @@ class AppController extends BaseController
     {
         return $this->view('index');
     }
-    public function product(Request $request, string $category_type = null)
+
+    public function product(Request $request, string $category_id = null)
     {  
         //product page with filtering
         if($request->ajax()){
-            if($request->category_id && $category_type){
-                $product_list = $this->productRepository->getProductByCategoryType($category_type,'MYR',$request->category_id);
+            if($category_id){
+                $product_list = $this->productRepository->getProductByCategoryType($category_id,'MYR'); //,$request->category_id
                 return $this->view('product_list',compact('product_list'));
             }
         }
 
         //product page without filtering 
-        if($category_type){
-            $category_list = $this->categoryRepository->getListingByCategoryType($category_type,'name')->get();
-            $brand_list = $this->brandRepository->getListing()->get();                                                       
-            $product_list = $this->productRepository->getProductByCategoryType($category_type,'MYR');
+        if($category_id){
+            $current_category = $this->categoryRepository->find($category_id);
+            $sub_category = $this->categoryRepository->getSubCategoryByCategoryId($current_category->id);
+            $parent_category = $this->categoryRepository->find($current_category->parent_category_id);
 
-            return $this->view('product',compact('category_type','category_list','brand_list','product_list'));
+            $brand_list = $this->brandRepository->getListing()->get();                                                       
+            $product_list = $this->productRepository->getProductByCategoryType($category_id,'MYR');
+
+            return $this->view('product',compact('sub_category','current_category','brand_list','product_list','parent_category'));
         }
 
         //search page
@@ -66,7 +70,16 @@ class AppController extends BaseController
     public function productDetail(string $alias)
     {
         $product = $this->productRepository->getProductByAlias($alias, 'MYR');
-        return $this->view('product_detail', compact('product'));
+        $product_category = $this->categoryRepository->find($product->category_id);
+        $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
+
+        if($product_parent_category){
+            return $this->view('product_detail', compact('product', 'product_parent_category'));
+
+        } else {
+            return $this->view('product_detail', compact('product'));
+        }
+
     }
     public function productNew()
     {

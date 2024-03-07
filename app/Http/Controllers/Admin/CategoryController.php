@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Models\Category;
+use App\Models\CategoryDescription;
+
 class CategoryController extends BaseController
 {
     private CategoryRepository $categoryRepository;
@@ -24,8 +26,20 @@ class CategoryController extends BaseController
             $model = $this->categoryRepository->getListing();
 
             return DataTables::of($model)
-                ->editColumn('type', function ($model) {
-                    return array_search($model->type, Category::TYPE);
+                ->addColumn('image', function ($model) {
+                    $image = $model->image;
+                    return view('shared.image', compact('image'));
+                })
+                ->addColumn('parent_category_name', function ($model) {
+
+                    if($model->parent_category_id){
+                        $parentCategory = Category::find($model->parent_category_id);
+
+                        return $parentCategory->name ;
+                    } else {
+                        return '-';
+                    }
+
                 })
                 ->addColumn('status', function ($model) {
                     $route = route('admin.category.status.post', ['id' => $model->id]);
@@ -43,7 +57,10 @@ class CategoryController extends BaseController
 
     public function create()
     {
-        return $this->view('category.create');
+        $categoryNames = Category::whereNull('parent_category_id')->pluck('name')->toArray();
+        $categoryIds = Category::whereNull('parent_category_id')->pluck('id')->toArray();
+
+        return $this->view('category.create', compact('categoryNames', 'categoryIds'));
     }
 
     public function store(CreateCategoryRequest $request)
@@ -64,7 +81,21 @@ class CategoryController extends BaseController
     {
         $model = $this->categoryRepository->find($id);
 
-        return $this->view('category.update', compact('model'));
+        if ($model->parent_category_id) {
+            $categoryNames = Category::whereNull('parent_category_id')->where('id', '!=', $model->parent_category_id)->pluck('name')->toArray();
+            $categoryIds = Category::whereNull('parent_category_id')->where('id', '!=', $model->parent_category_id)->pluck('id')->toArray();
+            $currentParentCategory = Category::where('id', $model->parent_category_id)->pluck('name', 'id')->toArray();
+
+        } else {
+            $categoryNames = Category::whereNull('parent_category_id')->pluck('name')->toArray();
+            $categoryIds = Category::whereNull('parent_category_id')->pluck('id')->toArray();
+            $currentParentCategory = '';
+        }
+
+        $enCategoryDescription = CategoryDescription::where(['category_id' => $id, 'language' => 'en'])->first();
+        $cnCategoryDescription = CategoryDescription::where(['category_id' => $id, 'language' => 'cn'])->first();
+
+        return $this->view('category.update', compact('model', 'categoryNames', 'categoryIds', 'currentParentCategory', 'enCategoryDescription', 'cnCategoryDescription'));
     }
 
     public function update(UpdateCategoryRequest $request, int $id)
@@ -83,7 +114,8 @@ class CategoryController extends BaseController
 
     public function destroy(int $id)
     {
-        $this->categoryRepository->delete($id);
+        Category::where('id' , $id)->orWhere('parent_category_id' , $id)->delete();
+
         return $this->response();
     }
 

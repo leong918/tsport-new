@@ -1,18 +1,26 @@
-<table class="table table-striped border">
-    <thead>
-        <tr>
-            <th scope="col">{{__('page.name')}}</th>
-            <th scope="col">{{__('page.description')}}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                {{ html()->text('language[cn][name]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->name : "")->placeholder('Enter name')->class('form-control')->required() }}
-            </td>
-            <td>
-                {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->description : "")->class('form-control wysiwyg') }}
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div>
+    <table class="table table-striped border">
+        <tbody >
+            <tr>
+                <tr>
+                    {{-- <td scope="col">{{__('page.name')}}</td> --}}
+                    <td scope="col">{{__('Name')}}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ html()->text('language[cn][name]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->name : "")->placeholder('Enter name')->class('form-control')->required() }}
+                    </td>
+                </tr>
+                <tr>
+                    {{-- <td scope="col">{{__('page.description')}}</td> --}}
+                    <td scope="col">{{__('Description')}}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->description : "")->class('form-control wysiwyg') }}
+                    </td>
+                </tr>
+            </tr>
+        </tbody>
+    </table>
+</div>

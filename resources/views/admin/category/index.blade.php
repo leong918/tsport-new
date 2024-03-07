@@ -23,8 +23,9 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            <th>Image</th>
+                                            <th>Parent Category</th>
                                             <th>Name</th>
-                                            <th>Type</th>
                                             <th>Status</th>
                                             <th>Sort</th>
                                             <th>Created At</th>
@@ -56,13 +57,20 @@
                     ajax: {
                         url: '{!! route('admin.category.index') !!}'
                     },
-                    columns: [{
-                            data: 'name',
-                            name: 'name'
+                    columns: [
+                        {
+                            data: 'image',
+                            name: 'image',
+                            searchable: false,
+                            sortable: false,
                         },
                         {
-                            data: 'type',
-                            name: 'type'
+                            data: 'parent_category_name',
+                            name: 'parent_category_name'
+                        },    
+                        {
+                            data: 'name',
+                            name: 'name'
                         },
                         {
                             data: 'status',

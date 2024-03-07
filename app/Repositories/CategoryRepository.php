@@ -3,15 +3,17 @@
 namespace App\Repositories;
 
 use App\Models\Category;
+use App\Traits\FileUpload;
 use Illuminate\Container\Container;
 
 class CategoryRepository extends BaseRepository
 {
+    use FileUpload;
+
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -35,20 +37,28 @@ class CategoryRepository extends BaseRepository
     {
         return Category::query()->orderBy('created_at', 'desc');
     }
-    
-    public function getListingByCategoryType(string $category_type = null, string $order_by = null)
-    {     
-        if($category_type){
-            if($order_by == 'name'){
-                return Category::where('type',$category_type)->orderBy('name', 'asc');
-            }
-        }else{
-            if($order_by == 'name'){
+
+    public function getListingByCategoryType(string $category_id = null, string $order_by = null)
+    {
+        if ($category_id) {
+            //products filtered by category 
+
+            return Category::where('id', $category_id)->orderBy('sort', 'asc')->first();
+
+        } else {
+            //filtering for brand
+
+            if ($order_by == 'name') {
                 return Category::orderBy('name', 'asc');
-            }else{
-                return Category::where('type',$category_type)->orderBy('created_at', 'desc');
+            } else {
+                return Category::where('id', $category_id)->orderBy('created_at', 'desc');
             }
         }
+    }
+
+    public function getSubCategoryByCategoryId(string $category_id)
+    {
+        return Category::where(['parent_category_id' => $category_id, 'status' => 1])->orderBy('sort', 'asc')->get();
     }
 
     public function dropdown(string $key = 'id')
@@ -60,22 +70,37 @@ class CategoryRepository extends BaseRepository
     {
         $this->verifyDescription($input);
 
+        $this->upload_path = 'category';
+        $this->uploadFile($input['image']);
+
         $model = new Category();
         $model->fill($input);
+        $model->image = $this->uploaded_filename;
         $model->save();
 
-        $brandDescriptionRepository = new CategoryDescriptionRepository(new Container());
-        $brandDescriptionRepository->createCategoryDescription($input, $model->id);
+        $categoryDescriptionRepository = new CategoryDescriptionRepository(new Container());
+        $categoryDescriptionRepository->createCategoryDescription($input, $model->id);
     }
 
     public function updateCategory(array $input, int $id)
     {
         $model = Category::findOrFail($id);
+
+        $this->verifyChildCategory($model, $input);
+
         $model->fill($input);
+
+        if (isset($input['image'])) {
+            //image
+            $this->upload_path = 'brand';
+            $this->uploadFile($input['image']);
+            $model->image = $this->uploaded_filename;
+        }
+
         $model->save();
 
-        $brandDescriptionRepository = new CategoryDescriptionRepository(new Container());
-        $brandDescriptionRepository->createCategoryDescription($input, $model->id);
+        $categoryDescriptionRepository = new CategoryDescriptionRepository(new Container());
+        $categoryDescriptionRepository->createCategoryDescription($input, $model->id);
     }
 
     public function toggleStatus(int $id)
@@ -91,11 +116,18 @@ class CategoryRepository extends BaseRepository
             $lang = ($key == 'cn' ? 'Chinese' : 'English');
 
             if (isset($language['name']) == false) {
-                throw new \Exception(__('Name for '.$lang.' cannot be empty!'));
-            }
-            if (isset($language['description']) == false) {
-                throw new \Exception(__('Description for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Name for ' . $lang . ' cannot be empty!'));
             }
         }
     }
+
+    private function verifyChildCategory($model, $input)
+    {
+        $sub_category = Category::where(['parent_category_id' => $model->id, 'status' => 1])->first();
+
+        if(isset($input['parent_category_id']) && isset($sub_category)){
+            throw new \Exception(__('This category has sub category named ' . $sub_category->name. '!'));
+        }
+    }
+
 }

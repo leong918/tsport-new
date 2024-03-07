@@ -3,14 +3,14 @@
 <div class="row mb-5">
     <div class="col-md-6">
         <div class="mb-3">
-            {{ html()->label('Name') }}
-            {{ html()->text('name')->placeholder('Enter name')->class('form-control')->required() }}
+            {{ html()->label('Parent Category') }}
+            {{ html()->select('parent_category_id')->options( isset($model) && $model->parent_category_id ? $currentParentCategory + array_combine($categoryIds, $categoryNames) + ['' => '-'] : ['' => '-'] + array_combine($categoryIds, $categoryNames))->class('form-control') }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
-            {{ html()->label('Type') }}
-            {{ html()->select('type')->options(renderSelect(Category::TYPE))->class('form-control')->required() }}
+            {{ html()->label('Name') }}
+            {{ html()->text('name')->placeholder('Enter name')->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
@@ -23,6 +23,14 @@
         <div class="mb-3">
             {{ html()->label('Status') }}
             {{ html()->select('status')->options(renderSelect(Category::STATUS))->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Image') }}
+            {{ html()->file('image')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
+            <br />
+            <img class="img-fluid" {{isset($model) && $model->image ? 'src='.$model->image : ''}} />
         </div>
     </div>
 </div>
