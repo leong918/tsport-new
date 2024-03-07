@@ -115,7 +115,7 @@ class PluginRepository extends BaseRepository
         $plugins = Plugin::query()->orderBy('created_at', 'desc')->get();
         foreach ($plugins as $array_key => $plugin) {
             $plugin->status = 1;
-            if (!is_dir(__DIR__ . getPluginNamespace($plugin->key))) {
+            if (!File::exists(app_path($plugin->group . '/' . $plugin->key))) {
                 unset($plugins[$array_key]);
             }
         }
