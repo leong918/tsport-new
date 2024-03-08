@@ -69,7 +69,7 @@ class Brand extends Model
 
     public function getParameters(string $params)
     {
-        return BrandDescription::where('language',$params)->first();
+        return $this->brandDescription->where('language',$params)->first();
     } 
 
     public function product() : HasMany

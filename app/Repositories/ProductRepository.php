@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Container\Container;
 
@@ -91,7 +92,8 @@ class ProductRepository extends BaseRepository
         return Product::leftjoin('category', 'product.category_id', '=', 'category.id')
             ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->leftjoin('brand', 'product.brand_id', '=', 'brand.id')
-            ->where(['brand.id' => $brand_id, 'product_price.code' => $currency_code])
+            ->distinct('product.id')
+            ->where(['brand.id' => $brand_id, 'product_price.code' => $currency_code, 'category.deleted_at' => null])
             ->orderBy('category.name', 'asc')
             ->orderBy('product.created_at', 'desc')
             ->selectRaw('product.*,product_price.code, product_price.price, category.name as category_name')
@@ -127,6 +129,21 @@ class ProductRepository extends BaseRepository
             }
         }
         return $regroup_product_list;
+    }
+
+    public function getCategoryByProductList($product_list)
+    {
+        $regroup_category_list = array();
+
+        foreach ($product_list as $product) {
+            $regroup_category_list[] = $product->category_id;
+        }
+
+        $regroup_category_list = array_values($regroup_category_list);
+
+        $category_list = Category::whereIn('id' , $regroup_category_list)->orderBy('category.name', 'asc')->get();
+
+        return $category_list;
     }
 
     public function createProduct(array $input)

@@ -4,7 +4,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Parent Category') }}
-            {{ html()->select('parent_category_id')->options( isset($model) && $model->parent_category_id ? $currentParentCategory + array_combine($categoryIds, $categoryNames) + ['' => '-'] : ['' => '-'] + array_combine($categoryIds, $categoryNames))->class('form-control') }}
+            {{ html()->select('parent_category_id')->options(['' => '-'] + $categoryDropdown)->class('form-control') }}
         </div>
     </div>
     <div class="col-md-6">

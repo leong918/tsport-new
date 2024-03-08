@@ -3,10 +3,10 @@
 <div id="brand" class="overflow-x-hidden margin-header">
     <div class="">
         <div class="product-banner">
-            <img src="{{asset('assets/web/assets/img/brand/bg.png')}}" />
+            <img src="{{ $brand->image }}" />
             <div class="product-title-wrapper">
                 <div class="product-title">{{ $brand->name }}</div>
-                <div class="product-nav d-flex justify-content-center"><span>Home</span><span>></span><span>Brands</span><span>></span><span>{{ $brand->name }}</</span></div>
+                <div class="product-nav d-flex justify-content-center"><span><a style="color: #6D5E44" class="text-decoration-none" href=" {{ route('web.home') }}">Home</a></span><span>></span><span>Brands</span><span>></span><span>{{ $brand->name }}</</span></div>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
                     <div class="list-title">Category</div>
                     <ul>
                         @foreach ($category_list as $category)
-                            <li><a href="#{{ $category->name }}" >{{ $category->name }}</a></li>
+                            <li><a href="{{ route('web.product', ['category_id' => $category->id ]) }}" >{{ $category->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
@@ -53,7 +53,9 @@
                             @foreach($category_product_list as $product)
                             <div class="product-container col product-img">
                                 <div class="product-image position-relative">
-                                    <img class="show" src="{{$product->productImage()->first()->url}}">
+                                    <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
+                                        <img class="show" src="{{$product->productImage()->first()->url}}">
+                                    </a>
                                     <div class="wishlist-cart-container">
                                         <div class="row text-center">
                                             <div class="col-md-6">

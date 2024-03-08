@@ -10,6 +10,7 @@ use App\Repositories\BlogCommentRepository;
 use App\Repositories\UserRepository;
 use Carbon\Carbon;
 use App\Http\Requests\Form\BlogComment\CreateBlogCommentRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class AppController extends BaseController
@@ -41,7 +42,7 @@ class AppController extends BaseController
         //product page with filtering
         if($request->ajax()){
             if($category_id){
-                $product_list = $this->productRepository->getProductByCategoryType($category_id,'MYR'); //,$request->category_id
+                $product_list = $this->productRepository->getProductByCategoryType($category_id,'MYR'); 
                 return $this->view('product_list',compact('product_list'));
             }
         }
@@ -52,7 +53,7 @@ class AppController extends BaseController
             $sub_category = $this->categoryRepository->getSubCategoryByCategoryId($current_category->id);
             $parent_category = $this->categoryRepository->find($current_category->parent_category_id);
 
-            $brand_list = $this->brandRepository->getListing()->get();                                                       
+            $brand_list = $this->brandRepository->getListing()->where('status', 1)->orderBy('sort', 'asc')->get();                                                       
             $product_list = $this->productRepository->getProductByCategoryType($category_id,'MYR');
 
             return $this->view('product',compact('sub_category','current_category','brand_list','product_list','parent_category'));
@@ -93,10 +94,11 @@ class AppController extends BaseController
     }
     public function brand(int $brand_id)
     {
-        $brand = $this->brandRepository->find($brand_id);
-        $category_list = $this->categoryRepository->getListingByCategoryType(null,'name')->get();
+        $brand = $this->brandRepository->find($brand_id); 
         $retrieve_product_list = $this->productRepository->getProductByBrand($brand_id,'myr');
         $product_list = $this->productRepository->regroupProductListByCategory($retrieve_product_list);
+        $category_list = $this->productRepository->getCategoryByProductList($retrieve_product_list);
+
         return $this->view('brand',compact('brand','category_list','product_list'));
     }
     public function blog()

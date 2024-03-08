@@ -57,10 +57,9 @@ class CategoryController extends BaseController
 
     public function create()
     {
-        $categoryNames = Category::whereNull('parent_category_id')->pluck('name')->toArray();
-        $categoryIds = Category::whereNull('parent_category_id')->pluck('id')->toArray();
+        $categoryDropdown = $this->categoryRepository->dropdown();
 
-        return $this->view('category.create', compact('categoryNames', 'categoryIds'));
+        return $this->view('category.create', compact('categoryDropdown'));
     }
 
     public function store(CreateCategoryRequest $request)
@@ -81,21 +80,9 @@ class CategoryController extends BaseController
     {
         $model = $this->categoryRepository->find($id);
 
-        if ($model->parent_category_id) {
-            $categoryNames = Category::whereNull('parent_category_id')->where('id', '!=', $model->parent_category_id)->pluck('name')->toArray();
-            $categoryIds = Category::whereNull('parent_category_id')->where('id', '!=', $model->parent_category_id)->pluck('id')->toArray();
-            $currentParentCategory = Category::where('id', $model->parent_category_id)->pluck('name', 'id')->toArray();
+        $categoryDropdown = $this->categoryRepository->dropdown();
 
-        } else {
-            $categoryNames = Category::whereNull('parent_category_id')->pluck('name')->toArray();
-            $categoryIds = Category::whereNull('parent_category_id')->pluck('id')->toArray();
-            $currentParentCategory = '';
-        }
-
-        $enCategoryDescription = CategoryDescription::where(['category_id' => $id, 'language' => 'en'])->first();
-        $cnCategoryDescription = CategoryDescription::where(['category_id' => $id, 'language' => 'cn'])->first();
-
-        return $this->view('category.update', compact('model', 'categoryNames', 'categoryIds', 'currentParentCategory', 'enCategoryDescription', 'cnCategoryDescription'));
+        return $this->view('category.update', compact('model', 'categoryDropdown'));
     }
 
     public function update(UpdateCategoryRequest $request, int $id)
