@@ -68,11 +68,24 @@ class ProductRepository extends BaseRepository
     public function getProductByKeywords(string $keyword, string $currency_code)
     {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-            ->where('product_price.code', $currency_code)
+            ->where(['product_price.code' => $currency_code, 'product_price.deleted_at' => null])
             ->where('product.name', 'LIKE', '%' . $keyword . '%')
             ->distinct('product.id')
             ->orderBy('product.created_at', 'desc')
             ->selectRaw('product.*,product_price.code, product_price.price')
+            ->get();
+    }
+
+    public function getProductByTag(string $keyword, string $currency_code)
+    {
+        return Product::leftjoin('product_tag', 'product.id', '=', 'product_tag.product_id')
+            ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+            ->leftjoin('tag', 'tag.id', '=', 'product_tag.tag_id')
+            ->where(['product_price.code' => $currency_code, 'product_price.deleted_at' => null])
+            ->where('tag.name', 'LIKE', '%' . $keyword . '%')
+            ->distinct('product.id')
+            ->orderBy('product.created_at', 'desc')
+            ->selectRaw('product.*, product_price.code, product_price.price')
             ->get();
     }
 
@@ -142,7 +155,7 @@ class ProductRepository extends BaseRepository
 
         $regroup_category_list = array_values($regroup_category_list);
 
-        $category_list = Category::whereIn('id' , $regroup_category_list)->orderBy('category.name', 'asc')->get();
+        $category_list = Category::whereIn('id', $regroup_category_list)->orderBy('category.name', 'asc')->get();
 
         return $category_list;
     }
@@ -162,7 +175,7 @@ class ProductRepository extends BaseRepository
             $productRelatedRepository->createProductRelated($input, $model->id);
         }
 
-        if (isset($input['product_tag'])){
+        if (isset($input['product_tag'])) {
             $productTag = new ProductTagRepository(new Container());
             $productTag->createProductTag($input, $model->id);
         }
@@ -196,7 +209,7 @@ class ProductRepository extends BaseRepository
             $productImageRepository->createProductImage($input, $model->id);
         }
 
-        if (isset($input['product_tag'])){
+        if (isset($input['product_tag'])) {
             $productTag = new ProductTagRepository(new Container());
             $productTag->createProductTag($input, $model->id);
         }

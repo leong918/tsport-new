@@ -40,11 +40,6 @@ class TagController extends BaseController
 
     public function create()
     {
-        // $categoryDropdown = $this->categoryRepository->dropdown();
-        // $brandDropdown = $this->brandRepository->dropdown();
-        // $productDropdown = $this->productRepository->dropdown();
-        // $currencyDropdown = $this->currencyRepository->dropdown(); , compact('categoryDropdown', 'brandDropdown','productDropdown','currencyDropdown')
-
         return $this->view('tag.create');
     }
 
@@ -65,7 +60,7 @@ class TagController extends BaseController
     public function edit(int $id)
     {
         $model = $this->tagRepository->find($id);
-        
+
         return $this->view('tag.update', compact('model'));
     }
 

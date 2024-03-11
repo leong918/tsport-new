@@ -14,6 +14,7 @@ use App\Http\Requests\Form\BlogComment\CreateBlogCommentRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class AppController extends BaseController
 {
     private CategoryRepository $categoryRepository;
@@ -24,7 +25,7 @@ class AppController extends BaseController
     private UserRepository $userRepository;
     private ProductTagRepository $productTagRepository;
 
-    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, BlogRepository $blogRepository, BlogCommentRepository $blogCommentRepository,UserRepository $userRepository, ProductTagRepository $productTagRepository)
+    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, BlogRepository $blogRepository, BlogCommentRepository $blogCommentRepository, UserRepository $userRepository, ProductTagRepository $productTagRepository)
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
@@ -41,33 +42,38 @@ class AppController extends BaseController
     }
 
     public function product(Request $request, string $category_id = null)
-    {  
+    {
         //product page with filtering
-        if($request->ajax()){
-            if($category_id){
-                $product_list = $this->productRepository->getProductByCategoryType($category_id,'MYR'); 
-                return $this->view('product_list',compact('product_list'));
+        if ($request->ajax()) {
+            if ($category_id) {
+                $product_list = $this->productRepository->getProductByCategoryType($category_id, 'MYR');
+                return $this->view('product_list', compact('product_list'));
             }
         }
 
         //product page without filtering 
-        if($category_id){
+        if ($category_id) {
             $current_category = $this->categoryRepository->find($category_id);
             $sub_category = $this->categoryRepository->getSubCategoryByCategoryId($current_category->id);
             $parent_category = $this->categoryRepository->find($current_category->parent_category_id);
 
-            $brand_list = $this->brandRepository->getListing()->where('status', 1)->orderBy('sort', 'asc')->get();                                                       
-            $product_list = $this->productRepository->getProductByCategoryType($category_id,'MYR');
+            $brand_list = $this->brandRepository->getListing()->where('status', 1)->orderBy('sort', 'asc')->get();
+            $product_list = $this->productRepository->getProductByCategoryType($category_id, 'MYR');
 
-            return $this->view('product',compact('sub_category','current_category','brand_list','product_list','parent_category'));
+            return $this->view('product', compact('sub_category', 'current_category', 'brand_list', 'product_list', 'parent_category'));
         }
 
         //search page
-        if($request->input('search_keyword')){
+        if ($request->input('search_keyword')) {
             $search_keyword = $request->input('search_keyword');
-            $product_list = $this->productRepository->getProductByKeywords($search_keyword,'MYR');
-            // $product_list_by_tag = $this->productTagRepository->getProductByTag($search_keyword,'MYR');
-            return $this->view('product',compact('product_list','search_keyword'));
+
+            $product_list = $this->productRepository->getProductByTag($search_keyword, 'MYR');
+
+            if ($product_list->isEmpty()) {
+                $product_list = $this->productRepository->getProductByKeywords($search_keyword, 'MYR');
+            }
+
+            return $this->view('product', compact('product_list', 'search_keyword'));
         }
     }
 
@@ -78,32 +84,30 @@ class AppController extends BaseController
         $product_category = $this->categoryRepository->find($product->category_id);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
 
-        if($product_parent_category){
+        if ($product_parent_category) {
             return $this->view('product_detail', compact('product', 'product_parent_category'));
-
         } else {
             return $this->view('product_detail', compact('product'));
         }
-
     }
     public function productNew()
     {
         $product_list = $this->productRepository->getNewProduct('MYR');
-        return $this->view('product_new',compact('product_list'));
+        return $this->view('product_new', compact('product_list'));
     }
     public function bestSeller()
     {
         $product_list = $this->productRepository->getBestSellingProduct('MYR');
-        return $this->view('best_seller',compact('product_list'));
+        return $this->view('best_seller', compact('product_list'));
     }
     public function brand(int $brand_id)
     {
-        $brand = $this->brandRepository->find($brand_id); 
-        $retrieve_product_list = $this->productRepository->getProductByBrand($brand_id,'myr');
+        $brand = $this->brandRepository->find($brand_id);
+        $retrieve_product_list = $this->productRepository->getProductByBrand($brand_id, 'myr');
         $product_list = $this->productRepository->regroupProductListByCategory($retrieve_product_list);
         $category_list = $this->productRepository->getCategoryByProductList($retrieve_product_list);
 
-        return $this->view('brand',compact('brand','category_list','product_list'));
+        return $this->view('brand', compact('brand', 'category_list', 'product_list'));
     }
     public function blog()
     {
@@ -114,8 +118,8 @@ class AppController extends BaseController
     {
         $blog = $this->blogRepository->find($blog_id);
         $product_list = $this->productRepository->getProductByCurrencyCode('myr')->take(2)->get();
-        $blog_list = $this->blogRepository->makeModel()->where('id','!=',$blog_id)->orderBy('created_at','desc')->take(3)->get();
-        return $this->view('blog_detail', compact('blog','product_list','blog_list'));
+        $blog_list = $this->blogRepository->makeModel()->where('id', '!=', $blog_id)->orderBy('created_at', 'desc')->take(3)->get();
+        return $this->view('blog_detail', compact('blog', 'product_list', 'blog_list'));
     }
 
     public function createBlogComment(CreateBlogCommentRequest $request)
@@ -128,7 +132,7 @@ class AppController extends BaseController
             $data['username'] = $user->username;
             $this->blogCommentRepository->createBlogComment($data);
             DB::commit();
-            return redirect(route('web.blog_detail',['blog_id' => $request->blog_id]))->with('success', "Blog Comment Posted");
+            return redirect(route('web.blog_detail', ['blog_id' => $request->blog_id]))->with('success', "Blog Comment Posted");
         } catch (\Exception $exception) {
             DB::rollback();
             return response()->json(['msg' => $exception->getMessage()], 500);
