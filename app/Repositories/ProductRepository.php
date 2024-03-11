@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductTag;
 use Illuminate\Container\Container;
 
 class ProductRepository extends BaseRepository
@@ -161,6 +162,11 @@ class ProductRepository extends BaseRepository
             $productRelatedRepository->createProductRelated($input, $model->id);
         }
 
+        if (isset($input['product_tag'])){
+            $productTag = new ProductTagRepository(new Container());
+            $productTag->createProductTag($input, $model->id);
+        }
+
         $productPriceRepository = new ProductPriceRepository(new Container());
         $productPriceRepository->createProductPrice($input, $model->id);
 
@@ -188,6 +194,11 @@ class ProductRepository extends BaseRepository
         if (isset($input['image'])) {
             $productImageRepository = new ProductImageRepository(new Container());
             $productImageRepository->createProductImage($input, $model->id);
+        }
+
+        if (isset($input['product_tag'])){
+            $productTag = new ProductTagRepository(new Container());
+            $productTag->createProductTag($input, $model->id);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());

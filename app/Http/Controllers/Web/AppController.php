@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\CategoryRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\ProductTagRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\BlogRepository;
 use App\Repositories\BlogCommentRepository;
@@ -21,8 +22,9 @@ class AppController extends BaseController
     private BlogRepository $blogRepository;
     private BlogCommentRepository $blogCommentRepository;
     private UserRepository $userRepository;
+    private ProductTagRepository $productTagRepository;
 
-    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, BlogRepository $blogRepository, BlogCommentRepository $blogCommentRepository,UserRepository $userRepository)
+    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, BlogRepository $blogRepository, BlogCommentRepository $blogCommentRepository,UserRepository $userRepository, ProductTagRepository $productTagRepository)
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
@@ -30,6 +32,7 @@ class AppController extends BaseController
         $this->blogRepository = $blogRepository;
         $this->blogCommentRepository = $blogCommentRepository;
         $this->userRepository = $userRepository;
+        $this->productTagRepository = $productTagRepository;
     }
 
     public function index()
@@ -63,6 +66,7 @@ class AppController extends BaseController
         if($request->input('search_keyword')){
             $search_keyword = $request->input('search_keyword');
             $product_list = $this->productRepository->getProductByKeywords($search_keyword,'MYR');
+            // $product_list_by_tag = $this->productTagRepository->getProductByTag($search_keyword,'MYR');
             return $this->view('product',compact('product_list','search_keyword'));
         }
     }

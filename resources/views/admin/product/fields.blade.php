@@ -49,6 +49,18 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
+                        {{-- {{ html()->label('Tag') }}
+                        {{ html()->select('tag')->options($tagDropdown)->class('form-control') }} --}}
+                        {{ html()->label('Product Tag') }}
+                        <select class="form-multi-select" name="product_tag[]" multiple data-coreui-search="true">
+                            @foreach($tagDropdown as $tag_id => $tag_name)
+                                <option value={{$tag_id}} {{isset($model) && $model->checkTag($model->id, $tag_id) ? 'selected' : ''}}>{{$tag_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
                         {{ html()->label('Point') }}
                         {{ html()->number('point')->placeholder('Enter point')->attribute('min', 0)->class('form-control') }}
                     </div>
