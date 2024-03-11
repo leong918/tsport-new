@@ -3,17 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class PasswordResetTokens extends Model
 {
-
+    use SoftDeletes;
     /**
      * Validation rules
      *
      * @var array
      */
     public static $rules = [];
-    public $timestamps = false;
 
     protected $table = 'password_reset_tokens';
 

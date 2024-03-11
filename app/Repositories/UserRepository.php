@@ -42,6 +42,8 @@ class UserRepository extends BaseRepository
         $model = new User();
         $model->fill($input);
         $model->save();
+
+        return $model;
     }
 
     public function updateUser(array $input, int $id)

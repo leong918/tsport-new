@@ -157,6 +157,7 @@ class ProductRepository extends BaseRepository
 
     public function updateProduct(array $input, int $id)
     {
+        $this->verifyDescription($input);
         $this->checkDuplicate($input);
 
         $input['alias'] = strtolower($input['alias']);

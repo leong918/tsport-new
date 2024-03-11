@@ -5,9 +5,8 @@
         <div class="row justify-content-center">
             <div class="register-wrapper">
                 <div class="register-title">Create Account</div>
-                {{ html()->form('POST', route("web.doRegister"))->acceptsFiles()->id('')->open()  }}
+                {{ html()->form('POST', route("web.doRegister"))->id('register_form')->open()}}
                 <div class="register-container">
-                    @include('components.alert')
                     <div>
                         <div class="mb-40 input-container">
                             {{ html()->text('first_name')->placeholder('')->class('')->required() }}
@@ -28,21 +27,21 @@
                             <div class="input-desc">cannot be changed after becoming a member</div>
                         </div>
                         <div class="mb-20 input-container dropdown">
-                            {{ html()->hidden('birth_month')->placeholder('')->class('')->required() }}
-                            <button type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expended="true" class="dropdown-months"></button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li class="dropdown-item" data-value="January">January</li>
-                                <li class="dropdown-item" data-value="February">February</li>
-                                <li class="dropdown-item" data-value="March">March</li>
-                                <li class="dropdown-item" data-value="April">April</li>
-                                <li class="dropdown-item" data-value="May">May</li>
-                                <li class="dropdown-item" data-value="June">June</li>
-                                <li class="dropdown-item" data-value="July">July</li>
-                                <li class="dropdown-item" data-value="August">August</li>
-                                <li class="dropdown-item" data-value="September">September</li>
-                                <li class="dropdown-item" data-value="October">October</li>
-                                <li class="dropdown-item" data-value="November">November</li>
-                                <li class="dropdown-item" data-value="December">December</li>
+                            {{ html()->hidden('birth_month')->placeholder('')->id('birth-month')->required() }}
+                            <input type="text" placeholder=" " class="birth-input" required readonly/>
+                            <ul id="month-dropdown">
+                                <li>January</li>
+                                <li>February</li>
+                                <li>March</li>
+                                <li>April</li>
+                                <li>May</li>
+                                <li>June</li>
+                                <li>July</li>
+                                <li>August</li>
+                                <li>September</li>
+                                <li>October</li>
+                                <li>November</li>
+                                <li>December</li>
                             </ul>
                             <label class="placeholder-label" required>Birth Month *</label>
                             <div class="input-desc">cannot be changed after becoming a member</div>
@@ -56,11 +55,11 @@
                             <label class="placeholder-label">Confirm Password *</label>
                         </div>
                         <div class="mb-40 input-container">
-                            {{ html()->email('ref_email')->placeholder('')->class('') }}
+                            {{ html()->email('referral_email')->placeholder('')->class('') }}
                             <label class="placeholder-label">Referrer email</label>
                         </div>
                         <div class="mb-40 input-container">
-                            {{ html()->text('ref_phone_no')->placeholder('')->class('') }}
+                            {{ html()->text('referral_phone_no')->placeholder('')->class('') }}
                             <label class="placeholder-label">Referrer phone no.</label>
                         </div>
                         <div class="tnc-wrapper">
@@ -76,7 +75,7 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button class="register-button">CREATE ACCOUNT</button>
+                        <button type="submit" class="register-button">CREATE ACCOUNT</button>
                     </div>
                 </div>
                 {{ html()->form()->close() }}
@@ -92,14 +91,96 @@
 </div>
 @endsection
 @push('scripts')
-<script type="text/javascript">
-    $('.dropdown-item').on('click', function(){
-        value = $(this).attr('data-value');
-        console.log(value);
-        $('.dropdown-months').text(value);
-        $('.dropdown-months').css('margin', '0');
-        console.log($(this).parent().parent());
-        $(this).parent().parent().find('input[type=hidden]').val(value);
-    })
-</script>
+<script>
+    $(document).ready(function() {
+        $('.input-container input.birth-input').focus(function() {
+            $('#month-dropdown').addClass('visible');
+        });
+    
+        $("#month-dropdown li").click(function() {
+            $('#birth-month').val($(this).text());
+            $('.birth-input').val($(this).text());
+           $('#month-dropdown').removeClass('visible');
+        });
+        
+        $('.input-container input.birth-input').on('blur', function() {
+            setTimeout(function() {
+                if (!$('.input-container input.birth-input').is(':focus') && !$('#month-dropdown').is(':focus')) {
+                    $('#month-dropdown').removeClass('visible');
+                }
+            }, 100);
+        });
+        
+        var parentElement = document.getElementsByClassName('register-container')[0];
+        $("#register_form").submit(function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('action');
+            let formData = new FormData(this);
+            axios({
+                method: "post",
+                url: url,
+                data: formData,
+            })
+            .then(response => {
+                swal.fire({
+                    title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Thank you for <br>your registration</p>',
+                    html: '<p class="swal-register-content-1">We have sent email to ' + response.data.email + ' to confirm the validity of our email address. After receiving the email follow the link provided to complete you registration.</p><p class="swal-register-content-2">If you not got any mail <b>RESEND</b> confirmation mail</p>',
+                    showConfirmButton: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-register-swal'
+                    },
+                    didOpen: () => {
+                        // Set the width of the SweetAlert dialog to match its parent container
+                        var parentWidth = parentElement.offsetWidth;
+                        var swalDialog = document.querySelector('.swal2-popup');
+                        swalDialog.style.width = parentWidth + 'px';
+
+                        $('#custom-close-button').click(function() {
+                            swal.close();
+                        });
+                    }
+                }).then((result) => {
+                    window.location.href = "{{ route('verification.notice') }}";
+                });
+            })
+            .catch(error => {
+                let errorMessage = '';
+                let bothOrNoneExist = false;
+                if (typeof error.response.data.msg === 'object') {
+                    Object.keys(error.response.data.msg).forEach(key => {
+                        if(!bothOrNoneExist || (key != 'referral_email' && key != 'referral_phone_no')){
+                            errorMessage += `${error.response.data.msg[key]}<br>`;
+                        }
+                        if(key == 'referral_email' || key == 'referral_phone_no'){
+                            bothOrNoneExist = true;
+                        }
+                    });
+                } else {
+                    errorMessage = error.response.data.msg;
+                }
+                swal.fire({
+                    title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Failed to Register</p>',
+                    html: '<p class="swal-register-content-1">' + errorMessage + '</p>',
+                    showConfirmButton: false,
+                    backdrop: false,
+                    customClass: {
+                        container: 'custom-register-swal'
+                    },
+                    didOpen: () => {
+                        // Set the width of the SweetAlert dialog to match its parent container
+                        var parentWidth = parentElement.offsetWidth;
+                        var swalDialog = document.querySelector('.swal2-popup');
+                        swalDialog.style.width = parentWidth + 'px';
+
+                        $('#custom-close-button').click(function() {
+                            swal.close();
+                        });
+                    }
+                });
+            });
+        });
+    }); 
+    </script>
 @endpush
