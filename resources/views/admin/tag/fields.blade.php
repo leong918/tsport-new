@@ -3,34 +3,14 @@
 <div class="row mb-5">
     <div class="col-md-6">
         <div class="mb-3">
-            {{ html()->label('Parent Category') }}
-            {{ html()->select('parent_category_id')->options(['' => '-'] + $categoryDropdown)->class('form-control') }}
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="mb-3">
             {{ html()->label('Name') }}
             {{ html()->text('name')->placeholder('Enter name')->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
-            {{ html()->label('Sort') }}
-            {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)->value( isset($model) && $model->sort ? $model->sort : 0)->class('form-control')->required() }}
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="mb-3">
             {{ html()->label('Status') }}
-            {{ html()->select('status')->options(renderSelect(Category::STATUS))->class('form-control')->required() }}
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="mb-3">
-            {{ html()->label('Image') }}
-            {{ html()->file('image')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
-            <br />
-            <img class="img-fluid" {{isset($model) && $model->image ? 'src='.$model->image : ''}} />
+            {{ html()->select('status')->options(renderSelect(Tag::STATUS))->class('form-control')->required() }}
         </div>
     </div>
 </div>
@@ -103,7 +83,7 @@
 
         tinymce.init(editor_config);
 
-        $("#category").submit(function(e) {
+        $("#tag").submit(function(e) {
             e.preventDefault();
 
             tinymce.triggerSave();
@@ -124,19 +104,19 @@
             })
             .then(response => {
                 swal.fire({
-                    title: '{{__("page.category_added")}}',
-                    text: '{{__("page.txt_category_added")}}',
+                    title: '{{__("page.tag_added")}}',
+                    text: '{{__("page.txt_tag_added")}}',
                     type: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: '{{__("page.ok")}}',
                 });
                 setTimeout(function(){
-                    window.location.replace('/admin/category/index');
+                    window.location.replace('/admin/tag/index');
                 }, 1000);
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.category_fail_add")}}',
+                    title: '{{__("page.tag_fail_add")}}',
                     text: error.response.data.msg,
                     type: 'error',
                     confirmButtonClass: 'btn btn-danger',

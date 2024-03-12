@@ -5,13 +5,32 @@
     <div class="product-banner">
         <img src="{{asset('assets/web/assets/img/product/product_bg.png')}}" />
         <div class="product-title-wrapper">
-            <div class="product-title text-capitalize">{{ $category_type ? renderModelData(Category::TYPE, $category_type):"Search Result" }}</div>
-            <div class="product-nav d-flex justify-content-center"><span>Home</span><span>></span><span class="text-capitalize">{{ $category_type ? renderModelData(Category::TYPE, $category_type):"Search Result"  }}</span></div>
+            <div class="product-title text-capitalize">{{ isset($current_category) ? $current_category->name:"Search Result" }}</div> 
+            <div class="product-nav d-flex justify-content-center">
+                <span><a class="text-decoration-none" href="{{ route('web.home') }}">Home</a></span>
+                @if (!empty($current_category->parent_category_id))
+                <span>></span>
+                <span class="text-capitalize"><a class="text-decoration-none" href="{{ route('web.product', ['category_id' => $parent_category->id ]) }}">{{ $parent_category->name }}</a></span>
+                @endif
+                <span>></span>
+                @if(isset($current_category))
+                <span class="text-capitalize">
+                    <a class="text-decoration-none" href="{{ route('web.product',['category_id' => $current_category->id ]) }}">
+                        {{ $current_category->name }}
+                    </a>
+                </span>
+                @else
+                <span class="text-capitalize">
+                    Search Result
+                </span>
+                @endif
+                
+            </div>
         </div>
     </div>
     <div class="container">
         <div class="row justify-content-center content-wrapper">
-            @if(isset($category_list) && isset($brand_list))
+            @if(isset($current_category) && isset($brand_list))
             <div class="d-block d-md-none filter-wrapper row">
                 <a href="#offcanvasNav"  data-bs-toggle="offcanvas" class="d-inline-block"><img src="{{asset('assets/web/assets/img/product/filter.png')}}" /></a>
             </div>
@@ -21,9 +40,7 @@
                         <div class="category-wrapper">
                             <div class="list-title">Category</div>
                             <ul>
-                                @foreach ($category_list as $category)
-                                    <li><a href="#" class="category-btn" data-category-id={{ $category->id}}>{{ $category->name }}</a></li>
-                                @endforeach
+                                <li><a href="#" class="category-btn" data-category-id={{$current_category->id}}>{{ $current_category->name }}</a></li>
                             </ul>
                         </div>
                         <div class="brand-wrapper">
@@ -38,14 +55,16 @@
                 </div>
             </div>
             <div class="d-none d-md-block col-md-3 nav-wrapper">
+                @if ($sub_category->count() > 0)
                 <div class="category-wrapper">
                     <div class="list-title">Category</div>
                     <ul>
-                        @foreach ($category_list as $category)
-                            <li><a href="#" class="category-btn" data-category-id={{ $category->id}}>{{ $category->name }}</a></li>
+                        @foreach ($sub_category as $category)
+                            <li><a href="{{ route('web.product', ['category_id' => $category->id]) }}" class="category-btn" data-category-id={{$category->id}}>{{ $category->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
+                @endif
                 <div class="brand-wrapper">
                     <div class="list-title">Brands</div>
                     <ul>
@@ -56,11 +75,11 @@
                 </div>
             </div>
             @endif
-            <div class="col-sm-12 {{ isset($category_list) && isset($brand_list) ? 'col-md-9' : 'col-md-12 product-wrapper-padding' }} product-wrapper">
+            <div class="col-sm-12 {{ isset($current_category) && isset($brand_list) ? 'col-md-9' : 'col-md-12 product-wrapper-padding' }} product-wrapper">
                 <div class="product">
                     <div class="container">
-                        {!! isset($search_keyword) ? '<div class="total-count-item"> Showing 10 results for "'.$search_keyword.'"</div>' : '' !!}
-                        <div class="row row-cols-2 {{ isset($category_list) && isset($brand_list) ? 'row-cols-xl-4 row-cols-lg-3' : 'row-cols-lg-4' }} row-cols-md-3 row-cols-sm-3" id="productListContainer">
+                        {!! isset($search_keyword) ? '<div class="total-count-item"> Showing '.$product_list->count().' results for "'.$search_keyword.'"</div>' : '' !!}
+                        <div class="row row-cols-2 {{ isset($current_category) && isset($brand_list) ? 'row-cols-xl-4 row-cols-lg-3' : 'row-cols-lg-4' }} row-cols-md-3 row-cols-sm-3" id="productListContainer">
                             @include("web.product_list")
                         </div>
                     </div>
@@ -71,24 +90,26 @@
 @endsection
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        $('.category-btn').click(function(){
-            event.preventDefault();
-            if ($('#offcanvasNav').offcanvas('isOpen')) {
-                $('#offcanvasNav').offcanvas('hide');
-            }
-            var category_id = $(this).data('category-id');
-            @if(!empty($category_type))
-                axios.get('{{ route('web.product', ['category_type' => $category_type]) }}', {params: { category_id: category_id }})
-                    .then( response => {
-                        $('#productListContainer').html(response.data); 
-                    })
-                    .catch( error => {
-                        console.error(error);
-                    });
-            @endif
-        });
-    });
+    // $(document).ready(function() {
+    //     $('.category-btn').click(function(){
+    //         event.preventDefault();
+    //         if ($('#offcanvasNav').offcanvas('isOpen')) {
+    //             $('#offcanvasNav').offcanvas('hide');
+    //         }
+    //         var category_id = $(this).data('category-id');
+
+    //         console.log(category_id);
+    //         @if(!empty($sub_category_list))
+    //             axios.get('{{ route('web.product', ['category_id' => $category_id]) }}', {params: { category_id: category_id }})
+    //                 .then( response => {
+    //                     $('#productListContainer').html(response.data); 
+    //                 })
+    //                 .catch( error => {
+    //                     console.error(error);
+    //                 });
+    //         @endif
+    //     });
+    // });
 </script>
 
 @endpush

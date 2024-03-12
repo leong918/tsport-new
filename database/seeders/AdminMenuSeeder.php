@@ -43,6 +43,15 @@ class AdminMenuSeeder extends Seeder
             ],
             [
                 'parent_id' => null,
+                'title' => 'Tag',
+                'icon' => 'fa-solid fa-tag',
+                'url' => null,
+                'type' => 'shop',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => null,
                 'title' => 'Currency',
                 'icon' => 'fa-solid fa-dollar-sign',
                 'url' => null,
@@ -100,6 +109,15 @@ class AdminMenuSeeder extends Seeder
                 'title' => 'Blog List',
                 'icon' => null,
                 'url' => 'admin.blog.index',
+                'type' => 'shop',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 13,
+                'title' => 'Tag List',
+                'icon' => null,
+                'url' => 'admin.tag.index',
                 'type' => 'shop',
                 'sort' => 1,
                 'status' => 1

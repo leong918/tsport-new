@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer("sort")->default(0);
             $table->tinyInteger("is_best_seller")->default(0);
             $table->tinyInteger("is_new")->default(0);
+            $table->tinyInteger("is_backorder")->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

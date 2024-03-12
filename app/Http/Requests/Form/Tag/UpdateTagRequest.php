@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Form\Category;
+namespace App\Http\Requests\Form\Tag;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'sort' => 'required',
+            'status' => 'required',
         ];
     }
 }

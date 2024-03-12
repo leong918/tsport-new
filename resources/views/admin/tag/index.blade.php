@@ -14,8 +14,8 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong>Category</strong>
-                                <a href="{{ route("admin.category.create") }}" class="btn btn-primary permission float-end">
+                                <strong>Tag</strong>
+                                <a href="{{ route("admin.tag.create") }}" class="btn btn-primary permission float-end">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
@@ -23,11 +23,8 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Image</th>
-                                            <th>Parent Category</th>
                                             <th>Name</th>
                                             <th>Status</th>
-                                            <th>Sort</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
                                         </tr>
@@ -55,19 +52,9 @@
                     autoWidth: false,
                     serverSide: true,
                     ajax: {
-                        url: '{!! route('admin.category.index') !!}'
+                        url: '{!! route('admin.tag.index') !!}'
                     },
                     columns: [
-                        {
-                            data: 'image',
-                            name: 'image',
-                            searchable: false,
-                            sortable: false,
-                        },
-                        {
-                            data: 'parent_category_name',
-                            name: 'parent_category_name'
-                        },    
                         {
                             data: 'name',
                             name: 'name'
@@ -75,10 +62,6 @@
                         {
                             data: 'status',
                             name: 'status'
-                        },
-                        {
-                            data: 'sort',
-                            name: 'sort'
                         },
                         {
                             data: 'created_at',
