@@ -1,16 +1,14 @@
 @section('script')
 @parent
-<link href="https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.0.0-rc.1/dist/css/coreui.min.css" rel="stylesheet" 
-    integrity="sha384-styrHw5ARomA8xPUVXJSXXchmA9xX4sqIeUqZtGkcT2zBp/DidIW1GYUNVO5FbmJ" 
-    crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 @endsection
-
 <x-alert />
 <div class="col-sm-12">
     <div class="card mb-3">
         <div class="card-header"><strong>Product</strong></div>
         <div class="card-body">
-            <div class="row">
+            <div class="row product-field-wrapper">
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Name') }}
@@ -84,7 +82,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Related Product') }}
-                        <select class="form-multi-select" name="product_related[]" multiple data-coreui-search="true">
+                        <select class="form-select" id="product-related-select" name="product_related[]"  data-placeholder="Choose related product" multiple>
                             @foreach($productDropdown as $product_id => $product_name)
                                 <option value={{$product_id}} {{isset($model) && $model->checkProductRelated($product_id, $model->id) ? 'selected' : ''}}>{{$product_name}}</option>
                             @endforeach
@@ -174,10 +172,19 @@
 
 @section('script')
 @parent
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
 <script>
     $(document).ready(function() { 
+        $('#product-related-select').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: false,
+            allowClear: true,
+        });
+
         var editor_config = {
             path_absolute : "{{ config('app.url') .'/' }}",
             selector: "textarea.wysiwyg",

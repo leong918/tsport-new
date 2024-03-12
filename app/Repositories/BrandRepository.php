@@ -63,6 +63,8 @@ class BrandRepository extends BaseRepository
 
     public function updateBrand(array $input, int $id)
     {
+        $this->verifyDescription($input);
+        
         $model = Brand::findOrFail($id);
         $model->fill($input);
 

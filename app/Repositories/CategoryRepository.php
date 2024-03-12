@@ -84,6 +84,8 @@ class CategoryRepository extends BaseRepository
 
     public function updateCategory(array $input, int $id)
     {
+        $this->verifyDescription($input);
+        
         $model = Category::findOrFail($id);
 
         $this->verifyChildCategory($model, $input);
@@ -121,6 +123,7 @@ class CategoryRepository extends BaseRepository
 
     private function verifyDescription($input)
     {
+        
         foreach ($input['language'] as $key => $language) {
             $lang = ($key == 'cn' ? 'Chinese' : 'English');
 

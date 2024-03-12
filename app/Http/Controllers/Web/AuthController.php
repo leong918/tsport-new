@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Requests\Form\User\UserLoginRequest;
 use App\Http\Requests\Form\User\UserRegisterRequest;
+use App\Http\Requests\Form\User\UserForgotPasswordRequest;
+use App\Http\Requests\Form\User\UserResetPasswordRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
 use App\Repositories\PasswordResetTokensRepository;
@@ -13,6 +15,7 @@ use App\Mail\ForgotPasswordMail;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends BaseController
 {
@@ -52,9 +55,17 @@ class AuthController extends BaseController
         try {
             $data = $request->all();
             $data['username'] = $data['first_name'];
-            $this->userRepository->createUser($data);
+            $user = $this->userRepository->createUser($data);
+
+            event(new Registered($user));
+
+            //set login session
+            $credentials = $request->only('phone_no', 'password');
+            Auth::attempt($credentials);
+            $request->session()->regenerate();
+
             DB::commit();
-            return $this->response();
+            return response()->json(['email' => $user->email]);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['error' => $e->getMessage()], 500);
@@ -66,37 +77,27 @@ class AuthController extends BaseController
         return $this->view('auth.forgot_password');
     }
 
-    public function doForgotPassword(Request $request)
+    public function doForgotPassword(UserForgotPasswordRequest $request)
     {
-        $data = $request->all();
-        $this->validate($request, [
-            'email' => 'email|required'
-        ]);
-
-        $user = $this->userRepository->makeModel()->where(["email" => $request->email])->first();
-        if (!$user) {
-            Session::flash('swal', [
-                'title' => 'Error',
-                'text' => 'Account Not Found',
-                'type' => 'error'
-            ]);
-            return back()->withInput();
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            $user = $this->userRepository->makeModel()->where(["email" => $request->email])->first();
+            
+            if (!$user) {
+                throw new \Exception('User Not Found!');
+            }
+            
+            $randomString = generateRandomString(10, false);
+            $data['token'] = $randomString;
+            $this->passwordResetTokensRepository->createRecord($data);
+            Mail::to($user->email)->send(new ForgotPasswordMail($randomString));
+            DB::commit();
+            return response()->json(['email' => $user->email]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        $randomString = generateRandomString(10, false);
-        $resetRecord = [
-            'email' => $data['email'],
-            'token' => $randomString,
-            'created_at' => now(),
-        ];
-        $this->passwordResetTokensRepository->createRecord($resetRecord);
-        Mail::to($user->email)->send(new ForgotPasswordMail($randomString));
-        Session::flash('swal', [
-            'title' => 'Success',
-            'text' => 'Reset Mail Successfully Requested.',
-            'type' => 'success'
-        ]);
-        return back();
     }
 
     public function logout()
@@ -108,10 +109,9 @@ class AuthController extends BaseController
     public function resetPassword()
     {
         $token = request('token');
-
         if(!$token){
             Session::flash('swal', [
-                'title' => 'Error',
+                'title' => '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Error</p>',
                 'text' => 'Password Reset Token Expired!',
                 'type' => 'error'
             ]);
@@ -131,7 +131,7 @@ class AuthController extends BaseController
                     $tokenRecord->delete();
                 }
                 Session::flash('swal', [
-                    'title' => 'Error',
+                    'title' => '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Error</p>',
                     'text' => 'Password Reset Token Expired!',
                     'type' => 'error'
                 ]);
@@ -140,7 +140,7 @@ class AuthController extends BaseController
         }
         else{
             Session::flash('swal', [
-                'title' => 'Error',
+                'title' => '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Error</p>',
                 'text' => 'Password Reset Token Expired!',
                 'type' => 'error'
             ]);
@@ -153,22 +153,28 @@ class AuthController extends BaseController
         return Carbon::parse($createdAt)->addMinutes(15)->isPast();
     }
 
-    public function doResetPassword(Request $request)
+    public function doResetPassword(UserResetPasswordRequest $request)
     {
-        $data = $request->all();
-        $this->validate($request, [
-            'password' => 'required|min:6|confirmed',
-        ]);
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            $user = $this->userRepository->find($data['id']);
+            
+            if (!$user) {
+                throw new \Exception('User Not Found!');
+            }
+            $this->userRepository->updateUser($request->all(), $data['id']);
 
-        $this->userRepository->updateUser($request->all(), $data['id']);
-
-        Session::flash('swal', [
-            'title' => 'Success',
-            'text' => 'Password Reset Successcully!',
-            'type' => 'success'
-        ]);
-
-        return redirect(route('web.home'));
+            //after reset delete token record
+            $tokenRecord = $this->passwordResetTokensRepository->findRecordByToken($data['token']);
+            $this->passwordResetTokensRepository->delete($tokenRecord->id);
+            
+            DB::commit();
+            return $this->response();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
 }
