@@ -49,8 +49,6 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{-- {{ html()->label('Tag') }}
-                        {{ html()->select('tag')->options($tagDropdown)->class('form-control') }} --}}
                         {{ html()->label('Product Tag') }}
                         <select class="form-multi-select" name="product_tag[]" multiple data-coreui-search="true">
                             @foreach($tagDropdown as $tag_id => $tag_name)
@@ -125,6 +123,23 @@
                 </div>
                 <div class="card-body priceInputWrapper">
                     @include("admin.product.price_fields")
+                </div>
+            </div>
+        </div>  
+    </div>  
+</div>
+<div class="col-sm-12">
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Product Stock</strong> 
+                    {{-- <button type="button" id="add_product_stock" class="btn btn-primary permission float-end">
+                        <i class="fa fa-plus"></i>
+                    </button> --}}
+                </div>
+                <div class="card-body stockInputWrapper">
+                    @include("admin.product.price_stock")
                 </div>
             </div>
         </div>  
