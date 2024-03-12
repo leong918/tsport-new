@@ -40,10 +40,20 @@
         Swal.fire({
             title: '{!! Session::get('swal.title') !!}',
             text: '{!! Session::get('swal.text') !!}',
-            icon: '{!! Session::get('swal.type') !!}',
             confirmButtonText: 'OK',
-        });
+            backdrop: false,
+            showConfirmButton: false,
+            customClass: {
+                container: 'custom-register-swal'
+            },
+            didOpen: () => {
+                $('#custom-close-button').click(function() {
+                    swal.close();
+                });
+            }
+    });
     @endif
+
     $('.navbar-search').on('click', function(){
         $('#header').toggleClass('active');
         $('#sub-pages-overlay').toggleClass('active');

@@ -18,6 +18,7 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('new', [AppController::class, 'productNew'])->name('web.product_new');
 
     require_once 'auth.php';
+    require_once 'verification.php';
     require_once 'about.php';
     require_once 'account.php';
     require_once 'cart.php';
