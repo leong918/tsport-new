@@ -6,10 +6,12 @@
             <div class="col-12 row nav-wrapper">
                 <div class="d-flex nav-title-wrapper">
                     <div>Home</div>
+                    @if (!empty($product_parent_category))
                     <div>></div>
-                    <div class="text-capitalize">{{ renderModelData(Category::TYPE, $product->category->type) }}</div>
+                    <div class="text-capitalize">{{ $product_parent_category->name }}</div>
+                    @endif
                     <div>></div>
-                    <div>{{ $product->category->name }}</div>
+                    <div class="text-capitalize">{{ $product->category->name }}</div>
                 </div>
             </div>
             <div class="col-12 col-lg-6 row justify-content-between image-wrapper">

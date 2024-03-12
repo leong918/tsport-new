@@ -43,7 +43,6 @@ class CategoryDescriptionRepository extends BaseRepository
             $data['category_id'] = $category_id;
             $data['language'] = $key;
             $data['name'] = $language['name'];
-            $data['description'] = $language['description']; 
 
             $model = new CategoryDescription();
             $model->fill($data);

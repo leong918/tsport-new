@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductTag;
 use Illuminate\Container\Container;
 
 class ProductRepository extends BaseRepository
@@ -45,89 +47,117 @@ class ProductRepository extends BaseRepository
         return formalizeDropdown(Product::where('id', '!=', $product_id)->get(), $key, 'name');
     }
 
-    public function getProductByCurrencyCode(string $currency_code){
+    public function getProductByCurrencyCode(string $currency_code)
+    {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-                        ->where('product_price.code', $currency_code)
-                        ->orderBy('product.created_at', 'desc')
-                        ->selectRaw('product.*,product_price.code, product_price.price');
+            ->where('product_price.code', $currency_code)
+            ->orderBy('product.created_at', 'desc')
+            ->selectRaw('product.*,product_price.code, product_price.price');
     }
 
     public function getProductByAlias(string $alias, string $currency_code)
     {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-                        ->where(['product.alias' => $alias,'product_price.code'=> $currency_code])
-                        ->orderBy('product.created_at', 'desc')
-                        ->selectRaw('product.*,product_price.code, product_price.price')
-                        ->with('category')
-                        ->first();
+            ->where(['product.alias' => $alias, 'product_price.code' => $currency_code])
+            ->orderBy('product.created_at', 'desc')
+            ->selectRaw('product.*,product_price.code, product_price.price')
+            ->with('category')
+            ->first();
     }
 
-    public function getProductByKeywords(string $keyword, string $currency_code){
+    public function getProductByKeywords(string $keyword, string $currency_code)
+    {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-                        ->where('product_price.code', $currency_code)
-                        ->where('product.name', 'LIKE', '%' . $keyword . '%')
-                        ->orderBy('product.created_at', 'desc')
-                        ->selectRaw('product.*,product_price.code, product_price.price')
-                        ->get();
+            ->where(['product_price.code' => $currency_code, 'product_price.deleted_at' => null])
+            ->where('product.name', 'LIKE', '%' . $keyword . '%')
+            ->distinct('product.id')
+            ->orderBy('product.created_at', 'desc')
+            ->selectRaw('product.*,product_price.code, product_price.price')
+            ->get();
     }
 
-    public function getProductByCategoryType(string $category_type, string $currency_code, int $category_id = null)
+    public function getProductByTag(string $keyword, string $currency_code)
+    {
+        return Product::leftjoin('product_tag', 'product.id', '=', 'product_tag.product_id')
+            ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+            ->leftjoin('tag', 'tag.id', '=', 'product_tag.tag_id')
+            ->where(['product_price.code' => $currency_code, 'product_price.deleted_at' => null])
+            ->where('tag.name', 'LIKE', '%' . $keyword . '%')
+            ->distinct('product.id')
+            ->orderBy('product.created_at', 'desc')
+            ->selectRaw('product.*, product_price.code, product_price.price')
+            ->get();
+    }
+
+    public function getProductByCategoryType(string $category_id, string $currency_code) //int $category_id = null
     {
         $query =  Product::leftjoin('category', 'product.category_id', '=', 'category.id')
-        ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-        ->whereNull('product_price.deleted_at');
-
-        if($category_id){
-            $query->where(['category.id' => $category_id, 'category.type' => $category_type, 'product_price.code' => $currency_code]);
-        }else{
-            $query->where(['category.type' => $category_type, 'product_price.code' => $currency_code]);
-        }
+            ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+            ->whereNull('product_price.deleted_at')
+            ->where(['category.id' => $category_id, 'product_price.code' => $currency_code]);
 
         return $query->orderBy('product.created_at', 'desc')
-                    ->selectRaw('product.*, product_price.code, product_price.price')
-                    ->get();
+            ->selectRaw('product.*, product_price.code, product_price.price')
+            ->get();
     }
 
     public function getProductByBrand(int $brand_id, string $currency_code)
     {
         return Product::leftjoin('category', 'product.category_id', '=', 'category.id')
-                        ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-                        ->leftjoin('brand', 'product.brand_id', '=', 'brand.id')
-                        ->where(['brand.id' => $brand_id, 'product_price.code' => $currency_code])
-                        ->orderBy('category.name', 'asc')
-                        ->orderBy('product.created_at', 'desc')
-                        ->selectRaw('product.*,product_price.code, product_price.price, category.name as category_name')
-                        ->get();
+            ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+            ->leftjoin('brand', 'product.brand_id', '=', 'brand.id')
+            ->distinct('product.id')
+            ->where(['brand.id' => $brand_id, 'product_price.code' => $currency_code, 'category.deleted_at' => null])
+            ->orderBy('category.name', 'asc')
+            ->orderBy('product.created_at', 'desc')
+            ->selectRaw('product.*,product_price.code, product_price.price, category.name as category_name')
+            ->get();
     }
 
-    public function getBestSellingProduct(string $currency_code){
+    public function getBestSellingProduct(string $currency_code)
+    {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-                        ->where(['product_price.code' => $currency_code ,'product.is_best_seller' => 1])
-                        ->whereNull('product_price.deleted_at')
-                        ->selectRaw('product.*, product_price.code, product_price.price')
-                        ->get();
+            ->where(['product_price.code' => $currency_code, 'product.is_best_seller' => 1])
+            ->whereNull('product_price.deleted_at')
+            ->selectRaw('product.*, product_price.code, product_price.price')
+            ->get();
     }
 
-    public function getNewProduct(string $currency_code){
+    public function getNewProduct(string $currency_code)
+    {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-                        ->where(['product_price.code' => $currency_code ,'product.is_new' => 1])
-                        ->whereNull('product_price.deleted_at')
-                        ->selectRaw('product.*, product_price.code, product_price.price')
-                        ->get();
+            ->where(['product_price.code' => $currency_code, 'product.is_new' => 1])
+            ->whereNull('product_price.deleted_at')
+            ->selectRaw('product.*, product_price.code, product_price.price')
+            ->get();
     }
 
     public function regroupProductListByCategory($product_list)
     {
         $regroup_product_list = array();
-        foreach($product_list as $product){
-            if(!array_key_exists($product->category_name,$regroup_product_list))
-            {
+        foreach ($product_list as $product) {
+            if (!array_key_exists($product->category_name, $regroup_product_list)) {
                 $regroup_product_list[$product->category_name] = array($product);
-            }else{
-                array_push($regroup_product_list[$product->category_name],$product);
+            } else {
+                array_push($regroup_product_list[$product->category_name], $product);
             }
         }
         return $regroup_product_list;
+    }
+
+    public function getCategoryByProductList($product_list)
+    {
+        $regroup_category_list = array();
+
+        foreach ($product_list as $product) {
+            $regroup_category_list[] = $product->category_id;
+        }
+
+        $regroup_category_list = array_values($regroup_category_list);
+
+        $category_list = Category::whereIn('id', $regroup_category_list)->orderBy('category.name', 'asc')->get();
+
+        return $category_list;
     }
 
     public function createProduct(array $input)
@@ -143,6 +173,11 @@ class ProductRepository extends BaseRepository
         if (isset($input['product_related'])) {
             $productRelatedRepository = new ProductRelatedRepository(new Container());
             $productRelatedRepository->createProductRelated($input, $model->id);
+        }
+
+        if (isset($input['product_tag'])) {
+            $productTag = new ProductTagRepository(new Container());
+            $productTag->createProductTag($input, $model->id);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());
@@ -173,6 +208,11 @@ class ProductRepository extends BaseRepository
         if (isset($input['image'])) {
             $productImageRepository = new ProductImageRepository(new Container());
             $productImageRepository->createProductImage($input, $model->id);
+        }
+
+        if (isset($input['product_tag'])) {
+            $productTag = new ProductTagRepository(new Container());
+            $productTag->createProductTag($input, $model->id);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());

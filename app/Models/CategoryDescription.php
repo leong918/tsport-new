@@ -28,7 +28,6 @@ class CategoryDescription extends Model
         'category_id',
         'language',
         'name',
-        'description',
     ];
 
     /**

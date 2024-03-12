@@ -91,6 +91,11 @@ class Product extends Model
         return $this->hasMany(ProductPrice::class);
     }
 
+    public function productTag() : HasMany
+    {
+        return $this->hasMany(ProductTag::class);
+    }
+
     public function getCurrencyParameters(string $currency)
     {
         return $this->productPrice->where('code',$currency)->first();
@@ -104,6 +109,11 @@ class Product extends Model
     public function checkProductRelated($product_id, $related_product_id)
     {
         return ProductRelated::where(['product_id' => $product_id, 'related_product_id' => $related_product_id])->exists();
+    }
+
+    public function checkTag($product_id, $tag_id)
+    {
+        return ProductTag::where(['product_id' => $product_id, 'tag_id' => $tag_id])->exists();
     }
 
 }

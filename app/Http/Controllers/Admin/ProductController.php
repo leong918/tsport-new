@@ -8,6 +8,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\CurrencyRepository;
+use App\Repositories\TagRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -18,13 +19,15 @@ class ProductController extends BaseController
     private CategoryRepository $categoryRepository;
     private BrandRepository $brandRepository;
     private CurrencyRepository $currencyRepository;
+    private TagRepository $tagRepository;
 
-    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, CurrencyRepository $currencyRepository)
+    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, CurrencyRepository $currencyRepository, TagRepository $tagRepository)
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
         $this->currencyRepository = $currencyRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     public function index(Request $request)
@@ -53,8 +56,9 @@ class ProductController extends BaseController
         $brandDropdown = $this->brandRepository->dropdown();
         $productDropdown = $this->productRepository->dropdown();
         $currencyDropdown = $this->currencyRepository->dropdown();
+        $tagDropdown = $this->tagRepository->dropdown(); 
 
-        return $this->view('product.create', compact('categoryDropdown', 'brandDropdown','productDropdown','currencyDropdown'));
+        return $this->view('product.create', compact('categoryDropdown', 'brandDropdown','productDropdown','currencyDropdown', 'tagDropdown'));
     }
 
     public function store(CreateProductRequest $request)
@@ -78,8 +82,9 @@ class ProductController extends BaseController
         $brandDropdown = $this->brandRepository->dropdown();
         $productDropdown = $this->productRepository->dropdownWithoutID('id',$id);
         $currencyDropdown = $this->currencyRepository->dropdown();
+        $tagDropdown = $this->tagRepository->dropdown(); 
 
-        return $this->view('product.update', compact('model', 'categoryDropdown', 'brandDropdown','productDropdown', 'currencyDropdown'));
+        return $this->view('product.update', compact('model', 'categoryDropdown', 'brandDropdown','productDropdown', 'currencyDropdown', 'tagDropdown'));
     }
 
     public function update(UpdateProductRequest $request, int $id)

@@ -1300,27 +1300,19 @@
         <div class=container>
             <div class="container-discover text-center">
                 <div class="discover-title">More To Discover</div>
-                <div class="row row-cols-2 row-cols-md-5 row-cols-sm-3">
-                    <div class="discover-product-container col discover-product-img">
-                        <img src="{{asset('assets/web/assets/img/homepage/more-to-discover-1.png')}}">
-                        <div class="discover-description">Body Wash & Scrub</div>
+                <div class="swiper mySwiper-category">
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-wrapper">
+                        @foreach ($all_category_list as $category)
+                        <div class="swiper-slide brand-img">
+                            <a href="{{ route('web.product', ['category_id' => $category->id ]) }}">
+                                <img src="{{$category->image}}">
+                            </a>
+                            <div class="discover-description">{{$category->name}}</div>
+                        </div>
+                        @endforeach
                     </div>
-                    <div class="discover-product-container col discover-product-img">
-                        <img src="{{asset('assets/web/assets/img/homepage/more-to-discover-2.png')}}">
-                        <div class="discover-description">Eyes Care</div>
-                    </div>
-                    <div class="discover-product-container col discover-product-img">
-                        <img src="{{asset('assets/web/assets/img/homepage/more-to-discover-3.png')}}">
-                        <div class="discover-description">Exfoliator & Mask</div>
-                    </div>
-                    <div class="discover-product-container col discover-product-img">
-                        <img src="{{asset('assets/web/assets/img/homepage/more-to-discover-4.png')}}">
-                        <div class="discover-description">Sun Protection</div>
-                    </div>
-                    <div class="discover-product-container col discover-product-img">
-                        <img src="{{asset('assets/web/assets/img/homepage/more-to-discover-5.png')}}">
-                        <div class="discover-description">Cleanser</div>
-                    </div>
+                    <div class="swiper-button-next"></div>
                 </div>
             </div>
         </div>
@@ -1415,6 +1407,37 @@
             delay: 3000,
         },
 
+        breakpoints: {
+            375: {
+                slidesPerView: 1.5,
+                spaceBetween: 10,
+            },
+
+            425: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+            },
+
+            768: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            },
+            1024: {
+                slidesPerView: 6.2,
+                spaceBetween: 20,
+            },
+        }
+    });
+
+    //more to discover
+    var swiper = new Swiper(".mySwiper-category", {
+        autoplay: {
+            delay: 3000,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
         breakpoints: {
             375: {
                 slidesPerView: 1.5,

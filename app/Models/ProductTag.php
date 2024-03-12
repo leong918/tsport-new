@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-class Category extends Model
+class ProductTag extends Model
 {
     use SoftDeletes;
 
@@ -18,12 +18,7 @@ class Category extends Model
      */
     public static $rules = [];
 
-    public const STATUS = [
-        'ACTIVE' => 1,
-        'INACTIVE' => 0,
-    ];
-
-    protected $table = 'category';
+    protected $table = 'product_tag';
 
     /**
      * The attributes that are mass assignable.
@@ -31,11 +26,8 @@ class Category extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'parent_category_id',
-        'name',
-        'image',
-        'status',
-        'sort',
+        'product_id',
+        'tag_id',
     ];
 
     /**
@@ -62,14 +54,14 @@ class Category extends Model
         );
     }
 
-    protected function categoryDescription() : HasMany
+    public function product(): BelongsTo
     {
-        return $this->hasMany(CategoryDescription::class);
+        return $this->belongsTo(Product::class);
     }
 
-    public function getParameters(string $params)
+    public function tag(): BelongsTo
     {
-        return $this->categoryDescription->where('language',$params)->first();
-    } 
+        return $this->belongsTo(Tag::class);
+    }
 
 }

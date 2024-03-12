@@ -65,15 +65,13 @@
                                 @endforeach
                             </ul> 
                         </li>
+
+                        @foreach ($all_category_list as $category)
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.product',['category_type' => 'skincare'])}}">Skincare</a>
+                            <a class="nav-link" href="{{route('web.product',['category_id' => $category->id ])}}">{{$category->name}}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.product',['category_type' => 'makeup'])}}">Makeup</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.product',['category_type' => 'hairbody'])}}">Hair & Body</a>
-                        </li>
+                        @endforeach
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('web.blog')}}">Blog</a>
                         </li>
