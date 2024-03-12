@@ -8,8 +8,6 @@ use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
-use App\Models\Category;
-use App\Models\CategoryDescription;
 
 class CategoryController extends BaseController
 {
@@ -33,7 +31,7 @@ class CategoryController extends BaseController
                 ->addColumn('parent_category_name', function ($model) {
 
                     if($model->parent_category_id){
-                        $parentCategory = Category::find($model->parent_category_id);
+                        $parentCategory = $this->categoryRepository->find($model->parent_category_id);
 
                         return $parentCategory->name ;
                     } else {
@@ -101,7 +99,8 @@ class CategoryController extends BaseController
 
     public function destroy(int $id)
     {
-        Category::where('id' , $id)->orWhere('parent_category_id' , $id)->delete();
+        $this->categoryRepository->delete($id);
+        $this->categoryRepository->deleteChildCategory($id);
 
         return $this->response();
     }

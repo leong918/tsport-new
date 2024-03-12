@@ -110,6 +110,15 @@ class CategoryRepository extends BaseRepository
         $model->save();
     }
 
+    public function deleteChildCategory(int $parent_id)
+    {
+        $query = Category::whereIn('parent_category_id', [$parent_id])->get();
+
+        if (!$query->isEmpty()) {
+            $query->each->delete();
+        }
+    }
+
     private function verifyDescription($input)
     {
         foreach ($input['language'] as $key => $language) {
