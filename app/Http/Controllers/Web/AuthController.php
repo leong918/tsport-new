@@ -59,11 +59,6 @@ class AuthController extends BaseController
 
             event(new Registered($user));
 
-            //set login session
-            $credentials = $request->only('phone_no', 'password');
-            Auth::attempt($credentials);
-            $request->session()->regenerate();
-
             DB::commit();
             return response()->json(['email' => $user->email]);
         } catch (\Exception $e) {
