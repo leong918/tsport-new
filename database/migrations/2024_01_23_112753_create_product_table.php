@@ -18,11 +18,13 @@ return new class extends Migration
             $table->string("name");
             $table->string("sku")->unique();
             $table->string("alias")->unique();
+            $table->integer("quantity")->default(0);
             $table->tinyInteger("status")->default(0);
             $table->integer("sort")->default(0);
             $table->tinyInteger("is_best_seller")->default(0);
             $table->tinyInteger("is_new")->default(0);
             $table->tinyInteger("is_backorder")->default(0);
+            $table->tinyInteger("is_attribute")->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
