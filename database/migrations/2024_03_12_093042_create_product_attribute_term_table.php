@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_balance_log', function (Blueprint $table) {
+        Schema::create('product_attribute_term', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id');
-            $table->bigInteger('product_attribute_term_id')->nullable();
-            $table->string('type');
+            $table->bigInteger('product_attribute_id');
+            $table->string('name');
+            $table->string('sku');
             $table->integer('quantity');
-            $table->string('remark');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_balance_log');
+        Schema::dropIfExists('product_attribute_term');
     }
 };
