@@ -17,9 +17,10 @@ return new class extends Migration
             $table->bigInteger('product_id');
             $table->bigInteger('product_attribute_term_id')->nullable();
             $table->string('product_name');
-            $table->decimal('price', 16, 2);
+            $table->string('product_attribute_term_name')->nullable();
+            $table->decimal('price', 16, 2)->default(0);
             $table->integer('quantity');
-            $table->decimal('total_price', 16, 2);
+            $table->decimal('total_price', 16, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
