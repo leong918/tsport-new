@@ -20,8 +20,8 @@ return new class extends Migration
             $table->decimal('shipping', 16, 2)->default(0);
             $table->decimal('discount', 16, 2)->default(0);
             $table->decimal('total', 16, 2)->default(0);
-            $table->integer('point');
-            $table->tinyInteger('status');
+            $table->integer('point')->default(0);
+            $table->tinyInteger('status')->default(0);
             $table->string('first_name');
             $table->string('last_name');
             $table->string('company_name')->nullable();
