@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\View\Components\Alert;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
         // dynamic initiate alias based on model files
         $loader = AliasLoader::getInstance();
         $models = $this->getAllModels();
@@ -38,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
                 require_once $filename;
             }
         } catch (\Throwable $e) {
-            $msg = 'Message: ' .$e->getMessage().' - Line: '.$e->getLine().' - File: '.$e->getFile();
+            $msg = 'Message: ' . $e->getMessage() . ' - Line: ' . $e->getLine() . ' - File: ' . $e->getFile();
             echo $msg;
             exit;
         }
