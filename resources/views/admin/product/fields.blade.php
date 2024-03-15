@@ -3,6 +3,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 @endsection
+<style>
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove {
+        padding: 0.50em !important; /* Adjust padding as needed */
+    }
+</style>
+
 <x-alert />
 <div class="col-sm-12">
     <div class="card mb-3">
@@ -29,6 +35,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
+                        {{ html()->label('Price') }}    
+                        {{ html()->number('product_price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && $model->productPrice ? $model->productPrice()->first()->price : null )->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
                         {{ html()->label('Category ID') }}
                         {{ html()->select('category_id')->options($categoryDropdown)->class('form-control')->required() }}
                     </div>
@@ -47,10 +59,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{-- {{ html()->label('Tag') }}
-                        {{ html()->select('tag')->options($tagDropdown)->class('form-control') }} --}}
                         {{ html()->label('Product Tag') }}
-                        <select class="form-multi-select" name="product_tag[]" multiple data-coreui-search="true">
+                        <select class="form-multi-select" id="product_tag_select" name="product_tag[]" data-placeholder="Choose product tag" multiple>
                             @foreach($tagDropdown as $tag_id => $tag_name)
                                 <option value={{$tag_id}} {{isset($model) && $model->checkTag($model->id, $tag_id) ? 'selected' : ''}}>{{$tag_name}}</option>
                             @endforeach
@@ -112,23 +122,6 @@
     </div>
 </div>
 <div class="col-sm-12">
-    <div class="row mb-3">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <strong>Product Price</strong> 
-                    <button type="button" id="add_product_price" class="btn btn-primary permission float-end">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-                <div class="card-body priceInputWrapper">
-                    @include("admin.product.price_fields")
-                </div>
-            </div>
-        </div>  
-    </div>  
-</div>
-<div class="col-sm-12">
     <div class="row">
         <div class="col-md-6">
             <div class="card">
@@ -162,7 +155,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
 <script>
     $(document).ready(function() { 
-        $('#product-related-select').select2({
+        $('#product-related-select, #product_tag_select').select2({
             theme: "bootstrap-5",
             width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
             placeholder: $(this).data('placeholder'),

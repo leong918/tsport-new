@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -39,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
+        'level_id',
         'first_name',
         'last_name',
         'username',
@@ -78,5 +80,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
+    }
+
+    public function level() : HasOne
+    {
+        return $this->hasOne(Level::class,'id','level_id');
     }
 }

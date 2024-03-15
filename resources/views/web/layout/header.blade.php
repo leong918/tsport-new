@@ -60,13 +60,13 @@
                                 Brands
                             </button>
                             <ul class="dropdown-menu dropdown-brand">
-                                @foreach ($brand_list as $brand)
+                                @foreach ($sidebar_brand_list as $brand)
                                     <li><a class="dropdown-item" href="{{route('web.brand',['brand_id' => $brand->id ])}}">{{ $brand->name }}</a></li>
                                 @endforeach
                             </ul> 
                         </li>
 
-                        @foreach ($all_category_list as $category)
+                        @foreach ($sidebar_category_list as $category)
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('web.product',['category_id' => $category->id ])}}">{{$category->name}}</a>
                         </li>

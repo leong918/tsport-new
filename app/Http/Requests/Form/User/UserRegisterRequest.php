@@ -53,15 +53,24 @@ class UserRegisterRequest extends FormRequest
         $validator->addExtension('both_or_none', function ($attribute, $value, $parameters, $validator) {
             $otherField = $parameters[0];
             $data = $validator->getData();
-
+    
             // Check if either both fields are filled or both are empty
             $fieldA = $data[$attribute];
             $fieldB = $data[$otherField];
-
-            return (empty($fieldA) && empty($fieldB)) || (!empty($fieldA) && !empty($fieldB));
+    
+            // Check if there's already an error message for one of the fields
+            if ($validator->errors()->has($attribute) || $validator->errors()->has($otherField)) {
+                return true;
+            }
+    
+            if ((empty($fieldA) && !empty($fieldB)) || (!empty($fieldA) && empty($fieldB))) {
+                return false;
+            }
+    
+            return true;
         });
     }
-
+    
     public function messages()
     {
         return [

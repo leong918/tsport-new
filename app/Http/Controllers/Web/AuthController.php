@@ -9,7 +9,7 @@ use App\Http\Requests\Form\User\UserResetPasswordRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\UserRepository;
 use App\Repositories\PasswordResetTokensRepository;
-use Illuminate\Support\Facades\Session;
+use App\Repositories\LevelRepository;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ForgotPasswordMail;
 use Carbon\Carbon;
@@ -21,10 +21,12 @@ class AuthController extends BaseController
 {
     protected UserRepository $userRepository;
     protected PasswordResetTokensRepository $passwordResetTokensRepository;
+    protected LevelRepository $levelRepository;
 
-    public function __construct(UserRepository $userRepository, PasswordResetTokensRepository $passwordResetTokensRepository){
+    public function __construct(UserRepository $userRepository, PasswordResetTokensRepository $passwordResetTokensRepository, LevelRepository $levelRepository){
         $this->userRepository = $userRepository;
         $this->passwordResetTokensRepository = $passwordResetTokensRepository;
+        $this->levelRepository = $levelRepository;
     }
 
     public function login()
@@ -55,8 +57,19 @@ class AuthController extends BaseController
         try {
             $data = $request->all();
             $data['username'] = $data['first_name'];
-            $user = $this->userRepository->createUser($data);
+            $data['level_id'] = $this->levelRepository->getLowestLeveling()->id;
+            
+            if($data['referral_email'] && $data['referral_phone_no'])
+            {
+                $user = $this->userRepository->getUserByEmail($data['referral_email'],$data['referral_phone_no']);
+                if(!$user || $user->level_id <= 1)
+                {
+                    throw new \Exception('Referral User Not Found or Refferal User Level Not Compatible!');
+                }
+            }
 
+            $user = $this->userRepository->createUser($data);
+            
             event(new Registered($user));
 
             DB::commit();
@@ -105,12 +118,7 @@ class AuthController extends BaseController
     {
         $token = request('token');
         if(!$token){
-            Session::flash('swal', [
-                'title' => '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Error</p>',
-                'text' => 'Password Reset Token Expired!',
-                'type' => 'error'
-            ]);
-            return redirect(route('web.home'));
+            return redirect(route('web.home'))->with('swal_error', "Password Reset Token Expired!");
         }
 
         $tokenRecord = $this->passwordResetTokensRepository->findRecordByToken($token);
@@ -125,22 +133,12 @@ class AuthController extends BaseController
                 if($tokenRecord){
                     $tokenRecord->delete();
                 }
-                Session::flash('swal', [
-                    'title' => '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Error</p>',
-                    'text' => 'Password Reset Token Expired!',
-                    'type' => 'error'
-                ]);
-                return redirect(route('web.home'));
+                return redirect(route('web.home'))->with("swal_error", "Password Reset Token Expired!");
             }
         }
-        else{
-            Session::flash('swal', [
-                'title' => '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Error</p>',
-                'text' => 'Password Reset Token Expired!',
-                'type' => 'error'
-            ]);
-            return redirect(route('web.home'));
-        }
+
+        return redirect(route('web.home'))->with("swal_error", "Password Reset Token Expired!");
+        
     }
 
     private function tokenExpired($createdAt)

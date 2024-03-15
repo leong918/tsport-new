@@ -27,12 +27,44 @@ class CreateUserRequest extends FormRequest
             'first_name' => 'required',
             'last_name' => 'required',
             'username' => 'required',
-            'email' => 'required',
-            'phone_no' => 'required',
-            'dob' => 'required|date_format:d/m/Y',
+            'email' => 'required|unique:user',
+            'phone_no' => 'required|unique:user',
+            'birth_month' => 'required',
             'password' => 'required',
-            'referral_email' => 'required',
-            'referral_phone_no' => 'required',
+            'referral_email' => 'both_or_none:referral_phone_no',
+            'referral_phone_no' => 'both_or_none:referral_email',
         ];
     }
+
+    public function withValidator($validator)
+    {
+        $validator->addExtension('both_or_none', function ($attribute, $value, $parameters, $validator) {
+            $otherField = $parameters[0];
+            $data = $validator->getData();
+    
+            // Check if either both fields are filled or both are empty
+            $fieldA = $data[$attribute];
+            $fieldB = $data[$otherField];
+    
+            // Check if there's already an error message for one of the fields
+            if ($validator->errors()->has($attribute) || $validator->errors()->has($otherField)) {
+                return true;
+            }
+    
+            if ((empty($fieldA) && !empty($fieldB)) || (!empty($fieldA) && empty($fieldB))) {
+                return false;
+            }
+    
+            return true;
+        });
+    }
+    
+    public function messages()
+    {
+        return [
+            'referral_email.both_or_none' => 'Either both Referral Email and Referral Phone No must be filled or both must be empty.',
+            'referral_phone_no.both_or_none' => 'Either both Referral Email and Referral Phone No must be filled or both must be empty.',
+        ];
+    }
+
 }

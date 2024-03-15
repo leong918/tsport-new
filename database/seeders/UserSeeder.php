@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
+                'level_id' => '1',
                 'first_name' => 'User',
                 'last_name' => 'ABC',
                 'username' => 'userABC',

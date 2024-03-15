@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\PointLogRepository;
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -13,10 +14,12 @@ class VerificationController extends Controller
      * Instantiate a new VerificationController instance.
      */
     protected UserRepository $userRepository;
+    protected PointLogRepository $pointLogRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, PointLogRepository $pointLogRepository)
     {
         $this->userRepository = $userRepository;
+        $this->pointLogRepository = $pointLogRepository;
         $this->middleware('auth')->except('verify');;
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
@@ -49,7 +52,13 @@ class VerificationController extends Controller
         if ($user->markEmailAsVerified()){
             event(new Verified($user));
             $user->status = 1;
+            $user->point = 10;
             $user->save();
+
+            $pointLogData['user_id'] = $user->id;
+            $pointLogData['point'] = 10;
+            $pointLogData['remark'] = '10 points gained from registration.';
+            $this->pointLogRepository->create($pointLogData);
         }
 
         return redirect(route('web.login'))->with('success', 'Account Verified!');
