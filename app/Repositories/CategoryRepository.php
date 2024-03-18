@@ -48,7 +48,6 @@ class CategoryRepository extends BaseRepository
         if ($category_id) {
             //products filtered by category 
             return Category::where('id', $category_id)->orderBy('sort', 'asc')->first();
-
         } else {
             //filtering for brand
             if ($order_by == 'name') {
@@ -88,7 +87,7 @@ class CategoryRepository extends BaseRepository
     public function updateCategory(array $input, int $id)
     {
         $this->verifyDescription($input);
-        
+
         $model = Category::findOrFail($id);
 
         $this->verifyChildCategory($model, $input);
@@ -117,16 +116,11 @@ class CategoryRepository extends BaseRepository
 
     public function deleteChildCategory(int $parent_id)
     {
-        $query = Category::whereIn('parent_category_id', [$parent_id])->get();
-
-        if (!$query->isEmpty()) {
-            $query->each->delete();
-        }
+        Category::where('parent_category_id', $parent_id)->delete();
     }
 
     private function verifyDescription($input)
     {
-        
         foreach ($input['language'] as $key => $language) {
             $lang = ($key == 'cn' ? 'Chinese' : 'English');
 
@@ -140,9 +134,8 @@ class CategoryRepository extends BaseRepository
     {
         $sub_category = Category::where(['parent_category_id' => $model->id, 'status' => 1])->first();
 
-        if(isset($input['parent_category_id']) && isset($sub_category)){
-            throw new \Exception(__('This category has sub category named ' . $sub_category->name. '!'));
+        if (isset($input['parent_category_id']) && isset($sub_category)) {
+            throw new \Exception(__('This category has sub category named ' . $sub_category->name . '!'));
         }
     }
-
 }

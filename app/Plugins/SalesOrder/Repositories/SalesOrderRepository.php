@@ -113,6 +113,20 @@ class SalesOrderRepository extends BaseRepository
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::dropIfExists('user_cart');
+
+        Schema::create('user_cart', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('user_id')->nullable();
+            $table->bigInteger('product_id');
+            $table->bigInteger('product_attribute_term_id')->nullable();
+            $table->string('user_ip');
+            $table->string('product_name');
+            $table->integer('quantity');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     public function getListing()

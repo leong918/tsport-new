@@ -63,9 +63,9 @@ class ProductController extends BaseController
         $brandDropdown = $this->brandRepository->dropdown();
         $productDropdown = $this->productRepository->dropdown();
         $currencyDropdown = $this->currencyRepository->dropdown();
-        $tagDropdown = $this->tagRepository->dropdown(); 
+        $tagDropdown = $this->tagRepository->dropdown();
 
-        return $this->view('product.create', compact('categoryDropdown', 'brandDropdown','productDropdown','currencyDropdown', 'tagDropdown'));
+        return $this->view('product.create', compact('categoryDropdown', 'brandDropdown', 'productDropdown', 'currencyDropdown', 'tagDropdown'));
     }
 
     public function store(CreateProductRequest $request)
@@ -87,11 +87,11 @@ class ProductController extends BaseController
         $model = $this->productRepository->find($id);
         $categoryDropdown = $this->categoryRepository->dropdown();
         $brandDropdown = $this->brandRepository->dropdown();
-        $productDropdown = $this->productRepository->dropdownWithoutID('id',$id);
+        $productDropdown = $this->productRepository->dropdownWithoutID('id', $id);
         $currencyDropdown = $this->currencyRepository->dropdown();
-        $tagDropdown = $this->tagRepository->dropdown(); 
+        $tagDropdown = $this->tagRepository->dropdown();
 
-        return $this->view('product.update', compact('model', 'categoryDropdown', 'brandDropdown','productDropdown', 'currencyDropdown', 'tagDropdown'));
+        return $this->view('product.update', compact('model', 'categoryDropdown', 'brandDropdown', 'productDropdown', 'currencyDropdown', 'tagDropdown'));
     }
 
     public function update(UpdateProductRequest $request, int $id)
@@ -108,7 +108,7 @@ class ProductController extends BaseController
         return redirect(route('admin.product.index'))->with('success', "Successfully update product {$request->name}");
     }
 
-    public function updateStock(UpdateProductStockRequest $request , int $id)
+    public function updateStock(UpdateProductStockRequest $request, int $id)
     {
         DB::beginTransaction();
         try {

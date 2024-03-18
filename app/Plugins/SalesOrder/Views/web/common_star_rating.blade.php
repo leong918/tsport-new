@@ -1,1 +1,0 @@
-<img class="star-rating" src="{{asset('assets/web/assets/img/homepage/5-star.png')}}">
