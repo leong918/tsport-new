@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="product-description">{{ $productRelated->relatedProduct->name }}</div>
                                 <div class="price-cart">
-                                    <div class="product-price">{{ $productRelated->relatedProduct->getCurrencyParameters('MYR')->price }}</div>
+                                    <div class="product-price">{{ $productRelated->relatedProduct->getCurrencyParameters('HKD')->price }}</div>
                                     <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
                                 </div>
                             </div>

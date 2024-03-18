@@ -41,6 +41,11 @@ class CurrencyRepository extends BaseRepository
         return formalizeDropdown(Currency::all(), $key, 'name');
     }
 
+    public function getCurrencyByCode(string $currency_code)
+    {
+        return Currency::where(['code' => $currency_code, 'status' => 1])->first();
+    }
+
     public function createCurrency(array $input)
     {
         $model = new Currency();

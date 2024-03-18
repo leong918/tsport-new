@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category', function (Blueprint $table) {
+        Schema::create('point_log', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('parent_category_id')->nullable();
-            $table->string("name");
-            $table->string("image");
-            $table->tinyInteger("status")->default(0);
-            $table->integer("sort")->default(0);
+            $table->bigInteger('user_id');
+            $table->bigInteger('sales_order_id')->nullable();
+            $table->integer("point")->default(0);
+            $table->string("remark")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category');
+        Schema::dropIfExists('point_log');
     }
 };

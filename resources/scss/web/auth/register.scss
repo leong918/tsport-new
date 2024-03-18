@@ -220,6 +220,10 @@
                         background-color: white;
                         color: #9A835E;
                     }
+                    &:disabled{
+                        background-color: #9A835E;
+                        color: white; 
+                    }
                 }
             }
 

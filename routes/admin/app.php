@@ -24,6 +24,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
         require_once 'blog.php';
         require_once 'user.php';
         require_once 'tag.php';
+        require_once 'verification.php';
         // require_once 'product_tag.php';
     });
 });

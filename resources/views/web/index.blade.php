@@ -1,4 +1,7 @@
 @extends('web.layout.app')
+
+<x-alert />
+
 @section('content')
 <div id="home" class="overflow-x-hidden">
     <!-- Banner container -->
@@ -1303,7 +1306,7 @@
                 <div class="swiper mySwiper-category">
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-wrapper">
-                        @foreach ($all_category_list as $category)
+                        @foreach ($sidebar_category_list as $category)
                         <div class="swiper-slide brand-img">
                             <a href="{{ route('web.product', ['category_id' => $category->id ]) }}">
                                 <img src="{{$category->image}}">

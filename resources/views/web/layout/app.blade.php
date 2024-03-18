@@ -18,6 +18,7 @@
 @vite(['resources/scss/web/app.scss', 'resources/js/web/app.js'])
         {{-- section header --}}
     @include('web.layout.header')
+
     <div id="main-page">
         @include('web.search')
         {{-- end header --}}
@@ -36,24 +37,6 @@
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
-    @if (Session::has('swal'))
-        Swal.fire({
-            title: '{!! Session::get('swal.title') !!}',
-            text: '{!! Session::get('swal.text') !!}',
-            confirmButtonText: 'OK',
-            backdrop: false,
-            showConfirmButton: false,
-            customClass: {
-                container: 'custom-register-swal'
-            },
-            didOpen: () => {
-                $('#custom-close-button').click(function() {
-                    swal.close();
-                });
-            }
-    });
-    @endif
-
     $('.navbar-search').on('click', function(){
         $('#header').toggleClass('active');
         $('#sub-pages-overlay').toggleClass('active');
@@ -79,13 +62,26 @@
         $('body').removeClass('active');
         
     })
+    
+    function showSwal(type, title = "", text = ""){ 
+        if(type == 'error'){
+            Swal.fire({
+                title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">' + title + '</p>',
+                html: '<p class="swal-register-content-1">' + text + ' </p> ',
+                backdrop: false,
+                showConfirmButton: false,
+                customClass: {
+                    container: 'custom-register-swal'
+                },
+                didOpen: () => {
+                    $('#custom-close-button').click(function() {
+                        swal.close();
+                    });
+                }
+             });
+        }
+    }
 
-    // $('.offcanvas-header a').on('click', function(){
-    //     $('#search-navbar').css('z-index', '100');
-    // })
-    // $('body').on('click', function(){
-    //     $('#search-navbar').css('z-index', '100');
-    // })
     </script>
     @stack('scripts')
 </body>

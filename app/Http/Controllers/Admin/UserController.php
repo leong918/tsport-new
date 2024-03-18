@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Form\user\CreateUserRequest;
 use App\Http\Requests\Form\user\UpdateUserRequest;
+use App\Repositories\LevelRepository;
 use App\Repositories\userRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -12,10 +13,12 @@ use Illuminate\Support\Facades\DB;
 class UserController extends BaseController
 {
     private UserRepository $userRepository;
+    private LevelRepository $levelRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, LevelRepository $levelRepository)
     {
         $this->userRepository = $userRepository;
+        $this->levelRepository = $levelRepository;
     }
 
     public function index(Request $request)
@@ -45,7 +48,19 @@ class UserController extends BaseController
 
     public function store(CreateUserRequest $request)
     {
-        $this->userRepository->createUser($request->all());
+        $data = $request->all();
+        $data['level_id'] =  $this->levelRepository->getLowestLeveling()->id;
+
+        if($data['referral_email'] && $data['referral_phone_no'])
+        {
+            $user = $this->userRepository->getUserByEmail($data['referral_email'],$data['referral_phone_no']);
+            if(!$user || $user->level_id <= 1)
+            {
+                return redirect()->back()->with('error', "Referral User Not Found or Refferal User Level Not Compatible!");
+            }
+        }
+
+        $this->userRepository->createUser($data);
         return redirect(route('admin.user.index'))->with('success', "Successfully create user {$request->name}");
     }
 
@@ -57,7 +72,17 @@ class UserController extends BaseController
 
     public function update(UpdateUserRequest $request, int $id)
     {
-        $this->userRepository->updateUser($request->all(), $id);
+        $data = $request->all();
+        if($data['referral_email'] && $data['referral_phone_no'])
+        {
+            $user = $this->userRepository->getUserByEmail($data['referral_email'],$data['referral_phone_no']);
+            if(!$user || $user->level_id <= 1)
+            {
+                return redirect()->back()->with('error', "Referral User Not Found or Refferal User Level Not Compatible!");
+            }
+        }
+
+        $this->userRepository->updateUser($data, $id);
         return redirect(route('admin.user.index'))->with('success', "Successfully update user {$request->name}");
     }
 

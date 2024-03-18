@@ -82,8 +82,13 @@ class UserRepository extends BaseRepository
             )
             ->first();
     }
-    public function getUserByEmail($email){
-        return User::where('email', $email)->first();
+    public function getUserByEmail(string $email, string $phone_no = null)
+    {
+        if($phone_no){
+            return User::where(['email' => $email, 'phone_no' => $phone_no,'status' => 1])->first();
+        }
+
+        return User::where(['email' => $email, 'status' => 1])->first();
     }
 
     public function toggleStatus(int $id)
