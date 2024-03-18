@@ -6,9 +6,9 @@ if ($pluginRepository->getActivePlugin('SalesOrder')) {
     $this->loadViewsFrom(__DIR__ . '/Views', 'sales_order');
 
     if (!function_exists('salesOrderRenderView')) {
-        function salesOrderRenderView($blade_name)
+        function salesOrderRenderView($blade_name, $product)
         {
-            return view("sales_order::web." . $blade_name);
+            return view("sales_order::web." . $blade_name, compact('product'));
         }
     }
 }

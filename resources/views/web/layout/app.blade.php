@@ -65,7 +65,7 @@
     })
     
     function showSwal(type, title = "", text = ""){ 
-        if(type == 'error'){
+        if(type == 'error') {
             Swal.fire({
                 title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">' + title + '</p>',
                 html: '<p class="swal-register-content-1">' + text + ' </p> ',
@@ -76,10 +76,10 @@
                 },
                 didOpen: () => {
                     $('#custom-close-button').click(function() {
-                        swal.close();
+                        Swal.close();
                     });
                 }
-             });
+            });
         }
     }
 

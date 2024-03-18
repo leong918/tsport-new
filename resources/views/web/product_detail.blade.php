@@ -110,17 +110,18 @@
             </div>
         </div>
     </div>
+    @if($product->productRelated->count())
     <div class="continue-shopping-product">
-        <div class="">
-            <div class="title-new">Related Products</div>
-        </div>
-        <div class="swiper mySwiper-continueproduct">
-            <div class="swiper-wrapper">
-                @if($product->productRelated->count())
+        <div class="container">
+            <div class="">
+                <div class="title-new">Related Products</div>
+            </div>
+            <div class="swiper mySwiper-continueproduct">
+                <div class="swiper-wrapper">
                     @foreach($product->productRelated as $productRelated)
-                        <a href="{{route('web.product_detail', ['alias' => $productRelated->relatedProduct->alias])}}" class="swiper-slide new-launches-product-img">
+                        <a href="{{route('web.product_detail', ['alias' => $productRelated->product->alias])}}" class="swiper-slide new-launches-product-img">
                             <div class="product-image position-relative">
-                                <img class="show" src="{{ $productRelated->relatedProduct->productImage->first()->url }}">
+                                <img class="show" src="{{ $productRelated->product->productImage->first()->url }}">
                                 <div class="wishlist-cart-container">
                                     <div class="row text-center">
                                         <div class="col-md-6">
@@ -147,18 +148,19 @@
                                     @endif
                                     <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                 </div>
-                                <div class="product-description">{{ $productRelated->relatedProduct->name }}</div>
+                                <div class="product-description">{{ $productRelated->product->name }}</div>
                                 <div class="price-cart">
-                                    <div class="product-price">{{ $productRelated->relatedProduct->getCurrencyParameters('HKD')->price }}</div>
+                                    <div class="product-price">{{ $productRelated->product->getCurrencyParameters('HKD')->price }}</div>
                                     <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
                                 </div>
                             </div>
                         </a>
                     @endforeach
-                @endif
+                </div>
             </div>
         </div>
     </div>
+    @endif
 </div>
 @endsection
 

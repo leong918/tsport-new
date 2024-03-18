@@ -127,7 +127,9 @@
                         if (response) {
                             return axios.delete(url, {})
                                 .then(() => {
-                                    window.location.reload();
+                                    setTimeout(function() {
+                                        window.location.reload();
+                                    }, 1000);
                                 })
                                 .catch((e) => {
                                     console.error("error ", e)
@@ -172,7 +174,9 @@
                         if (response) {
                             return axios.post(url, {})
                                 .then(() => {
-                                    window.location.reload();
+                                    setTimeout(function() {
+                                        window.location.reload();
+                                    }, 1000);
                                 })
                                 .catch((e) => {
                                     console.error("error ", e)

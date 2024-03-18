@@ -46,7 +46,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Price') }}    
-                        {{ html()->number('product_price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && $model->productPrice ? $model->productPrice()->first()->price : null )->required() }}
+                        {{ html()->number('product_price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->first()->price : null )->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">

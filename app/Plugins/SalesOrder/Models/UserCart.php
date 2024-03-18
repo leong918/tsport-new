@@ -1,24 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Plugins\SalesOrder\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductAttributeTerm extends Model
+class UserCart extends Model
 {
     use SoftDeletes;
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [];
-
-    protected $table = 'product_attribute_term';
+    protected $table = 'user_cart';
 
     /**
      * The attributes that are mass assignable.
@@ -26,10 +18,10 @@ class ProductAttributeTerm extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'product_id',
-        'product_attribute_id',
-        'name',
-        'sku',
+        'product_attribute_term_id',
+        'user_ip',
         'quantity',
     ];
 
@@ -52,15 +44,5 @@ class ProductAttributeTerm extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
-    }
-
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
-
-    public function productAttribute(): BelongsTo
-    {
-        return $this->belongsTo(ProductAttribute::class);
     }
 }

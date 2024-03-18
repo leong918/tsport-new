@@ -21,5 +21,4 @@ Route::group(['namespace' => 'Web'], function () {
     require_once 'verification.php';
     require_once 'about.php';
     require_once 'account.php';
-    require_once 'cart.php';
 });

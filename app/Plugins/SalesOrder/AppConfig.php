@@ -70,7 +70,7 @@ class AppConfig extends ConfigDefault
     {
         $this->pluginRepository->makeModel()->where('key', $this->configKey)->delete();
         $this->adminMenuRepository->makeModel()->where('key', $this->configKey)->delete();
-        $this->productReviewRepository->uninstallExtension($this->code);
+        $this->salesOrderRepository->uninstallExtension($this->code);
 
         return ['error' => 0, 'msg' => ''];
     }

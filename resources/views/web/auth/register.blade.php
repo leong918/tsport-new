@@ -127,7 +127,7 @@
                 data: formData,
             })
             .then(response => {
-                swal.fire({
+                Swal.fire({
                     title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Thank you for <br>your registration</p>',
                     html: '<p class="swal-register-content-1">We have sent email to ' + response.data.email + ' to confirm the validity of our email address. After receiving the email follow the link provided to complete you registration.</p><p class="swal-register-content-2">If you not got any mail <b>RESEND</b> confirmation mail</p>',
                     showConfirmButton: false,
@@ -142,7 +142,7 @@
                         swalDialog.style.width = parentWidth + 'px';
 
                         $('#custom-close-button').click(function() {
-                            swal.close();
+                            Swal.close();
                         });
                     }
                 }).then((result) => {
@@ -160,7 +160,7 @@
                 } else if(error.response.data.error){
                     errorMessage = error.response.data.error;
                 }
-                swal.fire({
+                Swal.fire({
                     title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Failed to Register</p>',
                     html: '<p class="swal-register-content-1">' + errorMessage + '</p>',
                     showConfirmButton: false,
@@ -175,7 +175,7 @@
                         swalDialog.style.width = parentWidth + 'px';
 
                         $('#custom-close-button').click(function() {
-                            swal.close();
+                            Swal.close();
                         });
                     }
                 })

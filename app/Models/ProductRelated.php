@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductRelated extends Model
 {
@@ -35,17 +35,14 @@ class ProductRelated extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     protected function createdAt(): Attribute
     {
@@ -54,8 +51,8 @@ class ProductRelated extends Model
         );
     }
 
-    public function relatedProduct() : HasOne
+    public function product(): BelongsTo
     {
-        return $this->hasOne(Product::class,'id');
+        return $this->belongsTo(Product::class);
     }
 }

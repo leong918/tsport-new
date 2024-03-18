@@ -9,7 +9,9 @@ use App\Repositories\BrandRepository;
 use App\Repositories\BlogRepository;
 use App\Repositories\BlogCommentRepository;
 use App\Repositories\UserRepository;
+use Carbon\Carbon;
 use App\Http\Requests\Form\BlogComment\CreateBlogCommentRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -66,7 +68,7 @@ class AppController extends BaseController
             $search_keyword = $request->input('search_keyword');
 
             $product_list = $this->productRepository->getProductByTagOrKeywords($search_keyword, 'HKD');
-            
+
             return $this->view('product', compact('product_list', 'search_keyword'));
         }
     }
