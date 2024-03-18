@@ -159,32 +159,14 @@
         </div>
     </div>
 </div>
-<div class="col-sm-12">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header"><strong>English</strong> </div>
-                <div class="card-body">
-                    @include("admin.product.en_fields")
-                </div>
-            </div>
-        </div>                        
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header"><strong>Chinese</strong></div>
-                <div class="card-body">
-                    @include("admin.product.cn_fields")
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section('script')
 @parent
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
 <script>
     $(document).ready(function() { 
         $('#product-related-select, #product_tag_select').select2({
