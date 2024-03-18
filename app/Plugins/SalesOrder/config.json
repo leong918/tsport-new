@@ -1,0 +1,7 @@
+{
+    "name": "SalesOrder Module",
+    "title": "Sales Order",
+    "code": "sales_order",
+    "configGroup": "Plugins",
+    "configKey": "SalesOrder"
+}

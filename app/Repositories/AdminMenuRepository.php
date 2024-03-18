@@ -9,8 +9,7 @@ class AdminMenuRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -32,13 +31,13 @@ class AdminMenuRepository extends BaseRepository
 
     public function getMenuByType()
     {
-        $parent_menus = AdminMenu::whereNull('parent_id')->get()->groupBy('type')->sortBy('sort');
+        $parent_menus = AdminMenu::whereNull('parent_id')->orderBy('sort')->get()->groupBy('type');
         foreach ($parent_menus as $parent_type_menu) {
             foreach ($parent_type_menu as $parent_menu) {
                 $parent_menu->child_item = AdminMenu::where('parent_id', $parent_menu->id)->orderBy('sort')->get();
             }
         }
-        
+
         return $parent_menus;
     }
 
