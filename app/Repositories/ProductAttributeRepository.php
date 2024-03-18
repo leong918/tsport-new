@@ -49,11 +49,8 @@ class ProductAttributeRepository extends BaseRepository
         $productAttribute = ProductAttribute::where('product_id', $product_id)->get();
 
         //------ delete attribute term  ------------
-        foreach ($productAttribute as $attribute) {
-            ProductAttributeTerm::where(['product_id' => $product_id, 'product_attribute_id' => $attribute->id])->delete();
-        }
-
-        ProductAttribute::where('product_id', $product_id)->delete();
+        ProductAttributeTerm::where('product_id', $product_id)->whereIn('product_attribute_id', $productAttribute->pluck('id')->toArray())->delete();
+        $productAttribute->delete();
 
         foreach ($input['option'] as $data) {
 
@@ -64,9 +61,7 @@ class ProductAttributeRepository extends BaseRepository
 
             $productAttributeTerm = new ProductAttributeTermRepository(new Container());
             $productAttributeTerm->createProductAttributeTerm($data, $model);
-
         }
-
     }
 
     public function deleteByProductId(int $product_id)

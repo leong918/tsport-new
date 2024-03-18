@@ -88,19 +88,20 @@ class ProductRepository extends BaseRepository
             ->get();
     }
 
-    public function getProductByTagOrKeywords(string $keyword, string $currency_code){
+    public function getProductByTagOrKeywords(string $keyword, string $currency_code)
+    {
         return Product::leftjoin('product_tag', 'product.id', '=', 'product_tag.product_id')
-        ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-        ->leftjoin('tag', 'tag.id', '=', 'product_tag.tag_id')
-        ->where(['product_price.code' => $currency_code, 'product_price.deleted_at' => null])
-        ->where(function ($query) use ($keyword) {
-            $query->where('tag.name', 'LIKE', '%' . $keyword . '%')
-                ->orWhere('product.name', 'LIKE', '%' . $keyword . '%');
-        })
-        ->distinct('product.id')
-        ->orderBy('product.created_at', 'desc')
-        ->selectRaw('product.*, product_price.code, product_price.price')
-        ->get();
+            ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
+            ->leftjoin('tag', 'tag.id', '=', 'product_tag.tag_id')
+            ->where(['product_price.code' => $currency_code, 'product_price.deleted_at' => null])
+            ->where(function ($query) use ($keyword) {
+                $query->where('tag.name', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('product.name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->distinct('product.id')
+            ->orderBy('product.created_at', 'desc')
+            ->selectRaw('product.*, product_price.code, product_price.price')
+            ->get();
     }
 
 
@@ -183,12 +184,12 @@ class ProductRepository extends BaseRepository
         $model = new Product();
         $model->fill($input);
         $model->save();
-        
+
         if (isset($input['product_related'])) {
             $productRelatedRepository = new ProductRelatedRepository(new Container());
             $productRelatedRepository->createProductRelated($input, $model->id);
         }
-       
+
         if (isset($input['product_tag'])) {
             $productTag = new ProductTagRepository(new Container());
             $productTag->createProductTag($input, $model->id);
@@ -197,7 +198,6 @@ class ProductRepository extends BaseRepository
         if (isset($input['option'])) {
             $productAttribute = new ProductAttributeRepository(new Container());
             $productAttribute->createProductAttribute($input, $model->id);
-
         } else {
             $productBalanceLog = new ProductBalanceLogRepository(new Container());
             $productBalanceLog->createProductBalanceLog($model);
@@ -240,8 +240,7 @@ class ProductRepository extends BaseRepository
         if (isset($input['option'])) {
             $productAttribute = new ProductAttributeRepository(new Container());
             $productAttribute->createProductAttribute($input, $model->id);
-
-        } 
+        }
 
         $productPriceRepository = new ProductPriceRepository(new Container());
         $productPriceRepository->createProductPrice($input, $model->id);
@@ -256,10 +255,8 @@ class ProductRepository extends BaseRepository
 
         if ($input['type'] == 'ADD') {
             $total = $model->quantity + $input['quantity'];
-
         } else {
             $total = $model->quantity - $input['quantity'];
-
         }
 
         $model->quantity = $total;
@@ -267,7 +264,6 @@ class ProductRepository extends BaseRepository
 
         $productBalanceLog = new ProductBalanceLogRepository(new Container());
         $productBalanceLog->createProductBalanceLog($model, null, $input);
-
     }
 
     public function toggleStatus(int $id)

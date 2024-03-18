@@ -5,6 +5,7 @@ namespace App\Http\Requests\Form\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+
 class UpdateProductStockRequest extends FormRequest
 {
     /**

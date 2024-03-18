@@ -15,7 +15,6 @@ class BlogController extends BaseController
     private BlogRepository $blogRepository;
     private BlogCommentRepository $blogCommentRepository;
 
-
     public function __construct(BlogRepository $blogRepository, BlogCommentRepository $blogCommentRepository)
     {
         $this->blogRepository = $blogRepository;
@@ -95,7 +94,7 @@ class BlogController extends BaseController
         if ($request->ajax()) {
             $id = $request->id;
             // dd($id);
-            if($id){
+            if ($id) {
                 $model = $this->blogCommentRepository->getBlogComment($id);
 
                 return DataTables::of($model)
@@ -106,7 +105,6 @@ class BlogController extends BaseController
                     })
                     ->make(true);
             }
-
         }
     }
 }

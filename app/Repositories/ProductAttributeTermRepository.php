@@ -60,31 +60,25 @@ class ProductAttributeTermRepository extends BaseRepository
             //----------- check create/ update stock  ------------
             if (!isset($term['stock_amount'])) {
                 $term_model->quantity = $term['term_qty'];
-
             } else {
                 $this->calStockAmount($term_model, $term);
-                
             }
 
             $term_model->save();
 
             $productBalanceLog = new ProductBalanceLogRepository(new Container());
             $productBalanceLog->createProductBalanceLog($term_model, $term);
-
         }
-
     }
 
-    private function calStockAmount($term_model, $term) {
-        
+    private function calStockAmount($term_model, $term)
+    {
         if ($term['stock_option'] != 0) {
             $total = $term['term_qty'] - $term['stock_amount'];
             $term_model->quantity = $total;
-
         } else {
             $total = $term['stock_amount'] + $term['term_qty'];
             $term_model->quantity = $total;
-
         }
 
         return $term_model->quantity;
