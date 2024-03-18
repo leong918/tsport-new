@@ -51,18 +51,14 @@ class ProductBalanceLogRepository extends BaseRepository
                 $log_model->type = 'IN';
                 $log_model->quantity = $model->quantity;
             }
+            
         } else {
 
             $log_model->product_id = $model->product_id;
             $log_model->product_attribute_term_id = $model->id;
 
             if (isset($termArr['stock_amount'])) {
-                if ($termArr['stock_option'] != 1) {
-                    $log_model->type = 'IN';
-                } else {
-                    $log_model->type = 'OUT';
-                }
-
+                $log_model->type = ($termArr['stock_option'] != 1) ? 'IN' : 'OUT';
                 $log_model->quantity = $termArr['stock_amount'];
             } else {
                 $log_model->type = 'IN';
@@ -71,5 +67,6 @@ class ProductBalanceLogRepository extends BaseRepository
         }
 
         $log_model->save();
+
     }
 }

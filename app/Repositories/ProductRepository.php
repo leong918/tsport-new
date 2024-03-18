@@ -247,6 +247,7 @@ class ProductRepository extends BaseRepository
 
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
+
     }
 
     public function updateStock(array $input, int $id)
