@@ -1,7 +1,8 @@
 @section('script')
-@parent
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    @parent
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 @endsection
 <style>
     .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove {
@@ -12,7 +13,16 @@
 <x-alert />
 <div class="col-sm-12">
     <div class="card mb-3">
-        <div class="card-header"><strong>Product</strong></div>
+        <div class="card-header">
+            <strong>Product</strong>
+            @if (isset($model) && $model->is_attribute == 0)
+                <button type="button" id="add_product_price" data-bs-toggle="modal" data-bs-target="#stockModal"
+                    class="btn btn-success permission float-end">
+                    Stock Adjustment
+                </button>
+            @endif
+
+        </div>
         <div class="card-body">
             <div class="row product-field-wrapper">
                 <div class="col-md-6">
@@ -60,9 +70,12 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Product Tag') }}
-                        <select class="form-multi-select" id="product_tag_select" name="product_tag[]" data-placeholder="Choose product tag" multiple>
-                            @foreach($tagDropdown as $tag_id => $tag_name)
-                                <option value={{$tag_id}} {{isset($model) && $model->checkTag($model->id, $tag_id) ? 'selected' : ''}}>{{$tag_name}}</option>
+                        <select class="form-multi-select" id="product-tag-select" name="product_tag[]" multiple
+                            data-placeholder="Choose product tag">
+                            @foreach ($tagDropdown as $tag_id => $tag_name)
+                                <option value={{ $tag_id }}
+                                    {{ isset($model) && $model->checkTag($model->id, $tag_id) ? 'selected' : '' }}>
+                                    {{ $tag_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -79,24 +92,49 @@
                         {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)->class('form-control')->required() }}
                     </div>
                 </div>
+                @if (!isset($model))
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            {{ html()->label('Quantity') }}
+                            {{ html()->number('quantity')->placeholder('Enter quantity')->attribute('min', 1)->class('form-control')->required() }}
+                        </div>
+                    </div>
+                @endif
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('New') }}
-                        {{ html()->select('is_new')->options(['No','Yes'])->class('form-control')->required() }}
+                        {{ html()->select('is_new')->options(['No', 'Yes'])->class('form-control')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Best Seller') }}
-                        {{ html()->select('is_best_seller')->options(['No','Yes'])->class('form-control')->required() }}
+                        {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control')->required() }}
+                    </div>
+                </div>
+                @if (!isset($model))
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            {{ html()->label('Has Attribute') }}
+                            {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
+                        </div>
+                    </div>
+                @endif
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Has Backorder') }}
+                        {{ html()->select('is_backorder')->options(['No', 'Yes'])->class('form-control is_backorder')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Related Product') }}
-                        <select class="form-select" id="product-related-select" name="product_related[]"  data-placeholder="Choose related product" multiple>
-                            @foreach($productDropdown as $product_id => $product_name)
-                                <option value={{$product_id}} {{isset($model) && $model->checkProductRelated($product_id, $model->id) ? 'selected' : ''}}>{{$product_name}}</option>
+                        <select class="form-select" id="product-related-select" name="product_related[]"
+                            data-placeholder="Choose related product" multiple>
+                            @foreach ($productDropdown as $product_id => $product_name)
+                                <option value={{ $product_id }}
+                                    {{ isset($model) && $model->checkProductRelated($product_id, $model->id) ? 'selected' : '' }}>
+                                    {{ $product_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -104,16 +142,16 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Image') }}
-                        {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control')->required(isset($model) && $model->productImage->count() > 0 ? false : true)}}
+                        {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control')->required(isset($model) && $model->productImage->count() > 0 ? false : true) }}
                         <br />
-                        @if(isset($model) && $model->productImage->count() > 0)
-                        <div class="row">
-                            @foreach($model->productImage as $image)
-                                <div class="col-3">
-                                    <img class="img-fluid" src={{ $image->url }} />
-                                </div>
-                            @endforeach
-                        </div>
+                        @if (isset($model) && $model->productImage->count() > 0)
+                            <div class="row">
+                                @foreach ($model->productImage as $image)
+                                    <div class="col-3">
+                                        <img class="img-fluid" src={{ $image->url }} />
+                                    </div>
+                                @endforeach
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -141,12 +179,6 @@
         </div>
     </div>
 </div>
-<div class="col-sm-12">
-    <div class="my-3 float-end">
-        <a href="{{ route("admin.product.index") }}" class="btn btn-warning">Cancel</a>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</div>
 
 @section('script')
 @parent
@@ -163,26 +195,105 @@
             allowClear: true,
         });
 
+        //-----------------  for stock adjustment when update product (no attribute)   ---------------------------
+        currentStockStatus = 'IN';
+
+        function updateStatus(status) {
+            currentStockStatus = status;
+        }
+
+        $('.addBtn').on('click', function() {
+            $('.stockStatus').val('ADD');
+            updateStatus('IN');
+        });
+
+        $('.minusBtn').on('click', function() {
+            $('.stockStatus').val('MINUS');
+            updateStatus('OUT');
+        });
+
+
+        //----- stock update submmission ------------
+        $('#stock').submit(function(e) {
+            e.preventDefault();
+
+            var url = $(this).attr('action');
+
+            let formData = new FormData(this);
+
+            axios({
+                method: "post",
+                url: url,
+                data: formData,
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+            })
+            .then(response => {
+                swal.fire({
+                    title: 'Success',
+                    text: 'Stock updated!',
+                    type: 'success',
+                    confirmButtonClass: 'btn btn-success',
+                    confirmButtonText: 'OK',
+                });
+                setTimeout(function() {
+                    window.location.replace('/admin/product/index');
+                }, 1000);
+            })
+            .catch(error => {
+                swal.fire({
+                    title: 'Fail',
+                    text: error.response.data.msg,
+                    type: 'error',
+                    confirmButtonClass: 'btn btn-danger',
+                    confirmButtonText: 'OK',
+                });
+            });
+        })
+
+        //-------- display product attribute field by on change (create product) -----------
+        $('select[name="is_attribute"]').on('change', function() {
+
+            if ($(this).val() == 1) {
+                $('input[name="quantity"]').prop('disabled', true).val('');
+                $('.product-attribute-input').show();
+                $('.optionContent .form-control').prop('disabled', false);
+
+            } else {
+                $('input[name="quantity"]').prop('disabled', false);
+                $('.product-attribute-input').hide();
+                $('.optionContent .form-control').prop('disabled', true);
+            }
+        });
+
+        //--------- set initial product attribute field ---------
+        $('select[name="is_attribute"]').trigger('change');
+            
         var editor_config = {
-            path_absolute : "{{ config('app.url') .'/' }}",
+            path_absolute: "{{ config('app.url') . '/' }}",
             selector: "textarea.wysiwyg",
             plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
+                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars code fullscreen",
+                "insertdatetime media nonbreaking save table contextmenu directionality",
+                "emoticons template paste textcolor colorpicker textpattern"
             ],
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | forecolor backcolor | fontsizeselect",
             fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt',
             relative_urls: false,
-            image_class_list: [
-                {title: 'img-fluid', value: 'img-fluid'},
-            ],
-            file_browser_callback : function(field_name, url, type, win) {
-                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-                var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
+            image_class_list: [{
+                title: 'img-fluid',
+                value: 'img-fluid'
+            }, ],
+            file_browser_callback: function(field_name, url, type, win) {
+                var x = window.innerWidth || document.documentElement.clientWidth || document
+                    .getElementsByTagName('body')[0].clientWidth;
+                var y = window.innerHeight || document.documentElement.clientHeight || document
+                    .getElementsByTagName('body')[0].clientHeight;
 
-                var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+                var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' +
+                    field_name;
                 if (type == 'image') {
                     cmsURL = cmsURL + "&type=Images";
                 } else {
@@ -190,12 +301,12 @@
                 }
 
                 tinyMCE.activeEditor.windowManager.open({
-                    file : cmsURL,
-                    title : 'Filemanager',
-                    width : x * 0.8,
-                    height : y * 0.8,
-                    resizable : "yes",
-                    close_previous : "no"
+                    file: cmsURL,
+                    title: 'Filemanager',
+                    width: x * 0.8,
+                    height: y * 0.8,
+                    resizable: "yes",
+                    close_previous: "no"
                 });
             },
             image_title: true,
@@ -210,13 +321,15 @@
 
                     var reader = new FileReader();
                     reader.readAsDataURL(file);
-                    reader.onload = function () {
+                    reader.onload = function() {
                         var id = 'blobid' + (new Date()).getTime();
-                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                        var blobCache = tinymce.activeEditor.editorUpload.blobCache;
                         var base64 = reader.result.split(',')[1];
                         var blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
-                        cb(blobInfo.blobUri(), { title: file.name });
+                        cb(blobInfo.blobUri(), {
+                            title: file.name
+                        });
                     };
                 };
                 input.click();
@@ -241,6 +354,50 @@
             $('#alias').val(organizedString);
         }
 
+        //------------------------------------------------------------------------------------------
+        var additionalTermOption = 0;
+        var attributeCount = 1;
+        var attributeCountOnRender = $('.optionContent').length;
+
+        if (attributeCountOnRender > 1) {
+            $('.optionContent:not(:first-child)').addClass('mt-3');
+            $('.optionContent:not(:first-child) .back').append(
+                '<button class="btn btn-danger btn-remove-option" type="button"><i class="fas fa-trash-alt"></i></button>'
+                );
+            $('.termWrapper:not(:first-child) .termBtnControl').append(
+                '<button class="btn btn-danger btn-remove-variation ms-2" type="button"><i class="fas fa-trash-alt"></i></button>'
+                )
+        }
+
+        $('body').on('click', '.btn-remove-option', function() {
+            $(this).parents('.optionContent').remove();
+        })
+
+        $('body').on('click', '.btn-remove-variation', function() {
+            $(this).parents('.termWrapper').remove();
+        })
+
+        $('body').on('click', '.btn-addOption', function() {
+            var option_id = $(this).parents('.optionContent').data('option-id');
+            var template = document.getElementById('optionVariationLayout').innerHTML;
+            var rendered = Mustache.render(template, {
+                id: option_id,
+                variation_id: additionalTermOption,
+            });
+            $(this).parents('.optionContent').find('.list-group').append(rendered);
+            additionalTermOption++;
+        })
+
+        $('#addOptionBtn').on('click', function() {
+            var template = document.getElementById('moreOptionLayout').innerHTML;
+            var rendered = Mustache.render(template, {
+                id: attributeCount,
+                variation_id: additionalTermOption,
+            });
+            $('#optionContent').append(rendered);
+            attributeCount++;
+            additionalTermOption++;
+        })
 
         $("#product").submit(function(e) {
             e.preventDefault();
@@ -259,27 +416,29 @@
                 method: "post",
                 url: url,
                 data: formData,
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
             })
             .then(response => {
                 swal.fire({
-                    title: '{{__("page.product_added")}}',
-                    text: '{{__("page.txt_product_added")}}',
+                    title: 'Success',
+                    text: 'Product Added!',
                     type: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
-                setTimeout(function(){
+                setTimeout(function() {
                     window.location.replace('/admin/product/index');
                 }, 1000);
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.product_fail_add")}}',
+                    title: 'Fail',
                     text: error.response.data.msg,
                     type: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

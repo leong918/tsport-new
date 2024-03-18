@@ -35,6 +35,7 @@ class UpdateProductRequest extends FormRequest
             'sort' => 'required',
             'is_best_seller' => 'required',
             'is_new' => 'required',
+            'is_backorder' => 'required',
         ];
     }
 

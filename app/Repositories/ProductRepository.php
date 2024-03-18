@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductTag;
 use Illuminate\Container\Container;
 
 class ProductRepository extends BaseRepository
@@ -194,7 +193,16 @@ class ProductRepository extends BaseRepository
             $productTag = new ProductTagRepository(new Container());
             $productTag->createProductTag($input, $model->id);
         }
-        
+
+        if (isset($input['option'])) {
+            $productAttribute = new ProductAttributeRepository(new Container());
+            $productAttribute->createProductAttribute($input, $model->id);
+
+        } else {
+            $productBalanceLog = new ProductBalanceLogRepository(new Container());
+            $productBalanceLog->createProductBalanceLog($model);
+        }
+
         $productPriceRepository = new ProductPriceRepository(new Container());
         $productPriceRepository->createProductPrice($input, $model->id);
 
@@ -229,11 +237,37 @@ class ProductRepository extends BaseRepository
             $productTag->createProductTag($input, $model->id);
         }
 
+        if (isset($input['option'])) {
+            $productAttribute = new ProductAttributeRepository(new Container());
+            $productAttribute->createProductAttribute($input, $model->id);
+
+        } 
+
         $productPriceRepository = new ProductPriceRepository(new Container());
         $productPriceRepository->createProductPrice($input, $model->id);
 
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
+    }
+
+    public function updateStock(array $input, int $id)
+    {
+        $model = Product::findOrFail($id);
+
+        if ($input['type'] == 'ADD') {
+            $total = $model->quantity + $input['quantity'];
+
+        } else {
+            $total = $model->quantity - $input['quantity'];
+
+        }
+
+        $model->quantity = $total;
+        $model->save();
+
+        $productBalanceLog = new ProductBalanceLogRepository(new Container());
+        $productBalanceLog->createProductBalanceLog($model, null, $input);
+
     }
 
     public function toggleStatus(int $id)

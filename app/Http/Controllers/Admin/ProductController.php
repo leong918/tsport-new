@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Form\Product\UpdateProductRequest;
 use App\Http\Requests\Form\Product\CreateProductRequest;
+use App\Http\Requests\Form\Product\UpdateProductStockRequest;
 use App\Repositories\ProductRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\CurrencyRepository;
 use App\Repositories\TagRepository;
+use App\Repositories\ProductAttributeRepository;
+use App\Repositories\ProductAttributeTermRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -20,14 +23,18 @@ class ProductController extends BaseController
     private BrandRepository $brandRepository;
     private CurrencyRepository $currencyRepository;
     private TagRepository $tagRepository;
+    private ProductAttributeRepository $productAttributeRepository;
+    private ProductAttributeTermRepository $productAttributeTermRepository;
 
-    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, CurrencyRepository $currencyRepository, TagRepository $tagRepository)
+    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, CurrencyRepository $currencyRepository, TagRepository $tagRepository, ProductAttributeRepository $productAttributeRepository, ProductAttributeTermRepository $productAttributeTermRepository)
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
         $this->currencyRepository = $currencyRepository;
         $this->tagRepository = $tagRepository;
+        $this->productAttributeRepository = $productAttributeRepository;
+        $this->productAttributeTermRepository = $productAttributeTermRepository;
     }
 
     public function index(Request $request)
@@ -101,9 +108,26 @@ class ProductController extends BaseController
         return redirect(route('admin.product.index'))->with('success', "Successfully update product {$request->name}");
     }
 
+    public function updateStock(UpdateProductStockRequest $request , int $id)
+    {
+        DB::beginTransaction();
+        try {
+            $this->productRepository->updateStock($request->all(), $id);
+            DB::commit();
+            return $this->response();
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return response()->json(['msg' => $exception->getMessage()], 500);
+        }
+        return redirect(route('admin.product.index'))->with('success', "Successfully update request->name product stock");
+    }
+
     public function destroy(int $id)
     {
         $this->productRepository->delete($id);
+        $this->productAttributeRepository->deleteByProductId($id);
+        $this->productAttributeTermRepository->deleteByProductId($id);
+
         return $this->response();
     }
 
