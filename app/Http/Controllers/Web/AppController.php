@@ -44,7 +44,7 @@ class AppController extends BaseController
         //product page with filtering
         if ($request->ajax()) {
             if ($category_id) {
-                $product_list = $this->productRepository->getProductByCategoryType($category_id, 'MYR');
+                $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
                 return $this->view('product_list', compact('product_list'));
             }
         }
@@ -56,7 +56,7 @@ class AppController extends BaseController
             $parent_category = $this->categoryRepository->find($current_category->parent_category_id);
 
             $brand_list = $this->brandRepository->getListing()->where('status', 1)->orderBy('sort', 'asc')->get();
-            $product_list = $this->productRepository->getProductByCategoryType($category_id, 'MYR');
+            $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
 
             return $this->view('product', compact('sub_category', 'current_category', 'brand_list', 'product_list', 'parent_category'));
         }
@@ -65,12 +65,8 @@ class AppController extends BaseController
         if ($request->input('search_keyword')) {
             $search_keyword = $request->input('search_keyword');
 
-            $product_list = $this->productRepository->getProductByTag($search_keyword, 'MYR');
-
-            if ($product_list->isEmpty()) {
-                $product_list = $this->productRepository->getProductByKeywords($search_keyword, 'MYR');
-            }
-
+            $product_list = $this->productRepository->getProductByTagOrKeywords($search_keyword, 'HKD');
+            
             return $this->view('product', compact('product_list', 'search_keyword'));
         }
     }
@@ -78,7 +74,7 @@ class AppController extends BaseController
 
     public function productDetail(string $alias)
     {
-        $product = $this->productRepository->getProductByAlias($alias, 'MYR');
+        $product = $this->productRepository->getProductByAlias($alias, 'HKD');
         $product_category = $this->categoryRepository->find($product->category_id);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
 
@@ -90,18 +86,18 @@ class AppController extends BaseController
     }
     public function productNew()
     {
-        $product_list = $this->productRepository->getNewProduct('MYR');
+        $product_list = $this->productRepository->getNewProduct('HKD');
         return $this->view('product_new', compact('product_list'));
     }
     public function bestSeller()
     {
-        $product_list = $this->productRepository->getBestSellingProduct('MYR');
+        $product_list = $this->productRepository->getBestSellingProduct('HKD');
         return $this->view('best_seller', compact('product_list'));
     }
     public function brand(int $brand_id)
     {
         $brand = $this->brandRepository->find($brand_id);
-        $retrieve_product_list = $this->productRepository->getProductByBrand($brand_id, 'myr');
+        $retrieve_product_list = $this->productRepository->getProductByBrand($brand_id, 'HKD');
         $product_list = $this->productRepository->regroupProductListByCategory($retrieve_product_list);
         $category_list = $this->productRepository->getCategoryByProductList($retrieve_product_list);
 
@@ -115,7 +111,7 @@ class AppController extends BaseController
     public function blogDetail(int $blog_id)
     {
         $blog = $this->blogRepository->find($blog_id);
-        $product_list = $this->productRepository->getProductByCurrencyCode('myr')->take(2)->get();
+        $product_list = $this->productRepository->getProductByCurrencyCode('HKD')->take(2)->get();
         $blog_list = $this->blogRepository->makeModel()->where('id', '!=', $blog_id)->orderBy('created_at', 'desc')->take(3)->get();
         return $this->view('blog_detail', compact('blog', 'product_list', 'blog_list'));
     }

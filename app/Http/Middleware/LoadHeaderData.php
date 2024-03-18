@@ -5,19 +5,30 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\View;
 use App\Models\Brand; // Assuming Navigation is your model
-use App\Models\Category; 
+use App\Models\Category;
+use App\Repositories\BrandRepository;
+use App\Repositories\CategoryRepository;
 
 class LoadHeaderData
 {
+    private BrandRepository $brandRepository;
+    private CategoryRepository $categoryRepository;
+
+    public function __construct(BrandRepository $brandRepository, CategoryRepository $categoryRepository)
+    {
+        $this->brandRepository = $brandRepository;
+        $this->categoryRepository = $categoryRepository;
+    }
+
     public function handle($request, Closure $next)
     {
         // Fetch navigation data from the database
-        $brand_list = Brand::where('status',1)->selectRaw('name,id')->get();
-        $all_category_list = Category::where('status', 1)->whereNull('parent_category_id')->orderBy('sort', 'asc')->get();
+        $sidebar_brand_list = $this->brandRepository->getListingForNav();
+        $sidebar_category_list = $this->categoryRepository->getListingForNav();
 
         // Share navigation data with all views
-        View::share('brand_list', $brand_list);
-        View::share('all_category_list', $all_category_list);
+        View::share('sidebar_brand_list', $sidebar_brand_list);
+        View::share('sidebar_category_list', $sidebar_category_list);
 
         return $next($request);
     }

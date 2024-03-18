@@ -16,7 +16,6 @@ return new class extends Migration
             $table->bigInteger('category_id');
             $table->string("language");
             $table->string("name");
-            $table->longText("description");
             $table->timestamps();
             $table->softDeletes();
         });

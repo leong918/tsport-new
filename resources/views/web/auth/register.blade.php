@@ -113,10 +113,14 @@
         
         var parentElement = document.getElementsByClassName('register-container')[0];
         $("#register_form").submit(function(e) {
+            $(this).find('button[type="submit"]').attr('disabled','disabled');
+
             e.preventDefault();
 
             var url = $(this).attr('action');
             let formData = new FormData(this);
+
+
             axios({
                 method: "post",
                 url: url,
@@ -142,23 +146,19 @@
                         });
                     }
                 }).then((result) => {
-                    window.location.href = "{{ route('verification.notice') }}";
+                    window.location.href = "{{ route('web.login') }}";
                 });
             })
             .catch(error => {
                 let errorMessage = '';
-                let bothOrNoneExist = false;
                 if (typeof error.response.data.msg === 'object') {
                     Object.keys(error.response.data.msg).forEach(key => {
-                        if(!bothOrNoneExist || (key != 'referral_email' && key != 'referral_phone_no')){
                             errorMessage += `${error.response.data.msg[key]}<br>`;
-                        }
-                        if(key == 'referral_email' || key == 'referral_phone_no'){
-                            bothOrNoneExist = true;
-                        }
                     });
-                } else {
+                } else if (error.response.data.msg){
                     errorMessage = error.response.data.msg;
+                } else if(error.response.data.error){
+                    errorMessage = error.response.data.error;
                 }
                 swal.fire({
                     title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Failed to Register</p>',
@@ -178,7 +178,9 @@
                             swal.close();
                         });
                     }
-                });
+                })
+
+                $(this).find('button[type="submit"]').removeAttr('disabled')
             });
         });
     }); 

@@ -66,7 +66,7 @@
                                         <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
                                     </div>
                                 </div>
-                            </href=>
+                            </a>
                             @endforeach
                         </div>
                     </div>
@@ -140,7 +140,8 @@
                             </div>
                             <div class="blog-button-wrapper">
                                 <a href="{{route('web.blog_detail', ['blog_id' => $blog->id])}}" class="blog-button">READ MORE</a>
-                            </div>                        </div>
+                            </div>                        
+                        </div>
                     </div>
                     @endforeach
                 </div>

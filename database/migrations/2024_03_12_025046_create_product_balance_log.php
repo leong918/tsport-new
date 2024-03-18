@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('product_id');
             $table->bigInteger('product_attribute_term_id')->nullable();
             $table->string('type');
-            $table->integer('quantity');
+            $table->integer('quantity')->default(0);
             $table->string('remark');
             $table->timestamps();
             $table->softDeletes();

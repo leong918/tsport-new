@@ -39,6 +39,10 @@ class BrandRepository extends BaseRepository
         return Brand::query()->orderBy('created_at', 'desc');
     }
 
+    public function getListingForNav(){
+        return Brand::where('status',1)->selectRaw('name,id')->get();
+    }
+
     public function dropdown(string $key = 'id')
     {
         return formalizeDropdown(Brand::all(), $key, 'name');

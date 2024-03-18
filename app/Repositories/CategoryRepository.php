@@ -38,16 +38,19 @@ class CategoryRepository extends BaseRepository
         return Category::query()->orderBy('created_at', 'desc');
     }
 
+    public function getListingForNav()
+    {
+        return Category::where('status', 1)->whereNull('parent_category_id')->orderBy('sort', 'asc')->get();
+    }
+
     public function getListingByCategoryType(string $category_id = null, string $order_by = null)
     {
         if ($category_id) {
             //products filtered by category 
-
             return Category::where('id', $category_id)->orderBy('sort', 'asc')->first();
 
         } else {
             //filtering for brand
-
             if ($order_by == 'name') {
                 return Category::orderBy('name', 'asc');
             } else {

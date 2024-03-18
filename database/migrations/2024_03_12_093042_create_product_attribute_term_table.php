@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_attribute_term', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id');
-            $table->bigInteger('product_attribute_term_id');
+            $table->bigInteger('product_attribute_id');
             $table->string('name');
             $table->string('sku');
             $table->integer('quantity');

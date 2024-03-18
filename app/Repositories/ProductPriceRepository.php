@@ -43,16 +43,14 @@ class ProductPriceRepository extends BaseRepository
         $productRepository = new ProductRepository(new Container());
         $product = $productRepository->find($product_id);
 
-        foreach($input['product_price'] as $data){
-            $currencyRepository = new CurrencyRepository(new Container());
-            $currency = $currencyRepository->find($data['currency_id']);
+        $currencyRepository = new CurrencyRepository(new Container());
+        $currency = $currencyRepository->getCurrencyByCode('HKD');
 
-            $model = new ProductPrice();
-            $model->product_id = $product->id;
-            $model->currency_id = $currency->id;
-            $model->code = $currency->code;
-            $model->price = $data['price'];
-            $model->save();
-        }
+        $model = new ProductPrice();
+        $model->product_id = $product->id;
+        $model->currency_id = $currency->id;
+        $model->code = $currency->code;
+        $model->price = $input['product_price'];
+        $model->save();
     }
 }

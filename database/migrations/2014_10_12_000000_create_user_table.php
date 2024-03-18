@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('user', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('level_id');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('username', 50);
@@ -22,7 +23,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('referral_email')->nullable();
             $table->string('referral_phone_no')->nullable();
+            $table->integer("point")->default(0);
             $table->tinyInteger("status")->default(0);
+            $table->timestamp('level_validity')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

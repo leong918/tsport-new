@@ -33,25 +33,39 @@
     </div>
     <div class="col-md-6">
         <div class="mb-3">
-            {{ html()->label('DOB') }}
-            <div class="input-group" id="datetimepicker1" data-td-target-input="nearest" data-td-target-toggle="nearest">
+            {{ html()->label('Birth Month') }}
+            {{-- <div class="input-group" id="datetimepicker1" data-td-target-input="nearest" data-td-target-toggle="nearest">
                 <input id="datetimepicker1Input" type="text" name="dob" class="form-control" data-td-target="#datetimepicker1" required/>
                 <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
                     <span class="fas fa-calendar"></span>
                 </span>
-            </div>
+            </div> --}}
+            <select class="form-control" name="birth_month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+            </select>
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Referral Email') }}
-            {{ html()->text('referral_email')->placeholder('Enter referral email')->class('form-control')->required() }}
+            {{ html()->text('referral_email')->placeholder('Enter referral email')->class('form-control') }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Referral Phone no') }}
-            {{ html()->text('referral_phone_no')->placeholder('Enter referral phone no')->class('form-control')->required() }}
+            {{ html()->text('referral_phone_no')->placeholder('Enter referral phone no')->class('form-control') }}
         </div>
     </div>
     <div class="col-md-6">
@@ -75,7 +89,7 @@
 
 @section('script')
 @parent
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/tempus-dominus.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/jQuery-provider.js"></script>
 <script>
@@ -105,5 +119,5 @@
             },
         });
     });
-</script>
+</script> --}}
 @endsection

@@ -30,6 +30,7 @@
         var parentElement = document.getElementsByClassName('forgot-password-container')[0];
 
         $("#forgotPassword").submit(function(e) {
+            $(this).find('button[type="submit"]').attr('disabled','disabled');
             e.preventDefault();
 
             var url = $(this).attr('action');
@@ -95,6 +96,7 @@
                         });
                     }
                 });
+                $(this).find('button[type="submit"]').attr('disabled','disabled');
             });
         });
 
