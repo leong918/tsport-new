@@ -2,16 +2,15 @@
 
 namespace App\Repositories;
 
+use App\Models\Product;
 use App\Models\ProductBalanceLog;
-use Illuminate\Container\Container;
 
 class ProductBalanceLogRepository extends BaseRepository
 {
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -36,23 +35,57 @@ class ProductBalanceLogRepository extends BaseRepository
         return ProductBalanceLog::query()->orderBy('created_at', 'desc');
     }
 
-    // public function createProductBalanceLog(array $input, int $product_id)
-    // {
-    //     ProductBalanceLog::where('product_id', $product_id)->delete();
+    public function createProductBalanceLog($model, $termArr = null, $stockInput = null)
+    {
+        $log_model = new ProductBalanceLog();
 
-    //     $productRepository = new ProductRepository(new Container());
-    //     $product = $productRepository->find($product_id);
+        //------------  check is product/ prod attr term model ----------------------
+        if ($model instanceof Product) {
 
-    //     foreach($input['product_price'] as $data){
-    //         $currencyRepository = new CurrencyRepository(new Container());
-    //         $currency = $currencyRepository->find($data['currency_id']);
+            $log_model->product_id = $model->id;
 
-    //         $model = new ProductBalanceLog();
-    //         $model->product_id = $product->id;
-    //         $model->currency_id = $currency->id;
-    //         $model->code = $currency->code;
-    //         $model->price = $data['price'];
-    //         $model->save();
-    //     }
-    // }
+            if ($stockInput) {
+                if ($stockInput['type'] != 'ADD'){
+                    $log_model->type = 'OUT';
+
+                } else {
+                    $log_model->type = 'IN';
+
+                }
+                
+                $log_model->quantity = $stockInput['quantity'];
+
+            } else {
+                $log_model->type = 'IN';
+                $log_model->quantity = $model->quantity;
+
+            }
+
+        } else {
+
+            $log_model->product_id = $model->product_id;
+            $log_model->product_attribute_term_id = $model->id;
+
+            if (isset($termArr['stock_amount'])) {
+                if ($termArr['stock_option'] != 1) {
+                    $log_model->type = 'IN';
+
+                } else {
+                    $log_model->type = 'OUT';
+
+                }
+
+                $log_model->quantity = $termArr['stock_amount'];
+
+            } else {
+                $log_model->type = 'IN';
+                $log_model->quantity = $model->quantity;
+
+            }
+
+        }
+
+        $log_model->save();
+    }
+
 }

@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class ProductBalanceLog extends Model
+class ProductAttribute extends Model
 {
     use SoftDeletes;
 
@@ -17,7 +19,7 @@ class ProductBalanceLog extends Model
      */
     public static $rules = [];
 
-    protected $table = 'product_balance_log';
+    protected $table = 'product_attribute';
 
     /**
      * The attributes that are mass assignable.
@@ -26,10 +28,7 @@ class ProductBalanceLog extends Model
      */
     protected $fillable = [
         'product_id',
-        'product_attribute_term_id',
-        'type',
-        'quantity',
-        'remark',
+        'name',
     ];
 
     /**
@@ -55,4 +54,15 @@ class ProductBalanceLog extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function productAttributeTerm(): HasMany
+    {
+        return $this->hasMany(ProductAttributeTerm::class);
+    }
+
 }

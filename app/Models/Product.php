@@ -31,10 +31,13 @@ class Product extends Model
         'name',
         'sku',
         'alias',
+        'quantity',
         'status',
         'sort',
         'is_best_seller',
         'is_new',
+        'is_attribute',
+        'is_backorder',
     ];
 
     /**
@@ -94,6 +97,16 @@ class Product extends Model
     public function productTag() : HasMany
     {
         return $this->hasMany(ProductTag::class);
+    }
+
+    public function productAttribute() : HasMany
+    {
+        return $this->hasMany(ProductAttribute::class);
+    }
+
+    public function productAttributeTerm() : HasMany
+    {
+        return $this->hasMany(ProductAttributeTerm::class);
     }
 
     public function getCurrencyParameters(string $currency)
