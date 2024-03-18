@@ -24,8 +24,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row" id="optionContent">
-                                                    <div class="col-sm-12 optionContent"
-                                                        data-option-id="1">
+                                                    <div class="col-sm-12 optionContent" data-option-id="1">
                                                         <div class="card">
                                                             <div class="card-header bg-light d-flex justify-content-between">
                                                                 <div class="front d-flex">
@@ -77,7 +76,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -98,6 +97,10 @@
             </div>
         </div>
     </main>
+@endsection
+
+@section('script')
+@parent
 
 <script id="moreOptionLayout" type="x-tmpl-mustache">
     <div class="col-sm-12 optionContent mt-3" data-option-id="@{{ id }}">
@@ -164,14 +167,5 @@
             </div>
         </div>
     </li>
-</script>
-
-<script>
-
-    // $(document).ready(function() {
-    //     let currentStock = "add_stock";
-
-    //     window.currentStockStatus = currentStock;
-    // })
 </script>
 @endsection

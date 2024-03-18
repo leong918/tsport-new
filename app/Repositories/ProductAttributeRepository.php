@@ -46,10 +46,11 @@ class ProductAttributeRepository extends BaseRepository
 
     public function createProductAttribute(array $input, int $product_id)
     {
-        $productAttribute = ProductAttribute::where('product_id', $product_id)->get();
+        $productAttribute = ProductAttribute::where('product_id', $product_id);
+        $productAttributeId = $productAttribute->get()->pluck('id')->toArray();
 
         //------ delete attribute term  ------------
-        ProductAttributeTerm::where('product_id', $product_id)->whereIn('product_attribute_id', $productAttribute->pluck('id')->toArray())->delete();
+        ProductAttributeTerm::where('product_id', $product_id)->whereIn('product_attribute_id', $productAttributeId)->delete();
         $productAttribute->delete();
 
         foreach ($input['option'] as $data) {
@@ -62,6 +63,7 @@ class ProductAttributeRepository extends BaseRepository
             $productAttributeTerm = new ProductAttributeTermRepository(new Container());
             $productAttributeTerm->createProductAttributeTerm($data, $model);
         }
+
     }
 
     public function deleteByProductId(int $product_id)

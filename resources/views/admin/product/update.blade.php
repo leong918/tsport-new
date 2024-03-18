@@ -178,72 +178,76 @@
             </div>
         </div> 
     </main>
+@endsection
 
-    <script id="moreOptionLayout" type="x-tmpl-mustache">
-        <div class="col-sm-12 optionContent mt-3" data-option-id="@{{ id }}">
-            <div class="card">
-                <div class="card-header bg-light d-flex justify-content-between">
-                    <div class="front d-flex">
-                        <div class="input-group" style="width: 100%">
-                            <input type="text" class="form-control" style="font-weight: bold;" required placeholder="{{__('Attribute Name')}}" name="option[@{{id}}][attribute_name]">
-                        </div>
-                    </div>
-                    <div class="back">
-                        <button class="btn btn-primary btn-addOption" type="button"><i class="fas fa-plus"></i></button>
-                        <button class="btn btn-danger btn-remove-option" type="button"><i class="fas fa-trash-alt"></i></button>
+@section('script')
+@parent
+
+<script id="moreOptionLayout" type="x-tmpl-mustache">
+    <div class="col-sm-12 optionContent mt-3" data-option-id="@{{ id }}">
+        <div class="card">
+            <div class="card-header bg-light d-flex justify-content-between">
+                <div class="front d-flex">
+                    <div class="input-group" style="width: 100%">
+                        <input type="text" class="form-control" style="font-weight: bold;" required placeholder="{{__('Attribute Name')}}" name="option[@{{id}}][attribute_name]">
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item termWrapper" data-option-variation-id="@{{ variation_id }}">
-                        <div class="col-md-11 col-11">
-                            <div class="d-flex flex-wrap justify-content-between">
-                                <div class="inputBoxes d-flex flex-wrap">
-                                    <div class="m-2 ms-0">
-                                        <input type="text" class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]">
-                                    </div>
-                                    <div class="m-2 ms-0">
-                                        <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
-                                    </div>
-                
-                                    <div class="m-2 ms-0">
-                                        <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
-                                    </div>
+                <div class="back">
+                    <button class="btn btn-primary btn-addOption" type="button"><i class="fas fa-plus"></i></button>
+                    <button class="btn btn-danger btn-remove-option" type="button"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item termWrapper" data-option-variation-id="@{{ variation_id }}">
+                    <div class="col-md-11 col-11">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <div class="inputBoxes d-flex flex-wrap">
+                                <div class="m-2 ms-0">
+                                    <input type="text" class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]">
+                                </div>
+                                <div class="m-2 ms-0">
+                                    <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
+                                </div>
+            
+                                <div class="m-2 ms-0">
+                                    <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
                                 </div>
                             </div>
                         </div>
-                    </li>
-                </ul>
-            </div>
+                    </div>
+                </li>
+            </ul>
         </div>
-    </script>
+    </div>
+</script>
 
-    <script id="optionVariationLayout" type="x-tmpl-mustache">
-        <li class="list-group-item termWrapper" data-option-variation-id="@{{ variation_id }}">
-            <div class="row">
-                <div class="col-md-11 col-11">
-                    <div class="d-flex flex-wrap justify-content-between">
-                        <div class="inputBoxes d-flex flex-wrap">
-                            <div class="m-2 ms-0">
-                                <input type="text" class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]">
-                            </div>
-                            <div class="m-2 ms-0">
-                                <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
-                            </div>
-        
-                            <div class="m-2 ms-0">
-                                <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
-                            </div>
+<script id="optionVariationLayout" type="x-tmpl-mustache">
+    <li class="list-group-item termWrapper" data-option-variation-id="@{{ variation_id }}">
+        <div class="row">
+            <div class="col-md-11 col-11">
+                <div class="d-flex flex-wrap justify-content-between">
+                    <div class="inputBoxes d-flex flex-wrap">
+                        <div class="m-2 ms-0">
+                            <input type="text" class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]">
+                        </div>
+                        <div class="m-2 ms-0">
+                            <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
+                        </div>
+    
+                        <div class="m-2 ms-0">
+                            <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
                         </div>
                     </div>
                 </div>
-                
-                <div class="col-md-1 col-1 d-flex justify-content-end align-items-center">
-                    <div class="">
-                        <button class="btn btn-danger btn-remove-variation" type="button"><i class="fas fa-trash-alt"></i></button>
-                    </div>
+            </div>
+            
+            <div class="col-md-1 col-1 d-flex justify-content-end align-items-center">
+                <div class="">
+                    <button class="btn btn-danger btn-remove-variation" type="button"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
-        </li>
-    </script>
-    
+        </div>
+    </li>
+</script>
+
 @endsection
