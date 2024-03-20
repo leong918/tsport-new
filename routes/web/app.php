@@ -17,8 +17,15 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('how_to', [AppController::class, 'howTo'])->name('web.how_to');
     Route::get('new', [AppController::class, 'productNew'])->name('web.product_new');
 
-    require_once 'auth.php';
-    require_once 'verification.php';
     require_once 'about.php';
-    require_once 'account.php';
+
+    Route::group(['middleware' => 'auth.user.authenticated'], function () {
+        require_once 'auth.php';
+        require_once 'verification.php';
+    });
+
+    Route::group(['middleware' => ['auth.user', 'auth.user.inactive.logout']], function () {
+        Route::get('logout', [AuthController::class, 'logout'])->name('web.logout');
+        require_once 'account.php';
+    });
 });

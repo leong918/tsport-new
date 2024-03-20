@@ -2,6 +2,7 @@
 @section('content')
 <div id="shopping_cart" class="overflow-x-hidden margin-header">
     <div class="container">
+        @if(count($cartList) > 0)
         <div class="row justify-content-center">
             <div class="shopping-cart-wrapper">
                 <div class="shopping-cart-title">Shopping Cart</div>
@@ -229,16 +230,26 @@
                             </div>
                         </div>
                         <div>
-                            <button class="login-button">LOGIN</button>
+                            <a href="{{ route('web.login') }}" class="login-button">LOGIN</a>
                         </div>
                         <div class="my-3 text-center">or</div>
                         <div>
-                            <button class="register-button">CREATE ACCOUNT</button>
+                            <a href="{{ route('web.register') }}" class="register-button">CREATE ACCOUNT</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @else
+        <div class="row justify-content-center">
+            <div class="shopping-cart-wrapper">
+                <div class="shopping-cart-title">Shopping Cart</div>
+                <div class="empty-cart-content">
+                    Your cart is currently empty.
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

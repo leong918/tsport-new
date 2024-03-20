@@ -37,10 +37,8 @@ class AuthController extends BaseController
 
     public function doLogin(UserLoginRequest $request)
     {
-        $remember = $request->has('remember') ?? false;
-
         $credentials = $request->only('phone_no', 'password');
-        if (Auth::attempt($credentials + ['status' => User::STATUS['ACTIVE']], $remember)) {
+        if (Auth::attempt($credentials + ['status' => User::STATUS['ACTIVE']], true)) {
 
             if (function_exists('updateUserOwnerCart')) {
                 updateUserOwnerCart(auth()->user()->id);
@@ -113,7 +111,7 @@ class AuthController extends BaseController
 
     public function logout()
     {
-        Auth::logout();
+        auth()->logout();
         return redirect(route('web.login'))->with('success', 'Successfully logged out');
     }
 

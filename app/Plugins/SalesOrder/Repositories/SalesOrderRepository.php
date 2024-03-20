@@ -48,7 +48,7 @@ class SalesOrderRepository extends BaseRepository
         Schema::create('sales_order', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->bigInteger('address_id');
+            $table->bigInteger('country_id');
             $table->string('sales_order_id');
             $table->decimal('subtotal', 16, 2)->default(0);
             $table->decimal('shipping', 16, 2)->default(0);

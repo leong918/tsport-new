@@ -14,7 +14,9 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('update_cart_qty', [CartController::class, 'updateCartQty'])->name('cart.update_cart_qty');
         Route::get('wishlist', [CartController::class, 'wishlist'])->name('cart.wishlist');
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+        Route::post('process_checkout', [CartController::class, 'processCheckout'])->name('cart.process_checkout');
         Route::get('payment', [CartController::class, 'payment'])->name('cart.payment');
+        Route::post('create_payment_intent', [CartController::class, 'createPaymentIntent'])->name('cart.create_payment_intent');
         Route::get('complete', [CartController::class, 'complete'])->name('cart.complete');
     });
 

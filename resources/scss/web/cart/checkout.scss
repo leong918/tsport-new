@@ -68,7 +68,14 @@
                             }
                             .input-container{
                                 position: relative;
-                                input[type=text], input[type=password]{
+                                #dropdownMenuButton{
+                                    margin: 25px 0;
+                                    text-align: start;
+                                }
+                                .dropdown-menu{
+                                    width: 100%;
+                                }
+                                input[type=text], input[type=password], input[type=email], input[type=number], #dropdownMenuButton{
                                     width: 100%;
                                     padding-top: 20px;
                                     padding-bottom: 5px;
@@ -109,6 +116,29 @@
                                     transition: transform 0.3s ease-out;
                                     transform-origin: 0 0;
                                     padding-left:5px;
+                                }
+                            }
+                            #country-dropdown{
+                                position: absolute;
+                                visibility:hidden;
+                                width: 100%;
+                                height: 200px;
+                                background-color: white;
+                                list-style: none;
+                                padding:0;
+                                margin: 0;
+                                overflow-y: scroll;
+                                z-index: 1; 
+                                li{
+                                    font-size: 15px;
+                                    padding: 10px 10px;
+                                    &:hover{
+                                        background-color: #C4B9A6;
+                                    }
+                                }
+        
+                                &::-webkit-scrollbar{
+                                    display: none;
                                 }
                             }
                         }
@@ -220,9 +250,9 @@
                     }
 
                     .total{
-                        color:#6D5E44;
-                        font-size: 15px;
+                        font-size: 17px;
                         margin-bottom: 20px;
+                        color: #6D5E44;
                     }
 
                     .data-content-wrapper{

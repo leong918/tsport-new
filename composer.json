@@ -12,7 +12,9 @@
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.0",
         "mews/captcha": "^3.3",
+        "predis/predis": "^2.2",
         "spatie/laravel-html": "^3.3",
+        "stripe/stripe-php": "^13.14",
         "vvinners/vapi": "^2.1",
         "yajra/laravel-datatables": "^10.0"
     },
