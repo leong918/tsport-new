@@ -38,6 +38,7 @@ class SalesOrderRepository extends BaseRepository
         Schema::dropIfExists('sales_order_product');
         Schema::dropIfExists('sales_order_total');
         Schema::dropIfExists('sales_order_log');
+        Schema::dropIfExists('user_cart');
     }
 
     public function installExtension()
@@ -122,7 +123,6 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('product_id');
             $table->bigInteger('product_attribute_term_id')->nullable();
             $table->string('user_ip');
-            $table->string('product_name');
             $table->integer('quantity');
             $table->timestamps();
             $table->softDeletes();

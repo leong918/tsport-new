@@ -479,14 +479,6 @@
             padding: 50px 0px 20px 0px;
         }
 
-        .swiper{
-            margin-left:125px;
-
-            @media (max-width: 1023px) {
-                margin-left:0px;
-            }
-        }
-
         .product-description {
             text-align: left;
             font-size: 12px;
@@ -589,6 +581,7 @@
         .wishlist-container {
             position: relative;
             text-align: right;
+            cursor: pointer;
         }
 
         .wishlist-hover-show {
@@ -608,6 +601,7 @@
         .cart-container {
             position: relative;
             text-align: left;
+            cursor: pointer;
         }
 
         .cart-hover-show {
@@ -720,7 +714,7 @@
         text-decoration: none;
         .product-image{ 
             overflow: hidden;
-            height:45vh;
+            height: 280px;
             img.show{
                 width:100%;
                 height:100%;

@@ -95,7 +95,9 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                     }
 
                     img{
-                        height: 15vh;
+                        height: 125px;
+                        width: 100px;
+                        object-fit: cover;
                     }
 
                     .product-desc{
@@ -105,10 +107,6 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                         align-items: center;
                         padding: 0px 20px;
                         font-size: 13px;
-
-                        @media (max-width: 991px) {
-                            padding: 0px;
-                        }
                     }
 
                     .unit-price, .total-price{
@@ -143,6 +141,7 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                             width:20%;
                             border:none;
                             text-align: center;
+                            background: transparent;
 
                             &:focus{
                                 outline: none;
@@ -176,7 +175,9 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                 .mobile-cart-item-list{
                     font-size: 13px;
                     img{
-                        height: 15vh;
+                        height: 125px;
+                        width: 100px;
+                        object-fit: cover;
                         margin-right: 10px;
                     }
 
@@ -263,9 +264,10 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                                 }
 
                                 .quantity-text{
-                                    width:10%;
+                                    width:25px;
                                     border:none;
                                     text-align: center;
+                                    background: transparent;
         
                                     &:focus{
                                         outline: none;
@@ -370,7 +372,7 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                     }
                     .checkout{
                         margin-top:40px;
-                        button{
+                        button, a{
                             background-color: #9A835E;
                             border: none;
                             border-radius: 0;

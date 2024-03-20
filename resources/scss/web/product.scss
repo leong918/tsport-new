@@ -148,6 +148,7 @@
                     img.show{
                         clip-path: ellipse(100% 100% at 50% 50%);
                         transition: clip-path 0.5s, transform 0.3s ease-in-out;
+                        height: 280px;
                     }
                 }
 
@@ -229,6 +230,7 @@
             .wishlist-container {
                 position: relative;
                 text-align: right;
+                cursor: pointer;
             }
     
             .wishlist-hover-show {
@@ -248,6 +250,7 @@
             .cart-container {
                 position: relative;
                 text-align: left;
+                cursor: pointer;
             }
     
             .cart-hover-show {

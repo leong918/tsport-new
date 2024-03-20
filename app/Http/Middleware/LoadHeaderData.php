@@ -4,8 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\View;
-use App\Models\Brand; // Assuming Navigation is your model
-use App\Models\Category;
 use App\Repositories\BrandRepository;
 use App\Repositories\CategoryRepository;
 
@@ -14,8 +12,10 @@ class LoadHeaderData
     private BrandRepository $brandRepository;
     private CategoryRepository $categoryRepository;
 
-    public function __construct(BrandRepository $brandRepository, CategoryRepository $categoryRepository)
-    {
+    public function __construct(
+        BrandRepository $brandRepository,
+        CategoryRepository $categoryRepository
+    ) {
         $this->brandRepository = $brandRepository;
         $this->categoryRepository = $categoryRepository;
     }

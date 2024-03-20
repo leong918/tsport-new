@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
+
 class VerificationController extends Controller
 {
     /**
@@ -16,8 +17,10 @@ class VerificationController extends Controller
     protected UserRepository $userRepository;
     protected PointLogRepository $pointLogRepository;
 
-    public function __construct(UserRepository $userRepository, PointLogRepository $pointLogRepository)
-    {
+    public function __construct(
+        UserRepository $userRepository,
+        PointLogRepository $pointLogRepository
+    ) {
         $this->userRepository = $userRepository;
         $this->pointLogRepository = $pointLogRepository;
         $this->middleware('auth')->except('verify');;
@@ -32,7 +35,7 @@ class VerificationController extends Controller
      */
     public function notice(Request $request)
     {
-        return $request->user()->hasVerifiedEmail() 
+        return $request->user()->hasVerifiedEmail()
             ? redirect()->route('web.home') : route('web.login');
     }
 
@@ -48,8 +51,8 @@ class VerificationController extends Controller
         if ($request->route('id') != $user->getKey()) {
             throw new AuthorizationException;
         }
-    
-        if ($user->markEmailAsVerified()){
+
+        if ($user->markEmailAsVerified()) {
             event(new Verified($user));
             $user->status = 1;
             $user->point = 10;
@@ -59,6 +62,10 @@ class VerificationController extends Controller
             $pointLogData['point'] = 10;
             $pointLogData['remark'] = '10 points gained from registration.';
             $this->pointLogRepository->create($pointLogData);
+
+            if (function_exists('updateUserOwnerCart')) {
+                updateUserOwnerCart($user->id);
+            }
         }
 
         return redirect(route('web.login'))->with('success', 'Account Verified!');
@@ -74,7 +81,6 @@ class VerificationController extends Controller
     {
         $request->user()->sendEmailVerificationNotification();
         return back()
-        ->withSuccess('A fresh verification link has been sent to your email address.');
+            ->withSuccess('A fresh verification link has been sent to your email address.');
     }
-
 }

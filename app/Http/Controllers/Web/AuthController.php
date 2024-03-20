@@ -23,7 +23,8 @@ class AuthController extends BaseController
     protected PasswordResetTokensRepository $passwordResetTokensRepository;
     protected LevelRepository $levelRepository;
 
-    public function __construct(UserRepository $userRepository, PasswordResetTokensRepository $passwordResetTokensRepository, LevelRepository $levelRepository){
+    public function __construct(UserRepository $userRepository, PasswordResetTokensRepository $passwordResetTokensRepository, LevelRepository $levelRepository)
+    {
         $this->userRepository = $userRepository;
         $this->passwordResetTokensRepository = $passwordResetTokensRepository;
         $this->levelRepository = $levelRepository;
@@ -40,6 +41,10 @@ class AuthController extends BaseController
 
         $credentials = $request->only('phone_no', 'password');
         if (Auth::attempt($credentials + ['status' => User::STATUS['ACTIVE']], $remember)) {
+
+            if (function_exists('updateUserOwnerCart')) {
+                updateUserOwnerCart(auth()->user()->id);
+            }
             // Authentication passed...
             return redirect()->intended(route('web.home'));
         }
@@ -58,18 +63,16 @@ class AuthController extends BaseController
             $data = $request->all();
             $data['username'] = $data['first_name'];
             $data['level_id'] = $this->levelRepository->getLowestLeveling()->id;
-            
-            if($data['referral_email'] && $data['referral_phone_no'])
-            {
-                $user = $this->userRepository->getUserByEmail($data['referral_email'],$data['referral_phone_no']);
-                if(!$user || $user->level_id <= 1)
-                {
+
+            if ($data['referral_email'] && $data['referral_phone_no']) {
+                $user = $this->userRepository->getUserByEmail($data['referral_email'], $data['referral_phone_no']);
+                if (!$user || $user->level_id <= 1) {
                     throw new \Exception('Referral User Not Found or Refferal User Level Not Compatible!');
                 }
             }
 
             $user = $this->userRepository->createUser($data);
-            
+
             event(new Registered($user));
 
             DB::commit();
@@ -91,11 +94,11 @@ class AuthController extends BaseController
         try {
             $data = $request->all();
             $user = $this->userRepository->makeModel()->where(["email" => $request->email])->first();
-            
+
             if (!$user) {
                 throw new \Exception('User Not Found!');
             }
-            
+
             $randomString = generateRandomString(10, false);
             $data['token'] = $randomString;
             $this->passwordResetTokensRepository->createRecord($data);
@@ -117,20 +120,20 @@ class AuthController extends BaseController
     public function resetPassword()
     {
         $token = request('token');
-        if(!$token){
+        if (!$token) {
             return redirect(route('web.home'))->with('swal_error', "Password Reset Token Expired!");
         }
 
         $tokenRecord = $this->passwordResetTokensRepository->findRecordByToken($token);
 
-        if($tokenRecord){
+        if ($tokenRecord) {
             $user = $this->userRepository->getUserByEmail($tokenRecord->email);
-        
+
             if ($user && !$this->tokenExpired($tokenRecord->created_at)) {
                 $id = $user->id;
-                return $this->view('auth.reset_password', compact('id'));   
+                return $this->view('auth.reset_password', compact('id'));
             } else {
-                if($tokenRecord){
+                if ($tokenRecord) {
                     $tokenRecord->delete();
                 }
                 return redirect(route('web.home'))->with("swal_error", "Password Reset Token Expired!");
@@ -138,7 +141,6 @@ class AuthController extends BaseController
         }
 
         return redirect(route('web.home'))->with("swal_error", "Password Reset Token Expired!");
-        
     }
 
     private function tokenExpired($createdAt)
@@ -152,7 +154,7 @@ class AuthController extends BaseController
         try {
             $data = $request->all();
             $user = $this->userRepository->find($data['id']);
-            
+
             if (!$user) {
                 throw new \Exception('User Not Found!');
             }
@@ -161,7 +163,7 @@ class AuthController extends BaseController
             //after reset delete token record
             $tokenRecord = $this->passwordResetTokensRepository->findRecordByToken($data['token']);
             $this->passwordResetTokensRepository->delete($tokenRecord->id);
-            
+
             DB::commit();
             return $this->response();
         } catch (\Exception $e) {
@@ -169,5 +171,4 @@ class AuthController extends BaseController
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 }

@@ -88,28 +88,3 @@
     </div>
 </div>
 @endsection
-@push('scripts')
-<script>
-    // $(document).ready(function() {
-    //     $('.category-btn').click(function(){
-    //         event.preventDefault();
-    //         if ($('#offcanvasNav').offcanvas('isOpen')) {
-    //             $('#offcanvasNav').offcanvas('hide');
-    //         }
-    //         var category_id = $(this).data('category-id');
-
-    //         console.log(category_id);
-    //         @if(!empty($sub_category_list))
-    //             axios.get('{{ route('web.product', ['category_id' => $category_id]) }}', {params: { category_id: category_id }})
-    //                 .then( response => {
-    //                     $('#productListContainer').html(response.data); 
-    //                 })
-    //                 .catch( error => {
-    //                     console.error(error);
-    //                 });
-    //         @endif
-    //     });
-    // });
-</script>
-
-@endpush

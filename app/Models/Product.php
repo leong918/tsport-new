@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class Product extends Model
 {
     use SoftDeletes;
@@ -45,17 +46,14 @@ class Product extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     protected function createdAt(): Attribute
     {
@@ -64,60 +62,65 @@ class Product extends Model
         );
     }
 
-    public function brand() : BelongsTo
+    public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
 
-    public function category() : BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function productDescription() : HasMany
+    public function productDescription(): HasMany
     {
         return $this->hasMany(ProductDescription::class);
     }
 
-    public function productImage() : HasMany
+    public function productImage(): HasMany
     {
         return $this->hasMany(ProductImage::class);
     }
 
-    public function productRelated() : HasMany
+    public function productRelated(): HasMany
     {
-        return $this->hasMany(ProductRelated::class,'related_product_id');
+        return $this->hasMany(ProductRelated::class, 'related_product_id');
     }
 
-    public function productPrice() : HasMany
+    public function productPrice(): HasMany
     {
         return $this->hasMany(ProductPrice::class);
     }
 
-    public function productTag() : HasMany
+    public function productTag(): HasMany
     {
         return $this->hasMany(ProductTag::class);
     }
 
-    public function productAttribute() : HasMany
+    public function productAttribute(): HasMany
     {
         return $this->hasMany(ProductAttribute::class);
     }
 
-    public function productAttributeTerm() : HasMany
+    public function productAttributeTerm(): HasMany
     {
         return $this->hasMany(ProductAttributeTerm::class);
     }
 
     public function getCurrencyParameters(string $currency)
     {
-        return $this->productPrice->where('code',$currency)->first();
+        return $this->productPrice->where('code', $currency)->first();
     }
 
     public function getParameters(string $params)
     {
-        return $this->productDescription->where('language',$params)->first();
-    } 
+        return $this->productDescription->where('language', $params)->first();
+    }
+
+    public function getFirstProductImage()
+    {
+        return $this->productImage->first();
+    }
 
     public function checkProductRelated($product_id, $related_product_id)
     {
@@ -128,5 +131,4 @@ class Product extends Model
     {
         return ProductTag::where(['product_id' => $product_id, 'tag_id' => $tag_id])->exists();
     }
-
 }
