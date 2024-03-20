@@ -12,6 +12,8 @@ $(function() {
             }
         })
         .then(response => {
+            $('#cart-count').html(response.data.cart_count);
+            
             Swal.fire({
                 title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Success!</p>',
                 html: '<p class="swal-register-content-1">Product added to cart successfully.</p> ',
@@ -26,7 +28,6 @@ $(function() {
                     });
                 }
             });
-            console.log(response.data);
         })
         .catch(error => {
             showSwal('error', 'Fail!', error.response.data.msg);

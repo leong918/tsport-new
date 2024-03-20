@@ -29,15 +29,15 @@
                     <a class="navbar-wishlist" href="{{route('cart.wishlist')}}" type="button">
                         <img src="{{asset('assets/web/assets/img/navigation/wishlist-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-my-account-icon nav-acc-mobile" href="{{Auth::user() ? route('account.details') : route('web.login')}}">
+                    <a class="navbar-my-account-icon nav-acc-mobile" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
                         <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-my-account-icon nav-acc-desktop" href="{{Auth::user() ? route('account.details') : route('web.login')}}">
+                    <a class="navbar-my-account-icon nav-acc-desktop" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
                         <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-cart-icon" href="{{route('cart.shopping_cart')}}" type="button">
-                        <img src="{{asset('assets/web/assets/img/navigation/cart.png')}}" alt="Bootstrap" width="25" height="24">
-                    </a>
+                    @if(function_exists('salesOrderRenderView'))
+                    {{ salesOrderRenderView('header_cart') }}
+                    @endif
 
                     <!--navbar-toggle-->
                     <a class="navbar-toggler-concept" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -97,21 +97,21 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('cart.wishlist')}}">Wishlist</a>
                         </li>
-                        @if(Auth::user())
+                        @if(auth()->user())
                         <li class="nav-item">
-                            <a class="nav-link" href="{{Auth::user() ? route('account.details') : route('web.login')}}">My Account</a>
+                            <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">My Account</a>
                         </li>
                         <hr/>
                         <li class="nav-item nav-logout">
                             <a class="nav-link" href="{{route('web.logout')}}">
-                                <img src="{{asset('assets/web/assets/img/account_nav/log_out.png')}}" alt="">
+                                <img src="{{asset('assets/web/assets/img/navigation/logout.png')}}" alt="">
                                 Logout
                             </a>
                         </li>
                         @else
                         <hr/>
                         <li class="nav-item nav-logout">
-                            <a class="nav-link" href="{{Auth::user() ? route('account.details') : route('web.login')}}">
+                            <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
                                 <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="">
                                 Login
                             </a>

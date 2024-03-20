@@ -117,6 +117,11 @@ class Product extends Model
         return $this->productDescription->where('language', $params)->first();
     }
 
+    public function getFirstProductImage()
+    {
+        return $this->productImage->first();
+    }
+
     public function checkProductRelated($product_id, $related_product_id)
     {
         return ProductRelated::where(['product_id' => $product_id, 'related_product_id' => $related_product_id])->exists();

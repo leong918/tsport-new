@@ -61,6 +61,20 @@
     .navbar-cart-icon,
     .navbar-toggler-concept {
         margin: 10px;
+        position: relative;
+    }
+
+    #cart-count {
+        position: absolute;
+        left: 10px;
+        bottom: -4px;
+        background-color: #6B5B41;
+        color: #fff;
+        font-family: 'BanglaSangam-Regular';
+        padding: 2px 5px 0px 6px;
+        border-radius: 50%;
+        font-size: 12px;
+        line-height: 15px;
     }
 
     .offcanvas.offcanvas-end {

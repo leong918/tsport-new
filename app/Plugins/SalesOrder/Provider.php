@@ -6,9 +6,19 @@ if ($pluginRepository->getActivePlugin('SalesOrder')) {
     $this->loadViewsFrom(__DIR__ . '/Views', 'sales_order');
 
     if (!function_exists('salesOrderRenderView')) {
-        function salesOrderRenderView($blade_name, $product)
+        function salesOrderRenderView($blade_name, $product = null)
         {
             return view("sales_order::web." . $blade_name, compact('product'));
+        }
+    }
+
+    if (!function_exists('updateUserOwnerCart')) {
+        function updateUserOwnerCart($user_id)
+        {
+            $userCartRepository = new \App\Plugins\SalesOrder\Repositories\UserCartRepository(new \Illuminate\Container\Container);
+
+            $user_ip = getPublicIp();
+            $userCartRepository->updateOwnerCartByIp($user_id, $user_ip);
         }
     }
 }

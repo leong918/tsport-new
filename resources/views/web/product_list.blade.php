@@ -19,9 +19,6 @@
             <div class="price-cart">
                 <div class="product-price">{{$product->code .' '.$product->price }}</div>
                 @if(function_exists('salesOrderRenderView'))
-                {{ salesOrderRenderView('product_list_hover_web', $product) }}
-                @endif
-                @if(function_exists('salesOrderRenderView'))
                 {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
                 @endif
             </div>

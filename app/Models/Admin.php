@@ -43,9 +43,7 @@ class Admin extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        
-    ];
+    protected $casts = [];
 
     protected function password(): Attribute
     {
