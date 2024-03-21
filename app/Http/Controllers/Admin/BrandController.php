@@ -24,8 +24,8 @@ class BrandController extends BaseController
             $model = $this->brandRepository->getListing();
 
             return DataTables::of($model)
-                ->addColumn('image', function ($model) {
-                    $image = $model->image;
+                ->addColumn('logo', function ($model) {
+                    $image = $model->logo;
                     return view('shared.image', compact('image'));
                 })
                 ->addColumn('status', function ($model) {
