@@ -17,6 +17,7 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('process_checkout', [CartController::class, 'processCheckout'])->name('cart.process_checkout');
         Route::get('payment', [CartController::class, 'payment'])->name('cart.payment');
         Route::post('create_payment_intent', [CartController::class, 'createPaymentIntent'])->name('cart.create_payment_intent');
+        Route::post('create_order', [CartController::class, 'createOrder'])->name('cart.create_order');
         Route::get('complete', [CartController::class, 'complete'])->name('cart.complete');
     });
 

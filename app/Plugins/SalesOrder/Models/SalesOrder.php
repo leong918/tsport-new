@@ -19,8 +19,11 @@ class SalesOrder extends Model
      */
     protected $fillable = [
         'user_id',
+        'country_id',
         'address_id',
         'sales_order_id',
+        'payment_method',
+        'stripe_payment_intent_id',
         'subtotal',
         'shipping',
         'discount',
@@ -37,6 +40,7 @@ class SalesOrder extends Model
         'state',
         'city',
         'address',
+        'completed_at',
     ];
 
     /**

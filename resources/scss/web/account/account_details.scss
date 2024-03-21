@@ -112,9 +112,6 @@
                         color:#6D5E44;
                         font-size: 15px;
                         font-family: "RecklessNeue-Regular";
-                        &.disabled-txt{
-                            color: #000;
-                        }
 
                         &:focus{
                             outline: none;
@@ -122,6 +119,13 @@
                             ~ .placeholder-label{
                                 top:0;
                                 color:#9A835E;
+                            }
+                        }
+
+                        &:not(:placeholder-shown) {       
+                            ~ .placeholder-label{
+                                color:#9A835E;
+                                top:0;
                             }
                         }
                     }

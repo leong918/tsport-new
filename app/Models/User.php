@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'ACTIVE' => 1,
         'INACTIVE' => 0,
     ];
-    
+
     /**
      * Validation rules
      *
@@ -41,6 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'level_id',
+        'country_id',
         'first_name',
         'last_name',
         'username',
@@ -50,7 +51,20 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'referral_email',
         'referral_phone_no',
-        'status'
+        'point',
+        'status',
+        'address_first_name',
+        'address_last_name',
+        'company_name',
+        'address_phone_no',
+        'address_email',
+        'country',
+        'postcode',
+        'state',
+        'city',
+        'address',
+        'remember_token',
+        'email_verified_at',
     ];
 
     /**
@@ -58,17 +72,14 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     public function setPasswordAttribute($value)
     {
@@ -82,8 +93,8 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
-    public function level() : HasOne
+    public function level(): HasOne
     {
-        return $this->hasOne(Level::class,'id','level_id');
+        return $this->hasOne(Level::class, 'id', 'level_id');
     }
 }

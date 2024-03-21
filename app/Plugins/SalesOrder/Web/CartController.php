@@ -5,24 +5,37 @@ namespace App\Plugins\SalesOrder\Web;
 use App\Plugins\SalesOrder\Repositories\UserCartRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
+use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
+use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
+use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Http\Controllers\Web\BaseController;
 use Illuminate\Http\Request;
 use Stripe\StripeClient;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends BaseController
 {
     private UserCartRepository $userCartRepository;
     private CountryRepository $countryRepository;
     private UserRepository $userRepository;
+    private SalesOrderRepository $salesOrderRepository;
+    private SalesOrderProductRepository $salesOrderProductRepository;
+    private SalesOrderLogRepository $salesOrderLogRepository;
 
     public function __construct(
         UserCartRepository $userCartRepository,
         CountryRepository $countryRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        SalesOrderRepository $salesOrderRepository,
+        SalesOrderProductRepository $salesOrderProductRepository,
+        SalesOrderLogRepository $salesOrderLogRepository
     ) {
         $this->userCartRepository = $userCartRepository;
         $this->countryRepository = $countryRepository;
         $this->userRepository = $userRepository;
+        $this->salesOrderRepository = $salesOrderRepository;
+        $this->salesOrderProductRepository = $salesOrderProductRepository;
+        $this->salesOrderLogRepository = $salesOrderLogRepository;
     }
 
     public function cart()
@@ -102,15 +115,67 @@ class CartController extends BaseController
         }
 
         if (!$request->session()->get('cart-' . auth()->user()->id)) {
-            return redirect()->route('cart.checkout');
+            return redirect()->route('cart.checkout')->with('swal_error', 'Session Expired! Please confirm your address again.');
         }
 
-        $address = $request->session()->get('cart-' . auth()->user()->id);
-        return view('sales_order::web.cart.payment', compact('address'));
+        try {
+            // refetch user cart total
+            $user_data = $this->getUserDataAndType();
+            $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
+            $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList);
+            $intentSecret = json_encode($this->createPaymentIntent());
+            $address = $request->session()->get('cart-' . auth()->user()->id);
+
+            return view('sales_order::web.cart.payment', compact('address', 'intentSecret', 'cartTotal'));
+        } catch (\Exception $e) {
+            return redirect()->route('cart.checkout')->with('swal_error', $e->getMessage());
+        }
     }
 
-    public function createPaymentIntent(Request $request)
+    private function createPaymentIntent($cartTotal = 853)
     {
+        $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
+
+        $paymentIntent = $stripe->paymentIntents->create([
+            'amount' => $cartTotal,
+            'currency' => 'hkd',
+        ]);
+
+        $output = [
+            'clientSecret' => $paymentIntent->client_secret,
+        ];
+
+        return $output;
+    }
+
+    public function createOrder(Request $request)
+    {
+        $user_data = $this->getUserDataAndType();
+        $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
+
+        // // //
+        //do checking check total is same or not, if not same need redirect back
+        // // //
+
+        if ($user_cart->count() <= 0 || !$request->session()->get('cart-' . auth()->user()->id)) {
+            return response()->json(['msg' => null, 'redirect' => true], 500);
+        }
+
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            $data['user_id'] = auth()->user()->id;
+            $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
+            $order = $this->salesOrderRepository->createOrder($data);
+            $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
+            $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0);
+
+            DB::commit();
+            return response()->json(['order' => $order], 'OK');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['msg' => $e->getMessage(), 'redirect' => false], 500);
+        }
     }
 
     public function complete()

@@ -37,7 +37,7 @@ class IDGenerator
 
         if ($this->isRandom) {
             $randomGenerator = new RandomGenerator($this->isNumberOnly, false, $this->length);
-            $full_random_string = $this->prefix.$randomGenerator->generate();
+            $full_random_string = $this->prefix . $randomGenerator->generate();
         } else {
             $full_random_string = $this->generateUniqueNumberIfExist($class, $startWith, $index_number);
         }
@@ -60,16 +60,16 @@ class IDGenerator
             } else {
                 $index_number++;
             }
-            $proposed_uniqued_number = sprintf('%0'.$this->length.'s', $index_number);
+            $proposed_uniqued_number = sprintf('%0' . $this->length . 's', $index_number);
 
-            return $this->prefix.$proposed_uniqued_number;
+            return $this->prefix . $proposed_uniqued_number;
         }
     }
 
     public function regenerateIfExist($full_random_string, $index_number)
     {
         // check if database exist
-        $class = 'App\\Models\\' . $this->model;
+        $class = $this->model;
         if (class_exists($class)) {
             $found = $class::where([$this->column => $full_random_string])->first();
             if ($found === null) {
