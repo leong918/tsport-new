@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Brand extends Model
+class Setting extends Model
 {
-    use SoftDeletes;
+    use HasFactory;
 
     /**
      * Validation rules
@@ -18,12 +17,7 @@ class Brand extends Model
      */
     public static $rules = [];
 
-    public const STATUS = [
-        'ACTIVE' => 1,
-        'INACTIVE' => 0,
-    ];
-    
-    protected $table = 'brand';
+    protected $table = 'setting';
 
     /**
      * The attributes that are mass assignable.
@@ -31,11 +25,8 @@ class Brand extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'status',
-        'sort',
-        'image',
-        'logo',
+        'key',
+        'value',
     ];
 
     /**
@@ -60,21 +51,5 @@ class Brand extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
-    }
-
-    protected function brandDescription() : HasMany
-    {
-        return $this->hasMany(BrandDescription::class);
-    
-    }
-
-    public function getParameters(string $params)
-    {
-        return $this->brandDescription->where('language',$params)->first();
-    } 
-
-    public function product() : HasMany
-    {
-        return $this->hasMany(Product::class,'id');
     }
 }

@@ -24,7 +24,7 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Image</th>
+                                            <th>Logo</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
@@ -60,8 +60,8 @@
                             name: 'name'
                         },
                         {
-                            data: 'image',
-                            name: 'image'
+                            data: 'logo',
+                            name: 'logo'
                         },
                         {
                             data: 'status',

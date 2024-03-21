@@ -80,6 +80,10 @@ class CategoryController extends BaseController
 
         $categoryDropdown = $this->categoryRepository->dropdown();
 
+        if (array_key_exists($id, $categoryDropdown)) {
+            unset($categoryDropdown[$id]);
+        }
+
         return $this->view('category.update', compact('model', 'categoryDropdown'));
     }
 

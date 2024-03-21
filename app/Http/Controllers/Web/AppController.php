@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\CategoryRepository;
 use App\Repositories\ProductRepository;
-use App\Repositories\ProductTagRepository;
+use App\Repositories\SettingRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\BlogRepository;
 use App\Repositories\BlogCommentRepository;
 use App\Repositories\UserRepository;
-use Carbon\Carbon;
+use App\Repositories\SliderRepository;
 use App\Http\Requests\Form\BlogComment\CreateBlogCommentRequest;
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,22 +22,37 @@ class AppController extends BaseController
     private BlogRepository $blogRepository;
     private BlogCommentRepository $blogCommentRepository;
     private UserRepository $userRepository;
-    private ProductTagRepository $productTagRepository;
+    private SettingRepository $settingRepository;
+    private SliderRepository $sliderRepository;
 
-    public function __construct(ProductRepository $productRepository, CategoryRepository $categoryRepository, BrandRepository $brandRepository, BlogRepository $blogRepository, BlogCommentRepository $blogCommentRepository, UserRepository $userRepository, ProductTagRepository $productTagRepository)
-    {
+    public function __construct(
+        ProductRepository $productRepository, 
+        CategoryRepository $categoryRepository, 
+        BrandRepository $brandRepository, 
+        BlogRepository $blogRepository, 
+        BlogCommentRepository $blogCommentRepository, 
+        UserRepository $userRepository, 
+        SettingRepository $settingRepository,
+        SliderRepository $sliderRepository,
+    ){
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
         $this->blogRepository = $blogRepository;
         $this->blogCommentRepository = $blogCommentRepository;
         $this->userRepository = $userRepository;
-        $this->productTagRepository = $productTagRepository;
+        $this->settingRepository = $settingRepository;
+        $this->sliderRepository = $sliderRepository;
     }
 
     public function index()
     {
-        return $this->view('index');
+        $slider_list = $this->sliderRepository->getListing()->get();
+        $setting_list = $this->settingRepository->getListing()->get();
+        $blog_list = $this->blogRepository->getListing()->get();
+        $brand_list = $this->brandRepository->getListing()->where('status', 1)->get();
+
+        return $this->view('index', compact('slider_list', 'setting_list', 'blog_list', 'brand_list'));
     }
 
     public function product(Request $request, string $category_id = null)
