@@ -50,7 +50,7 @@ class AppController extends BaseController
         $slider_list = $this->sliderRepository->getListing()->get();
         $setting_list = $this->settingRepository->getListing()->get();
         $blog_list = $this->blogRepository->getListing()->get();
-        $brand_list = $this->brandRepository->getListing()->get()->where('status', 1);
+        $brand_list = $this->brandRepository->getListing()->where('status', 1)->get();
 
         return $this->view('index', compact('slider_list', 'setting_list', 'blog_list', 'brand_list'));
     }

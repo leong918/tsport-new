@@ -14,26 +14,19 @@
         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 @php
-                $count = 0;
-                $slideCount = 1;
+                    $count = 0;
+                    $slideCount = 1;
                 @endphp
-
-                @foreach ($slider_list as $slider)
-                @if ($slider->type == 'main')
-                
+                @foreach ($slider_list->where('type', 'main') as $slider)
                 <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="{{ $count }}" class="active" aria-current="true" aria-label="Slide {{ $slideCount }}"></button>
-
                 @php
                     $count++;
                     $slideCount++;
                 @endphp
-                @endif
                 @endforeach
             </div>
             <div class="carousel-inner">
-
-                @foreach ($slider_list as $slider)
-                @if ($slider->type == 'main')
+                @foreach ($slider_list->where('type', 'main') as $slider)
                 <div class="carousel-item active"  data-bs-interval="2000">
                     <a href="{{ $slider->url }}" target="_blank">
                         <img src="{{ $slider->image }}" class="img-fluid carousel-image" />
@@ -52,7 +45,6 @@
                         </div>
                     </a>
                 </div>
-                @endif    
                 @endforeach
             </div>
         </div>
@@ -60,20 +52,16 @@
     <!-- container promo -->
     <div class="promo">
         <div class="title-promo">
-            @foreach ($setting_list as $setting)
-            @if ($setting->key == 'sub_slider_list_title')
+            @foreach ($setting_list->where('key', 'sub_slider_title') as $setting)
                 {{ $setting->value }}
-            @endif
             @endforeach
         </div>
         <div class="swiper mySwiper-promo">
             <div class="swiper-wrapper">
-                @foreach ($slider_list as $slider)
-                @if ($slider->type == 'sub')
+                @foreach ($slider_list->where('type', 'sub') as $slider)
                 <div class="swiper-slide promotion-img">
                     <a href="{{ $slider->url }}" target="_blank"><img src="{{ $slider->image }}"></a>
                 </div>
-                @endif
                 @endforeach
             </div>
         </div>
@@ -85,15 +73,11 @@
             <div class="col-12 order-md-first order-last col-md-8">
                 <div class="swiper mySwiper-product">
                     <div class="swiper-wrapper">
-                        @foreach ($setting_list as $setting)
-                        @if ($setting->key == 'product_right_select')
-
+                        @foreach ($setting_list->where('key', 'product_right_select') as $setting)
                         @php
                             $product_list = $productRepository->find(json_decode($setting->value));
                         @endphp
-
                         @foreach ($product_list as $product)
-
                         <div class="swiper-slide product-img">
                             <div class="product-image position-relative">
                                 <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
@@ -133,9 +117,6 @@
                             </div>
                         </div>
                         @endforeach
-
-                        @endif    
-
                         @endforeach
                     </div>
                 </div>
@@ -143,10 +124,8 @@
             <div class="col-md-4">
                 <div class="oval" id="first-oval">
                     <div class="main-title">
-                        @foreach ($setting_list as $setting)
-                        @if ($setting->key == 'section_right_title')
+                        @foreach ($setting_list->where('key', 'section_right_title') as $setting)
                             {{ $setting->value }}
-                        @endif
                         @endforeach
                     </div>
                 </div>
@@ -156,10 +135,8 @@
             <div class="col-12 col-md-4">
                 <div class="oval" id="second-oval">
                     <div class="main-title">
-                        @foreach ($setting_list as $setting)
-                        @if ($setting->key == 'section_left_title')
+                        @foreach ($setting_list->where('key', 'section_left_title') as $setting)
                             {{ $setting->value }}
-                        @endif
                         @endforeach
                     </div>
                 </div>
@@ -167,14 +144,11 @@
             <div class="col-12 col-md-8">
                 <div class="swiper mySwiper-product">
                     <div class="swiper-wrapper">
-
-                        @foreach ($setting_list as $setting)
-                        @if ($setting->key == 'product_left_select')
+                        @foreach ($setting_list->where('key', 'product_left_select') as $setting)
                         @php
                             $product_list = $productRepository->find(json_decode($setting->value));
                         @endphp
                         @foreach ($product_list as $product)
-
                         <div class="swiper-slide product-img">
                             <div class="product-image position-relative">
                                 <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
@@ -213,9 +187,7 @@
                                 </div>
                             </div>
                         </div>
-
                         @endforeach
-                        @endif    
                         @endforeach
                     </div>
                 </div>
@@ -227,26 +199,20 @@
     <div class="new-product">
         <div class="container">
             <div class="title-new">
-                @foreach ($setting_list as $setting)
-                    @if ($setting->key == 'section_center_title')
-                        {{ $setting->value }}
-                    @endif
+                @foreach ($setting_list->where('key', 'section_center_title') as $setting)
+                    {{ $setting->value }}
                 @endforeach
             </div>
         </div>
         <div class="swiper mySwiper-newproduct">
             <div class="swiper-wrapper">
-
-                @foreach ($setting_list as $setting)
-                @if ($setting->key == 'product_center_select')
+                @foreach ($setting_list->where('key', 'product_center_select') as $setting)
                 @php
                     $product_list = $productRepository->find(json_decode($setting->value));
                 @endphp
                 @foreach ($product_list as $product)
-
                 <div class="swiper-slide new-launches-product-img">
                     <div class="product-image position-relative">
-
                         <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
                             <img class="show" src="{{$product->productImage()->first()->url}}">
                         </a>
@@ -283,9 +249,7 @@
                         </div>
                     </div>
                 </div>
-
                 @endforeach
-                @endif    
                 @endforeach
             </div>
         </div>
@@ -335,20 +299,16 @@
         <div class="recommend">
             <div class="container">
                 <div class="title-recommend">
-                    @foreach ($setting_list as $setting)
-                        @if ($setting->key == 'recommended_title')
-                            {{ $setting->value }}
-                        @endif
+                    @foreach ($setting_list->where('key', 'recommended_title') as $setting)
+                        {{ $setting->value }}
                     @endforeach
                 </div>
                 <div class="row row-cols-2 row-cols-lg-5 row-cols-md-4 row-cols-sm-3">
-                    @foreach ($setting_list as $setting)
-                    @if ($setting->key == 'product_recommended_select')
+                    @foreach ($setting_list->where('key', 'product_recommended_select') as $setting)
                     @php
                         $product_list = $productRepository->find(json_decode($setting->value))->take(10);
                     @endphp
                     @foreach ($product_list as $product)
-
                     <div class="recommend-product-container col recommend-product-img">
                         <div class="product-image position-relative">
                             <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
@@ -387,9 +347,7 @@
                             </div>
                         </div>
                     </div>
-
                     @endforeach
-                    @endif    
                     @endforeach
                 </div>
                 <div class="more-button">
