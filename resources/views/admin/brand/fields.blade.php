@@ -27,6 +27,14 @@
             <img class="img-fluid" {{isset($model) && $model->image ? 'src='.$model->image : ''}} />
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Logo') }}
+            {{ html()->file('logo')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
+            <br />
+            <img class="img-fluid" {{isset($model) && $model->logo ? 'src='.$model->logo : ''}} />
+        </div>
+    </div>
 </div>
 
 @section('script')

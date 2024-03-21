@@ -59,6 +59,10 @@ class BrandRepository extends BaseRepository
         $model = new Brand();
         $model->fill($input);
         $model->image = $this->uploaded_filename;
+
+        $this->uploadFile($input['logo']);
+        $model->logo = $this->uploaded_filename;
+
         $model->save();
 
         $brandDescriptionRepository = new BrandDescriptionRepository(new Container());
@@ -77,6 +81,12 @@ class BrandRepository extends BaseRepository
             $this->upload_path = 'brand';
             $this->uploadFile($input['image']);  
             $model->image = $this->uploaded_filename;
+        }
+
+        if(isset($input['logo'])){
+            $this->upload_path = 'brand';
+            $this->uploadFile($input['logo']);
+            $model->logo = $this->uploaded_filename;
         }
 
         $model->save();
