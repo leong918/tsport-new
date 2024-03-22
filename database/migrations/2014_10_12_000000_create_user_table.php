@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('level_id');
+            $table->bigInteger('country_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('username', 50);
@@ -25,6 +26,17 @@ return new class extends Migration
             $table->string('referral_phone_no')->nullable();
             $table->integer("point")->default(0);
             $table->tinyInteger("status")->default(0);
+            $table->string('address_first_name')->nullable();
+            $table->string('address_last_name')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('address_phone_no')->nullable();
+            $table->string('address_email')->nullable();
+            $table->string('country')->nullable();
+            $table->string('postcode')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('address')->nullable();
+            $table->rememberToken();
             $table->timestamp('level_validity')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();

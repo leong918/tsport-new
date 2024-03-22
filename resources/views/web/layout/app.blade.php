@@ -75,7 +75,7 @@
                     container: 'custom-register-swal'
                 },
                 didOpen: () => {
-                    $('#custom-close-button').click(function() {
+                    $('.custom-close-button').click(function() {
                         Swal.close();
                     });
                 }

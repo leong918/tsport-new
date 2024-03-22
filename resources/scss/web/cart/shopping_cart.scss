@@ -13,6 +13,15 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
     }
 
     .container{
+        .empty-cart-content {
+            background-color: #F7F3EE;
+            height: 40vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 17px;
+        }
+
         .shopping-cart-wrapper{
             width:100%;
             .shopping-cart-title{
@@ -344,7 +353,7 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                     }
 
                     .total{
-                        font-size: 20px;
+                        font-size: 17px;
                         margin-bottom: 20px;
                         color: #6D5E44;
                     }

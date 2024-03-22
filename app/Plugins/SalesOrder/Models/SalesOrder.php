@@ -5,10 +5,24 @@ namespace App\Plugins\SalesOrder\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SalesOrder extends Model
 {
     use SoftDeletes;
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [];
+
+    public const PAYMENT_METHOD = [
+        'CREDIT CARD (STRIPE)' => 'stripe',
+        'ALIPAY HK' => 'alipay',
+        'DIRECT BANK TRANSFER (FPS)' => 'fps',
+    ];
 
     protected $table = 'sales_order';
 
@@ -19,8 +33,11 @@ class SalesOrder extends Model
      */
     protected $fillable = [
         'user_id',
+        'country_id',
         'address_id',
         'sales_order_id',
+        'payment_method',
+        'stripe_payment_intent_id',
         'subtotal',
         'shipping',
         'discount',
@@ -37,6 +54,7 @@ class SalesOrder extends Model
         'state',
         'city',
         'address',
+        'completed_at',
     ];
 
     /**
@@ -58,5 +76,10 @@ class SalesOrder extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
+    }
+
+    public function salesOrderProduct(): HasMany
+    {
+        return $this->hasMany(SalesOrderProduct::class);
     }
 }

@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -59,6 +59,9 @@ class Kernel extends HttpKernel
         'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
         'auth.admin.authenticated' => \App\Http\Middleware\RedirectAuthenticatedAdmin::class,
         'auth.admin.inactive.logout' => \App\Http\Middleware\LogoutIfAdminInactive::class,
+        'auth.user' => \App\Http\Middleware\AuthenticateUser::class,
+        'auth.user.authenticated' => \App\Http\Middleware\RedirectAuthenticatedUser::class,
+        'auth.user.inactive.logout' => \App\Http\Middleware\LogoutIfUserInactive::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

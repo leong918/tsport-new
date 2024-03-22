@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class SalesOrder extends Model
+class Country extends Model
 {
     use SoftDeletes;
 
@@ -17,7 +17,12 @@ class SalesOrder extends Model
      */
     public static $rules = [];
 
-    protected $table = 'product';
+    public const STATUS = [
+        'ACTIVE' => 1,
+        'INACTIVE' => 0,
+    ];
+
+    protected $table = 'country';
 
     /**
      * The attributes that are mass assignable.
@@ -25,25 +30,8 @@ class SalesOrder extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'address_id',
-        'sales_order_id',
-        'subtotal',
-        'shipping',
-        'discount',
-        'total',
-        'point',
+        'name',
         'status',
-        'first_name',
-        'last_name',
-        'company_name',
-        'phone_no',
-        'email',
-        'country',
-        'postcode',
-        'state',
-        'city',
-        'address',
     ];
 
     /**
@@ -51,17 +39,14 @@ class SalesOrder extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     protected function createdAt(): Attribute
     {

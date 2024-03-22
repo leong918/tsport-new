@@ -6,6 +6,7 @@ use App\Plugins\SalesOrder\Models\SalesOrder;
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Utils\IDGenerator;
 
 class SalesOrderRepository extends BaseRepository
 {
@@ -48,8 +49,10 @@ class SalesOrderRepository extends BaseRepository
         Schema::create('sales_order', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->bigInteger('address_id');
+            $table->bigInteger('country_id');
             $table->string('sales_order_id');
+            $table->string('payment_method');
+            $table->string('stripe_payment_intent_id')->nullable();
             $table->decimal('subtotal', 16, 2)->default(0);
             $table->decimal('shipping', 16, 2)->default(0);
             $table->decimal('discount', 16, 2)->default(0);
@@ -66,6 +69,7 @@ class SalesOrderRepository extends BaseRepository
             $table->string('state');
             $table->string('city');
             $table->string('address');
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -77,6 +81,7 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('sales_order_id');
             $table->bigInteger('product_id');
             $table->bigInteger('product_attribute_term_id')->nullable();
+            $table->string('product_image');
             $table->string('product_name');
             $table->string('product_attribute_term_name')->nullable();
             $table->decimal('price', 16, 2)->default(0);
@@ -139,5 +144,27 @@ class SalesOrderRepository extends BaseRepository
         $model = SalesOrder::find($id);
         $model->status = !$model->status;
         $model->save();
+    }
+
+    public function createOrder($data)
+    {
+        $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
+        $id_generator->length(6);
+        $sales_order_id = $id_generator->generate();
+
+        $order = new SalesOrder();
+        $order->fill($data['address']);
+        $order->user_id = $data['user_id'];
+        $order->sales_order_id = $sales_order_id;
+        $order->payment_method = $data['payment_method'];
+        $order->stripe_payment_intent_id = $data['payment_method'] === 'stripe' ? $data['stripe_payment_intent_id']['clientSecret'] : null;
+        $order->save();
+
+        return $order;
+    }
+
+    public function getSalesOrderId($sales_order_id)
+    {
+        return SalesOrder::where('sales_order_id', $sales_order_id)->first();
     }
 }

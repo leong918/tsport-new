@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+
 use App\Repositories\UserRepository;
 use App\Http\Requests\Form\user\UserUpdateInfoRequest;
 use Illuminate\Support\Facades\Hash;
+
 class AccountController extends BaseController
 {
     private UserRepository $userRepository;
@@ -15,7 +17,7 @@ class AccountController extends BaseController
 
     public function accountDetails()
     {
-        $user_id = auth()->guard("web")->user()->id;
+        $user_id = auth()->user()->id;
         $user = $this->userRepository->find($user_id);
 
         return $this->view('account.account_details', compact('user'));
@@ -36,14 +38,15 @@ class AccountController extends BaseController
     {
         return $this->view('account.account_point');
     }
-    public function doUpdateUserAccount(UserUpdateInfoRequest $request,int $user_id){
+    public function doUpdateUserAccount(UserUpdateInfoRequest $request, int $user_id)
+    {
         $data = $request->all();
         $user = $this->userRepository->find($user_id);
-        if($data['current_password']){
-            if(!Hash::check($data['current_password'], $user->password)){
+        if ($data['current_password']) {
+            if (!Hash::check($data['current_password'], $user->password)) {
                 throw new \Exception('Password Incorrect!');
             }
-            if(Hash::check($data['password'], $user->password)){
+            if (Hash::check($data['password'], $user->password)) {
                 throw new \Exception('New Password Cannot Same With Current Password!');
             }
         }

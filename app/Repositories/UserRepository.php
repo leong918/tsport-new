@@ -11,8 +11,7 @@ class UserRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -84,8 +83,8 @@ class UserRepository extends BaseRepository
     }
     public function getUserByEmail(string $email, string $phone_no = null)
     {
-        if($phone_no){
-            return User::where(['email' => $email, 'phone_no' => $phone_no,'status' => 1])->first();
+        if ($phone_no) {
+            return User::where(['email' => $email, 'phone_no' => $phone_no, 'status' => 1])->first();
         }
 
         return User::where(['email' => $email, 'status' => 1])->first();
@@ -96,5 +95,22 @@ class UserRepository extends BaseRepository
         $model = User::find($id);
         $model->status = !$model->status;
         $model->save();
+    }
+
+    public function getAddressData($user_id)
+    {
+        return User::select(
+            'country_id',
+            'address_first_name as first_name',
+            'address_last_name as last_name',
+            'company_name',
+            'address_phone_no as phone_no',
+            'address_email as email',
+            'country',
+            'postcode',
+            'state',
+            'city',
+            'address'
+        )->find($user_id)->toArray();
     }
 }

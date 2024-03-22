@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="checkout-wrapper">
                 <div class="checkout-title">Checkout</div>
-                {{ html()->form('POST', route("web.doRegister"))->id('register_form')->open()}}
+                {{ html()->form('POST', route("cart.process_checkout"))->open()}}
                     <div class="row justify-content-center checkout-content">
                         <div class="col-md-12 col-lg-8 checkout-details">
                             <div class="shipping-details-wrapper">
@@ -15,29 +15,29 @@
                                         <div class="contacts-title">Contacts</div>
                                         <div class="mb-40 d-flex justify-content-between gap-5">
                                             <div class="input-container" style="width:47%">
-                                                {{ html()->text('last_name')->placeholder('')->class('')->required() }}
+                                                {{ html()->text('last_name')->placeholder('')->value(old('last_name', $addressData['last_name']))->required() }}
                                                 <label class="placeholder-label">Last Name</label>
                                             </div>
                                             <div class="input-container" style="width:47%">
-                                                {{ html()->text('first_name')->placeholder('')->class('')->required() }}
+                                                {{ html()->text('first_name')->placeholder('')->value(old('first_name', $addressData['first_name']))->required() }}
                                                 <label class="placeholder-label">First Name</label>
                                             </div>
                                         </div>
                                         <div class="mb-40 d-flex justify-content-between">
                                             <div class="input-container col-12">
-                                                {{ html()->text('company_name')->placeholder('')->class('') }}
+                                                {{ html()->text('company_name')->placeholder('')->value(old('company_name', $addressData['company_name'])) }}
                                                 <label class="placeholder-label">Company Name (optional)</label>
                                             </div>
                                         </div>
                                         <div class="mb-40 d-flex justify-content-between">
                                             <div class="input-container col-12">
-                                                {{ html()->text('phone_no')->placeholder('')->class('')->required() }}
+                                                {{ html()->text('phone_no')->placeholder('')->value(old('phone_no', $addressData['phone_no']))->required() }}
                                                 <label class="placeholder-label">Phone no.</label>
                                             </div>
                                         </div>
                                         <div class="mb-40 d-flex justify-content-between">
                                             <div class="input-container col-12">
-                                                {{ html()->email('email')->placeholder('')->class('')->required() }}
+                                                {{ html()->email('email')->placeholder('')->value(old('email', $addressData['email']))->required() }}
                                                 <label class="placeholder-label">Email</label>
                                             </div>
                                         </div>
@@ -48,29 +48,35 @@
                                         <div class="address-title">Shipping Address</div>
                                         <div class="mb-40 d-flex justify-content-between gap-5">
                                             <div class="input-container" style="width:47%">
-                                                <input type="text" placeholder=" " required/>
+                                                {{ html()->hidden('country_id')->value(old('country_id', $addressData['country_id']))->required() }}
+                                                {{ html()->text('country')->placeholder('')->class('address-input')->value(old('country', $addressData['country']))->required()->isReadonly() }}
+                                                <ul id="country-dropdown">
+                                                    @foreach($countryList as $country)
+                                                    <li data-value="{{ $country->id }}">{{ $country->name }}</li>
+                                                    @endforeach
+                                                </ul>
                                                 <label class="placeholder-label">Country / Region</label>
                                             </div>
                                             <div class="input-container" style="width:47%">
-                                                {{ html()->text('postcode')->placeholder('')->class('')->required() }}
+                                                {{ html()->text('postcode')->placeholder('')->class('address-input')->value(old('postcode', $addressData['postcode']))->required() }}
                                                 <label class="placeholder-label">Postcode / ZIP</label>
                                             </div>
                                         </div>
                                         <div class="mb-40 d-flex justify-content-between">
                                             <div class="input-container col-12">
-                                                {{ html()->text('state')->placeholder('')->class('')->required() }}
+                                                {{ html()->text('state')->placeholder('')->class('address-input')->value(old('state', $addressData['state']))->required() }}
                                                 <label class="placeholder-label">Region</label>
                                             </div>
                                         </div>
                                         <div class="mb-40 d-flex justify-content-between">
                                             <div class="input-container col-12">
-                                                {{ html()->text('city')->placeholder('')->class('')->required() }}
+                                                {{ html()->text('city')->placeholder('')->class('address-input')->value(old('city', $addressData['city']))->required() }}
                                                 <label class="placeholder-label">Town / City</label>
                                             </div>
                                         </div>
                                         <div class="mb-40 d-flex justify-content-between">
                                             <div class="input-container col-12">
-                                                {{ html()->text('address')->placeholder('')->class('')->required() }}
+                                                {{ html()->text('address')->placeholder('')->class('address-input')->value(old('address', $addressData['address']))->required() }}
                                                 <label class="placeholder-label">Street Address</label>
                                             </div>
                                         </div>
@@ -138,8 +144,8 @@
                                 <div class="shipping-fee-inner">
                                     <div class="data-content-wrapper">
                                         <div class="inner-label">Shipping To:</div>
-                                        <div class="inner-label">
-                                            ABC XXXXXXXXXX HONG KONG ISLAND.
+                                        <div class="inner-label" id="shipping_address">
+                                            {{ $addressData['address'].', '.$addressData['postcode'].', '.$addressData['city'].', '.$addressData['state'].', '.$addressData['country'] }}
                                         </div>
                                     </div>
                                 </div>
@@ -147,8 +153,8 @@
                                 <div class="total">
                                     <div class="d-flex justify-content-between data-content-wrapper">
                                         <div class="label">Total</div>
-                                            <div class="data-label">
-                                            <div class="price">$980</div>
+                                        <div class="data-label">
+                                            <div class="price">$853</div>
                                         </div>
                                     </div>
                                 </div>
@@ -170,23 +176,34 @@
 @push('scripts')
 <script>
 $(document).ready(function() {
-    $('#shipping-checkbox').change(function() {
-        var isChecked = $(this).is(':checked');
-        var details = document.getElementsByClassName('shipping-details-container');
-        var address = document.getElementsByClassName('shipping-address-container');
-        if(isChecked){
-            var contact_content = details[0].outerHTML;
-            var address_content = address[0].outerHTML;
-            $(this).parents('.shipping-details-wrapper').append(contact_content,address_content);
-        }else{
-            if(details.length > 0 && address.length > 0){
-                var last_details = details[details.length - 1];
-                var last_address = address[address.length - 1];
+    $('.input-container input#country').focus(function() {
+        $('#country-dropdown').addClass('visible');
+    });
 
-                last_details.parentNode.removeChild(last_details);
-                last_address.parentNode.removeChild(last_address);
+    $("#country-dropdown li").click(function() {
+        console.log($(this).text());
+        $('#country').val($(this).text());
+        $('#country_id').val($(this).data('value'));
+        $('#country-dropdown').removeClass('visible');
+        $('#country').trigger('paste');
+    });
+    
+    $('.input-container input#country').on('blur', function() {
+        setTimeout(function() {
+            if (!$('.input-container input#country').is(':focus') && !$('#country-dropdown').is(':focus')) {
+                $('#country-dropdown').removeClass('visible');
             }
-        }
+        }, 100);
+    });
+
+    $('.address-input').on('change paste keyup', function () {
+        var address = $('#address').val();
+        var city = $('#city').val();
+        var state = $('#state').val();
+        var postcode = $('#postcode').val();
+        var country = $('#country').val();
+
+        $('#shipping_address').html(address + ', ' + postcode + ', ' + city + ', ' + state + ', ' + country);
     })
 }); 
 </script>
