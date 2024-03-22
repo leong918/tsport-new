@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Form\user\CreateUserRequest;
 use App\Http\Requests\Form\user\UpdateUserRequest;
 use App\Repositories\LevelRepository;
-use App\Repositories\userRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -51,11 +51,9 @@ class UserController extends BaseController
         $data = $request->all();
         $data['level_id'] =  $this->levelRepository->getLowestLeveling()->id;
 
-        if($data['referral_email'] && $data['referral_phone_no'])
-        {
-            $user = $this->userRepository->getUserByEmail($data['referral_email'],$data['referral_phone_no']);
-            if(!$user || $user->level_id <= 1)
-            {
+        if ($data['referral_email'] && $data['referral_phone_no']) {
+            $user = $this->userRepository->getUserByEmail($data['referral_email'], $data['referral_phone_no']);
+            if (!$user || $user->level_id <= 1) {
                 return redirect()->back()->with('error', "Referral User Not Found or Refferal User Level Not Compatible!");
             }
         }
@@ -73,11 +71,9 @@ class UserController extends BaseController
     public function update(UpdateUserRequest $request, int $id)
     {
         $data = $request->all();
-        if($data['referral_email'] && $data['referral_phone_no'])
-        {
-            $user = $this->userRepository->getUserByEmail($data['referral_email'],$data['referral_phone_no']);
-            if(!$user || $user->level_id <= 1)
-            {
+        if ($data['referral_email'] && $data['referral_phone_no']) {
+            $user = $this->userRepository->getUserByEmail($data['referral_email'], $data['referral_phone_no']);
+            if (!$user || $user->level_id <= 1) {
                 return redirect()->back()->with('error', "Referral User Not Found or Refferal User Level Not Compatible!");
             }
         }
