@@ -157,6 +157,7 @@ class CartController extends BaseController
         //do checking check total is same or not, if not same need redirect back
         // // //
 
+        // refresh the page again to trigger error or generate new payment intent id
         if ($user_cart->count() <= 0 || !$request->session()->get('cart-' . auth()->user()->id)) {
             return response()->json(['msg' => null, 'redirect' => true], 500);
         }
@@ -168,19 +169,27 @@ class CartController extends BaseController
             $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
             $order = $this->salesOrderRepository->createOrder($data);
             $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
-            $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0);
+            $description = 'New Order';
+            $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
 
             DB::commit();
-            return response()->json(['order' => $order], 'OK');
+            return response()->json(['order' => $order], 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['msg' => $e->getMessage(), 'redirect' => false], 500);
         }
     }
 
-    public function complete()
+    public function complete(Request $request)
     {
-        return view('sales_order::web.cart.complete');
+        $order_id = $request->order_id;
+        $sales_order = $this->salesOrderRepository->getSalesOrderId($order_id);
+
+        if (!$sales_order || $sales_order->user_id != auth()->user()->id) {
+            return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
+        }
+
+        return view('sales_order::web.cart.complete', compact('sales_order'));
     }
 
     private function getUserDataAndType()

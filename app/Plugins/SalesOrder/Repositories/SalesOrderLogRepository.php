@@ -31,12 +31,13 @@ class SalesOrderLogRepository extends BaseRepository
         return SalesOrderLog::class;
     }
 
-    public function createLog($order, $table_id, $table, $status)
+    public function createLog($order, $table_id, $table, $status, $description)
     {
         $salesOrderLog = new SalesOrderLog();
         $salesOrderLog->sales_order_id = $order->id;
         $salesOrderLog->user_id = ($table === 'user' ? $table_id : null);
         $salesOrderLog->admin_id = ($table === 'admin' ? $table_id : null);
+        $salesOrderLog->description = $description;
         $salesOrderLog->status = $status;
         $salesOrderLog->save();
     }

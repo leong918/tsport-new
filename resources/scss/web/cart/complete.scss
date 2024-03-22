@@ -62,83 +62,89 @@
                     .cart-item-list {
                         width: 100%;
                         margin-top: 10px;
+                        tbody {
+                            width: 100%;
+                            display: inline-table;
 
-                        th {
-                            color: #6D5E44;
-                            padding: 30px 0;
-                            font-family: "RecklessNeue-Medium";
-                        }
-
-                        th:not(:first-child) {
-                            text-align: center;
-                        }
-
-                        tr {
-                            td:first-child {
-                                padding: 10px 10px 10px 0px;
+                            th {
+                                color: #6D5E44;
+                                padding: 30px 0;
+                                font-family: "RecklessNeue-Medium";
                             }
 
-                            td:not(:first-child) {
+                            th:not(:first-child) {
                                 text-align: center;
-                                padding: 10px;
-                                font-weight: bold;
                             }
-                        }
 
-                        img {
-                            height: 15vh;
-                        }
+                            tr {
+                                td:first-child {
+                                    padding: 10px 10px 10px 0px;
+                                }
 
-
-                        .product-desc {
-                            display: flex;
-                            justify-content: center;
-                            flex-direction: column;
-                            align-items: center;
-                            padding: 0px 20px;
-                            font-size: 13px;
-                        }
-
-                        .unit-price,
-                        .total-price {
-                            font-family: "RecklessNeue-Medium";
-                        }
-
-                        .quantity-wrapper {
-                            font-family: "RecklessNeue-Medium";
-
-                            .quantity-text {
-                                width: 20%;
-                                border: none;
-                                text-align: center;
-
-                                &:focus {
-                                    outline: none;
+                                td:not(:first-child) {
+                                    text-align: center;
+                                    padding: 10px;
+                                    font-weight: bold;
                                 }
                             }
-                        }
-
-                        .remove-button {
-                            border: none;
-                            background: transparent;
-                            height: 30px;
-                            width: 30px;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
 
                             img {
-                                width: 100%;
-                                object-fit: contain;
+                                height: 125px;
+                                width: 100px;
+                                object-fit: cover;
+                            }
+
+
+                            .product-desc {
+                                display: flex;
+                                justify-content: center;
+                                flex-direction: column;
+                                align-items: center;
+                                padding: 0px 20px;
+                                font-size: 13px;
+                            }
+
+                            .unit-price,
+                            .total-price {
+                                font-family: "RecklessNeue-Medium";
+                            }
+
+                            .quantity-wrapper {
+                                font-family: "RecklessNeue-Medium";
+
+                                .quantity-text {
+                                    width: 20%;
+                                    border: none;
+                                    text-align: center;
+                                    color: #6B5B41;
+
+                                    &:focus {
+                                        outline: none;
+                                    }
+                                }
+                            }
+
+                            .remove-button {
+                                border: none;
+                                background: transparent;
+                                height: 30px;
+                                width: 30px;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+
+                                img {
+                                    width: 100%;
+                                    object-fit: contain;
+                                }
+                            }
+
+                            .giveaway-desc {
+                                margin-top: 40px;
+                                padding: 5px 20px;
                             }
                         }
-
-                        .giveaway-desc {
-                            margin-top: 40px;
-                            padding: 5px 20px;
-                        }
-
                     }
 
                     .mobile-cart-item-list {
@@ -308,6 +314,10 @@
 
                     .payment-method-wrapper {
                         margin-bottom: 15px;
+
+                        .payment-method-title {
+                            white-space: nowrap;
+                        }
 
                         .payment-method {
                             margin-left: 10px;

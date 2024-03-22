@@ -42,14 +42,15 @@ class SalesOrderProductRepository extends BaseRepository
             $product = $productRepository->find($cart->product_id);
             $productAttributeTerm = $productAttributeTermRepository->find($cart->product_attribute_term_id);
 
-            $price = $product->getCurrencyParameters()->price;
+            $price = $product->getCurrencyParameters('HKD')->price;
 
             $orderProduct = new SalesOrderProduct();
             $orderProduct->sales_order_id = $order->id;
             $orderProduct->product_id = $cart->product_id;
             $orderProduct->product_attribute_term_id = $cart->product_attribute_term_id;
+            $orderProduct->product_image = $product->getFirstProductImage()->url;
             $orderProduct->product_name = $product->name;
-            $orderProduct->product_attribute_term_name = $productAttributeTerm->name;
+            $orderProduct->product_attribute_term_name = $productAttributeTerm ? $productAttributeTerm->name : null;
             $orderProduct->price = $price;
             $orderProduct->quantity = $cart->quantity;
             $orderProduct->total_price = $cart->quantity * $price;

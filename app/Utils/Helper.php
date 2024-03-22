@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 use App\Models\Plugin;
+
 /**
  * Only applied for CONST status get from model
  *
@@ -13,7 +14,7 @@ function renderSelect(array $const_array): array
 {
     $const_array = array_flip($const_array);
     foreach ($const_array as $key => $value) {
-        $const_array[$key] = __('constant.'.$value);
+        $const_array[$key] = $value;
     }
     return $const_array;
 }
@@ -66,9 +67,9 @@ function checkExistPlugin(string $key)
 function formalizeDropdown($data, $key, $value, $subValue = null)
 {
     $result = [];
-    for ($i=0; $i<count($data); $i++) {
+    for ($i = 0; $i < count($data); $i++) {
         if ($subValue) {
-            $result[$data[$i]->$key] = $data[$i]->$value.' ('.$data[$i]->$subValue.')';
+            $result[$data[$i]->$key] = $data[$i]->$value . ' (' . $data[$i]->$subValue . ')';
         } else {
             $result[$data[$i]->$key] = $data[$i]->$value;
         }

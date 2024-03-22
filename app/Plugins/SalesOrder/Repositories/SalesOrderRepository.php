@@ -81,6 +81,7 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('sales_order_id');
             $table->bigInteger('product_id');
             $table->bigInteger('product_attribute_term_id')->nullable();
+            $table->string('product_image');
             $table->string('product_name');
             $table->string('product_attribute_term_name')->nullable();
             $table->decimal('price', 16, 2)->default(0);
@@ -151,8 +152,6 @@ class SalesOrderRepository extends BaseRepository
         $id_generator->length(6);
         $sales_order_id = $id_generator->generate();
 
-        //generate problem in sales order id
-
         $order = new SalesOrder();
         $order->fill($data['address']);
         $order->user_id = $data['user_id'];
@@ -162,5 +161,10 @@ class SalesOrderRepository extends BaseRepository
         $order->save();
 
         return $order;
+    }
+
+    public function getSalesOrderId($sales_order_id)
+    {
+        return SalesOrder::where('sales_order_id', $sales_order_id)->first();
     }
 }

@@ -31,7 +31,7 @@ class IDGenerator
 
     public function generate(int $index_number = 0)
     {
-        $class = 'App\\Models\\' . $this->model;
+        $class = $this->model;
 
         $startWith = strlen($this->prefix) + 1;
 

@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="tnc">
                                     <label class="container">I have read and agree to the website <span class="bold-text">"Terms & Conditions"</span>.
-                                        <input type="checkbox" name="checkbox" required>
+                                        <input type="checkbox" name="tnc" id="tnc" required>
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div class="payment">
-                                    <button type="submit" id="payment-button" data-return-url="{{ route('cart.complete') }}">Complete Payment</button>
+                                    <button id="payment-button" data-return-url="{{ route('cart.complete') }}">Complete Payment</button>
                                 </div>
                                 <div class="d-flex justify-content-center mt-4">
                                     <a href="{{ route('cart.checkout') }}">Back To Checkout</a>
@@ -145,18 +145,6 @@
         const paymentElementOptions = {
             layout: "tabs",
         };
-        const appearance = {
-            theme: 'stripe',
-            variables: {
-                colorPrimary: '#0570de',
-                colorBackground: '#ffffff',
-                colorText: '#30313d',
-                colorDanger: '#df1b41',
-                fontFamily: "RecklessNeue-Medium",
-                spacingUnit: '2px',
-                borderRadius: '4px',
-            }
-        };
 
         let elements = stripe.elements($('#payment-element').data('code'));
         const paymentElement = elements.create("payment", paymentElementOptions);
@@ -174,46 +162,52 @@
             $(this).parent().parent().children('.text-input-label').removeClass('active-color');
         });
 
-        $('#payment-form').on('submit', function(e) {
+        $('#payment-button').on('click', function(e) {
             e.preventDefault();
-            $('#payment-button').attr('disabled', true);
-            var payment_method = $('input[name="payment-method"]').val();
 
-            axios({
-                method: "post",
-                url: "{{ route('cart.create_order') }}",
-                data: {
-                    payment_method: payment_method,
-                    stripe_payment_intent_id: $('#payment-element').data('code'),
-                    cart_total: "{{ json_encode($cartTotal) }}"
-                }
-            })
-            .then(response => {
-                if (response.data.order.payment_method === 'stripe') {
-                    const { error } = stripe.confirmPayment({
-                        elements,
-                        confirmParams: {
-                            return_url: $(this).data('return-url'),
-                        },
-                    });
+            if (!$('#tnc').is(":checked")) {
+                showSwal('error', 'Fail!', 'Please tick the T&C checkbox to proceed!');
+            } else {
+                $(this).attr('disabled', true);
+                var payment_method = $('input[name="payment-method"]:checked').val();
 
-                    if (error.type === "card_error" || error.type === "validation_error") {
-                        showMessage(error.message);
-                    } else {
-                        showMessage("An unexpected error occurred.");
+                axios({
+                    method: "post",
+                    url: "{{ route('cart.create_order') }}",
+                    data: {
+                        payment_method: payment_method,
+                        stripe_payment_intent_id: $('#payment-element').data('code'),
+                        cart_total: "{{ json_encode($cartTotal) }}"
                     }
-                } else {
-                    window.location.replace("{{ route('cart.complete') }}" + "?order_id=" + response.data.order.order_id);
-                }
-            })
-            .catch(error => {
-                if (error.redirect == true) {
-                    window.location.reload();
-                } else {
-                    $('#payment-button').attr('disabled', false);
-                    showSwal('error', 'Fail!', error.msg);
-                }
-            });
+                })
+                .then(response => {
+                    console.log(response.data);
+                    if (response.data.order.payment_method === 'stripe') {
+                        const { error } = stripe.confirmPayment({
+                            elements,
+                            confirmParams: {
+                                return_url: $(this).data('return-url'),
+                            },
+                        });
+
+                        if (error.type === "card_error" || error.type === "validation_error") {
+                            showMessage(error.message);
+                        } else {
+                            showMessage("An unexpected error occurred.");
+                        }
+                    } else {
+                        window.location.replace("{{ route('cart.complete') }}" + "?order_id=" + response.data.order.sales_order_id);
+                    }
+                })
+                .catch(error => {
+                    if (error.redirect == true) {
+                        window.location.reload();
+                    } else {
+                        $(this).attr('disabled', false);
+                        showSwal('error', 'Fail!', error.msg);
+                    }
+                });
+            }
         })
     });
   </script>

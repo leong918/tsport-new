@@ -17,43 +17,20 @@
                                 <th style="width:20%">Quantity</th>
                                 <th style="width:15%">Total</th>
                             </tr>
+                            @foreach($sales_order->salesOrderProduct as $orderProduct)
                             <tr>
                                 <td>
                                     <div class="d-flex">
-                                        <img src="{{asset('assets/web/assets/img/shopping_cart/product_1.png')}}">
-                                        <div class="product-desc">【全新升級配方】LOVINAH DRAGON'S BLOOD
-                                            BRIGHTENING+HYDARTING FACE TONIC
-                                            龍血樹抗氧亮肌爽膚水100ML
-                                        </div>
+                                        <img src="{{ $orderProduct->product_image }}">
+                                        <div class="product-desc">{{ $orderProduct->product_name }}</div>
                                     </div>
                                 </td>
-                                <td class="unit-price">$490</td>
-                                <td>
-                                    <div class="d-flex justify-content-center quantity-wrapper">
-                                        <input type="text" value="1" class="quantity-text" readonly />
-                                    </div>
-                                </td>
-                                <td class="total-price">$490</td>
+                                <td class="unit-price">${{ $orderProduct->price }}</td>
+                                <td class="quantity-text">{{ $orderProduct->quantity }}</td>
+                                <td class="total-price">${{ $orderProduct->total_price }}</td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="d-flex">
-                                        <img src="{{asset('assets/web/assets/img/shopping_cart/product_2.png')}}">
-                                        <div class="product-desc">【全新升級配方】LOVINAH DRAGON'S BLOOD
-                                            BRIGHTENING+HYDARTING FACE TONIC
-                                            龍血樹抗氧亮肌爽膚水100ML
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="unit-price">$490</td>
-                                <td>
-                                    <div class="d-flex justify-content-center quantity-wrapper">
-                                        <input type="text" value="1" class="quantity-text" readonly />
-                                    </div>
-                                </td>
-                                <td class="total-price">$490</td>
-                            </tr>
-                            <tr>
+                            @endforeach
+                            {{-- <tr>
                                 <td colspan="5">
                                     <div class="giveaway-desc">
                                         Giveaway
@@ -78,7 +55,7 @@
                                 </td>
                                 <td class="total-price">$0</td>
                                 <td></td>
-                            </tr>
+                            </tr> --}}
                         </table>
                         <div class="mobile-cart-item-list d-block d-md-none">
                             <div class="cart-item-wrapper">
@@ -135,7 +112,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="giveaway-desc">
+                            {{-- <div class="giveaway-desc">
                                 Giveaway
                             </div>
                             <div class="cart-item-wrapper">
@@ -164,7 +141,7 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <hr class="dividing-line" />
                         <div class="order-details-wrapper">
@@ -235,12 +212,12 @@
                         </div>
                     </div>
                     <div class="mt-5 mt-lg-0 col-md-12 col-lg-4">
-                        <div class="order-received-summary">
+                        <div class="order-received-summary"> 
                             <div class="order-received-title">Your order has been received.</div>
-                            <div class="order-no">Order No.9605</div>
+                            <div class="order-no">Order No: {{ $sales_order->sales_order_id }}</div>
                             <div class="d-flex payment-method-wrapper">
-                                <div>Payment Method :</div>
-                                <div class="payment-method">Alipay HK</div>
+                                <div class="payment-method-title">Payment Method :</div>
+                                <div class="payment-method">{{ array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD)[$sales_order->payment_method] }}</div>
                             </div>
                             <div class="order-received-desc">
                                 <div>Please Whatsapp +852-54425298 with your Order ID when the payment has been settled.</div>
