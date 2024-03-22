@@ -413,7 +413,7 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
             padding-right: 0px !important;
 
             .btn-close{
-                background-image: url("/assets/img/shopping_cart/remove.png");
+                background-image: url("/public/assets/web/assets/img/shopping_cart/remove.png");
                 width: 0.8em;
                 height: 0.8em;
                 background-size: cover;
@@ -421,7 +421,7 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
             }
 
             .modal-content{
-                background-image: url("/assets/img/shopping_cart/login_modal_bg.png");
+                background-image: url("/public/assets/web/assets/img/shopping_cart/login_modal_bg.png");
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center 80%;
