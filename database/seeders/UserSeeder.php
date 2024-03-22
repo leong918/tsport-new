@@ -23,8 +23,9 @@ class UserSeeder extends Seeder
                 'phone_no' => '60123456789',
                 'birth_month' => 'January',
                 'password' => '123123',
+                'status' => 1,
                 'referral_email' => 'referral@gmail.com',
-                'referral_phone_no' => '60112223333' 
+                'referral_phone_no' => '60112223333'
             ],
         ];
 
