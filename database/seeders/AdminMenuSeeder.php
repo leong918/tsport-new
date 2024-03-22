@@ -55,7 +55,25 @@ class AdminMenuSeeder extends Seeder
                 'title' => 'User',
                 'icon' => 'fa-solid fa-user',
                 'url' => null,
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => null,
+                'title' => 'Content Setting',
+                'icon' => 'fa fa-cog',
+                'url' => null,
                 'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => null,
+                'title' => 'Cart Rule',
+                'icon' => 'fa-solid fa-ticket',
+                'url' => null,
+                'type' => 'marketing',
                 'sort' => 1,
                 'status' => 1
             ],
@@ -127,10 +145,38 @@ class AdminMenuSeeder extends Seeder
                 'title' => 'User List',
                 'icon' => null,
                 'url' => 'admin.user.index',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 6,
+                'title' => 'Homepage Setting',
+                'icon' => null,
+                'url' => 'admin.setting.index',
                 'type' => 'system_config',
                 'sort' => 1,
                 'status' => 1
             ],
+            [
+                'parent_id' => 6,
+                'title' => 'Top Bar Setting',
+                'icon' => null,
+                'url' => 'admin.top_bar.index',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 7,
+                'title' => 'Cart Rule List',
+                'icon' => null,
+                'url' => 'admin.cart_rule.index',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
+            
         ];
 
         foreach ($adminMenus as $adminMenu) {

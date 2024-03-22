@@ -24,6 +24,19 @@
             </ul>
         </li>
         @endforeach
+        <li class="nav-title">Marketing</li>
+        @foreach($sidebar_item['marketing'] as $parent_item)
+        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+            <i class="{{ $parent_item->icon }} nav-icon"></i> {{ $parent_item->title }}</a>
+            <ul class="nav-group-items">
+                @foreach($parent_item->child_item as $child_item)
+                @if(($child_item->key && file_exists(app_path('plugins/' . $child_item->key))) || !$child_item->key)
+                <li class="nav-item"><a class="nav-link" href="{{ route($child_item->url) }}"><span class="nav-icon"></span> {{ $child_item->title }}</a></li>
+                @endif
+                @endforeach
+            </ul>
+        </li>
+        @endforeach
         <li class="nav-title">System Config</li>
         @foreach($sidebar_item['system_config'] as $parent_item)
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
