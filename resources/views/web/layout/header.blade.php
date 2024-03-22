@@ -26,9 +26,9 @@
                     <a class="navbar-search" data-bs-toggle="collapse" href="#nav-search-toggle" role="button" aria-expanded="false" aria-controls="collapseExample">
                         <img src="{{asset('assets/web/assets/img/navigation/search-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    <a class="navbar-wishlist" href="{{route('cart.wishlist')}}" type="button">
-                        <img src="{{asset('assets/web/assets/img/navigation/wishlist-icon.png')}}" alt="Bootstrap" width="25" height="24">
-                    </a>
+                    @if(function_exists('salesOrderRenderView'))
+                    {{ salesOrderRenderView('header_wishlist') }}
+                    @endif
                     <a class="navbar-my-account-icon nav-acc-mobile" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
                         <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
