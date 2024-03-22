@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Repositories\UserRepository;
-use App\Http\Requests\Form\user\UserUpdateInfoRequest;
+use App\Http\Requests\Form\User\UserUpdateInfoRequest;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends BaseController

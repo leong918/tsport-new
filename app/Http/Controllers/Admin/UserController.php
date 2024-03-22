@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Form\user\CreateUserRequest;
-use App\Http\Requests\Form\user\UpdateUserRequest;
+use App\Http\Requests\Form\User\CreateUserRequest;
+use App\Http\Requests\Form\User\UpdateUserRequest;
 use App\Repositories\LevelRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
