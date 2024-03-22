@@ -30,7 +30,7 @@
                 <div class="carousel-item active"  data-bs-interval="2000">
                     <a href="{{ $slider->url }}" target="_blank">
                         <img src="{{ $slider->image }}" class="img-fluid carousel-image" />
-                        <div class="container carousel-caption">
+                        {{-- <div class="container carousel-caption">
                             <div class="caption-wrapper">
                                 <div class="carousel-heading">Relaxation & Radiance Mask</div><br>
                                 <div class="carousel-description">
@@ -42,7 +42,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </a>
                 </div>
                 @endforeach
