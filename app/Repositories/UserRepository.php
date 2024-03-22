@@ -113,4 +113,8 @@ class UserRepository extends BaseRepository
             'address'
         )->find($user_id)->toArray();
     }
+
+    public function calculateDiscountPoint($user_id)
+    {
+    }
 }

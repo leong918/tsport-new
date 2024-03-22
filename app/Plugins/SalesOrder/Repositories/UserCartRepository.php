@@ -4,6 +4,9 @@ namespace App\Plugins\SalesOrder\Repositories;
 
 use App\Plugins\SalesOrder\Models\UserCart;
 use App\Repositories\BaseRepository;
+use Illuminate\Container\Container;
+use App\Plugins\SalesOrder\Repositories\CartRuleRepository;
+use App\Repositories\UserRepository;
 
 class UserCartRepository extends BaseRepository
 {
@@ -94,7 +97,7 @@ class UserCartRepository extends BaseRepository
         }
     }
 
-    public function calculateUserCartTotal($cart_list)
+    public function calculateUserCartTotal($cart_list, $user_id)
     {
         $data = array();
         $data['subtotal'] = 0;
@@ -102,6 +105,13 @@ class UserCartRepository extends BaseRepository
         foreach ($cart_list as $cart) {
             $data['subtotal'] += $cart->product->getCurrencyParameters('HKD')->price * $cart->quantity;
         }
+
+        $cartRuleRepository = new CartRuleRepository(new Container());
+        $cart_rule_data = $cartRuleRepository->calculatePriorityRule($cart_list);
+        $data = array_merge($data, $cart_rule_data);
+
+        $userRepository = new UserRepository(new Container());
+        $cart_rule_data = $userRepository->calculateDiscountPoint($user_id);
 
         return $data;
     }

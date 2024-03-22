@@ -46,7 +46,7 @@ class CartController extends BaseController
     {
         $user_data = $this->getUserDataAndType();
         $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList, auth()->user()->id);
 
         return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal'));
     }
@@ -73,7 +73,7 @@ class CartController extends BaseController
         // refetch user cart total
         $user_data = $this->getUserDataAndType();
         $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList, auth()->user()->id);
 
         return $this->response(['subtotal' => number_format($subtotal, 2)], 'OK');
     }
@@ -126,7 +126,7 @@ class CartController extends BaseController
             // refetch user cart total
             $user_data = $this->getUserDataAndType();
             $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
-            $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList);
+            $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList, auth()->user()->id);
             $intentSecret = json_encode($this->createPaymentIntent());
             $address = $request->session()->get('cart-' . auth()->user()->id);
 
@@ -171,10 +171,14 @@ class CartController extends BaseController
             $data = $request->all();
             $data['user_id'] = auth()->user()->id;
             $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
-            $order = $this->salesOrderRepository->createOrder($data);
-            $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
-            $description = 'New Order';
-            $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
+            $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
+
+            if (!$order) {
+                $order = $this->salesOrderRepository->createOrder($data);
+                $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
+                $description = 'New Order';
+                $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
+            }
 
             DB::commit();
             return response()->json(['order' => $order], 200);

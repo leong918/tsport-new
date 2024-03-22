@@ -20,13 +20,22 @@ class SettingController extends BaseController
         $this->sliderRepository = $sliderRepository;
     }
 
-    public function index(Request $request)
+    public function homepageIndex(Request $request)
     {
         $productDropdown = $this->productRepository->dropdown();
         $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
         $slider_model = $this->sliderRepository->getListing()->get()->toArray();
 
-        return $this->view('setting.index', compact('productDropdown', 'setting_model', 'slider_model'));
+        return $this->view('setting.homepage_index', compact('productDropdown', 'setting_model', 'slider_model'));
+    }
+
+    public function globalIndex(Request $request)
+    {
+        $productDropdown = $this->productRepository->dropdown();
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+        $slider_model = $this->sliderRepository->getListing()->get()->toArray();
+
+        return $this->view('setting.global_index', compact('productDropdown', 'setting_model', 'slider_model'));
     }
 
     public function updateMainSlider(Request $request)
@@ -40,10 +49,8 @@ class SettingController extends BaseController
     {
         if ($request['sub_slider_title']) {
             $this->settingRepository->updateValueByKey('sub_slider_title', $request['sub_slider_title']);
-
         } else {
             $this->sliderRepository->updateSlider($request->all());
-
         }
 
         return redirect(route('admin.setting.index'))->with('success', "Successfully update sub slider");
@@ -87,5 +94,4 @@ class SettingController extends BaseController
 
         return $this->response();
     }
-
 }

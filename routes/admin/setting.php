@@ -4,7 +4,8 @@ use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['as' => 'setting.'], function () {
-    Route::get('setting/index', [SettingController::class, 'index'])->name('index');
+    Route::get('setting/homepage_index', [SettingController::class, 'homepageIndex'])->name('homepage_index');
+    Route::get('setting/global_index', [SettingController::class, 'globalIndex'])->name('global_index');
     Route::post('setting/updateMainSlider', [SettingController::class, 'updateMainSlider'])->name('updateMainSlider.post');
     Route::post('setting/updateSubSlider', [SettingController::class, 'updateSubSlider'])->name('updateSubSlider.post');
     Route::post('setting/updateSectionRight', [SettingController::class, 'updateSectionRight'])->name('updateSectionRight.post');

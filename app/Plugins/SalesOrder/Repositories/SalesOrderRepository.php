@@ -99,6 +99,7 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('user_id');
             $table->bigInteger('cart_rule_id')->nullable();
             $table->string('title');
+            $table->string('type')->nullable();
             $table->string('code');
             $table->decimal('value', 16, 2)->default(0);
             $table->string('text');
@@ -148,9 +149,12 @@ class SalesOrderRepository extends BaseRepository
 
     public function createOrder($data)
     {
-        $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
-        $id_generator->length(6);
-        $sales_order_id = $id_generator->generate();
+        $sales_order_id = null;
+        if ($data['payment_method'] === 'stripe') {
+            $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
+            $id_generator->length(6);
+            $sales_order_id = $id_generator->generate();
+        }
 
         $order = new SalesOrder();
         $order->fill($data['address']);
@@ -166,5 +170,10 @@ class SalesOrderRepository extends BaseRepository
     public function getSalesOrderId($sales_order_id)
     {
         return SalesOrder::where('sales_order_id', $sales_order_id)->first();
+    }
+
+    public function getOrderByPaymentIntentId($payment_intent_id)
+    {
+        return SalesOrder::where('stripe_payment_intent_id', $payment_intent_id)->first();
     }
 }

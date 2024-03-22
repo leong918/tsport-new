@@ -181,19 +181,18 @@
                     }
                 })
                 .then(response => {
-                    console.log(response.data);
                     if (response.data.order.payment_method === 'stripe') {
                         const { error } = stripe.confirmPayment({
                             elements,
                             confirmParams: {
-                                return_url: $(this).data('return-url'),
+                                return_url: $(this).data('return-url') + '?order_id=' + response.data.order.sales_order_id,
                             },
                         });
 
                         if (error.type === "card_error" || error.type === "validation_error") {
-                            showMessage(error.message);
+                            showSwal('error', 'Fail!', error.message);
                         } else {
-                            showMessage("An unexpected error occurred.");
+                            showSwal('error', 'Fail!', 'An unexpected error occurred.');
                         }
                     } else {
                         window.location.replace("{{ route('cart.complete') }}" + "?order_id=" + response.data.order.sales_order_id);
