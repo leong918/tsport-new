@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="my-3 float-end">
-                                <a href="{{ route("admin.category.index") }}" class="btn btn-warning">Cancel</a>
+                                <a href="{{ route("admin.brand.index") }}" class="btn btn-warning">Cancel</a>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>

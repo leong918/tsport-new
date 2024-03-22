@@ -52,7 +52,7 @@
     <!-- container promo -->
     <div class="promo">
         <div class="title-promo">
-            {{ $setting_list->where('key', 'sub_slider_title')->first()->value }}
+            {!! $setting_list->where('key', 'sub_slider_title')->first()->value !!}
         </div>
         <div class="swiper mySwiper-promo">
             <div class="swiper-wrapper">
@@ -120,7 +120,7 @@
             <div class="col-md-4">
                 <div class="oval" id="first-oval">
                     <div class="main-title">
-                        {{ $setting_list->where('key', 'section_right_title')->first()->value }}
+                        {!! $setting_list->where('key', 'section_right_title')->first()->value !!}
                     </div>
                 </div>
             </div>
@@ -129,7 +129,7 @@
             <div class="col-12 col-md-4">
                 <div class="oval" id="second-oval">
                     <div class="main-title">
-                        {{ $setting_list->where('key', 'section_left_title')->first()->value }}
+                        {!! $setting_list->where('key', 'section_left_title')->first()->value !!}
                     </div>
                 </div>
             </div>
@@ -189,7 +189,7 @@
     <div class="new-product">
         <div class="container">
             <div class="title-new">
-                {{ $setting_list->where('key', 'section_center_title')->first() ->value }}
+                {!! $setting_list->where('key', 'section_center_title')->first() ->value !!}
             </div>
         </div>
         <div class="swiper mySwiper-newproduct">
@@ -285,7 +285,7 @@
         <div class="recommend">
             <div class="container">
                 <div class="title-recommend">
-                    {{ $setting_list->where('key', 'recommended_title')->first() ->value }}
+                    {!! $setting_list->where('key', 'recommended_title')->first() ->value !!}
                 </div>
                 <div class="row row-cols-2 row-cols-lg-5 row-cols-md-4 row-cols-sm-3">
                     @php

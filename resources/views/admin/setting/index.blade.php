@@ -36,7 +36,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         {{ html()->label('URL') }}
-                                                        {{ html()->text('main_url')->id('main_url')->placeholder('Enter URL')->class('form-control')->required() }}
+                                                        {{ html()->text('main_url')->id('main_url')->placeholder('Enter URL')->class('form-control') }}
                                                         <input type="text" name="type" value="main" hidden>
                                                     </div>
                                                 </div>
@@ -105,7 +105,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         {{ html()->label('URL') }}
-                                                        {{ html()->text('sub_url')->id('sub_url')->placeholder('Enter URL')->class('form-control')->required() }}
+                                                        {{ html()->text('sub_url')->id('sub_url')->placeholder('Enter URL')->class('form-control') }}
                                                         <input type="text" name="type" value="sub" hidden>
                                                     </div>
                                                 </div>

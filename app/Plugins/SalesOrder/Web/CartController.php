@@ -5,6 +5,7 @@ namespace App\Plugins\SalesOrder\Web;
 use App\Plugins\SalesOrder\Repositories\UserCartRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\ProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
@@ -18,6 +19,7 @@ class CartController extends BaseController
     private UserCartRepository $userCartRepository;
     private CountryRepository $countryRepository;
     private UserRepository $userRepository;
+    private ProductRepository $productRepository;
     private SalesOrderRepository $salesOrderRepository;
     private SalesOrderProductRepository $salesOrderProductRepository;
     private SalesOrderLogRepository $salesOrderLogRepository;
@@ -26,6 +28,7 @@ class CartController extends BaseController
         UserCartRepository $userCartRepository,
         CountryRepository $countryRepository,
         UserRepository $userRepository,
+        ProductRepository $productRepository,
         SalesOrderRepository $salesOrderRepository,
         SalesOrderProductRepository $salesOrderProductRepository,
         SalesOrderLogRepository $salesOrderLogRepository
@@ -33,6 +36,7 @@ class CartController extends BaseController
         $this->userCartRepository = $userCartRepository;
         $this->countryRepository = $countryRepository;
         $this->userRepository = $userRepository;
+        $this->productRepository = $productRepository;
         $this->salesOrderRepository = $salesOrderRepository;
         $this->salesOrderProductRepository = $salesOrderProductRepository;
         $this->salesOrderLogRepository = $salesOrderLogRepository;
@@ -182,6 +186,7 @@ class CartController extends BaseController
 
     public function complete(Request $request)
     {
+        $product_list = $this->productRepository->getListing()->take(8)->get();
         $order_id = $request->order_id;
         $sales_order = $this->salesOrderRepository->getSalesOrderId($order_id);
 
@@ -189,7 +194,7 @@ class CartController extends BaseController
             return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
         }
 
-        return view('sales_order::web.cart.complete', compact('sales_order'));
+        return view('sales_order::web.cart.complete', compact('sales_order', 'product_list'));
     }
 
     private function getUserDataAndType()
