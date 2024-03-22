@@ -466,9 +466,13 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                     color: white;
                     width: 100%;
                     border: 1px solid #9A835E;
-                    padding: 10px;
+                    padding: 12px 0 8px 0;
                     font-size: 13px;
                     font-family: 'BanglaSangam-Regular';
+                    display: flex;
+                    text-decoration: none;
+                    align-items: center;
+                    justify-content: center;
                     &:hover{
                         background-color: white;
                         color: #9A835E;
@@ -480,10 +484,13 @@ body.modal-open:has(#shopping_cart) .modal-backdrop{
                     color: #9A835E;
                     border: 1px solid #9A835E;
                     width: 100%;
-                    padding: 10px;
+                    padding: 12px 0 8px 0;
                     font-size: 13px;
                     font-family: 'BanglaSangam-Regular';
-
+                    display: flex;
+                    text-decoration: none;
+                    align-items: center;
+                    justify-content: center;
                     &:hover{
                         background-color: #9A835E;
                         color: white;
