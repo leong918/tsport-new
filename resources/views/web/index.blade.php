@@ -52,9 +52,7 @@
     <!-- container promo -->
     <div class="promo">
         <div class="title-promo">
-            @foreach ($setting_list->where('key', 'sub_slider_title') as $setting)
-                {{ $setting->value }}
-            @endforeach
+            {{ $setting_list->where('key', 'sub_slider_title')->first()->value }}
         </div>
         <div class="swiper mySwiper-promo">
             <div class="swiper-wrapper">
@@ -73,9 +71,8 @@
             <div class="col-12 order-md-first order-last col-md-8">
                 <div class="swiper mySwiper-product">
                     <div class="swiper-wrapper">
-                        @foreach ($setting_list->where('key', 'product_right_select') as $setting)
                         @php
-                            $product_list = $productRepository->find(json_decode($setting->value));
+                            $product_list = $productRepository->find(json_decode($setting_list->where('key', 'product_right_select')->first()->value));
                         @endphp
                         @foreach ($product_list as $product)
                         <div class="swiper-slide product-img">
@@ -117,16 +114,13 @@
                             </div>
                         </div>
                         @endforeach
-                        @endforeach
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="oval" id="first-oval">
                     <div class="main-title">
-                        @foreach ($setting_list->where('key', 'section_right_title') as $setting)
-                            {{ $setting->value }}
-                        @endforeach
+                        {{ $setting_list->where('key', 'section_right_title')->first()->value }}
                     </div>
                 </div>
             </div>
@@ -135,18 +129,15 @@
             <div class="col-12 col-md-4">
                 <div class="oval" id="second-oval">
                     <div class="main-title">
-                        @foreach ($setting_list->where('key', 'section_left_title') as $setting)
-                            {{ $setting->value }}
-                        @endforeach
+                        {{ $setting_list->where('key', 'section_left_title')->first()->value }}
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-8">
                 <div class="swiper mySwiper-product">
                     <div class="swiper-wrapper">
-                        @foreach ($setting_list->where('key', 'product_left_select') as $setting)
                         @php
-                            $product_list = $productRepository->find(json_decode($setting->value));
+                            $product_list = $productRepository->find(json_decode($setting_list->where('key', 'product_left_select')->first()->value));
                         @endphp
                         @foreach ($product_list as $product)
                         <div class="swiper-slide product-img">
@@ -187,7 +178,6 @@
                                 </div>
                             </div>
                         </div>
-                        @endforeach
                         @endforeach
                     </div>
                 </div>
@@ -199,16 +189,13 @@
     <div class="new-product">
         <div class="container">
             <div class="title-new">
-                @foreach ($setting_list->where('key', 'section_center_title') as $setting)
-                    {{ $setting->value }}
-                @endforeach
+                {{ $setting_list->where('key', 'section_center_title')->first() ->value }}
             </div>
         </div>
         <div class="swiper mySwiper-newproduct">
             <div class="swiper-wrapper">
-                @foreach ($setting_list->where('key', 'product_center_select') as $setting)
                 @php
-                    $product_list = $productRepository->find(json_decode($setting->value));
+                    $product_list = $productRepository->find(json_decode($setting_list->where('key', 'product_center_select')->first()->value));
                 @endphp
                 @foreach ($product_list as $product)
                 <div class="swiper-slide new-launches-product-img">
@@ -249,7 +236,6 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
                 @endforeach
             </div>
         </div>
@@ -299,14 +285,11 @@
         <div class="recommend">
             <div class="container">
                 <div class="title-recommend">
-                    @foreach ($setting_list->where('key', 'recommended_title') as $setting)
-                        {{ $setting->value }}
-                    @endforeach
+                    {{ $setting_list->where('key', 'recommended_title')->first() ->value }}
                 </div>
                 <div class="row row-cols-2 row-cols-lg-5 row-cols-md-4 row-cols-sm-3">
-                    @foreach ($setting_list->where('key', 'product_recommended_select') as $setting)
                     @php
-                        $product_list = $productRepository->find(json_decode($setting->value))->take(10);
+                        $product_list = $productRepository->find(json_decode($setting_list->where('key', 'product_recommended_select')->first()->value))->take(10);
                     @endphp
                     @foreach ($product_list as $product)
                     <div class="recommend-product-container col recommend-product-img">
@@ -347,7 +330,6 @@
                             </div>
                         </div>
                     </div>
-                    @endforeach
                     @endforeach
                 </div>
                 <div class="more-button">
