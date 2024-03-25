@@ -7,6 +7,11 @@ use App\Repositories\BaseRepository;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Utils\IDGenerator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CustomerNoteMail;
+use Illuminate\Container\Container;
+use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
+use App\Repositories\CountryRepository;
 
 class SalesOrderRepository extends BaseRepository
 {
@@ -59,6 +64,7 @@ class SalesOrderRepository extends BaseRepository
             $table->decimal('total', 16, 2)->default(0);
             $table->integer('point')->default(0);
             $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('payment_status')->default(0);
             $table->string('first_name');
             $table->string('last_name');
             $table->string('company_name')->nullable();
@@ -69,6 +75,7 @@ class SalesOrderRepository extends BaseRepository
             $table->string('state');
             $table->string('city');
             $table->string('address');
+            $table->longText('customer_note')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -137,6 +144,70 @@ class SalesOrderRepository extends BaseRepository
     public function getListing()
     {
         return SalesOrder::query()->orderBy('created_at', 'desc');
+    }
+
+    public function updateSalesOrder(array $input, int $id)
+    {
+        $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
+        $sales_order = SalesOrder::find($id);
+        foreach($input as $key => $value)
+        {
+            $previousValue = $sales_order->$key;
+            if($key == 'shipping')
+            {
+                if($value > $previousValue)
+                {
+                    $sales_order->total += ($value - $previousValue);
+                }else{
+                    $sales_order->total -= ($previousValue - $value);
+                }
+
+            }
+
+            if($key == 'discount')
+            {
+                if($value > $previousValue)
+                {
+                    $sales_order->total -= ($value - $previousValue);
+                }else{
+                    $sales_order->total += ($previousValue - $value);
+                }
+
+            }
+
+            if($key == 'country_id')
+            {   
+                $countryRepository = new CountryRepository(new Container());
+                $country = $countryRepository->find($value);
+                $sales_order->country = $country->name; 
+            }
+
+            $sales_order->$key = $value;
+            $sales_order->save();
+
+            //For log purpose
+            if($key == 'status')
+            {
+                $previousValue = renderModelData(SalesOrder::ORDER_STATUS, $previousValue);
+                $value = renderModelData(SalesOrder::ORDER_STATUS, $value);
+            }
+
+            if($key == 'payment_method')
+            {
+                $previousValue = renderModelData(SalesOrder::PAYMENT_METHOD, $previousValue);
+                $value = renderModelData(SalesOrder::PAYMENT_METHOD, $value);
+            }
+
+            //after done create log
+            $admin_id = auth()->guard('admin')->user()->id;
+            $description = "Change ". $key ." from ". $previousValue ." to ". $value;
+            $salesOrderlogRepository->createLog($sales_order, $admin_id,'admin', 1, $description);
+            if($key == 'customer_note')
+            {
+                $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>".$value."</b>";
+                Mail::to($sales_order->user->email)->send(new CustomerNoteMail($description));
+            }
+        }
     }
 
     public function toggleStatus(int $id)

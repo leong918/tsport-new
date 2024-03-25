@@ -75,8 +75,8 @@
                     container: 'custom-register-swal'
                 },
                 didOpen: () => {
-                    $('.custom-close-button').click(function() {
-                        Swal.close();
+                    $('#custom-close-button').click(function() {
+                        swal.close();
                     });
                 }
             });
