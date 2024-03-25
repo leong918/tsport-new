@@ -129,7 +129,11 @@
     <script>
         $(document).ready(function() {
 
-            $('.datePicker').tempusDominus();
+            $('.datePicker').tempusDominus({
+                localization: {
+                    format: 'yyyy-MM-dd h:mm T'
+                }
+            });
 
             var editor_config = {
                 path_absolute: "{{ config('app.url') . '/' }}",
