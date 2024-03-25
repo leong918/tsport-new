@@ -166,7 +166,7 @@
             e.preventDefault();
 
             if (!$('#tnc').is(":checked")) {
-                showSwal('error', 'Fail!', 'Please tick the T&C checkbox to proceed!');
+                showSwal('Fail!', 'Please tick the T&C checkbox to proceed!');
             } else {
                 $(this).attr('disabled', true);
                 var payment_method = $('input[name="payment-method"]:checked').val();
@@ -190,9 +190,9 @@
                         });
 
                         if (error.type === "card_error" || error.type === "validation_error") {
-                            showSwal('error', 'Fail!', error.message);
+                            showSwal('Fail!', error.message);
                         } else {
-                            showSwal('error', 'Fail!', 'An unexpected error occurred.');
+                            showSwal('Fail!', 'An unexpected error occurred.');
                         }
                     } else {
                         window.location.replace("{{ route('cart.complete') }}" + "?order_id=" + response.data.order.sales_order_id);
@@ -203,7 +203,7 @@
                         window.location.reload();
                     } else {
                         $(this).attr('disabled', false);
-                        showSwal('error', 'Fail!', error.msg);
+                        showSwal('Fail!', error.msg);
                     }
                 });
             }

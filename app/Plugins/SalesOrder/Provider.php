@@ -13,12 +13,16 @@ if ($pluginRepository->getActivePlugin('SalesOrder')) {
     }
 
     if (!function_exists('updateUserOwnerCart')) {
-        function updateUserOwnerCart($user_id)
+        function updateUserOwnerCart($user_id, $coupon_session)
         {
             $userCartRepository = new \App\Plugins\SalesOrder\Repositories\UserCartRepository(new \Illuminate\Container\Container);
 
             $user_ip = getPublicIp();
             $userCartRepository->updateOwnerCartByIp($user_id, $user_ip);
+
+            if (count($coupon_session) > 0) {
+                session(['coupon-' . $user_id => $coupon_session]);
+            }
         }
     }
 }

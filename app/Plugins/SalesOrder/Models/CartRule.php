@@ -23,8 +23,8 @@ class CartRule extends Model
     ];
 
     public const TYPE = [
-        'Discount' => 0,
-        'Coupon' => 1,
+        'Discount' => 'discount',
+        'Coupon' => 'coupon',
     ];
 
     public const TARGET = [
@@ -35,8 +35,8 @@ class CartRule extends Model
     ];
 
     public const DISCOUNT_TYPE = [
-        'Deduct' => 1,
-        'Percentage' => 0,
+        'Deduct' => 'deduct',
+        'Percentage' => 'percentage',
     ];
 
     protected $table = 'cart_rule';
@@ -65,17 +65,14 @@ class CartRule extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     protected function createdAt(): Attribute
     {

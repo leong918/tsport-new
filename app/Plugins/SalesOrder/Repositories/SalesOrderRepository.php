@@ -127,9 +127,11 @@ class SalesOrderRepository extends BaseRepository
             $table->id();
             $table->bigInteger('user_id')->nullable();
             $table->bigInteger('product_id');
-            $table->bigInteger('product_attribute_term_id')->nullable();
+            $table->string('product_attribute_term')->nullable();
             $table->string('user_ip');
+            $table->decimal('price', 16, 2)->default(0);
             $table->integer('quantity');
+            $table->decimal('total_price', 16, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

@@ -30,7 +30,7 @@ $(function() {
             });
         })
         .catch(error => {
-            showSwal('error', 'Fail!', error.response.data.msg);
+            showSwal('Fail!', error.response.data.msg);
         });
     })
 });

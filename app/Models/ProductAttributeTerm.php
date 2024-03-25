@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductAttributeTerm extends Model
 {
@@ -62,5 +63,15 @@ class ProductAttributeTerm extends Model
     public function productAttribute(): BelongsTo
     {
         return $this->belongsTo(ProductAttribute::class);
+    }
+
+    public function productPrice(): HasMany
+    {
+        return $this->hasMany(ProductPrice::class);
+    }
+
+    public function getCurrencyParameters(string $currency)
+    {
+        return $this->productPrice->where('code', $currency)->first();
     }
 }

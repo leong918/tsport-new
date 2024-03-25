@@ -24,6 +24,7 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
+                                            <th>Priority</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
@@ -58,6 +59,10 @@
                         {
                             data: 'name',
                             name: 'name'
+                        },
+                        {
+                            data: 'priority',
+                            name: 'priority'
                         },
                         {
                             data: 'status',

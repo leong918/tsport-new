@@ -116,5 +116,8 @@ class UserRepository extends BaseRepository
 
     public function calculateDiscountPoint($user_id)
     {
+        if ($user_id) {
+            $user = User::find($user_id);
+        }
     }
 }
