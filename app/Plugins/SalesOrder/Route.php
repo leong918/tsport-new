@@ -2,6 +2,7 @@
 
 use App\Plugins\SalesOrder\Web\CartController;
 use App\Plugins\SalesOrder\Admin\SalesOrderController;
+use App\Plugins\SalesOrder\Admin\CartRuleController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['web']], function () {
@@ -28,5 +29,16 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('sales_order/index', [SalesOrderController::class, 'index'])->name('index');
         Route::delete('sales_order/delete/{id}', [SalesOrderController::class, 'destroy'])->name('destroy.delete');
         Route::post('sales_order/status/{id}', [SalesOrderController::class, 'toggleStatus'])->name('status.post');
+    });
+
+    Route::group(['as' => 'admin.cart_rule.', 'prefix' => 'admin'], function () {
+        Route::get('cart_rule/index', [CartRuleController::class, 'index'])->name('index');
+        Route::get('cart_rule/create', [CartRuleController::class, 'create'])->name('create');
+        Route::post('cart_rule/create', [CartRuleController::class, 'store'])->name('create.post');
+        Route::get('cart_rule/update/{id}', [CartRuleController::class, 'edit'])->name('update');
+        Route::put('cart_rule/update/{id}', [CartRuleController::class, 'update'])->name('update.put');
+        Route::delete('cart_rule/delete/{id}', [CartRuleController::class, 'destroy'])->name('destroy.delete');
+        Route::post('cart_rule/status/{id}', [CartRuleController::class, 'toggleStatus'])->name('status.post');
+    
     });
 });
