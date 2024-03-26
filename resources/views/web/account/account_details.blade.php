@@ -87,8 +87,8 @@
                         <div class="button-wrapper">
                             <button type="submit" class="login-button">SAVE CHANGE</button>
                         </div>
+                        {{ html()->form()->close() }}
                     </div>
-                    {{ html()->form()->close() }}
                 </div>
             </div>
         </div>

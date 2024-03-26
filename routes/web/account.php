@@ -10,4 +10,5 @@ Route::group(['namespace' => 'account'], function () {
     Route::get('account/order_detail', [AccountController::class, 'accountOrderDetail'])->name('account.order_detail');
     Route::get('account/point', [AccountController::class, 'accountPoints'])->name('account.point');
     Route::put('account/update/{id}', [AccountController::class, 'doUpdateUserAccount'])->name('account.updateUser');
+    Route::put('account/update_address/{id}', [AccountController::class, 'doUpdateUserAddress'])->name('account.updateAddress');
 });
