@@ -36,6 +36,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
     <script src="{{asset('assets/web/js/cart.js')}}"></script>
     <script type="text/javascript">
     $('.navbar-search').on('click', function(){
@@ -61,7 +62,6 @@
         $('#header').removeClass('active');
         $('#sub-pages-overlay').removeClass('active');
         $('body').removeClass('active');
-        
     })
     
     function showSwal(title = "", text = ""){ 

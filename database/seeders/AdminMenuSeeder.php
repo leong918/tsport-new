@@ -78,6 +78,15 @@ class AdminMenuSeeder extends Seeder
                 'status' => 1
             ],
             [
+                'parent_id' => null,
+                'title' => 'Country',
+                'icon' => 'fa-solid fa-globe',
+                'url' => null,
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
                 'parent_id' => 1,
                 'title' => 'Admin List',
                 'icon' => null,
@@ -182,6 +191,15 @@ class AdminMenuSeeder extends Seeder
                 'icon' => null,
                 'url' => 'admin.cart_rule.index',
                 'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 8,
+                'title' => 'Country List',
+                'icon' => null,
+                'url' => 'admin.country.index',
+                'type' => 'system_config',
                 'sort' => 1,
                 'status' => 1
             ],

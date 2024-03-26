@@ -57,71 +57,7 @@
                         <div class="mt-5 mt-lg-0 col-md-12 col-lg-4">
                             <div class="order-summary">
                                 <div class="order-summary-title">Order Summary</div>
-                                <div class="subtotal">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Subtotal</div>
-                                        <div class="data-label">
-                                            <div class="price">$980</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="discount">
-                                    <div class="label">Discount</div>
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="inner-label">Member discount</div>
-                                        <div class="data-label">
-                                            <div class="price">-$49</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon">
-                                    <div class="label">Coupon</div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex justify-content-between data-content-wrapper">
-                                            <div class="inner-label">IOTH-JM-VO-D12</div>
-                                            <div class="data-label">
-                                                <div class="price">-$98</div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-remove-wrapper"><button class="remove-button">remove</button></div>
-                                    </div>
-                                </div>
-                                <div class="point-redemption">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex justify-content-between data-content-wrapper">
-                                            <div class="label">Point redemption</div>
-                                            <div class="data-label">
-                                                <div class="price">$10</div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-remove-wrapper"><button class="remove-button">remove</button></div>
-                                    </div>
-                                </div>
-                                <div class="shipping-fee">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Shipping Fee</div>
-                                        <div class="data-label">
-                                            <div class="price">SF EXPRESS : $30</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="shipping-fee-inner">
-                                    <div class="data-content-wrapper">
-                                        <div class="inner-label">Shipping To:</div>
-                                        <div class="inner-label">
-                                            {{ $address['address'].', '.$address['postcode'].', '.$address['city'].', '.$address['state'].', '.$address['country'] }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr/>
-                                <div class="total">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Total</div>
-                                        <div class="data-label">
-                                            <div class="price">$853</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('sales_order::web.cart.total')
                                 <div class="payment">
                                     <button id="payment-button" data-return-url="{{ route('cart.complete') }}">Complete Payment</button>
                                 </div>

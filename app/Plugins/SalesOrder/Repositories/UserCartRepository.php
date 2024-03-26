@@ -130,10 +130,12 @@ class UserCartRepository extends BaseRepository
         }
     }
 
-    public function calculateUserCartTotal($cart_list, $coupon_session, $user_id)
+    public function calculateUserCartTotal($user_data, $coupon_session, $user_id, $address = null)
     {
         $data = array();
         $data['subtotal'] = 0;
+        $data['shipping_fee'] = 0;
+        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
 
         foreach ($cart_list as $cart) {
             $data['subtotal'] += $cart->product->getCurrencyParameters('HKD')->price * $cart->quantity;
@@ -146,6 +148,7 @@ class UserCartRepository extends BaseRepository
         $userRepository = new UserRepository(new Container());
         $data['point_redemption'] = $userRepository->calculateDiscountPoint($user_id);
 
+        $data['total'] = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'];
         return $data;
     }
 

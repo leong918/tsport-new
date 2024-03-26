@@ -89,29 +89,40 @@ class CartRuleRepository extends BaseRepository
             })
             ->orderBy('priority', 'desc')->orderBy('created_at', 'desc')->get();
 
+        $total_discount_amount = 0;
         foreach ($cart_rules as $cart_rule) {
+            $discount_amount = 0;
+
             if ($cart_rule->target_table !== 'whole') {
+                $cart = $cart->where($cart_rule->target_table . '_id', $cart_rule->table_id);
+            }
+
+            foreach ($cart as &$type_cart) {
                 if ($cart_rule->discount_type == 'percentage') {
-                    $total_type_cart = $cart->where($cart_rule->target_table . '_id', $cart_rule->table_id)->sum('total_price');
-                    $discount_amount = $total_type_cart > 0 ? $total_type_cart * $cart_rule->value / 100 : 0;
+                    $single_discount = $type_cart->price * $cart_rule->value / 100;
                 } else {
-                    $count_type_cart = $cart->where($cart_rule->target_table . '_id', $cart_rule->table_id)->sum('quantity');
-                    $discount_amount = $count_type_cart > 0 ? $count_type_cart * $cart_rule->value : 0;
+                    $single_discount = $cart_rule->value;
                 }
-            } else {
-                if ($cart_rule->discount_type == 'percentage') {
-                    $total_type_cart = $cart->sum('total_price');
-                    $discount_amount = $total_type_cart > 0 ? $total_type_cart * $cart_rule->value / 100 : 0;
-                } else {
-                    $count_type_cart = $cart->sum('quantity');
-                    $discount_amount = $count_type_cart > 0 ? $count_type_cart * $cart_rule->value : 0;
-                }
+
+                $type_cart->price -= round($single_discount, 2);
+                $discount_amount += $single_discount * $type_cart->quantity;
             }
 
             if ($discount_amount > 0) {
-                $cart_rule_array['discount'][$cart_rule->id]['name'] = $cart_rule->name;
-                $cart_rule_array['discount'][$cart_rule->id]['discount_amount'] = $discount_amount;
+                $cart_rule_array[$cart_rule->type][$cart_rule->id]['id'] = $cart_rule->id;
+                $cart_rule_array[$cart_rule->type][$cart_rule->id]['name'] = $cart_rule->type == 'coupon' ? $cart_rule->coupon_code : $cart_rule->name;
+                $cart_rule_array[$cart_rule->type][$cart_rule->id]['discount_amount'] = $discount_amount;
+
+                $total_discount_amount += $discount_amount;
             }
+        }
+
+        $cart_rule_array['total_discount_amount'] = $total_discount_amount;
+        if (isset($cart_rule_array['discount'])) {
+            sort($cart_rule_array['discount']);
+        }
+        if (isset($cart_rule_array['coupon'])) {
+            sort($cart_rule_array['coupon']);
         }
 
         return $cart_rule_array;

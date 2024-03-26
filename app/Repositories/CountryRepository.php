@@ -33,4 +33,25 @@ class CountryRepository extends BaseRepository
     {
         return Country::where('status', 1)->orderBy('name')->get();
     }
+
+    public function createCountry(array $input)
+    {
+        $model = new Country();
+        $model->fill($input);
+        $model->save();
+    }
+
+    public function updateCountry(array $input, int $id)
+    {
+        $model = Country::findOrFail($id);
+        $model->fill($input);
+        $model->save();
+    }
+
+    public function toggleStatus(int $id)
+    {
+        $model = Country::find($id);
+        $model->status = !$model->status;
+        $model->save();
+    }
 }

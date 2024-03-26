@@ -27,5 +27,6 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
         require_once 'verification.php';
         require_once 'setting.php';
         require_once 'top_bar.php';
+        require_once 'country.php';
     });
 });

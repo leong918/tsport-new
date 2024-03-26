@@ -52,6 +52,7 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('country_id');
             $table->string('sales_order_id');
             $table->string('payment_method');
+            $table->string('shipping_method');
             $table->string('stripe_payment_intent_id')->nullable();
             $table->decimal('subtotal', 16, 2)->default(0);
             $table->decimal('shipping', 16, 2)->default(0);
@@ -59,6 +60,7 @@ class SalesOrderRepository extends BaseRepository
             $table->decimal('total', 16, 2)->default(0);
             $table->integer('point')->default(0);
             $table->tinyInteger('status')->default(0);
+            $table->tinyInteger('shipping_fee_status')->default(0);
             $table->string('first_name');
             $table->string('last_name');
             $table->string('company_name')->nullable();

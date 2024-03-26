@@ -51,7 +51,7 @@ class CartController extends BaseController
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
         $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList, $coupon_session, auth()->user() ? auth()->user()->id : null);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null);
 
         return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal'));
     }
@@ -77,11 +77,10 @@ class CartController extends BaseController
 
         // refetch user cart total
         $user_data = $this->getUserDataAndType();
-        $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList, $coupon_session, auth()->user()->id);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id);
 
-        return $this->response(['subtotal' => number_format($subtotal, 2)], 'OK');
+        return $this->response(['subtotal' => number_format($subtotal, 2), 'cartTotal' => $cartTotal], 'OK');
     }
 
     public function applyCoupon(Request $request)
@@ -96,10 +95,25 @@ class CartController extends BaseController
         array_push($coupon_session, $coupon->id);
         session(['coupon-' . $user_data['user_data'] => $coupon_session]);
 
-        $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList, $coupon_session, auth()->user()->id);
-        return $this->response([], 'OK');
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id);
+        return $this->response(['cartTotal' => $cartTotal], 'OK');
+    }
+
+    public function removeCoupon(Request $request)
+    {
+        $coupon_id = $request->coupon_id;
+        $user_data = $this->getUserDataAndType();
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+
+        if (($key = array_search($coupon_id, $coupon_session)) !== false) {
+            unset($coupon_session[$key]);
+        }
+        session(['coupon-' . $user_data['user_data'] => $coupon_session]);
+
+        $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? null;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+        return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
     public function wishlist()
@@ -122,7 +136,9 @@ class CartController extends BaseController
         }
 
         $countryList = $this->countryRepository->getListing();
-        return view('sales_order::web.cart.checkout', compact('countryList', 'addressData'));
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+        return view('sales_order::web.cart.checkout', compact('countryList', 'addressData', 'cartTotal'));
     }
 
     public function processCheckout(Request $request)
@@ -149,13 +165,13 @@ class CartController extends BaseController
         try {
             // refetch user cart total
             $user_data = $this->getUserDataAndType();
+            $addressData = $request->session()->get('cart-' . auth()->user()->id);
             $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
             $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-            $cartTotal = $this->userCartRepository->calculateUserCartTotal($cartList, $coupon_session, auth()->user()->id);
+            $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
             $intentSecret = json_encode($this->createPaymentIntent());
-            $address = $request->session()->get('cart-' . auth()->user()->id);
 
-            return view('sales_order::web.cart.payment', compact('address', 'intentSecret', 'cartTotal'));
+            return view('sales_order::web.cart.payment', compact('addressData', 'intentSecret', 'cartTotal'));
         } catch (\Exception $e) {
             return redirect()->route('cart.checkout')->with('swal_error', $e->getMessage());
         }
