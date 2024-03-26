@@ -58,6 +58,8 @@ class ProductAttributeRepository extends BaseRepository
             $model = new ProductAttribute();
             $model->product_id = $product_id;
             $model->name = $data['attribute_name'];
+            $model->status = isset($data['attribute_status']) ? 1 : 0;
+            $model->is_variation = isset($data['is_variation']) ? 1 : 0;
             $model->save();
 
             $productAttributeTerm = new ProductAttributeTermRepository(new Container());

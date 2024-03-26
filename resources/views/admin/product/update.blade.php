@@ -101,6 +101,16 @@
                                                                             </li>
                                                                         @endforeach
                                                                     </ul>
+                                                                    <div class="card-footer">
+                                                                        <div class="d-flex align-items-center mb-2">
+                                                                            <input type="checkbox" data-checkbox="{{ $attribute->status }}" name="option[{{ $attribute_key }}][attribute_status]">
+                                                                            <span class="ms-2">Visible on product page</span>
+                                                                        </div>
+                                                                        <div class="d-flex align-items-center">
+                                                                            <input type="checkbox" data-checkbox="{{ $attribute->is_variation }}" name="option[{{ $attribute_key }}][is_variation]">
+                                                                            <span class="ms-2">Used for variations</span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         @endforeach
@@ -217,6 +227,16 @@
                     </div>
                 </li>
             </ul>
+            <div class="card-footer">
+                <div class="d-flex align-items-center mb-2">
+                    <input type="checkbox" name="option[@{{id}}][attribute_status]">
+                    <span class="ms-2">Visible on product page</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input type="checkbox" name="option[@{{id}}][is_variation]">
+                    <span class="ms-2">Used for variations</span>
+                </div>
+            </div>
         </div>
     </div>
 </script>

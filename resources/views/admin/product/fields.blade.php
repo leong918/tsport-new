@@ -196,6 +196,15 @@
         });
 
 
+        //---------------- on render checkbox -----------------
+        $('input[type="checkbox"][data-checkbox]').each(function() {
+            var checkboxValue = $(this).data('checkbox');
+
+            if (checkboxValue == 1) {
+                $(this).prop('checked', true);
+            }
+        });
+
         //----- stock update submmission ------------
         $('#stock').submit(function(e) {
             e.preventDefault();
@@ -341,6 +350,7 @@
         var additionalTermOption = 0;
         var attributeCount = 1;
         var attributeCountOnRender = $('.optionContent').length;
+        // var termCountOnRender = $('.termWrapper').length;
 
         if (attributeCountOnRender > 1) {
             $('.optionContent:not(:first-child)').addClass('mt-3');
@@ -369,6 +379,9 @@
             });
             $(this).parents('.optionContent').find('.list-group').append(rendered);
             additionalTermOption++;
+
+            // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender);
+
         })
 
         $('#addOptionBtn').on('click', function() {
@@ -380,7 +393,12 @@
             $('#optionContent').append(rendered);
             attributeCount++;
             additionalTermOption++;
+
+            // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender);
         })
+
+        // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender, termCountOnRender);
+
 
         $("#product").submit(function(e) {
             e.preventDefault();

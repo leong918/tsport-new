@@ -26,7 +26,8 @@
                                                 <div class="row" id="optionContent">
                                                     <div class="col-sm-12 optionContent" data-option-id="1">
                                                         <div class="card">
-                                                            <div class="card-header bg-light d-flex justify-content-between">
+                                                            <div
+                                                                class="card-header bg-light d-flex justify-content-between">
                                                                 <div class="front d-flex">
                                                                     <div class="input-group" style="width: 100%">
                                                                         <input type="text" class="form-control"
@@ -72,6 +73,16 @@
                                                                     </div>
                                                                 </li>
                                                             </ul>
+                                                            <div class="card-footer">
+                                                                <div class="d-flex align-items-center mb-2">
+                                                                    <input id="attributeStatus" type="checkbox" name="option[1][attribute_status]">
+                                                                    <span class="ms-2">Visible on product page</span>
+                                                                </div>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input id="is_variation" type="checkbox" name="option[1][is_variation]">
+                                                                    <span class="ms-2">Used for variations</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -136,6 +147,16 @@
                     </div>
                 </li>
             </ul>
+            <div class="card-footer">
+                <div class="d-flex align-items-center mb-2">
+                    <input type="checkbox" name="option[@{{id}}][attribute_status]">
+                    <span class="ms-2">Visible on product page</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input type="checkbox" name="option[@{{id}}][is_variation]">
+                    <span class="ms-2">Used for variations</span>
+                </div>
+            </div>
         </div>
     </div>
 </script>
