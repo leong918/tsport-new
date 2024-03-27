@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-between product-action-wrapper">
-                        <div class="product-price d-flex flex-column justify-content-center">
+                        <div class="product-price d-flex flex-column justify-content-center" data-default-price="{{ $product->price }}">
                             ${{ $product->price }}
                         </div>
                     </div>
@@ -50,11 +50,10 @@
                         @if (isset($product_attribute_list))
                         @foreach ($product_attribute_list as $product_attribute)
                         <div class="input-container mt-4 me-3">
-                            {{ html()->hidden($product_attribute->id)->value('')->required() }}
-                            {{ html()->text($product_attribute->name)->class('attribute-input')->value('')->required()->isReadonly() }}
+                            <input type="text" id="{{ $product_attribute->name }}" name="{{ $product_attribute->name }}" class="attribute-input" data-selected-price="0" value="" required readonly>
                             <ul id="{{ $product_attribute->name }}-dropdown" class="attribute-dropdown">
                                 @foreach ($product_attribute->productAttributeTerm()->get() as $term)
-                                    <li data-value="{{ $term->id }}">{{ $term->name }}</li>
+                                    <li data-value="{{ $term->id }}" data-add-on-price="{{ $term->getCurrencyParameters('HKD')->price }}">{{ $term->name }}</li>
                                 @endforeach
                             </ul>
                             <label class="placeholder-label">
@@ -208,19 +207,31 @@
         });
 
         $(document).ready(function() {
+
+            //-------- product attribute -----------------------
             $('.attribute-input').focus(function() {
                 var attribute = $(this).attr('id');
                 var dropdown = attribute + '-dropdown';
                 $('#' + dropdown).addClass('visible');
             });
 
-            $('.attribute-dropdown li').click(function() {
+
+            $('.attribute-dropdown li').on('click', function() {
+                var default_price = parseFloat($('.product-price').data('default-price'));
                 var attribute = $(this).closest('.input-container').find('.attribute-input').attr('id');
                 var dropdown = attribute + '-dropdown';
-                $('#' + attribute).val($(this).text());
-                $('#country_id').val($(this).data('value'));
+                var add_on_price = $(this).data('add-on-price')
+
+                $('#' + attribute).val($(this).text()).data('selected-price', add_on_price);
                 $('#' + dropdown).removeClass('visible');
                 $('#' + attribute).trigger('paste');
+
+                $('.attribute-input').each(function() {
+                    var selected_price = parseFloat($(this).data('selected-price'));
+                    default_price += selected_price;
+                });
+                
+                $('.product-price').text('$' + default_price);
             });
 
             $('.attribute-input').on('blur', function() {
@@ -233,6 +244,7 @@
                 }, 100);
             });
 
+            //------------------ review star -----------------------
             var selectReviewStar = 0;
 
             $('body').on('click', '.review-star-control', function() {

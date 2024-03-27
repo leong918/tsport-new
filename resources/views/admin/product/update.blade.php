@@ -69,6 +69,15 @@
                                                                                                         name="option[{{ $attribute_key }}][variation][{{ $key }}][term_sku]"
                                                                                                         value="{{ $term->sku }}">
                                                                                                 </div>
+                                                                                                <div class="m-2 ms-0">
+                                                                                                    <label for="">Add On Price</label>
+                                                                                                    <input type="number"
+                                                                                                        class="form-control" required
+                                                                                                        min="0.01"
+                                                                                                        step="0.01"
+                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][term_add_on_price]"
+                                                                                                        value="{{ $term->getCurrencyParameters('HKD')->price }}">
+                                                                                                </div>
                                                                                             </div>
                                                                                             
                                                                                             <div class="col-md-5 col-5">
@@ -218,9 +227,16 @@
                                 <div class="m-2 ms-0">
                                     <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
                                 </div>
-            
                                 <div class="m-2 ms-0">
                                     <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
+                                </div>
+                                <div class="m-2 ms-0">
+                                    <input type="number"
+                                        class="form-control" required
+                                        min="0.01"
+                                        step="0.01"
+                                        placeholder="{{ __('Add On Price') }}"
+                                        name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
                                 </div>
                             </div>
                         </div>
@@ -253,9 +269,16 @@
                         <div class="m-2 ms-0">
                             <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
                         </div>
-    
                         <div class="m-2 ms-0">
                             <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
+                        </div>
+                        <div class="m-2 ms-0">
+                            <input type="number"
+                                class="form-control" required
+                                min="0.01"
+                                step="0.01"
+                                placeholder="{{ __('Add On Price') }}"
+                                name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
                         </div>
                     </div>
                 </div>

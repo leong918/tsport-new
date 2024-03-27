@@ -57,7 +57,7 @@ class ProductRepository extends BaseRepository
     public function getProductByAlias(string $alias, string $currency_code)
     {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-            ->where(['product.alias' => $alias, 'product_price.code' => $currency_code])
+            ->where(['product.alias' => $alias, 'product_price.code' => $currency_code, 'product_price.product_attribute_term_id' => null])
             ->orderBy('product.created_at', 'desc')
             ->selectRaw('product.*,product_price.code, product_price.price')
             ->with('category')

@@ -46,7 +46,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Price') }}    
-                        {{ html()->number('product_price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->first()->price : null )->required() }}
+                        {{ html()->number('product_price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->where('product_attribute_term_id', null)->first()->price : null )->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -350,7 +350,10 @@
         var additionalTermOption = 0;
         var attributeCount = 1;
         var attributeCountOnRender = $('.optionContent').length;
-        // var termCountOnRender = $('.termWrapper').length;
+
+        var optionContent = $('.optionContent').data('option-id');
+        var termWrappers = $('.optionContent[data-option-id="' + optionContent + '"]').find('.termWrapper');
+        var termCountOnRender = termWrappers.length;
 
         if (attributeCountOnRender > 1) {
             $('.optionContent:not(:first-child)').addClass('mt-3');
@@ -371,28 +374,53 @@
         })
 
         $('body').on('click', '.btn-addOption', function() {
-            var option_id = $(this).parents('.optionContent').data('option-id');
             var template = document.getElementById('optionVariationLayout').innerHTML;
+
+            var optionContent = $(this).closest('.optionContent');
+            var option_id = optionContent.data('option-id');
+            var termWrappers = optionContent.find('.termWrapper');
+            var termCountOnRender = termWrappers.length;
+
+            @if (isset($model))
+            var rendered = Mustache.render(template, {
+                id: option_id,
+                variation_id: termCountOnRender,
+            });
+            $(this).parents('.optionContent').find('.list-group').append(rendered);
+            termCountOnRender++;
+            
+            @else
             var rendered = Mustache.render(template, {
                 id: option_id,
                 variation_id: additionalTermOption,
             });
             $(this).parents('.optionContent').find('.list-group').append(rendered);
             additionalTermOption++;
-
-            // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender);
-
+            @endif
         })
 
         $('#addOptionBtn').on('click', function() {
             var template = document.getElementById('moreOptionLayout').innerHTML;
+            @if (isset($model))
+            var rendered = Mustache.render(template, {
+                id: attributeCountOnRender,
+                variation_id: additionalTermOption,
+            });
+            
+            $('#optionContent').append(rendered);
+            attributeCountOnRender++;
+            additionalTermOption++;
+
+            @else
             var rendered = Mustache.render(template, {
                 id: attributeCount,
                 variation_id: additionalTermOption,
             });
+
             $('#optionContent').append(rendered);
             attributeCount++;
             additionalTermOption++;
+            @endif
 
             // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender);
         })
