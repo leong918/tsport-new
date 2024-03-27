@@ -9,6 +9,7 @@ use App\Plugins\SalesOrder\Repositories\CartRuleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductAttributeTermRepository;
+use App\Repositories\CountryRepository;
 
 class UserCartRepository extends BaseRepository
 {
@@ -148,7 +149,14 @@ class UserCartRepository extends BaseRepository
         $userRepository = new UserRepository(new Container());
         $data['point_redemption'] = $userRepository->calculateDiscountPoint($user_id);
 
-        $data['total'] = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'];
+        $total_price = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'];
+        if ($address) {
+            $countryRepository = new CountryRepository(new Container());
+            $shipping_data = $countryRepository->calculateShippingFee($total_price, $address['country_id']);
+            $data = array_merge($data, $shipping_data);
+        }
+
+        $data['total'] = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'] + $data['shipping_fee'];
         return $data;
     }
 

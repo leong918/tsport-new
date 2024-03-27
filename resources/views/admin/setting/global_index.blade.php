@@ -19,6 +19,10 @@
                                     {{ html()->label('Point Earn') }}
                                     {{ html()->text('point_earn')->placeholder('Enter Point Earn')->class('form-control') }}
                                 </div>
+                                <div class="mb-3">
+                                    {{ html()->label('Point Redemption Ratio (1 Point : $ XX)') }}
+                                    {{ html()->text('point_redemption_ratio')->placeholder('Enter Point Redemption Ratio')->class('form-control') }}
+                                </div>
                             </div>
                             <div class="card-footer text-end">
                                 <button type="submit" class="btn btn-primary">Submit</button>

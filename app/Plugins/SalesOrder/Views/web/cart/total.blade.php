@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="btn-remove-wrapper">
-                    <button class="remove-coupon-button" data-id="{{ $coupon['id'] }}">remove</button>
+                    <button type="button" class="remove-coupon-button" data-id="{{ $coupon['id'] }}">remove</button>
                 </div>
             </div>
             @endforeach
@@ -57,7 +57,7 @@
         <div class="d-flex justify-content-between data-content-wrapper">
             <div class="label">Shipping Fee</div>
             <div class="data-label">
-                <div class="price">SF EXPRESS : $30</div>
+                <div class="price shipping-price">{{ $cartTotal['delivery_partner'] }} : ${{ number_format($cartTotal['shipping_fee'], 2) }}</div>
             </div>
         </div>
     </div>
@@ -104,45 +104,6 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
-        function updateColumnValue(array) {
-            $('.subtotal-price').html('$' + array.subtotal.toFixed(2));
-            $('.point-price').html('$' + array.point_redemption.toFixed(2));
-            $('.order-total-price').html('$' + array.total.toFixed(2));
-
-            if (Array.isArray(array.discount) && array.discount.length > 0) {
-                $('#discount').removeClass('d-none');
-                $('.discount-content-wrapper').html('');
-                $.each(array.discount, function (key, value) {
-                    var template = document.getElementById('discountLayout').innerHTML;
-                    var rendered = Mustache.render(template, {
-                        name: value.name,
-                        price: value.discount_amount.toFixed(2),
-                    });
-                    $('.discount-content-wrapper').append(rendered);
-                });
-            } else {
-                $('#discount').addClass('d-none');
-                $('.discount-content-wrapper').html('');
-            }
-
-            if (Array.isArray(array.coupon) && array.coupon.length > 0) {
-                $('#coupon').removeClass('d-none');
-                $('.coupon-content-wrapper').html('');
-                $.each(array.coupon, function (key, value) {
-                    var template = document.getElementById('couponLayout').innerHTML;
-                    var rendered = Mustache.render(template, {
-                        id: value.id,
-                        name: value.name,
-                        price: value.discount_amount.toFixed(2),
-                    });
-                    $('.coupon-content-wrapper').append(rendered);
-                });
-            } else {
-                $('#coupon').addClass('d-none');
-                $('.coupon-content-wrapper').html('');
-            }
-        }
-
         $(document).on('click', '.remove-coupon-button', function() {
             var id = $(this).data('id');
 

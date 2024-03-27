@@ -52,7 +52,8 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('country_id');
             $table->string('sales_order_id');
             $table->string('payment_method');
-            $table->string('shipping_method');
+            $table->string('delivery_partner');
+            $table->string('tracking_number')->nullable();
             $table->string('stripe_payment_intent_id')->nullable();
             $table->decimal('subtotal', 16, 2)->default(0);
             $table->decimal('shipping', 16, 2)->default(0);
@@ -71,6 +72,8 @@ class SalesOrderRepository extends BaseRepository
             $table->string('state');
             $table->string('city');
             $table->string('address');
+            $table->tinyInteger('is_free_shipping')->default(0);
+            $table->tinyInteger('is_pay_later')->default(0);
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

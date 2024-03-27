@@ -141,6 +141,17 @@ class CartController extends BaseController
         return view('sales_order::web.cart.checkout', compact('countryList', 'addressData', 'cartTotal'));
     }
 
+    public function updateAddress(Request $request)
+    {
+        $data = $request->all();
+        session(['cart-' . auth()->user()->id => $data['data']]);
+
+        $user_data = $this->getUserDataAndType();
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $data['data']);
+        return $this->response(['cartTotal' => $cartTotal], 'OK');
+    }
+
     public function processCheckout(Request $request)
     {
         $data = $request->all();

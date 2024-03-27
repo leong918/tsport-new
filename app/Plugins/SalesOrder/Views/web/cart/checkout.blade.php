@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="checkout-wrapper">
                 <div class="checkout-title">Checkout</div>
-                {{ html()->form('POST', route("cart.process_checkout"))->open()}}
+                {{ html()->form('POST', route("cart.process_checkout"))->id('checkoutForm')->open()}}
                     <div class="row justify-content-center checkout-content">
                         <div class="col-md-12 col-lg-8 checkout-details">
                             <div class="shipping-details-wrapper">
@@ -117,7 +117,6 @@ $(document).ready(function() {
     });
 
     $("#country-dropdown li").click(function() {
-        console.log($(this).text());
         $('#country').val($(this).text());
         $('#country_id').val($(this).data('value'));
         $('#country-dropdown').removeClass('visible');
@@ -140,6 +139,32 @@ $(document).ready(function() {
         var country = $('#country').val();
 
         $('#shipping_address').html(address + ', ' + postcode + ', ' + city + ', ' + state + ', ' + country);
+
+        var form = {};
+        $.each($('#checkoutForm').serializeArray(), function() {
+            form[this.name] = this.value;
+        });
+
+        axios({
+            method: "post",
+            url: "{{ route('cart.update_address') }}",
+            data: {
+                data: form
+            },
+        })
+        .then(response => {
+            $('.action-button').prop('disabled', false);
+            $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
+            $('#coupon-text').val('');
+            updateColumnValue(response.data.cartTotal);
+        })
+        .catch(error => {
+            $('.action-button').prop('disabled', false);
+            $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
+            showSwal('Fail!', error.response.data.msg);
+        });
     })
 }); 
 </script>

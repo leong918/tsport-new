@@ -81,6 +81,47 @@
         });
     }
 
+    function updateColumnValue(array) {
+        console.log(array);
+        $('.subtotal-price').html('$' + array.subtotal.toFixed(2));
+        $('.point-price').html('$' + array.point_redemption.toFixed(2));
+        $('.order-total-price').html('$' + array.total.toFixed(2));
+        $('.shipping-price').html(array.delivery_partner + ' : $' + array.shipping_fee.toFixed(2));
+
+        if (Array.isArray(array.discount) && array.discount.length > 0) {
+            $('#discount').removeClass('d-none');
+            $('.discount-content-wrapper').html('');
+            $.each(array.discount, function (key, value) {
+                var template = document.getElementById('discountLayout').innerHTML;
+                var rendered = Mustache.render(template, {
+                    name: value.name,
+                    price: value.discount_amount.toFixed(2),
+                });
+                $('.discount-content-wrapper').append(rendered);
+            });
+        } else {
+            $('#discount').addClass('d-none');
+            $('.discount-content-wrapper').html('');
+        }
+
+        if (Array.isArray(array.coupon) && array.coupon.length > 0) {
+            $('#coupon').removeClass('d-none');
+            $('.coupon-content-wrapper').html('');
+            $.each(array.coupon, function (key, value) {
+                var template = document.getElementById('couponLayout').innerHTML;
+                var rendered = Mustache.render(template, {
+                    id: value.id,
+                    name: value.name,
+                    price: value.discount_amount.toFixed(2),
+                });
+                $('.coupon-content-wrapper').append(rendered);
+            });
+        } else {
+            $('#coupon').addClass('d-none');
+            $('.coupon-content-wrapper').html('');
+        }
+    }
+
     </script>
     @stack('scripts')
 </body>

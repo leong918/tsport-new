@@ -111,7 +111,7 @@ class CartRuleRepository extends BaseRepository
             if ($discount_amount > 0) {
                 $cart_rule_array[$cart_rule->type][$cart_rule->id]['id'] = $cart_rule->id;
                 $cart_rule_array[$cart_rule->type][$cart_rule->id]['name'] = $cart_rule->type == 'coupon' ? $cart_rule->coupon_code : $cart_rule->name;
-                $cart_rule_array[$cart_rule->type][$cart_rule->id]['discount_amount'] = $discount_amount;
+                $cart_rule_array[$cart_rule->type][$cart_rule->id]['discount_amount'] = round($discount_amount, 2);
 
                 $total_discount_amount += $discount_amount;
             }
