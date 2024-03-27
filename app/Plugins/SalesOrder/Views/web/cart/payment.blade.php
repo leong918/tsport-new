@@ -57,71 +57,7 @@
                         <div class="mt-5 mt-lg-0 col-md-12 col-lg-4">
                             <div class="order-summary">
                                 <div class="order-summary-title">Order Summary</div>
-                                <div class="subtotal">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Subtotal</div>
-                                        <div class="data-label">
-                                            <div class="price">$980</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="discount">
-                                    <div class="label">Discount</div>
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="inner-label">Member discount</div>
-                                        <div class="data-label">
-                                            <div class="price">-$49</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon">
-                                    <div class="label">Coupon</div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex justify-content-between data-content-wrapper">
-                                            <div class="inner-label">IOTH-JM-VO-D12</div>
-                                            <div class="data-label">
-                                                <div class="price">-$98</div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-remove-wrapper"><button class="remove-button">remove</button></div>
-                                    </div>
-                                </div>
-                                <div class="point-redemption">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex justify-content-between data-content-wrapper">
-                                            <div class="label">Point redemption</div>
-                                            <div class="data-label">
-                                                <div class="price">$10</div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-remove-wrapper"><button class="remove-button">remove</button></div>
-                                    </div>
-                                </div>
-                                <div class="shipping-fee">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Shipping Fee</div>
-                                        <div class="data-label">
-                                            <div class="price">SF EXPRESS : $30</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="shipping-fee-inner">
-                                    <div class="data-content-wrapper">
-                                        <div class="inner-label">Shipping To:</div>
-                                        <div class="inner-label">
-                                            {{ $address['address'].', '.$address['postcode'].', '.$address['city'].', '.$address['state'].', '.$address['country'] }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr/>
-                                <div class="total">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Total</div>
-                                        <div class="data-label">
-                                            <div class="price">$853</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('sales_order::web.cart.total')
                                 <div class="payment">
                                     <button id="payment-button" data-return-url="{{ route('cart.complete') }}">Complete Payment</button>
                                 </div>
@@ -166,7 +102,7 @@
             e.preventDefault();
 
             if (!$('#tnc').is(":checked")) {
-                showSwal('error', 'Fail!', 'Please tick the T&C checkbox to proceed!');
+                showSwal('Fail!', 'Please tick the T&C checkbox to proceed!');
             } else {
                 $(this).attr('disabled', true);
                 var payment_method = $('input[name="payment-method"]:checked').val();
@@ -181,19 +117,18 @@
                     }
                 })
                 .then(response => {
-                    console.log(response.data);
                     if (response.data.order.payment_method === 'stripe') {
                         const { error } = stripe.confirmPayment({
                             elements,
                             confirmParams: {
-                                return_url: $(this).data('return-url'),
+                                return_url: $(this).data('return-url') + '?order_id=' + response.data.order.sales_order_id,
                             },
                         });
 
                         if (error.type === "card_error" || error.type === "validation_error") {
-                            showMessage(error.message);
+                            showSwal('Fail!', error.message);
                         } else {
-                            showMessage("An unexpected error occurred.");
+                            showSwal('Fail!', 'An unexpected error occurred.');
                         }
                     } else {
                         window.location.replace("{{ route('cart.complete') }}" + "?order_id=" + response.data.order.sales_order_id);
@@ -204,7 +139,7 @@
                         window.location.reload();
                     } else {
                         $(this).attr('disabled', false);
-                        showSwal('error', 'Fail!', error.msg);
+                        showSwal('Fail!', error.msg);
                     }
                 });
             }

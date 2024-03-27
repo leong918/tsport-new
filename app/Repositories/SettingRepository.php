@@ -12,8 +12,7 @@ class SettingRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -52,4 +51,14 @@ class SettingRepository extends BaseRepository
         );
     }
 
+    public function getValueByKey($key)
+    {
+        $setting = Setting::where([
+            'key' => $key,
+        ])->first();
+        if ($setting) {
+            return $setting->value;
+        }
+        return '';
+    }
 }

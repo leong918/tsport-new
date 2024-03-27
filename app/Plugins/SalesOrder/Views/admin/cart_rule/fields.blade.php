@@ -234,7 +234,7 @@
                 $('#product-select, #category-select, #brand-select').prop("disabled", true);
                 $('.brandCol, .categoryCol, .productCol').addClass('d-none');
             @else
-                $('.type').val() != 1 ? $('.coupon_code').prop('disabled', true) : $('.coupon_code').prop(
+                $('.type').val() != 'coupon' ? $('.coupon_code').prop('disabled', true) : $('.coupon_code').prop(
                     'disabled', false);
                 checkTargetTable();
             @endif
@@ -268,34 +268,34 @@
                 })
 
                 axios({
-                        method: "post",
-                        url: url,
-                        data: formData,
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        },
-                    })
-                    .then(response => {
-                        swal.fire({
-                            title: 'Success',
-                            text: 'Cart Rule Added!',
-                            type: 'success',
-                            confirmButtonClass: 'btn btn-success',
-                            confirmButtonText: 'OK',
-                        });
-                        setTimeout(function() {
-                            window.location.replace('/admin/cart_rule/index');
-                        }, 1000);
-                    })
-                    .catch(error => {
-                        swal.fire({
-                            title: 'Fail',
-                            text: error.response.data.msg,
-                            type: 'error',
-                            confirmButtonClass: 'btn btn-danger',
-                            confirmButtonText: 'OK',
-                        });
+                    method: "post",
+                    url: url,
+                    data: formData,
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                })
+                .then(response => {
+                    swal.fire({
+                        title: 'Success',
+                        text: 'Cart Rule Added!',
+                        type: 'success',
+                        confirmButtonClass: 'btn btn-success',
+                        confirmButtonText: 'OK',
                     });
+                    setTimeout(function() {
+                        window.location.replace('/admin/cart_rule/index');
+                    }, 1000);
+                })
+                .catch(error => {
+                    swal.fire({
+                        title: 'Fail',
+                        text: error.response.data.msg,
+                        type: 'error',
+                        confirmButtonClass: 'btn btn-danger',
+                        confirmButtonText: 'OK',
+                    });
+                });
             });
         });
     </script>

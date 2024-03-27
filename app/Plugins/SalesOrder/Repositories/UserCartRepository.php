@@ -4,6 +4,12 @@ namespace App\Plugins\SalesOrder\Repositories;
 
 use App\Plugins\SalesOrder\Models\UserCart;
 use App\Repositories\BaseRepository;
+use Illuminate\Container\Container;
+use App\Plugins\SalesOrder\Repositories\CartRuleRepository;
+use App\Repositories\UserRepository;
+use App\Repositories\ProductRepository;
+use App\Repositories\ProductAttributeTermRepository;
+use App\Repositories\CountryRepository;
 
 class UserCartRepository extends BaseRepository
 {
@@ -61,12 +67,43 @@ class UserCartRepository extends BaseRepository
     public function getUserCartByType($user_data, $type)
     {
         if ($type === 'guest') {
-            $cart = UserCart::where('user_ip', $user_data)->whereNull('user_id')->get();
+            $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
+                ->where('user_ip', $user_data)
+                ->whereNull('user_id')
+                ->select('user_cart.*', 'product.category_id', 'product.brand_id')
+                ->get();
         } else {
-            $cart = UserCart::where('user_id', $user_data)->get();
+            $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
+                ->where('user_id', $user_data)
+                ->select('user_cart.*', 'product.category_id', 'product.brand_id')
+                ->get();
         }
 
+        $this->recalculateCart($cart);
         return $cart;
+    }
+
+    private function recalculateCart($carts)
+    {
+        $productRepository = new ProductRepository(new Container());
+        $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+
+        foreach ($carts as $cart) {
+            $subtotal = 0;
+            $product = $productRepository->find($cart->product_id);
+            $subtotal += $product->getCurrencyParameters('HKD')->price;
+
+            if ($cart->product_attribute_term) {
+                foreach (json_decode($cart->product_attribute_term) as $product_attribute_term_id) {
+                    $product_attribute_term = $productAttributeTermRepository->find($product_attribute_term_id);
+                    $subtotal += $product_attribute_term->getCurrencyParameters('HKD')->price;
+                }
+            }
+
+            $cart->price = $subtotal;
+            $cart->total_price = $subtotal * $cart->quantity;
+            $cart->save();
+        }
     }
 
     public function updateOwnerCartByIp($user_id, $user_ip)
@@ -94,15 +131,32 @@ class UserCartRepository extends BaseRepository
         }
     }
 
-    public function calculateUserCartTotal($cart_list)
+    public function calculateUserCartTotal($user_data, $coupon_session, $user_id, $address = null)
     {
         $data = array();
         $data['subtotal'] = 0;
+        $data['shipping_fee'] = 0;
+        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
 
         foreach ($cart_list as $cart) {
             $data['subtotal'] += $cart->product->getCurrencyParameters('HKD')->price * $cart->quantity;
         }
 
+        $cartRuleRepository = new CartRuleRepository(new Container());
+        $cart_rule_data = $cartRuleRepository->calculatePriorityRule($cart_list, $coupon_session);
+        $data = array_merge($data, $cart_rule_data);
+
+        $userRepository = new UserRepository(new Container());
+        $data['point_redemption'] = $userRepository->calculateDiscountPoint($user_id);
+
+        $total_price = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'];
+        if ($address) {
+            $countryRepository = new CountryRepository(new Container());
+            $shipping_data = $countryRepository->calculateShippingFee($total_price, $address['country_id']);
+            $data = array_merge($data, $shipping_data);
+        }
+
+        $data['total'] = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'] + $data['shipping_fee'];
         return $data;
     }
 

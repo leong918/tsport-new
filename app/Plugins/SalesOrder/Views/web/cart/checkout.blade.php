@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="checkout-wrapper">
                 <div class="checkout-title">Checkout</div>
-                {{ html()->form('POST', route("cart.process_checkout"))->open()}}
+                {{ html()->form('POST', route("cart.process_checkout"))->id('checkoutForm')->open()}}
                     <div class="row justify-content-center checkout-content">
                         <div class="col-md-12 col-lg-8 checkout-details">
                             <div class="shipping-details-wrapper">
@@ -93,71 +93,7 @@
                         <div class="mt-5 mt-lg-0 col-md-12 col-lg-4">
                             <div class="order-summary">
                                 <div class="order-summary-title">Order Summary</div>
-                                <div class="subtotal">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Subtotal</div>
-                                        <div class="data-label">
-                                            <div class="price">$980</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="discount">
-                                    <div class="label">Discount</div>
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="inner-label">Member discount</div>
-                                        <div class="data-label">
-                                            <div class="price">-$49</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon">
-                                    <div class="label">Coupon</div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex justify-content-between data-content-wrapper">
-                                            <div class="inner-label">IOTH-JM-VO-D12</div>
-                                            <div class="data-label">
-                                                <div class="price">-$98</div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-remove-wrapper"><button class="remove-button">remove</button></div>
-                                    </div>
-                                </div>
-                                <div class="point-redemption">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex justify-content-between data-content-wrapper">
-                                            <div class="label">Point redemption</div>
-                                            <div class="data-label">
-                                                <div class="price">$10</div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-remove-wrapper"><button class="remove-button">remove</button></div>
-                                    </div>
-                                </div>
-                                <div class="shipping-fee">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Shipping Fee</div>
-                                        <div class="data-label">
-                                            <div class="price">SF EXPRESS : $30</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="shipping-fee-inner">
-                                    <div class="data-content-wrapper">
-                                        <div class="inner-label">Shipping To:</div>
-                                        <div class="inner-label" id="shipping_address">
-                                            {{ $addressData['address'].', '.$addressData['postcode'].', '.$addressData['city'].', '.$addressData['state'].', '.$addressData['country'] }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr/>
-                                <div class="total">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Total</div>
-                                        <div class="data-label">
-                                            <div class="price">$853</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('sales_order::web.cart.total')
                                 <div class="payment">
                                     <button type="submit">Payment</button>
                                 </div>
@@ -181,7 +117,6 @@ $(document).ready(function() {
     });
 
     $("#country-dropdown li").click(function() {
-        console.log($(this).text());
         $('#country').val($(this).text());
         $('#country_id').val($(this).data('value'));
         $('#country-dropdown').removeClass('visible');
@@ -204,6 +139,32 @@ $(document).ready(function() {
         var country = $('#country').val();
 
         $('#shipping_address').html(address + ', ' + postcode + ', ' + city + ', ' + state + ', ' + country);
+
+        var form = {};
+        $.each($('#checkoutForm').serializeArray(), function() {
+            form[this.name] = this.value;
+        });
+
+        axios({
+            method: "post",
+            url: "{{ route('cart.update_address') }}",
+            data: {
+                data: form
+            },
+        })
+        .then(response => {
+            $('.action-button').prop('disabled', false);
+            $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
+            $('#coupon-text').val('');
+            updateColumnValue(response.data.cartTotal);
+        })
+        .catch(error => {
+            $('.action-button').prop('disabled', false);
+            $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
+            showSwal('Fail!', error.response.data.msg);
+        });
     })
 }); 
 </script>

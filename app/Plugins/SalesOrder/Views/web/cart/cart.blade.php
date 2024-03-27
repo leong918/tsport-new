@@ -29,7 +29,7 @@
                                         <div class="product-desc">{{ $cart->product->getParameters('cn')->name }}</div>
                                     </div>
                                 </td>
-                                <td class="unit-price">${{ $cart->product->getCurrencyParameters('HKD')->price }}</td>
+                                <td class="unit-price">${{ number_format($cart->price, 2) }}</td>
                                 <td>
                                     <div class="d-flex justify-content-between quantity-wrapper" data-cart-id="{{ $cart->id }}">
                                         <button class="action-button minus"><img src="{{asset('assets/web/assets/img/shopping_cart/minus.png')}}" /></button>
@@ -37,7 +37,7 @@
                                         <button class="action-button plus"><img src="{{asset('assets/web/assets/img/shopping_cart/plus.png')}}" /></button>
                                     </div>
                                 </td>
-                                <td class="total-price">${{ number_format($cart->product->getCurrencyParameters('HKD')->price * $cart->quantity, 2) }}</td>
+                                <td class="total-price">${{ number_format($cart->total_price, 2) }}</td>
                                 <td>
                                     <button class="remove-button" data-cart-id="{{ $cart->id }}">
                                         <img src="{{asset('assets/web/assets/img/shopping_cart/remove.png')}}" />
@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="product-price d-flex">
                                             <div class="label">Price:</div>
-                                            <div class="data">${{ $cart->product->getCurrencyParameters('HKD')->price }}</div>
+                                            <div class="data">${{ number_format($cart->price, 2) }}</div>
                                         </div>
                                         <div class="product-price-wrapper d-flex justify-content-between">
                                             <div class="d-flex quantity-wrapper" data-cart-id="{{ $cart->id }}">
@@ -98,7 +98,7 @@
                                             </div>
                                             <div class="d-flex total-wrapper">
                                                 <div class="label">Total:</div>
-                                                <div class="data total-price">${{ number_format($cart->product->getCurrencyParameters('HKD')->price * $cart->quantity, 2) }}</div>
+                                                <div class="data total-price">${{ number_format($cart->total_price, 2) }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -137,66 +137,14 @@
                         </div>
                         <hr style="margin: 20px 0"/>
                         <div class="d-flex coupon-wrapper">
-                            <input type="text" class="coupon-text" placeholder="Coupon"/>
-                            <button class="coupon-button">APPLY COUPON</button>
+                            <input type="text" class="coupon-text" id="coupon-text" placeholder="Coupon"/>
+                            <button class="coupon-button" id="apply-coupon-btn">APPLY COUPON</button>
                         </div>
                     </div>
                     <div class="mt-5 mt-lg-0 col-md-12 col-lg-4">
-                        <div class="shopping-cart-summary">
+                        <div class="order-summary">
                             <div class="cart-title">Cart Totals</div>
-                            <div class="subtotal">
-                                <div class="d-flex justify-content-between data-content-wrapper">
-                                    <div class="label">Subtotal</div>
-                                    <div class="data-label">
-                                        <div class="price">${{ number_format($cartTotal['subtotal'], 2) }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="discount">
-                                <div class="label">Discount</div>
-                                <div class="discount-content-wrapper">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="inner-label">member discount</div>
-                                        <div class="data-label">
-                                            <div class="price">-$49</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="coupon">
-                                <div class="label">Coupon</div>
-                                <div class="coupon-content-wrapper">
-                                    <div class="d-flex">
-                                        <div class="d-flex justify-content-between data-content-wrapper">
-                                            <div class="inner-label">IOTH-JM-VO-D12</div>
-                                            <div class="data-label">
-                                                <div class="price">-$98</div>
-                                            </div>
-                                        </div>
-                                        <div class="btn-remove-wrapper"><button class="remove-button">remove</button></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="point-redemption">
-                                <div class="d-flex">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="label">Point redemption</div>
-                                        <div class="data-label">
-                                            <div class="price">-$10</div>
-                                        </div>
-                                    </div>
-                                    <div class="btn-remove-wrapper"><button class="remove-button">remove</button></div>
-                                </div>
-                            </div>
-                            <hr/>
-                            <div class="total">
-                                <div class="d-flex justify-content-between data-content-wrapper">
-                                    <div class="label">Total</div>
-                                    <div class="data-label">
-                                        <div class="price">$853</div>
-                                    </div>
-                                </div>
-                            </div>
+                            @include('sales_order::web.cart.total')
                             <div class="checkout">
                                 @if(auth()->user())
                                 <a href="{{ route('cart.checkout') }}" class="btn btn-primary btn-checkout">
@@ -254,11 +202,33 @@
 </div>
 @endsection
 @push('scripts')
-<script>
+<script id="discountLayout" type="x-tmpl-mustache">
+    <div class="d-flex justify-content-between data-content-wrapper">
+        <div class="inner-label">@{{ name }}</div>
+        <div class="data-label">
+            <div class="price">-$@{{ price }}</div>
+        </div>
+    </div>
+</script>
+<script id="couponLayout" type="x-tmpl-mustache">
+    <div class="d-flex">
+        <div class="d-flex justify-content-between data-content-wrapper">
+            <div class="inner-label">@{{ name }}</div>
+            <div class="data-label">
+                <div class="price">-$@{{ price }}</div>
+            </div>
+        </div>
+        <div class="btn-remove-wrapper">
+            <button class="remove-coupon-button" data-id="@{{ id }}">remove</button>
+        </div>
+    </div>
+</script>
+<script type="text/javascript">
 $(document).ready(function() {
     $('body').on('click', '.action-button', function() {
         $('.action-button').prop('disabled', true);
         $('.btn-checkout').prop('disabled', true);
+        $('#apply-coupon-btn').prop('disabled', true);
         var cart_id = $(this).parents('.quantity-wrapper').data('cart-id');
         var input_quantity = $(this).parent().find('.quantity-text');
 
@@ -283,16 +253,22 @@ $(document).ready(function() {
         .then(response => {
             $('.action-button').prop('disabled', false);
             $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
             $(this).parents('.cart-main-list').find('.total-price').html('$' + response.data.subtotal);
+            updateColumnValue(response.data.cartTotal);
         })
         .catch(error => {
-            showSwal('error', 'Fail!', error.response.data.msg);
+            $('.action-button').prop('disabled', false);
+            $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
+            showSwal('Fail!', error.response.data.msg);
         });
     });
 
     $('.remove-button').on('click', function() {
         $('.action-button').prop('disabled', true);
         $('.btn-checkout').prop('disabled', true);
+        $('#apply-coupon-btn').prop('disabled', true);
         $(this).parents('.cart-main-list').remove();
 
         axios({
@@ -306,10 +282,47 @@ $(document).ready(function() {
         .then(response => {
             $('.action-button').prop('disabled', false);
             $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
             $(this).parents('.cart-main-list').find('.total-price').html('$' + response.data.subtotal);
+            updateColumnValue(response.data.cartTotal);
         })
         .catch(error => {
-            showSwal('error', 'Fail!', error.response.data.msg);
+            $('.action-button').prop('disabled', false);
+            $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
+            showSwal('Fail!', error.response.data.msg);
+        });
+    })
+
+    $('#apply-coupon-btn').on('click', function() {
+        $('.action-button').prop('disabled', true);
+        $('.btn-checkout').prop('disabled', true);
+        $('#apply-coupon-btn').prop('disabled', true);
+
+        var coupon = $('#coupon-text').val();
+        if (coupon == '') {
+            showSwal('Fail!', 'Please fill in coupon to apply!');
+        }
+
+        axios({
+            method: "post",
+            url: "{{ route('cart.apply_coupon') }}",
+            data: {
+                coupon: coupon
+            }
+        })
+        .then(response => {
+            $('.action-button').prop('disabled', false);
+            $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
+            $('#coupon-text').val('');
+            updateColumnValue(response.data.cartTotal);
+        })
+        .catch(error => {
+            $('.action-button').prop('disabled', false);
+            $('.btn-checkout').prop('disabled', false);
+            $('#apply-coupon-btn').prop('disabled', false);
+            showSwal('Fail!', error.response.data.msg);
         });
     })
 });

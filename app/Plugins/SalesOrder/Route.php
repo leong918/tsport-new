@@ -13,8 +13,11 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('cart', [CartController::class, 'cart'])->name('cart.shopping_cart');
         Route::post('add_to_cart', [CartController::class, 'addToCart'])->name('cart.add_to_cart');
         Route::post('update_cart_qty', [CartController::class, 'updateCartQty'])->name('cart.update_cart_qty');
+        Route::post('apply_coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
+        Route::post('remove_coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
         Route::get('wishlist', [CartController::class, 'wishlist'])->name('cart.wishlist');
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+        Route::post('update_address', [CartController::class, 'updateAddress'])->name('cart.update_address');
         Route::post('process_checkout', [CartController::class, 'processCheckout'])->name('cart.process_checkout');
         Route::get('payment', [CartController::class, 'payment'])->name('cart.payment');
         Route::post('create_payment_intent', [CartController::class, 'createPaymentIntent'])->name('cart.create_payment_intent');
@@ -39,6 +42,5 @@ Route::group(['middleware' => ['web']], function () {
         Route::put('cart_rule/update/{id}', [CartRuleController::class, 'update'])->name('update.put');
         Route::delete('cart_rule/delete/{id}', [CartRuleController::class, 'destroy'])->name('destroy.delete');
         Route::post('cart_rule/status/{id}', [CartRuleController::class, 'toggleStatus'])->name('status.post');
-    
     });
 });

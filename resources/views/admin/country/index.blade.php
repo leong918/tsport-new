@@ -14,8 +14,8 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong>Cart Rule</strong>
-                                <a href="{{ route("admin.cart_rule.create") }}" class="btn btn-primary permission float-end">
+                                <strong>Country</strong>
+                                <a href="{{ route("admin.country.create") }}" class="btn btn-primary permission float-end">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
@@ -24,7 +24,6 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Priority</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
@@ -34,6 +33,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- /.col-->
                 </div>
             </div>
         </div>
@@ -53,16 +53,11 @@
                     autoWidth: false,
                     serverSide: true,
                     ajax: {
-                        url: '{!! route('admin.cart_rule.index') !!}'
+                        url: '{!! route('admin.country.index') !!}'
                     },
-                    columns: [
-                        {
+                    columns: [{
                             data: 'name',
                             name: 'name'
-                        },
-                        {
-                            data: 'priority',
-                            name: 'priority'
                         },
                         {
                             data: 'status',
@@ -87,7 +82,7 @@
                     Swal.fire({
                         title: 'Are you sure?',
                         text: 'This action is not able to be reverted.',
-                        icon: "warning",
+                        icon: 'warning',
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!',
                         cancelButtonText: 'Cancel',
@@ -119,7 +114,6 @@
                                 text: 'Record deleted successfully!',
                                 icon: 'success',
                             });
-                            // reload datatables
                             table.ajax.reload();
                         }
                     });
@@ -162,7 +156,6 @@
                                 text: 'Record updated successfully!',
                                 icon: 'success',
                             });
-                            // reload datatables
                             table.ajax.reload();
                         }
                     });

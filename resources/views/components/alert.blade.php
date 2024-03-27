@@ -50,7 +50,7 @@
 @if(session('swal_error'))
 @push('scripts')
 <script type="text/javascript">
-    showSwal('error', 'Error', '{{ session('swal_error') }}');
+    showSwal('Error', '{{ session('swal_error') }}');
 </script>
 @endpush
 @endif
