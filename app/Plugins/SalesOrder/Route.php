@@ -43,4 +43,13 @@ Route::group(['middleware' => ['web']], function () {
         Route::delete('cart_rule/delete/{id}', [CartRuleController::class, 'destroy'])->name('destroy.delete');
         Route::post('cart_rule/status/{id}', [CartRuleController::class, 'toggleStatus'])->name('status.post');
     });
+
+    /**
+     * Route api
+     */
+    Route::group(['prefix' => 'stripe'], function () {
+        Route::post("/webhook", 'StripeController@webhook');
+        Route::post("/paymentSucceed", 'StripeController@paymentSucceed');
+        Route::post("/paymentFailed", 'StripeController@paymentFailed');
+    });
 });

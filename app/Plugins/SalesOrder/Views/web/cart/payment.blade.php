@@ -135,11 +135,14 @@
                     }
                 })
                 .catch(error => {
-                    if (error.redirect == true) {
-                        window.location.reload();
-                    } else {
-                        $(this).attr('disabled', false);
-                        showSwal('Fail!', error.msg);
+                    if (error && error.response && error.response.data) {
+                        const responseData = error.response.data;
+                        if (responseData.redirect) {
+                            window.location.reload();
+                        } else {
+                            $(this).attr('disabled', false);
+                            showSwal('Fail!', responseData.msg);
+                        }
                     }
                 });
             }

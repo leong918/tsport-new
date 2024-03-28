@@ -41,7 +41,9 @@ class AuthController extends BaseController
         if (Auth::attempt($credentials + ['status' => User::STATUS['ACTIVE']], true)) {
 
             if (function_exists('updateUserOwnerCart')) {
-                updateUserOwnerCart(auth()->user()->id);
+                $user_ip = getPublicIp();
+                $coupon_session = $request->session()->pull('coupon-' . $user_ip) ?? array();
+                updateUserOwnerCart(auth()->user()->id, $coupon_session);
             }
             // Authentication passed...
             return redirect()->intended(route('web.home'));

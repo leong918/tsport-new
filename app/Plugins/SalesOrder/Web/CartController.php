@@ -166,11 +166,11 @@ class CartController extends BaseController
         $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
 
         if ($cart_count <= 0) {
-            return redirect()->route('cart.shopping_cart');
+            return redirect(route('cart.shopping_cart'));
         }
 
         if (!$request->session()->get('cart-' . auth()->user()->id)) {
-            return redirect()->route('cart.checkout')->with('swal_error', 'Session Expired! Please confirm your address again.');
+            return redirect(route('cart.checkout'))->with('swal_error', 'Session Expired! Please confirm your address again.');
         }
 
         try {
@@ -180,21 +180,22 @@ class CartController extends BaseController
             $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
             $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
             $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
-            $intentSecret = json_encode($this->createPaymentIntent());
+            $intentSecret = json_encode($this->createPaymentIntent($cartTotal['total']));
 
             return view('sales_order::web.cart.payment', compact('addressData', 'intentSecret', 'cartTotal'));
         } catch (\Exception $e) {
-            return redirect()->route('cart.checkout')->with('swal_error', $e->getMessage());
+            return redirect(route('cart.checkout'))->with('swal_error', $e->getMessage());
         }
     }
 
-    private function createPaymentIntent($cartTotal = 853)
+    private function createPaymentIntent($cartTotal)
     {
+        $total_amount = str_replace('.', '', number_format($cartTotal, 2));
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
 
         $paymentIntent = $stripe->paymentIntents->create([
-            'amount' => $cartTotal,
-            'currency' => 'hkd',
+            'amount' => $total_amount,
+            'currency' => 'hkd'
         ]);
 
         $output = [
