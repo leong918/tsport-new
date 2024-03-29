@@ -244,10 +244,10 @@ $(document).ready(function(){
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.sales_order_edited")}}',
                     text: '{{__("page.sales_order_edited")}}',
-                    type: 'success',
+                    icon: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: '{{__("page.ok")}}',
                 }).then((result) => {
@@ -255,10 +255,10 @@ $(document).ready(function(){
                 });
             })
             .catch(error => {
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: error.response.data.msg,
-                    type: 'error',
+                    icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: '{{__("page.ok")}}',
                 });
@@ -344,10 +344,10 @@ $(document).ready(function(){
 
                 productList.push(product);
             }else{
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: '{{__("page.some input fields are empty")}}',
-                    type: 'error',
+                    icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: '{{__("page.ok")}}',
                 });
@@ -363,10 +363,10 @@ $(document).ready(function(){
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.sales_order_edited")}}',
                     text: '{{__("page.sales_order_edited")}}',
-                    type: 'success',
+                    icon: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: '{{__("page.ok")}}',
                 }).then((result) => {
@@ -374,10 +374,10 @@ $(document).ready(function(){
                 });
             })
             .catch(error => {
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: error.response.data.msg,
-                    type: 'error',
+                    icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: '{{__("page.ok")}}',
                 });
@@ -441,7 +441,7 @@ $(document).ready(function(){
                         })
                 }
             },
-            allowOutsideClick: () => !swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.value) {
                 Swal.fire({

@@ -365,7 +365,7 @@
                                 })
                         }
                     },
-                    allowOutsideClick: () => !swal.isLoading()
+                    allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.value) {
                         Swal.fire({
