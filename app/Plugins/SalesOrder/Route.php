@@ -14,8 +14,10 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('add_to_cart', [CartController::class, 'addToCart'])->name('cart.add_to_cart');
         Route::post('update_cart_qty', [CartController::class, 'updateCartQty'])->name('cart.update_cart_qty');
         Route::post('apply_coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
+        Route::post('remove_coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
         Route::get('wishlist', [CartController::class, 'wishlist'])->name('cart.wishlist');
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+        Route::post('update_address', [CartController::class, 'updateAddress'])->name('cart.update_address');
         Route::post('process_checkout', [CartController::class, 'processCheckout'])->name('cart.process_checkout');
         Route::get('payment', [CartController::class, 'payment'])->name('cart.payment');
         Route::post('create_payment_intent', [CartController::class, 'createPaymentIntent'])->name('cart.create_payment_intent');

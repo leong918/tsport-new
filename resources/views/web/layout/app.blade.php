@@ -39,6 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
     <script src="{{asset('assets/web/js/cart.js')}}"></script>
     <script type="text/javascript">
     $('.navbar-search').on('click', function(){
@@ -64,7 +65,6 @@
         $('#header').removeClass('active');
         $('#sub-pages-overlay').removeClass('active');
         $('body').removeClass('active');
-        
     })
     
     function showSwal(title = "", text = ""){ 
@@ -82,6 +82,47 @@
                 });
             }
         });
+    }
+
+    function updateColumnValue(array) {
+        console.log(array);
+        $('.subtotal-price').html('$' + array.subtotal.toFixed(2));
+        $('.point-price').html('$' + array.point_redemption.toFixed(2));
+        $('.order-total-price').html('$' + array.total.toFixed(2));
+        $('.shipping-price').html(array.delivery_partner + ' : $' + array.shipping_fee.toFixed(2));
+
+        if (Array.isArray(array.discount) && array.discount.length > 0) {
+            $('#discount').removeClass('d-none');
+            $('.discount-content-wrapper').html('');
+            $.each(array.discount, function (key, value) {
+                var template = document.getElementById('discountLayout').innerHTML;
+                var rendered = Mustache.render(template, {
+                    name: value.name,
+                    price: value.discount_amount.toFixed(2),
+                });
+                $('.discount-content-wrapper').append(rendered);
+            });
+        } else {
+            $('#discount').addClass('d-none');
+            $('.discount-content-wrapper').html('');
+        }
+
+        if (Array.isArray(array.coupon) && array.coupon.length > 0) {
+            $('#coupon').removeClass('d-none');
+            $('.coupon-content-wrapper').html('');
+            $.each(array.coupon, function (key, value) {
+                var template = document.getElementById('couponLayout').innerHTML;
+                var rendered = Mustache.render(template, {
+                    id: value.id,
+                    name: value.name,
+                    price: value.discount_amount.toFixed(2),
+                });
+                $('.coupon-content-wrapper').append(rendered);
+            });
+        } else {
+            $('#coupon').addClass('d-none');
+            $('.coupon-content-wrapper').html('');
+        }
     }
 
     </script>
