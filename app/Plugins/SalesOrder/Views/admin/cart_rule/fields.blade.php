@@ -276,10 +276,10 @@
                     },
                 })
                 .then(response => {
-                    swal.fire({
+                    Swal.fire({
                         title: 'Success',
                         text: 'Cart Rule Added!',
-                        type: 'success',
+                        icon: 'success',
                         confirmButtonClass: 'btn btn-success',
                         confirmButtonText: 'OK',
                     });
@@ -288,10 +288,10 @@
                     }, 1000);
                 })
                 .catch(error => {
-                    swal.fire({
+                    Swal.fire({
                         title: 'Fail',
                         text: error.response.data.msg,
-                        type: 'error',
+                        icon: 'error',
                         confirmButtonClass: 'btn btn-danger',
                         confirmButtonText: 'OK',
                     });
