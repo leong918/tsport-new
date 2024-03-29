@@ -48,7 +48,7 @@ class UserRepository extends BaseRepository
 
     public function updateUser(array $input, int $id)
     {
-        if (trim($input['password']) === '') {
+        if (isset($input['password']) && trim($input['password']) === '') {
             unset($input['password']);
         }
 

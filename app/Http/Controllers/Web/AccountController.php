@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Web;
 
 use App\Repositories\UserRepository;
+use App\Repositories\CountryRepository;
 use App\Http\Requests\Form\User\UserUpdateInfoRequest;
+use App\Http\Requests\Form\User\UserUpdateAddressRequest;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends BaseController
 {
     private UserRepository $userRepository;
+    private CountryRepository $countryRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, CountryRepository $countryRepository)
     {
         $this->userRepository = $userRepository;
+        $this->countryRepository = $countryRepository;
     }
 
     public function accountDetails()
@@ -24,7 +28,10 @@ class AccountController extends BaseController
     }
     public function accountAddress()
     {
-        return $this->view('account.account_address');
+        $user_id = auth()->user()->id;
+        $user = $this->userRepository->find($user_id);
+        $countryDropdown = $this->countryRepository->dropdown();
+        return $this->view('account.account_address', compact('user','countryDropdown'));
     }
     public function accountOrder()
     {
@@ -51,5 +58,12 @@ class AccountController extends BaseController
             }
         }
         $this->userRepository->updateUser($data, $user->id);
+    }
+    public function doUpdateUserAddress(UserUpdateAddressRequest $request, int $user_id)
+    {
+        $data = $request->all();
+        $country = $this->countryRepository->find($data['country_id']);
+        $data['country'] = $country->name;
+        $this->userRepository->updateUser($data, $user_id);
     }
 }

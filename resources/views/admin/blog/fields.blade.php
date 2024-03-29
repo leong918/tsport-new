@@ -135,7 +135,6 @@
             var url = $(this).attr('action');
 
             let formData = new FormData(this);
-
             axios({
                 method: "post",
                 url: url,

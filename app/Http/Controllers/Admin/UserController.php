@@ -55,6 +55,8 @@ class UserController extends BaseController
             $user = $this->userRepository->getUserByEmail($data['referral_email'], $data['referral_phone_no']);
             if (!$user || $user->level_id <= 1) {
                 return redirect()->back()->with('error', "Referral User Not Found or Refferal User Level Not Compatible!");
+            } else {
+                $data['referral_user_id'] = $user->id;
             }
         }
 
@@ -75,6 +77,8 @@ class UserController extends BaseController
             $user = $this->userRepository->getUserByEmail($data['referral_email'], $data['referral_phone_no']);
             if (!$user || $user->level_id <= 1) {
                 return redirect()->back()->with('error', "Referral User Not Found or Refferal User Level Not Compatible!");
+            } else {
+                $data['referral_user_id'] = $user->id;
             }
         }
 

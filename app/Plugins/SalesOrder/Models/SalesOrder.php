@@ -5,7 +5,9 @@ namespace App\Plugins\SalesOrder\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\User;
 
 class SalesOrder extends Model
 {
@@ -24,8 +26,25 @@ class SalesOrder extends Model
         'DIRECT BANK TRANSFER (FPS)' => 'fps',
     ];
 
+    public const ORDER_STATUS = [
+        'PENDING' => 0,
+        'COMPLETED' => 1,
+        'PROCESSING' => 2,
+        'ONHOLD' => 3,
+        'CANCELLED' => -1,
+        'FAILED' => -2,
+        'REFUNDED' => -3,
+    ];
+
+    public const PAYMENT_STATUS = [
+        'UNPAID' => 0,
+        'PAID' => 1,
+    ];
+
     protected $table = 'sales_order';
 
+
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -54,6 +73,7 @@ class SalesOrder extends Model
         'state',
         'city',
         'address',
+        'customer_note',
         'completed_at',
     ];
 
@@ -78,8 +98,18 @@ class SalesOrder extends Model
         );
     }
 
-    public function salesOrderProduct(): HasMany
+    public function salesOrderProduct() : HasMany
     {
         return $this->hasMany(SalesOrderProduct::class);
+    }
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function salesOrderLog() : HasMany
+    {
+        return $this->hasMany(SalesOrderLog::class);
     }
 }
