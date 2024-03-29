@@ -46,6 +46,19 @@ class ProductRepository extends BaseRepository
         return formalizeDropdown(Product::where('id', '!=', $product_id)->get(), $key, 'name');
     }
 
+    public function dropdownForSalesOrder(string $code)
+    {
+        $productListDropdown = Product::orderBy('created_at', 'desc')->get()->map(function ($product) use ($code) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->getCurrencyParameters($code)->price,
+            ];
+        });
+
+        return $productListDropdown;
+    }
+
     public function getProductByCurrencyCode(string $currency_code)
     {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')

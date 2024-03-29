@@ -30,6 +30,10 @@ Route::group(['middleware' => ['web']], function () {
      */
     Route::group(['as' => 'admin.sales_order.', 'prefix' => 'admin'], function () {
         Route::get('sales_order/index', [SalesOrderController::class, 'index'])->name('index');
+        Route::get('sales_order/update/{id}', [SalesOrderController::class, 'edit'])->name('update');
+        Route::post('sales_order/update/{id}', [SalesOrderController::class, 'update'])->name('update.put');
+        Route::post('sales_order/update_product/{id}/{product_id?}', [SalesOrderController::class, 'updateProduct'])->name('updateProduct.put');
+        Route::delete('sales_order/delete_product/{id}/{product_id}', [SalesOrderController::class, 'destroySalesOrderProduct'])->name('destroy.deleteProduct');
         Route::delete('sales_order/delete/{id}', [SalesOrderController::class, 'destroy'])->name('destroy.delete');
         Route::post('sales_order/status/{id}', [SalesOrderController::class, 'toggleStatus'])->name('status.post');
     });

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('level_id');
             $table->bigInteger('country_id')->nullable();
+            $table->bigInteger('referral_user_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('username', 50);

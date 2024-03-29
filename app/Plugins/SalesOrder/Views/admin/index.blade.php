@@ -14,16 +14,16 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong>Product Review</strong>
+                                <strong>Order List</strong>
                             </div>
                             <div class="card-body table-listing table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Username</th>
-                                            <th>Product Name</th>
-                                            <th>Rate</th>
-                                            <th>Comment</th>
+                                            <th>Order ID</th>
+                                            <th>Email</th>
+                                            <th>Total</th>
+                                            <th>Product</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
@@ -52,23 +52,23 @@
                 autoWidth: false,
                 serverSide: true,
                 ajax: {
-                    url: '{!! route('admin.product_review.index') !!}'
+                    url: '{!! route('admin.sales_order.index') !!}'
                 },
                 columns: [{
-                        data: 'username',
-                        name: 'username'
+                        data: 'sales_order_id',
+                        name: 'sales_order_id'
                     },
                     {
-                        data: 'product_name',
-                        name: 'product_name'
+                        data: 'email',
+                        name: 'email'
                     },
                     {
-                        data: 'rate',
-                        name: 'rate'
+                        data: 'total',
+                        name: 'total'
                     },
                     {
-                        data: 'comment',
-                        name: 'comment'
+                        data: 'product',
+                        name: 'product'
                     },
                     {
                         data: 'status',
