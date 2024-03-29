@@ -123,7 +123,8 @@ class ProductRepository extends BaseRepository
             ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->leftjoin('brand', 'product.brand_id', '=', 'brand.id')
             ->distinct('product.id')
-            ->where(['brand.id' => $brand_id, 'product_price.code' => $currency_code, 'category.deleted_at' => null])
+            ->where(['brand.id' => $brand_id, 'product_price.code' => $currency_code, 
+            'category.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->orderBy('category.name', 'asc')
             ->orderBy('product.created_at', 'desc')
             ->selectRaw('product.*,product_price.code, product_price.price, category.name as category_name')
@@ -293,9 +294,6 @@ class ProductRepository extends BaseRepository
             }
             if (isset($language['usage']) == false) {
                 throw new \Exception(__('Usage for ' . $lang . ' cannot be empty!'));
-            }
-            if (isset($language['additional_information']) == false) {
-                throw new \Exception(__('Addtional Information for ' . $lang . ' cannot be empty!'));
             }
         }
     }

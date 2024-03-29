@@ -98,7 +98,7 @@ class AppController extends BaseController
         $product_category = $this->categoryRepository->find($product->category_id);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
         $product_attribute_list = $this->productAttributeRepository->getListing()
-                                ->where(['product_id' => $product->id, 'status' => 1, 'is_variation' => 1])->get();
+                                ->where(['product_id' => $product->id, 'status' => 1])->get();
 
         if ($product_parent_category) {
             return $this->view('product_detail', compact('product', 'product_parent_category', 'product_attribute_list'));

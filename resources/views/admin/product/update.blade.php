@@ -55,11 +55,11 @@
                                                                                             <div class="col-md-6 col-6 border-end">
                                                                                                 <div class="m-2 ms-0">
                                                                                                     <label for="">Attribute Term</label>
-                                                                                                    <input type="text"
+                                                                                                    <textarea 
                                                                                                         class="form-control"
                                                                                                         required
                                                                                                         name="option[{{ $attribute_key }}][variation][{{ $key }}][term_name]"
-                                                                                                        value="{{ $term->name }}">
+                                                                                                        style="height: 37px">{{ $term->name }}</textarea>
                                                                                                 </div>
                                                                                                 <div class="m-2 ms-0">
                                                                                                     <label for="">SKU</label>
@@ -222,7 +222,7 @@
                         <div class="d-flex flex-wrap justify-content-between">
                             <div class="inputBoxes d-flex flex-wrap">
                                 <div class="m-2 ms-0">
-                                    <input type="text" class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]">
+                                    <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" style="height: 37px"></textarea>
                                 </div>
                                 <div class="m-2 ms-0">
                                     <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
@@ -264,7 +264,7 @@
                 <div class="d-flex flex-wrap justify-content-between">
                     <div class="inputBoxes d-flex flex-wrap">
                         <div class="m-2 ms-0">
-                            <input type="text" class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]">
+                            <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" style="height: 37px"></textarea>
                         </div>
                         <div class="m-2 ms-0">
                             <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">

@@ -42,28 +42,32 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-between product-action-wrapper">
-                        <div class="product-price d-flex flex-column justify-content-center" data-default-price="{{ $product->price }}">
+                        <div class="product-price d-flex flex-column justify-content-center"
+                            data-default-price="{{ $product->price }}">
                             ${{ $product->price }}
                         </div>
                     </div>
                     <div class="col-6 col-lg-6">
                         @if (isset($product_attribute_list))
-                        @foreach ($product_attribute_list as $product_attribute)
-                        <div class="input-container mt-4 me-3">
-                            <input type="text" id="{{ $product_attribute->name }}" name="{{ $product_attribute->name }}" class="attribute-input" data-selected-price="0" value="" required readonly>
-                            <ul id="{{ $product_attribute->name }}-dropdown" class="attribute-dropdown">
-                                @foreach ($product_attribute->productAttributeTerm()->get() as $term)
-                                    <li data-value="{{ $term->id }}" data-add-on-price="{{ $term->getCurrencyParameters('HKD')->price }}">{{ $term->name }}</li>
-                                @endforeach
-                            </ul>
-                            <label class="placeholder-label">
-                                Choose {{ $product_attribute->name }} 
-                                <div class="d-flex float-end mt-1">
-                                    <i class='fas fa-angle-down'></i>
+                            @foreach ($product_attribute_list->where('is_variation', 1) as $product_attribute)
+                                <div class="input-container mt-4 me-3">
+                                    <input type="text" id="{{ $product_attribute->name }}"
+                                        name="{{ $product_attribute->name }}" class="attribute-input text-start"
+                                        data-selected-price="0" value="" required readonly>
+                                    <ul id="{{ $product_attribute->name }}-dropdown" class="attribute-dropdown">
+                                        @foreach ($product_attribute->productAttributeTerm()->get() as $term)
+                                            <li data-value="{{ $term->id }}"
+                                                data-add-on-price="{{ $term->getCurrencyParameters('HKD')->price }}">{{ $term->name }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <label class="placeholder-label">
+                                        Choose {{ $product_attribute->name }}
+                                        <div class="d-flex float-end mt-1">
+                                            <i class='fas fa-angle-down'></i>
+                                        </div>
+                                    </label>
                                 </div>
-                            </label>
-                        </div>
-                        @endforeach
+                            @endforeach
                         @endif
                     </div>
                     <div class="row action-button-wrapper">
@@ -105,8 +109,7 @@
                     @endif
                 </ul>
                 <div class="tab-content description" id="myTabContent">
-                    <div class="tab-pane fade show active" id="desciption" role="tabpanel"
-                        aria-labelledby="desciption-tab">
+                    <div class="tab-pane fade show active" id="desciption" role="tabpanel" aria-labelledby="desciption-tab">
                         <div class="content-wrapper">
                             {!! $product->getParameters('en')->description !!}
                         </div>
@@ -124,6 +127,33 @@
                     <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                         <div class="content-wrapper">
                             {!! $product->getParameters('en')->additional_information !!}
+
+                            @if ($product_attribute_list->where('is_variation', 0))
+                                <div class="row mt-5">
+                                    <div class="col-md-4">
+                                        <div>Product Attribute</div>
+                                        @foreach ($product_attribute_list->where('is_variation', 0) as $product_attribute)
+                                            <div class="mt-2">{{ $product_attribute->name }}</div>
+                                        @endforeach
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div>Variation</div>
+                                        @foreach ($product_attribute_list->where('is_variation', 0) as $product_attribute)
+                                            <div class="mt-2">
+                                                @php
+                                                    $termNames = '';
+                                                @endphp
+                                                @foreach ($product_attribute->productAttributeTerm()->get() as $term)
+                                                    @php
+                                                        $termNames .= $term->name . ', ';
+                                                    @endphp
+                                                @endforeach
+                                                {{ rtrim($termNames, ', ') }}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     @if (function_exists('reviewRenderView'))
@@ -230,15 +260,16 @@
                     var selected_price = parseFloat($(this).data('selected-price'));
                     default_price += selected_price;
                 });
-                
-                $('.product-price').text('$' + default_price);
+
+                $('.product-price').text('$' + default_price.toFixed(2));
             });
 
             $('.attribute-input').on('blur', function() {
                 var attribute = $(this).attr('id');
                 var dropdown = attribute + '-dropdown';
                 setTimeout(function() {
-                    if (!$('.input-container input#' + attribute).is(':focus') && !$('#' + dropdown).is(':focus')) {
+                    if (!$('.input-container input#' + attribute).is(':focus') && !$('#' + dropdown)
+                        .is(':focus')) {
                         $('#' + dropdown).removeClass('visible');
                     }
                 }, 100);
@@ -270,7 +301,7 @@
                                     if ($(this).data("number") <= selectedStar) {
                                         $(this).children('img').attr("src",
                                             "{{ asset('assets/web/assets/img/product_details/star_1.png') }}"
-                                            );
+                                        );
                                     }
                                 });
 
@@ -279,7 +310,7 @@
                                 $('.review-star-control').each(function() {
                                     $(this).children('img').attr("src",
                                         "{{ asset('assets/web/assets/img/product_details/star_2.png') }}"
-                                        );
+                                    );
                                 })
                             },
                         )
