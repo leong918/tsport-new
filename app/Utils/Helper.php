@@ -22,7 +22,7 @@ function renderSelect(array $const_array): array
 function renderModelData(array $const_array, string $array_value)
 {
     $const_array = array_flip($const_array);
-    return strtolower($const_array[$array_value]);
+    return $const_array[$array_value];
 }
 
 function getPublicIP()

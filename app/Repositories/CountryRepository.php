@@ -34,6 +34,11 @@ class CountryRepository extends BaseRepository
         return Country::where('status', 1)->orderBy('name')->get();
     }
 
+    public function dropdown(string $key = 'id')
+    {
+        return formalizeDropdown(Country::all(), $key, 'name');
+    }
+
     public function createCountry(array $input)
     {
         $model = new Country();

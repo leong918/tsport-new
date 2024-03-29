@@ -16,26 +16,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col-sm-12">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header"><strong>English</strong> </div>
-                                        <div class="card-body">
-                                            @include("admin.category.en_fields")
-                                        </div>
-                                    </div>
-                                </div>                        
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header"><strong>Chinese</strong></div>
-                                        <div class="card-body">
-                                            @include("admin.category.cn_fields")
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="col-sm-12">
                             <div class="my-3 float-end">
                                 <a href="{{ route("admin.tag.index") }}" class="btn btn-warning">Cancel</a>
