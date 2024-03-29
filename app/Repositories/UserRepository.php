@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Container\Container;
 
 class UserRepository extends BaseRepository
 {
@@ -112,5 +113,17 @@ class UserRepository extends BaseRepository
             'city',
             'address'
         )->find($user_id)->toArray();
+    }
+
+    public function calculateDiscountPoint($user_id)
+    {
+        $settingRepository = new SettingRepository(new Container());
+        if ($user_id) {
+            $user = User::find($user_id);
+            $point_redemption_ratio = $settingRepository->getValueByKey('point_redemption_ratio');
+            return round($user->point * $point_redemption_ratio, 2);
+        }
+
+        return 0;
     }
 }

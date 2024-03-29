@@ -78,6 +78,15 @@ class AdminMenuSeeder extends Seeder
                 'status' => 1
             ],
             [
+                'parent_id' => null,
+                'title' => 'Country',
+                'icon' => 'fa-solid fa-globe',
+                'url' => null,
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
                 'parent_id' => 1,
                 'title' => 'Admin List',
                 'icon' => null,
@@ -153,7 +162,7 @@ class AdminMenuSeeder extends Seeder
                 'parent_id' => 6,
                 'title' => 'Homepage Setting',
                 'icon' => null,
-                'url' => 'admin.setting.index',
+                'url' => 'admin.setting.homepage_index',
                 'type' => 'system_config',
                 'sort' => 1,
                 'status' => 1
@@ -168,6 +177,15 @@ class AdminMenuSeeder extends Seeder
                 'status' => 1
             ],
             [
+                'parent_id' => 6,
+                'title' => 'Global Setting',
+                'icon' => null,
+                'url' => 'admin.setting.global_index',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
                 'parent_id' => 7,
                 'title' => 'Cart Rule List',
                 'icon' => null,
@@ -176,7 +194,15 @@ class AdminMenuSeeder extends Seeder
                 'sort' => 1,
                 'status' => 1
             ],
-            
+            [
+                'parent_id' => 8,
+                'title' => 'Country List',
+                'icon' => null,
+                'url' => 'admin.country.index',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
         ];
 
         foreach ($adminMenus as $adminMenu) {

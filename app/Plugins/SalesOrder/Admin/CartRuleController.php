@@ -20,11 +20,11 @@ class CartRuleController extends Controller
     private CartRuleRepository $cartRuleRepository;
 
     public function __construct(
-        ProductRepository $productRepository, 
-        CategoryRepository $categoryRepository, 
-        BrandRepository $brandRepository, 
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        BrandRepository $brandRepository,
         CartRuleRepository $cartRuleRepository,
-    ){
+    ) {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
@@ -80,8 +80,8 @@ class CartRuleController extends Controller
         $productDropdown = $this->productRepository->dropdown();
         $categoryDropdown = $this->categoryRepository->dropdown();
         $brandDropdown = $this->brandRepository->dropdown();
-        $model->start_date = Carbon::parse($model->start_date)->format('Y-m-d g:i A');
-        $model->end_date = Carbon::parse($model->end_date)->format('Y-m-d g:i A');
+        $model->start_date = $model->start_date ? Carbon::parse($model->start_date)->format('Y-m-d g:i A') : null;
+        $model->end_date = $model->end_date ? Carbon::parse($model->end_date)->format('Y-m-d g:i A') : null;
 
         return view('sales_order::admin.cart_rule.update', compact('model', 'productDropdown', 'categoryDropdown', 'brandDropdown'));
     }
@@ -99,7 +99,6 @@ class CartRuleController extends Controller
         }
 
         return redirect(route('admin.cart_rule.index'))->with('success', "Successfully create cart rule");
-
     }
 
     public function destroy(int $id)

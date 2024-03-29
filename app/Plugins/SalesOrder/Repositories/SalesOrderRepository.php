@@ -57,6 +57,8 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('country_id');
             $table->string('sales_order_id');
             $table->string('payment_method');
+            $table->string('delivery_partner');
+            $table->string('tracking_number')->nullable();
             $table->string('stripe_payment_intent_id')->nullable();
             $table->decimal('subtotal', 16, 2)->default(0);
             $table->decimal('shipping', 16, 2)->default(0);
@@ -65,6 +67,7 @@ class SalesOrderRepository extends BaseRepository
             $table->integer('point')->default(0);
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('payment_status')->default(0);
+            $table->tinyInteger('shipping_fee_status')->default(0);
             $table->string('first_name');
             $table->string('last_name');
             $table->string('company_name')->nullable();
@@ -76,6 +79,8 @@ class SalesOrderRepository extends BaseRepository
             $table->string('city');
             $table->string('address');
             $table->longText('customer_note')->nullable();
+            $table->tinyInteger('is_free_shipping')->default(0);
+            $table->tinyInteger('is_pay_later')->default(0);
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -106,6 +111,7 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('user_id');
             $table->bigInteger('cart_rule_id')->nullable();
             $table->string('title');
+            $table->string('type')->nullable();
             $table->string('code');
             $table->decimal('value', 16, 2)->default(0);
             $table->string('text');
@@ -133,9 +139,11 @@ class SalesOrderRepository extends BaseRepository
             $table->id();
             $table->bigInteger('user_id')->nullable();
             $table->bigInteger('product_id');
-            $table->bigInteger('product_attribute_term_id')->nullable();
+            $table->string('product_attribute_term')->nullable();
             $table->string('user_ip');
+            $table->decimal('price', 16, 2)->default(0);
             $table->integer('quantity');
+            $table->decimal('total_price', 16, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -219,9 +227,12 @@ class SalesOrderRepository extends BaseRepository
 
     public function createOrder($data)
     {
-        $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
-        $id_generator->length(6);
-        $sales_order_id = $id_generator->generate();
+        $sales_order_id = null;
+        if ($data['payment_method'] === 'stripe') {
+            $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
+            $id_generator->length(6);
+            $sales_order_id = $id_generator->generate();
+        }
 
         $order = new SalesOrder();
         $order->fill($data['address']);
@@ -237,5 +248,10 @@ class SalesOrderRepository extends BaseRepository
     public function getSalesOrderId($sales_order_id)
     {
         return SalesOrder::where('sales_order_id', $sales_order_id)->first();
+    }
+
+    public function getOrderByPaymentIntentId($payment_intent_id)
+    {
+        return SalesOrder::where('stripe_payment_intent_id', $payment_intent_id)->first();
     }
 }

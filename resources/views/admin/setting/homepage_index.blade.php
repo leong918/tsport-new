@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('script')
+@section('style')
     @parent
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
     <link rel="stylesheet"
@@ -20,7 +20,7 @@
                 <x-alert />
                 <div class="row">
                     <div class="col-sm-12">
-                        {{ html()->form('POST', route('admin.setting.updateMainSlider.post'))->acceptsFiles()->id('main_slider')->open() }}
+                        {{ html()->form('POST', route('admin.setting.updateSlider.post'))->acceptsFiles()->id('main_slider')->open() }}
 
                         <div class="card mb-3">
                             <div class="card-header"><strong>Main Slider</strong></div>
@@ -79,12 +79,12 @@
                             <div class="card-body">
                                 <div class="row product-field-wrapper">
                                     <div class="col-md-12">
-                                        {{ html()->form('POST', route('admin.setting.updateSubSlider.post'))->acceptsFiles()->id('sub_slider')->open() }}
+                                        {{ html()->model($setting_model)->form('POST', route('admin.setting.updateHomepageSetting.post'))->acceptsFiles()->id('sub_slider')->open() }}
 
                                         <div class="mb-3">
                                             {{ html()->label('Section Title') }}
                                             <div class="input-group">
-                                                {{ html()->text('sub_slider_title')->id('sub_slider_title')->placeholder('Enter Title')->class('form-control')->required()->value(isset($setting_model) ? $setting_model['sub_slider_title'] : null) }}
+                                                {{ html()->text('sub_slider_title')->id('sub_slider_title')->placeholder('Enter Title')->class('form-control')->required() }}
                                                 <button class="btn btn-primary" type="submit">Submit</button>
                                             </div>
                                         </div>
@@ -94,7 +94,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        {{ html()->form('POST', route('admin.setting.updateSubSlider.post'))->acceptsFiles()->id('sub_slider')->open() }}
+                                        {{ html()->form('POST', route('admin.setting.updateSlider.post'))->acceptsFiles()->id('sub_slider')->open() }}
 
                                         <div class="card">
                                             <div class="card-body">
@@ -144,7 +144,7 @@
                         {{ html()->form()->close() }}
 
 
-                        {{ html()->form('POST', route('admin.setting.updateSectionRight.post'))->acceptsFiles()->id('section_right')->open() }}
+                        {{ html()->model($setting_model)->form('POST', route('admin.setting.updateHomepageSetting.post'))->acceptsFiles()->id('section_right')->open() }}
 
                         <div class="card mb-3">
                             <div class="card-header"><strong>Section Right Products</strong></div>
@@ -153,7 +153,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             {{ html()->label('Section Title') }}
-                                            {{ html()->text('section_right_title')->id('section_right_title')->placeholder('Enter Title')->class('form-control')->required()->value(isset($setting_model) ? $setting_model['section_right_title'] : null) }}
+                                            {{ html()->text('section_right_title')->id('section_right_title')->placeholder('Enter Title')->class('form-control')->required() }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -184,7 +184,7 @@
                         {{ html()->form()->close() }}
 
 
-                        {{ html()->form('POST', route('admin.setting.updateSectionLeft.post'))->acceptsFiles()->id('section_left')->open() }}
+                        {{ html()->model($setting_model)->form('POST', route('admin.setting.updateHomepageSetting.post'))->acceptsFiles()->id('section_left')->open() }}
 
                         <div class="card mb-3">
                             <div class="card-header"><strong>Section Left Products</strong></div>
@@ -193,7 +193,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             {{ html()->label('Section Title') }}
-                                            {{ html()->text('section_left_title')->id('section_left_title')->placeholder('Enter Title')->class('form-control')->required()->value(isset($setting_model) ? $setting_model['section_left_title'] : null) }}
+                                            {{ html()->text('section_left_title')->id('section_left_title')->placeholder('Enter Title')->class('form-control')->required() }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -223,7 +223,7 @@
                         {{ html()->form()->close() }}
 
 
-                        {{ html()->form('POST', route('admin.setting.updateSectionCenter.post'))->acceptsFiles()->id('section_center')->open() }}
+                        {{ html()->model($setting_model)->form('POST', route('admin.setting.updateHomepageSetting.post'))->acceptsFiles()->id('section_center')->open() }}
 
                         <div class="card mb-3">
                             <div class="card-header"><strong>Section Center Products</strong></div>
@@ -232,7 +232,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             {{ html()->label('Section Title') }}
-                                            {{ html()->text('section_center_title')->id('section_center_title')->placeholder('Enter Title')->class('form-control')->required()->value(isset($setting_model) ? $setting_model['section_center_title'] : null) }}
+                                            {{ html()->text('section_center_title')->id('section_center_title')->placeholder('Enter Title')->class('form-control')->required() }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -262,7 +262,7 @@
                         {{ html()->form()->close() }}
 
 
-                        {{ html()->form('POST', route('admin.setting.updateSectionRecommended.post'))->acceptsFiles()->id('section_recommended')->open() }}
+                        {{ html()->model($setting_model)->form('POST', route('admin.setting.updateHomepageSetting.post'))->acceptsFiles()->id('section_recommended')->open() }}
 
                         <div class="card mb-3">
                             <div class="card-header"><strong>Section Recommended Products</strong></div>
@@ -271,7 +271,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             {{ html()->label('Section Title') }}
-                                            {{ html()->text('recommended_title')->id('recommended_title')->placeholder('Enter Title')->class('form-control')->required()->value(isset($setting_model) ? $setting_model['recommended_title'] : null) }}
+                                            {{ html()->text('recommended_title')->id('recommended_title')->placeholder('Enter Title')->class('form-control')->required() }}
                                         </div>
                                     </div>
                                     <div class="col-md-6">

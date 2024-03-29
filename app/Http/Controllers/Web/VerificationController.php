@@ -64,7 +64,9 @@ class VerificationController extends Controller
             $this->pointLogRepository->create($pointLogData);
 
             if (function_exists('updateUserOwnerCart')) {
-                updateUserOwnerCart($user->id);
+                $user_ip = getPublicIp();
+                $coupon_session = $request->session()->pull('coupon-' . $user_ip) ?? array();
+                updateUserOwnerCart($user->id, $coupon_session);
             }
         }
 
