@@ -35,10 +35,9 @@ class SalesOrderLogRepository extends BaseRepository
     {
         $salesOrderLog = new SalesOrderLog();
         $salesOrderLog->sales_order_id = $order->id;
-        if($table == 'user')
-        {
+        if($table == 'user') {
             $salesOrderLog->user_id = $table_id;
-        }else if ($table == 'admin'){
+        }else if ($table == 'admin') {
             $salesOrderLog->user_id = $order->user_id;
             $salesOrderLog->admin_id = $table_id;
         }

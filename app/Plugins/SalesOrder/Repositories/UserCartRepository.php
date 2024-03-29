@@ -176,4 +176,9 @@ class UserCartRepository extends BaseRepository
 
         return $subtotal;
     }
+
+    public function clearCart($user_id)
+    {
+        UserCart::where('user_id', $user_id)->delete();
+    }
 }

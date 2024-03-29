@@ -39,11 +39,10 @@ class SalesOrder extends Model
     public const PAYMENT_STATUS = [
         'UNPAID' => 0,
         'PAID' => 1,
+        'FAILED' => -1,
     ];
 
     protected $table = 'sales_order';
-
-
     
     /**
      * The attributes that are mass assignable.

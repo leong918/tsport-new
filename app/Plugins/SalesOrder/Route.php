@@ -3,6 +3,7 @@
 use App\Plugins\SalesOrder\Web\CartController;
 use App\Plugins\SalesOrder\Admin\SalesOrderController;
 use App\Plugins\SalesOrder\Admin\CartRuleController;
+use App\Plugins\SalesOrder\API\StripeController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['web']], function () {
@@ -47,13 +48,11 @@ Route::group(['middleware' => ['web']], function () {
         Route::delete('cart_rule/delete/{id}', [CartRuleController::class, 'destroy'])->name('destroy.delete');
         Route::post('cart_rule/status/{id}', [CartRuleController::class, 'toggleStatus'])->name('status.post');
     });
+});
 
-    /**
-     * Route api
-     */
-    Route::group(['prefix' => 'stripe'], function () {
-        Route::post("/webhook", 'StripeController@webhook');
-        Route::post("/paymentSucceed", 'StripeController@paymentSucceed');
-        Route::post("/paymentFailed", 'StripeController@paymentFailed');
-    });
+/**
+ * Route api
+ */
+Route::group(['prefix' => 'stripe'], function () {
+    Route::post("/webhook", [StripeController::class, 'webhook']);
 });

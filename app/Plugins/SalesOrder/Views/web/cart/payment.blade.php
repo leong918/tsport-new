@@ -113,7 +113,7 @@
                     data: {
                         payment_method: payment_method,
                         stripe_payment_intent_id: $('#payment-element').data('code'),
-                        cart_total: "{{ json_encode($cartTotal) }}"
+                        cart_total: "{{ $cartTotal['total'] }}"
                     }
                 })
                 .then(response => {

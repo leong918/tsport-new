@@ -177,7 +177,6 @@ class CartController extends BaseController
             // refetch user cart total
             $user_data = $this->getUserDataAndType();
             $addressData = $request->session()->get('cart-' . auth()->user()->id);
-            $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
             $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
             $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
             $intentSecret = json_encode($this->createPaymentIntent($cartTotal['total']));
@@ -209,10 +208,15 @@ class CartController extends BaseController
     {
         $user_data = $this->getUserDataAndType();
         $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
+        $addressData = $request->session()->get('cart-' . auth()->user()->id);
+        $coupon_session = $request->session()->get('coupon-' . auth()->user()->id) ?? array();
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
 
-        // // //
         //do checking check total is same or not, if not same need redirect back
-        // // //
+        if ($request->cart_total != $cartTotal['total']) {
+            session()->flash('swal_error', 'Cart total is different, please refer latest price');
+            return response()->json(['msg' => null, 'redirect' => true], 500);
+        }
 
         // refresh the page again to trigger error or generate new payment intent id
         if ($user_cart->count() <= 0 || !$request->session()->get('cart-' . auth()->user()->id)) {
@@ -227,7 +231,7 @@ class CartController extends BaseController
             $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
 
             if (!$order) {
-                $order = $this->salesOrderRepository->createOrder($data);
+                $order = $this->salesOrderRepository->createOrder($data, $cartTotal['total']);
                 $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
                 $description = 'New Order';
                 $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
