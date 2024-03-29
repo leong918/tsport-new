@@ -121,10 +121,10 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.brand_added")}}',
                     text: '{{__("page.txt_brand_added")}}',
-                    type: 'success',
+                    icon: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: '{{__("page.ok")}}',
                 });
@@ -133,10 +133,10 @@
                 }, 1000);
             })
             .catch(error => {
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.brand_fail_add")}}',
                     text: error.response.data.msg,
-                    type: 'error',
+                    icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: '{{__("page.ok")}}',
                 });

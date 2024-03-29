@@ -41,10 +41,10 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.tag_added")}}',
                     text: '{{__("page.txt_tag_added")}}',
-                    type: 'success',
+                    icon: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: '{{__("page.ok")}}',
                 });
@@ -53,10 +53,10 @@
                 }, 1000);
             })
             .catch(error => {
-                swal.fire({
+                Swal.fire({
                     title: '{{__("page.tag_fail_add")}}',
                     text: error.response.data.msg,
-                    type: 'error',
+                    icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: '{{__("page.ok")}}',
                 });
