@@ -26,7 +26,8 @@
                                                 <div class="row" id="optionContent">
                                                     <div class="col-sm-12 optionContent" data-option-id="1">
                                                         <div class="card">
-                                                            <div class="card-header bg-light d-flex justify-content-between">
+                                                            <div
+                                                                class="card-header bg-light d-flex justify-content-between">
                                                                 <div class="front d-flex">
                                                                     <div class="input-group" style="width: 100%">
                                                                         <input type="text" class="form-control"
@@ -48,10 +49,10 @@
                                                                             class="d-flex flex-wrap justify-content-between">
                                                                             <div class="inputBoxes d-flex flex-wrap">
                                                                                 <div class="m-2 ms-0">
-                                                                                    <input type="text"
+                                                                                    <textarea type="text"
                                                                                         class="form-control" required
                                                                                         placeholder="{{ __('Attribute Term') }}"
-                                                                                        name="option[1][variation][1][term_name]">
+                                                                                        name="option[1][variation][1][term_name]" style="height: 37px"></textarea>
                                                                                 </div>
                                                                                 <div class="m-2 ms-0">
                                                                                     <input type="text"
@@ -59,7 +60,6 @@
                                                                                         placeholder="{{ __('SKU') }}"
                                                                                         name="option[1][variation][1][term_sku]">
                                                                                 </div>
-
                                                                                 <div class="m-2 ms-0">
                                                                                     <input type="number"
                                                                                         class="form-control" required
@@ -67,11 +67,29 @@
                                                                                         placeholder="{{ __('Quantity') }}"
                                                                                         name="option[1][variation][1][term_qty]">
                                                                                 </div>
+                                                                                <div class="m-2 ms-0">
+                                                                                    <input type="number"
+                                                                                        class="form-control" required
+                                                                                        min="0.01"
+                                                                                        step="0.01"
+                                                                                        placeholder="{{ __('Add On Price') }}"
+                                                                                        name="option[1][variation][1][term_add_on_price]">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </li>
                                                             </ul>
+                                                            <div class="card-footer">
+                                                                <div class="d-flex align-items-center mb-2">
+                                                                    <input id="attributeStatus" type="checkbox" name="option[1][attribute_status]">
+                                                                    <span class="ms-2">Visible on product page</span>
+                                                                </div>
+                                                                <div class="d-flex align-items-center">
+                                                                    <input id="is_variation" type="checkbox" name="option[1][is_variation]">
+                                                                    <span class="ms-2">Used for variations</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -122,7 +140,7 @@
                         <div class="d-flex flex-wrap justify-content-between">
                             <div class="inputBoxes d-flex flex-wrap">
                                 <div class="m-2 ms-0">
-                                    <input type="text" class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]">
+                                    <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" style="height: 37px"></textarea>
                                 </div>
                                 <div class="m-2 ms-0">
                                     <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
@@ -131,11 +149,29 @@
                                 <div class="m-2 ms-0">
                                     <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
                                 </div>
+                                <div class="m-2 ms-0">
+                                    <input type="number"
+                                        class="form-control" required
+                                        min="0.01"
+                                        step="0.01"
+                                        placeholder="{{ __('Add On Price') }}"
+                                        name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </li>
             </ul>
+            <div class="card-footer">
+                <div class="d-flex align-items-center mb-2">
+                    <input type="checkbox" name="option[@{{id}}][attribute_status]">
+                    <span class="ms-2">Visible on product page</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <input type="checkbox" name="option[@{{id}}][is_variation]">
+                    <span class="ms-2">Used for variations</span>
+                </div>
+            </div>
         </div>
     </div>
 </script>
@@ -147,14 +183,21 @@
                 <div class="d-flex flex-wrap justify-content-between">
                     <div class="inputBoxes d-flex flex-wrap">
                         <div class="m-2 ms-0">
-                            <input type="text" class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]">
+                            <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" style="height: 37px"></textarea>
                         </div>
                         <div class="m-2 ms-0">
                             <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
                         </div>
-    
                         <div class="m-2 ms-0">
                             <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
+                        </div>
+                        <div class="m-2 ms-0">
+                            <input type="number"
+                                class="form-control" required
+                                min="0.01"
+                                step="0.01"
+                                placeholder="{{ __('Add On Price') }}"
+                                name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
                         </div>
                     </div>
                 </div>

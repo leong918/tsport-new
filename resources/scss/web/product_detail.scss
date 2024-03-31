@@ -186,35 +186,114 @@
                 font-size: 20px;
             }
 
-            .product-quantity-wrapper {
-                .action-button {
-                    border: 1px solid #9A835E;
-                    background: transparent;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
+            
+        }
+
+        .product-quantity-wrapper {
+            .action-button {
+                border: 1px solid #9A835E;
+                background: transparent;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 40px;
+                width: 40px;
+                cursor: pointer;
+
+                img {
+                    width: 70%;
                     height: 40px;
-                    width: 40px;
-                    cursor: pointer;
+                    object-fit: contain;
+                }
+            }
 
-                    img {
-                        width: 70%;
-                        height: 40px;
-                        object-fit: contain;
+            .quantity-text {
+                width: 50px;
+                height: 100%;
+                border: none;
+                text-align: center;
+                background: transparent;
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+
+        .input-container{
+            position: relative;
+            #dropdownMenuButton{
+                margin: 25px 0;
+                text-align: start;
+            }
+            .dropdown-menu{
+                width: 100%;
+            }
+            input[type=text], input[type=password], input[type=email], input[type=number], #dropdownMenuButton{
+                width: 100%;
+                padding-top: 20px;
+                padding-bottom: 5px;
+                padding-left: 5px;
+                background: transparent;
+                border: none;
+                border-bottom: 1px solid #9A835E;
+                color:#6D5E44;
+                font-size: 15px;
+
+                &:focus{
+                    outline: none;
+                    
+                    ~ .placeholder-label{
+                        color:#9A835E;
+                        top:0;
+                    }
+
+                    // &:not(.birth-input) ~ .placeholder-label{
+                    //     top:0;
+                    // }
+                }
+                &:not(:placeholder-shown) {
+                    
+                    ~ .placeholder-label{
+                        color:#9A835E;
+                        top:0;
                     }
                 }
+            }
 
-                .quantity-text {
-                    width: 50px;
-                    height: 100%;
-                    border: none;
-                    text-align: center;
-                    background: transparent;
-                    &:focus {
-                        outline: none;
-                    }
+            .placeholder-label{
+                width: 100%;
+                color:#C4B9A6;
+                font-size: 15px;
+                position: absolute;
+                top: 5px;
+                left: 0;
+                transition: transform 0.3s ease-out;
+                transform-origin: 0 0;
+                padding-left:5px;
+            }
+        }
+        .attribute-dropdown{
+            position: absolute;
+            visibility:hidden;
+            width: 100%;
+            height: 85px;
+            background-color: white;
+            list-style: none;
+            padding:0;
+            margin: 0;
+            overflow-y: scroll;
+            z-index: 1; 
+            li{
+                font-size: 15px;
+                padding: 10px 10px;
+                &:hover{
+                    background-color: #C4B9A6;
                 }
+            }
+
+            &::-webkit-scrollbar{
+                display: none;
             }
         }
 

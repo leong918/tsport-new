@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('product_id');
             $table->string('name');
+            $table->tinyInteger("status")->default(0);
+            $table->tinyInteger("is_variation")->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

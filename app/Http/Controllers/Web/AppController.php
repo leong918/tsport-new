@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\CategoryRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\ProductAttributeRepository;
 use App\Repositories\SettingRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\BlogRepository;
@@ -24,6 +25,7 @@ class AppController extends BaseController
     private UserRepository $userRepository;
     private SettingRepository $settingRepository;
     private SliderRepository $sliderRepository;
+    private ProductAttributeRepository $productAttributeRepository;
 
     public function __construct(
         ProductRepository $productRepository, 
@@ -34,6 +36,7 @@ class AppController extends BaseController
         UserRepository $userRepository, 
         SettingRepository $settingRepository,
         SliderRepository $sliderRepository,
+        ProductAttributeRepository $productAttributeRepository,
     ){
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
@@ -43,6 +46,7 @@ class AppController extends BaseController
         $this->userRepository = $userRepository;
         $this->settingRepository = $settingRepository;
         $this->sliderRepository = $sliderRepository;
+        $this->productAttributeRepository = $productAttributeRepository;
     }
 
     public function index()
@@ -93,11 +97,13 @@ class AppController extends BaseController
         $product = $this->productRepository->getProductByAlias($alias, 'HKD');
         $product_category = $this->categoryRepository->find($product->category_id);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
+        $product_attribute_list = $this->productAttributeRepository->getListing()
+                                ->where(['product_id' => $product->id, 'status' => 1])->get();
 
         if ($product_parent_category) {
-            return $this->view('product_detail', compact('product', 'product_parent_category'));
+            return $this->view('product_detail', compact('product', 'product_parent_category', 'product_attribute_list'));
         } else {
-            return $this->view('product_detail', compact('product'));
+            return $this->view('product_detail', compact('product', 'product_attribute_list'));
         }
     }
     public function productNew()

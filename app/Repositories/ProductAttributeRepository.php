@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ProductAttribute;
 use App\Models\ProductAttributeTerm;
+use App\Models\ProductPrice;
 use App\Traits\FileUpload;
 use Illuminate\Container\Container;
 
@@ -51,6 +52,7 @@ class ProductAttributeRepository extends BaseRepository
 
         //------ delete attribute term  ------------
         ProductAttributeTerm::where('product_id', $product_id)->whereIn('product_attribute_id', $productAttributeId)->delete();
+        ProductPrice::where('product_id', $product_id)->whereNotNull('product_attribute_term_id')->delete();
         $productAttribute->delete();
 
         foreach ($input['option'] as $data) {
@@ -58,6 +60,8 @@ class ProductAttributeRepository extends BaseRepository
             $model = new ProductAttribute();
             $model->product_id = $product_id;
             $model->name = $data['attribute_name'];
+            $model->status = isset($data['attribute_status']) ? 1 : 0;
+            $model->is_variation = isset($data['is_variation']) ? 1 : 0;
             $model->save();
 
             $productAttributeTerm = new ProductAttributeTermRepository(new Container());
