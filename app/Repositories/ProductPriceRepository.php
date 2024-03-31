@@ -38,7 +38,7 @@ class ProductPriceRepository extends BaseRepository
 
     public function createProductPrice(array $input, int $product_id)
     {
-        ProductPrice::where('product_id', $product_id)->delete();
+        ProductPrice::where(['product_id' => $product_id, 'product_attribute_term_id' => null])->delete();
 
         $productRepository = new ProductRepository(new Container());
         $product = $productRepository->find($product_id);
@@ -51,6 +51,23 @@ class ProductPriceRepository extends BaseRepository
         $model->currency_id = $currency->id;
         $model->code = $currency->code;
         $model->price = $input['product_price'];
+        $model->save();
+    }
+
+    public function createAttributeTermPrice(array $input, $term_model)
+    {
+        $productRepository = new ProductRepository(new Container());
+        $product = $productRepository->find($term_model->product_id);
+
+        $currencyRepository = new CurrencyRepository(new Container());
+        $currency = $currencyRepository->getCurrencyByCode('HKD');
+
+        $model = new ProductPrice();
+        $model->product_id = $product->id;
+        $model->currency_id = $currency->id;
+        $model->code = $currency->code;
+        $model->product_attribute_term_id = $term_model->id;
+        $model->price = $input['term_add_on_price'];
         $model->save();
     }
 }

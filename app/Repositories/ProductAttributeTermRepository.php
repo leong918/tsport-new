@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ProductAttributeTerm;
+use App\Models\ProductPrice;
 use App\Traits\FileUpload;
 use Illuminate\Container\Container;
 
@@ -65,6 +66,9 @@ class ProductAttributeTermRepository extends BaseRepository
             }
 
             $term_model->save();
+
+            $productPrice = new ProductPriceRepository(new Container());
+            $productPrice->createAttributeTermPrice($term, $term_model);
 
             $productBalanceLog = new ProductBalanceLogRepository(new Container());
             $productBalanceLog->createProductBalanceLog($term_model, $term);

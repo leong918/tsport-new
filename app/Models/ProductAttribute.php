@@ -29,6 +29,8 @@ class ProductAttribute extends Model
     protected $fillable = [
         'product_id',
         'name',
+        'status',
+        'is_variation',
     ];
 
     /**
