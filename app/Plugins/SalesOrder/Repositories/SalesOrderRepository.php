@@ -12,7 +12,8 @@ use App\Mail\CustomerNoteMail;
 use Illuminate\Container\Container;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Repositories\CountryRepository;
-use App\Repositories\SettingRepository;
+use App\Repositories\UserRepository;
+use Carbon\Carbon;
 
 class SalesOrderRepository extends BaseRepository
 {
@@ -65,7 +66,8 @@ class SalesOrderRepository extends BaseRepository
             $table->decimal('shipping', 16, 2)->default(0);
             $table->decimal('discount', 16, 2)->default(0);
             $table->decimal('total', 16, 2)->default(0);
-            $table->integer('point')->default(0);
+            $table->integer('point_earned')->default(0);
+            $table->integer('point_used')->default(0);
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('payment_status')->default(0);
             $table->tinyInteger('shipping_fee_status')->default(0);
@@ -220,24 +222,27 @@ class SalesOrderRepository extends BaseRepository
         $model->save();
     }
 
-    public function createOrder($data, $total_amount)
+    public function createOrder($data, $cartTotal)
     {
         $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
         $id_generator->length(6);
         $sales_order_id = $id_generator->generate();
 
-        //calculate point earned (use from product point value)
-        // $settingRepository = new SettingRepository(new Container());
-        // $spend_amount = $settingRepository->getValueByKey('spend_amount');
-        // $point_earn = $settingRepository->getValueByKey('point_earn');
-        // $data['point'] = round($total_amount / $spend_amount * $point_earn);
-
         $order = new SalesOrder();
         $order->fill($data['address']);
+        $order->delivery_partner = $cartTotal['delivery_partner'];
         $order->user_id = $data['user_id'];
+        $order->point_earned = $data['point_earned'];
         $order->sales_order_id = $sales_order_id;
+        $order->subtotal = $cartTotal['subtotal'];
+        $order->shipping = $cartTotal['shipping_fee'];
+        $order->discount = $cartTotal['total_discount_amount'];
+        $order->total = $cartTotal['total'];
+        $order->point_used = $cartTotal['point_redemption'];
         $order->payment_method = $data['payment_method'];
         $order->stripe_payment_intent_id = $data['payment_method'] === 'stripe' ? $data['stripe_payment_intent_id']['clientSecret'] : null;
+        $order->is_free_shipping = $cartTotal['is_free_shipping'];
+        $order->is_pay_later = $cartTotal['is_pay_later'];
         $order->save();
 
         return $order;
@@ -258,23 +263,36 @@ class SalesOrderRepository extends BaseRepository
         $sales_order = SalesOrder::where('stripe_payment_intent_id', $stripe_client_secret)->first();
         if ($sales_order) {
             $order_status = $status == 1 ? 2 : -2;
-            $description = 'Stripe Payment Update. Status: ' . $status == 1 ? 'Success' : 'Failed';
+            $description = 'Stripe Payment Update. Status: ' . array_flip(SalesOrder::ORDER_STATUS)[$status];
 
             $sales_order->payment_status = $status;
             $sales_order->status = $order_status;
-            $sales_order->save();
 
             if ($status == 1) {
+                $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
+                $sales_order->payment_at = Carbon::now();
+
                 $userCartRepository = new UserCartRepository(new Container());
                 $userCartRepository->clearCart($sales_order->user_id);
-                session()->flush('cart-' . auth()->user()->id);
-                session()->flush('coupon-' . auth()->user()->id);
+                session()->flush('cart-' . $sales_order->user_id);
+                session()->flush('coupon-' . $sales_order->user_id);
+
+                if ($sales_order->point_earned > 0) {
+                    //add point
+                    $userRepository = new UserRepository(new Container());
+                    $userRepository->addOrderPoint($sales_order);
+                }
+            } else {
+                if ($sales_order->point_used > 0) {
+                    // return point
+                    $userRepository = new UserRepository(new Container());
+                    $userRepository->returnFullPoint($sales_order, array_flip(SalesOrder::ORDER_STATUS)[$status]);
+                }
             }
+            $sales_order->save();
 
             $salesOrderLogRepository = new SalesOrderLogRepository(new Container());
             $salesOrderLogRepository->createLog($sales_order, $sales_order->user_id, 'user', $order_status, $description);
         }
-
-        // add point to customer
     }
 }

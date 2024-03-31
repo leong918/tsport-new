@@ -60,9 +60,9 @@ class StripeController extends Controller
         $this->salesOrderRepository->updateStripeSalesOrder($object->client_secret, 1);
     }
 
-    public function paymentFailed($event)
+    public function paymentFailed($object)
     {
-        $this->salesOrderRepository->updateStripeSalesOrder($event->data->client_secret, -1);
+        $this->salesOrderRepository->updateStripeSalesOrder($object->client_secret, -1);
     }
 }
 ?>

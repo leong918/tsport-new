@@ -9,6 +9,7 @@ use App\Repositories\ProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
+use App\Plugins\SalesOrder\Repositories\SalesOrderTotalRepository;
 use App\Plugins\SalesOrder\Repositories\CartRuleRepository;
 use App\Http\Controllers\Web\BaseController;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class CartController extends BaseController
     private SalesOrderRepository $salesOrderRepository;
     private SalesOrderProductRepository $salesOrderProductRepository;
     private SalesOrderLogRepository $salesOrderLogRepository;
+    private SalesOrderTotalRepository $salesOrderTotalRepository;
     private CartRuleRepository $cartRuleRepository;
 
     public function __construct(
@@ -34,6 +36,7 @@ class CartController extends BaseController
         SalesOrderRepository $salesOrderRepository,
         SalesOrderProductRepository $salesOrderProductRepository,
         SalesOrderLogRepository $salesOrderLogRepository,
+        SalesOrderTotalRepository $salesOrderTotalRepository,
         CartRuleRepository $cartRuleRepository
     ) {
         $this->userCartRepository = $userCartRepository;
@@ -43,6 +46,7 @@ class CartController extends BaseController
         $this->salesOrderRepository = $salesOrderRepository;
         $this->salesOrderProductRepository = $salesOrderProductRepository;
         $this->salesOrderLogRepository = $salesOrderLogRepository;
+        $this->salesOrderTotalRepository = $salesOrderTotalRepository;
         $this->cartRuleRepository = $cartRuleRepository;
     }
 
@@ -229,10 +233,14 @@ class CartController extends BaseController
             $data['user_id'] = auth()->user()->id;
             $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
             $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
-
+            
             if (!$order) {
-                $order = $this->salesOrderRepository->createOrder($data, $cartTotal['total']);
+                $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
+                $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
                 $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
+                $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
+                $this->userRepository->deductFullPoint($order);
+
                 $description = 'New Order';
                 $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
             }

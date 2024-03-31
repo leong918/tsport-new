@@ -126,4 +126,45 @@ class UserRepository extends BaseRepository
 
         return 0;
     }
+
+    public function deductFullPoint($order)
+    {
+        $user = User::find($order->user_id);
+        $point = $user->point;
+
+        $user->point = 0;
+        $user->save();
+
+        $pointLogRepository = new PointLogRepository(new Container());
+        $pointLogData['user_id'] = $user->id;
+        $pointLogData['point'] = -$point;
+        $pointLogData['remark'] = 'Create New Order '.$order->sales_order_id;
+        $pointLogRepository->create($pointLogData);
+    }
+
+    public function returnFullPoint($order, $status)
+    {
+        $user = User::find($order->user_id);
+        $user->point += $order->point_used;
+        $user->save();
+
+        $pointLogRepository = new PointLogRepository(new Container());
+        $pointLogData['user_id'] = $user->id;
+        $pointLogData['point'] = $order->point_used;
+        $pointLogData['remark'] = 'Return Point due to order '.$order->sales_order_id.' '.$status;
+        $pointLogRepository->create($pointLogData);
+    }
+
+    public function addOrderPoint($order)
+    {
+        $user = User::find($order->user_id);
+        $user->point += $order->point_earned;
+        $user->save();
+
+        $pointLogRepository = new PointLogRepository(new Container());
+        $pointLogData['user_id'] = $user->id;
+        $pointLogData['point'] = $order->point_earned;
+        $pointLogData['remark'] = 'Add point from order '.$order->sales_order_id;
+        $pointLogRepository->create($pointLogData);
+    }
 }

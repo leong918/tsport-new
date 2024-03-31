@@ -55,13 +55,17 @@ class SalesOrder extends Model
         'address_id',
         'sales_order_id',
         'payment_method',
+        'delivery_partner',
         'stripe_payment_intent_id',
         'subtotal',
         'shipping',
         'discount',
         'total',
-        'point',
+        'point_earned',
+        'point_used',
         'status',
+        'payment_status',
+        'shipping_fee_status',
         'first_name',
         'last_name',
         'company_name',
@@ -74,6 +78,8 @@ class SalesOrder extends Model
         'address',
         'customer_note',
         'completed_at',
+        'is_free_shipping',
+        'is_pay_later',
     ];
 
     /**

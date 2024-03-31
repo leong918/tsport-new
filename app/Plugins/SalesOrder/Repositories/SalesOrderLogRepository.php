@@ -4,7 +4,6 @@ namespace App\Plugins\SalesOrder\Repositories;
 
 use App\Plugins\SalesOrder\Models\SalesOrderLog;
 use App\Repositories\BaseRepository;
-use Illuminate\Container\Container;
 
 class SalesOrderLogRepository extends BaseRepository
 {
