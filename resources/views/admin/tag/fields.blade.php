@@ -41,7 +41,7 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.tag_added")}}',
                     text: '{{__("page.txt_tag_added")}}',
                     icon: 'success',
@@ -53,7 +53,7 @@
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.tag_fail_add")}}',
                     text: error.response.data.msg,
                     icon: 'error',

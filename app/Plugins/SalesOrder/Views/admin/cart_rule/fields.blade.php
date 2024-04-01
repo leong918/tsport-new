@@ -214,7 +214,7 @@
                 var end_date = $('#end_date_input').val();
 
                 if (new Date(end_date) < new Date(start_date)) {
-                    Swal.fire({
+                    swal.fire({
                         title: 'Error',
                         text: 'End date cannot be earlier than start date!',
                         icon: 'warning',
@@ -276,7 +276,7 @@
                     },
                 })
                 .then(response => {
-                    Swal.fire({
+                    swal.fire({
                         title: 'Success',
                         text: 'Cart Rule Added!',
                         icon: 'success',
@@ -288,7 +288,7 @@
                     }, 1000);
                 })
                 .catch(error => {
-                    Swal.fire({
+                    swal.fire({
                         title: 'Fail',
                         text: error.response.data.msg,
                         icon: 'error',
