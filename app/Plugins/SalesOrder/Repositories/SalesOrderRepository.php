@@ -85,7 +85,8 @@ class SalesOrderRepository extends BaseRepository
             $table->longText('customer_note')->nullable();
             $table->tinyInteger('is_free_shipping')->default(0);
             $table->tinyInteger('is_pay_later')->default(0);
-            $table->timestamp('payment_at')->nullable();
+            $table->timestamp('payment_succeed_at')->nullable();
+            $table->timestamp('payment_failed_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -277,15 +278,14 @@ class SalesOrderRepository extends BaseRepository
     {
         $sales_order = SalesOrder::where('stripe_payment_intent_id', $stripe_client_secret)->first();
         if ($sales_order) {
-            $order_status = $status == 1 ? 2 : -2;
             $description = 'Stripe Payment Update. Status: ' . array_flip(SalesOrder::ORDER_STATUS)[$status];
 
             $sales_order->payment_status = $status;
-            $sales_order->status = $order_status;
+            $sales_order->status = $status;
 
             if ($status == 1) {
                 $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
-                $sales_order->payment_at = Carbon::now();
+                $sales_order->payment_succeed_at = Carbon::now();
 
                 $userCartRepository = new UserCartRepository(new Container());
                 $userCartRepository->clearCart($sales_order->user_id);
@@ -298,6 +298,8 @@ class SalesOrderRepository extends BaseRepository
                     $userRepository->addOrderPoint($sales_order);
                 }
             } else {
+                $sales_order->payment_failed_at = Carbon::now();
+
                 if ($sales_order->point_used > 0) {
                     // return point
                     $userRepository = new UserRepository(new Container());
@@ -307,7 +309,7 @@ class SalesOrderRepository extends BaseRepository
             $sales_order->save();
 
             $salesOrderLogRepository = new SalesOrderLogRepository(new Container());
-            $salesOrderLogRepository->createLog($sales_order, $sales_order->user_id, 'user', $order_status, $description);
+            $salesOrderLogRepository->createLog($sales_order, $sales_order->user_id, 'user', $status, $description);
         }
     }
 }
