@@ -83,7 +83,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Point') }}
-                        {{ html()->number('point')->placeholder('Enter point')->attribute('min', 0)->class('form-control') }}
+                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control') }}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -141,6 +141,30 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
+                        {{ html()->label('Information') }}
+                        {{ html()->textarea('language[cn][information]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->information : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Description') }}
+                        {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->description : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Ingredient') }}
+                        {{ html()->textarea('language[cn][ingredient]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->ingredient : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Usage') }}
+                        {{ html()->textarea('language[cn][usage]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->usage : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="mb-3">
                         {{ html()->label('Image') }}
                         {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control')->required(isset($model) && $model->productImage->count() > 0 ? false : true) }}
                         <br />
@@ -159,8 +183,6 @@
         </div>
     </div>
 </div>
-
-@include('admin.product.language')
 
 @section('script')
 @parent
@@ -372,9 +394,10 @@
 
         //----------------- add attribute term -------------------
         $('body').on('click', '.btn-addOption', function() {
+            var option_id = $(this).parents('.optionContent').data('option-id');
             var template = document.getElementById('optionVariationLayout').innerHTML;
             var rendered = Mustache.render(template, {
-                id: attributeCount,
+                id: option_id,
                 variation_id: additionalTermOption,
             });
             $(this).parents('.optionContent').find('.list-group').append(rendered);
@@ -425,9 +448,9 @@
                     confirmButtonClass: 'btn btn-success',
                     confirmButtonText: 'OK',
                 });
-                setTimeout(function() {
-                    window.location.replace('/admin/product/index');
-                }, 1000);
+                // setTimeout(function() {
+                //     window.location.replace('/admin/product/index');
+                // }, 1000);
             })
             .catch(error => {
                 Swal.fire({

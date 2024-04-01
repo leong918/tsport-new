@@ -78,6 +78,14 @@
                                                                                                         name="option[{{ $attribute_key }}][variation][{{ $key }}][term_add_on_price]"
                                                                                                         value="{{ $term->getCurrencyParameters('HKD')->price }}">
                                                                                                 </div>
+                                                                                                <div class="m-2 ms-0">
+                                                                                                    <label for="">Add On Point</label>
+                                                                                                    <input type="number"
+                                                                                                        class="form-control" required
+                                                                                                        min="0"
+                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][term_add_on_point]"
+                                                                                                        value="{{ $term->point_value }}">
+                                                                                                </div>
                                                                                             </div>
                                                                                             
                                                                                             <div class="col-md-5 col-5">
@@ -235,6 +243,13 @@
                                         placeholder="{{ __('Add On Price') }}"
                                         name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
                                 </div>
+                                <div class="m-2 ms-0">
+                                    <input type="number"
+                                        class="form-control" required
+                                        min="0"
+                                        placeholder="{{ __('Add On Point') }}"
+                                        name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_point]">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -276,6 +291,13 @@
                                 step="0.01"
                                 placeholder="{{ __('Add On Price') }}"
                                 name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
+                        </div>
+                        <div class="m-2 ms-0">
+                            <input type="number"
+                                class="form-control" required
+                                min="0"
+                                placeholder="{{ __('Add On Point') }}"
+                                name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_point]">
                         </div>
                     </div>
                 </div>

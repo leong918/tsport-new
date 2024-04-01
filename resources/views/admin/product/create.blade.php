@@ -75,6 +75,13 @@
                                                                                         placeholder="{{ __('Add On Price') }}"
                                                                                         name="option[0][variation][0][term_add_on_price]">
                                                                                 </div>
+                                                                                <div class="m-2 ms-0">
+                                                                                    <input type="number"
+                                                                                        class="form-control" required
+                                                                                        min="0"
+                                                                                        placeholder="{{ __('Add On Point') }}"
+                                                                                        name="option[0][variation][0][term_add_on_point]">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -155,6 +162,13 @@
                                         placeholder="{{ __('Add On Price') }}"
                                         name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
                                 </div>
+                                <div class="m-2 ms-0">
+                                    <input type="number"
+                                        class="form-control" required
+                                        min="0"
+                                        placeholder="{{ __('Add On Point') }}"
+                                        name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_point]">
+                                </div>  
                             </div>
                         </div>
                     </div>
@@ -196,6 +210,13 @@
                                 step="0.01"
                                 placeholder="{{ __('Add On Price') }}"
                                 name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
+                        </div>
+                        <div class="m-2 ms-0">
+                            <input type="number"
+                                class="form-control" required
+                                min="1"
+                                placeholder="{{ __('Add On Point') }}"
+                                name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_point]">
                         </div>
                     </div>
                 </div>

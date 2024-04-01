@@ -56,7 +56,7 @@
                                         data-selected-price="0" value="" required readonly>
                                     <ul id="{{ $product_attribute->name }}-dropdown" class="attribute-dropdown">
                                         @foreach ($product_attribute->productAttributeTerm()->get() as $term)
-                                            <li data-value="{{ $term->id }}"
+                                            <li data-point="{{ $term->point_value }}"
                                                 data-add-on-price="{{ $term->getCurrencyParameters('HKD')->price }}">{{ $term->name }}</li>
                                         @endforeach
                                     </ul>
