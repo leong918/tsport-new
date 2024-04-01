@@ -244,7 +244,7 @@ $(document).ready(function(){
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_edited")}}',
                     text: '{{__("page.sales_order_edited")}}',
                     icon: 'success',
@@ -255,7 +255,7 @@ $(document).ready(function(){
                 });
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: error.response.data.msg,
                     icon: 'error',
@@ -344,7 +344,7 @@ $(document).ready(function(){
 
                 productList.push(product);
             }else{
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: '{{__("page.some input fields are empty")}}',
                     icon: 'error',
@@ -363,7 +363,7 @@ $(document).ready(function(){
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_edited")}}',
                     text: '{{__("page.sales_order_edited")}}',
                     icon: 'success',
@@ -374,7 +374,7 @@ $(document).ready(function(){
                 });
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: error.response.data.msg,
                     icon: 'error',
@@ -415,7 +415,7 @@ $(document).ready(function(){
     $(document).on('click', '.btn-delete', function(e) {
         e.preventDefault();
         var url = $(this).data('url');
-        Swal.fire({
+        swal.fire({
             title: 'Are you sure?',
             text: 'This action is not able to be reverted.',
             icon: 'warning',
@@ -444,7 +444,7 @@ $(document).ready(function(){
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.value) {
-                Swal.fire({
+                swal.fire({
                     title: 'Deleted!',
                     text: 'Record deleted successfully!',
                     icon: 'success',

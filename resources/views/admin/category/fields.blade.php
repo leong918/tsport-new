@@ -123,7 +123,7 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.category_added")}}',
                     text: '{{__("page.txt_category_added")}}',
                     icon: 'success',
@@ -135,7 +135,7 @@
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.category_fail_add")}}',
                     text: error.response.data.msg,
                     icon: 'error',

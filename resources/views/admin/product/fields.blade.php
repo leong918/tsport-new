@@ -222,7 +222,7 @@
                 },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: 'Success',
                     text: 'Stock updated!',
                     icon: 'success',
@@ -234,7 +234,7 @@
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: 'Fail',
                     text: error.response.data.msg,
                     icon: 'error',
@@ -450,7 +450,7 @@
                 },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: 'Success',
                     text: 'Product Added!',
                     icon: 'success',
@@ -462,7 +462,7 @@
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: 'Fail',
                     text: error.response.data.msg,
                     icon: 'error',

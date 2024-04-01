@@ -93,13 +93,12 @@ class SalesOrderProductRepository extends BaseRepository
         return $total;
     }
 
-    public function updateSalesOrderProduct(array $input, int $id, int $product_id)
+    public function updateSalesOrderProduct(array $input, int $id, int $product_id, int $admin_id)
     {
         $salesOrderRepository = new SalesOrderRepository(new Container());
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
         $sales_order_product = SalesOrderProduct::find($product_id);
         $sales_order = $salesOrderRepository->find($id);
-        $admin_id = auth()->guard('admin')->user()->id;
         $total = 0;
 
         foreach ($input as $key => $value) {

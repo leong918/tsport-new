@@ -140,7 +140,7 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: 'Success',
                     text: 'Top Bar Added!',
                     icon: 'success',
@@ -152,7 +152,7 @@
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: 'Fail',
                     text: error.response.data.msg,
                     icon: 'error',

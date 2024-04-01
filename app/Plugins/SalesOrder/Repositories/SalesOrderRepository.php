@@ -178,7 +178,7 @@ class SalesOrderRepository extends BaseRepository
         return SalesOrder::query()->orderBy('created_at', 'desc');
     }
 
-    public function updateSalesOrder(array $input, int $id)
+    public function updateSalesOrder(array $input, int $id, int $admin_id)
     {
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
         $sales_order = SalesOrder::find($id);
@@ -221,11 +221,10 @@ class SalesOrderRepository extends BaseRepository
             }
 
             //after done create log
-            $admin_id = auth()->guard('admin')->user()->id;
-            $description = "Change " . $key . " from " . $previousValue . " to " . $value;
-            $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
-            if ($key == 'customer_note') {
-                $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
+            $description = "Change ". $key ." from ". $previousValue ." to ". $value;
+            $salesOrderlogRepository->createLog($sales_order, $admin_id,'admin', 1, $description);
+            if($key == 'customer_note') {
+                $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>".$value."</b>";
                 Mail::to($sales_order->user->email)->send(new CustomerNoteMail($description));
             }
         }
