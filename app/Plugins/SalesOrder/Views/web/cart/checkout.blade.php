@@ -132,6 +132,8 @@ $(document).ready(function() {
     });
 
     $('.address-input').on('change paste keyup', function () {
+        $('.shipping-fee-section').removeClass('d-none');
+
         var address = $('#address').val();
         var city = $('#city').val();
         var state = $('#state').val();
