@@ -48,6 +48,10 @@
     <div class="col-xl-6">
         <table class="table table-hover box-body text-wrap table-bordered">
             <tr>
+                <th>{{ html()->label('Tracking Number :') }}</th>
+                <td><div><span class="editable" data-input-type="text" data-column="tracking_number" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->tracking_number}}">{{ isset($model) && $model->tracking_number ? $model->tracking_number : '' }}</span></div></td>
+            </tr>
+            <tr>
                 <th>{{ html()->label('Order Status :') }}</th>
                 <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->status}}">{{ isset($model) && isset($model->status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status) : '' }}</span></div></td>
             </tr>
