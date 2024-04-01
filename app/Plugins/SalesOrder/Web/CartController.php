@@ -233,7 +233,7 @@ class CartController extends BaseController
             $data['user_id'] = auth()->user()->id;
             $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
             $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
-            
+
             if (!$order) {
                 $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
                 $order = $this->salesOrderRepository->createOrder($data, $cartTotal);

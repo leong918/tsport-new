@@ -52,24 +52,30 @@
             </div>
         </div>
     </div>
-    @if(isset($addressData))
-    <div class="shipping-fee">
-        <div class="d-flex justify-content-between data-content-wrapper">
-            <div class="label">Shipping Fee</div>
-            <div class="data-label">
-                <div class="price shipping-price">{{ $cartTotal['delivery_partner'] }} : ${{ number_format($cartTotal['shipping_fee'], 2) }}</div>
+    <div class="shipping-fee-section {{ isset($addressData) && $addressData['country_id'] ? '' : 'd-none' }}">
+        <div class="shipping-fee">
+            <div class="d-flex justify-content-between data-content-wrapper">
+                <div class="label">Shipping Fee</div>
+                <div class="data-label">
+                    <div class="price shipping-price">
+                        @if(isset($cartTotal['delivery_partner']))
+                        {{ $cartTotal['delivery_partner'] }} : ${{ number_format($cartTotal['shipping_fee'], 2) }}
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="shipping-fee-inner">
+            <div class="data-content-wrapper">
+                <div class="inner-label">Shipping To:</div>
+                <div class="inner-label" id="shipping_address">
+                    @if(isset($addressData))
+                    {{ $addressData['address'].', '.$addressData['postcode'].', '.$addressData['city'].', '.$addressData['state'].', '.$addressData['country'] }}
+                    @endif
+                </div>
             </div>
         </div>
     </div>
-    <div class="shipping-fee-inner">
-        <div class="data-content-wrapper">
-            <div class="inner-label">Shipping To:</div>
-            <div class="inner-label" id="shipping_address">
-                {{ $addressData['address'].', '.$addressData['postcode'].', '.$addressData['city'].', '.$addressData['state'].', '.$addressData['country'] }}
-            </div>
-        </div>
-    </div>
-    @endif
     <hr/>
     <div class="total">
         <div class="d-flex justify-content-between data-content-wrapper">
