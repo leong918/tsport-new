@@ -47,6 +47,7 @@ class SalesOrderRepository extends BaseRepository
         Schema::dropIfExists('sales_order_total');
         Schema::dropIfExists('sales_order_log');
         Schema::dropIfExists('user_cart');
+        Schema::dropIfExists('cart_rule');
     }
 
     public function installExtension()
@@ -151,6 +152,25 @@ class SalesOrderRepository extends BaseRepository
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::dropIfExists('cart_rule');
+
+        Schema::create('cart_rule', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('table_id')->nullable();
+            $table->string('name');
+            $table->string('coupon_code')->nullable();
+            $table->string('type');
+            $table->string('target_table')->nullable();
+            $table->string('discount_type');
+            $table->decimal('value', 16, 2)->default(0);
+            $table->integer('priority')->default(1);
+            $table->tinyInteger('status')->default(1);
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     public function getListing()
@@ -162,54 +182,50 @@ class SalesOrderRepository extends BaseRepository
     {
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
         $sales_order = SalesOrder::find($id);
-        foreach($input as $key => $value)
-        {
+        foreach ($input as $key => $value) {
             $previousValue = $sales_order->$key;
-            if($key == 'shipping') {
-                if($value > $previousValue)
-                {
+            if ($key == 'shipping') {
+                if ($value > $previousValue) {
                     $sales_order->total += ($value - $previousValue);
-                }else{
+                } else {
                     $sales_order->total -= ($previousValue - $value);
                 }
-
             }
 
-            if($key == 'discount') {
-                if($value > $previousValue) {
+            if ($key == 'discount') {
+                if ($value > $previousValue) {
                     $sales_order->total -= ($value - $previousValue);
-                }else{
+                } else {
                     $sales_order->total += ($previousValue - $value);
                 }
-
             }
 
-            if($key == 'country_id') {   
+            if ($key == 'country_id') {
                 $countryRepository = new CountryRepository(new Container());
                 $country = $countryRepository->find($value);
-                $sales_order->country = $country->name; 
+                $sales_order->country = $country->name;
             }
 
             $sales_order->$key = $value;
             $sales_order->save();
 
             //For log purpose
-            if($key == 'status') {
+            if ($key == 'status') {
                 $previousValue = renderModelData(SalesOrder::ORDER_STATUS, $previousValue);
                 $value = renderModelData(SalesOrder::ORDER_STATUS, $value);
             }
 
-            if($key == 'payment_method') {
+            if ($key == 'payment_method') {
                 $previousValue = renderModelData(SalesOrder::PAYMENT_METHOD, $previousValue);
                 $value = renderModelData(SalesOrder::PAYMENT_METHOD, $value);
             }
 
             //after done create log
             $admin_id = auth()->guard('admin')->user()->id;
-            $description = "Change ". $key ." from ". $previousValue ." to ". $value;
-            $salesOrderlogRepository->createLog($sales_order, $admin_id,'admin', 1, $description);
-            if($key == 'customer_note') {
-                $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>".$value."</b>";
+            $description = "Change " . $key . " from " . $previousValue . " to " . $value;
+            $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
+            if ($key == 'customer_note') {
+                $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
                 Mail::to($sales_order->user->email)->send(new CustomerNoteMail($description));
             }
         }
