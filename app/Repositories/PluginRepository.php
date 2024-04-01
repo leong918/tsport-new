@@ -88,6 +88,14 @@ class PluginRepository extends BaseRepository
         throw new \Exception('Plugin Installed Successfully!');
     }
 
+    public function uninstallPlugin($id)
+    {
+        $plugin = Plugin::find($id);
+
+        $configNamespace = getPluginNamespace($plugin->key) . '\AppConfig';
+        (new $configNamespace)->uninstall();
+    }
+
     public function reinstallPlugin($name)
     {
         $configNamespace = getPluginNamespace($name) . '\AppConfig';
