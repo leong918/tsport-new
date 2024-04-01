@@ -68,7 +68,7 @@
     })
     
     function showSwal(title = "", text = ""){ 
-        swal.fire({
+        Swal.fire({
             title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">' + title + '</p>',
             html: '<p class="swal-register-content-1">' + text + ' </p> ',
             backdrop: false,
