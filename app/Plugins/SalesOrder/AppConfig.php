@@ -54,6 +54,29 @@ class AppConfig extends ConfigDefault
                 'key' => $this->configKey,
             ];
             $this->adminMenuRepository->create($child_data);
+
+            $parent_data = [
+                'parent_id' => null,
+                'title' => 'Cart Rule',
+                'icon' => 'fa-solid fa-ticket',
+                'url' => null,
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ];
+            $parent_sidebar = $this->adminMenuRepository->create($parent_data);
+
+            $child_data = [
+                'parent_id' => $parent_sidebar->id,
+                'title' => 'Cart Rule List',
+                'icon' => null,
+                'url' => 'admin.cart_rule.index',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1,
+                'key' => $this->configKey,
+            ];
+            $this->adminMenuRepository->create($child_data);
         }
 
         $pluginData = [
