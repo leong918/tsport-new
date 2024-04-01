@@ -54,6 +54,9 @@
                                             <td>{{ $installed_plugin->created_at }}</td>
                                             <td>
                                                 <div class='text-center'>
+                                                    <a href="#" data-url='{{route('admin.plugin.uninstall', ['id' => $installed_plugin->id])}}'
+                                                        class='btn btn-uninstall btn-primary'><i class="fa fa-ban"></i>
+                                                    </a>
                                                     <a href="#" data-url='{{route('admin.plugin.destroy.delete', ['id' => $installed_plugin->id])}}'
                                                         class='btn btn-delete btn-danger'><i class="fa fa-trash"></i>
                                                     </a>
@@ -110,7 +113,7 @@
             $('table tbody').on('click', '.btn-delete', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
-                Swal.fire({
+                swal.fire({
                     title: 'Are you sure?',
                     text: 'This action is not able to be reverted.',
                     icon: 'warning',
@@ -142,7 +145,7 @@
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.value) {
-                        Swal.fire({
+                        swal.fire({
                             title: 'Deleted!',
                             text: 'Record deleted successfully!',
                             icon: 'success',
@@ -157,7 +160,7 @@
             $('table tbody').on('click', '.btn-install', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
-                Swal.fire({
+                swal.fire({
                     title: 'Are you sure?',
                     text: 'This action is not able to be reverted.',
                     icon: 'warning',
@@ -189,9 +192,56 @@
                     allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
                     if (result.value) {
-                        Swal.fire({
+                        swal.fire({
                             title: 'Installed!',
                             text: 'Plugin installed successfully!',
+                            icon: 'success',
+                        });
+                        // reload pages
+                        window.location.reload();
+                    }
+                });
+            });
+
+            // uninstall record
+            $('table tbody').on('click', '.btn-uninstall', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This action is not able to be reverted.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, uninstall it!',
+                    cancelButtonText: 'Cancel',
+                    customClass: {
+                        confirmButton: "btn btn-success me-2",
+                        cancelButton: "btn btn-danger ms-2"
+                    },
+                    buttonsStyling: false,
+                    showLoaderOnConfirm: true,
+                    preConfirm: (response) => {
+                        if (response) {
+                            return axios.post(url, {})
+                                .then(() => {
+                                    setTimeout(function() {
+                                        window.location.reload();
+                                    }, 1000);
+                                })
+                                .catch((e) => {
+                                    console.error("error ", e)
+                                    Swal.showValidationMessage(
+                                        `Request failed: ${e}`
+                                    );
+                                })
+                        }
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.value) {
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'Record uninstalled successfully!',
                             icon: 'success',
                         });
                         // reload pages

@@ -31,7 +31,7 @@ class UserRegisterRequest extends FormRequest
             'email' => 'required|unique:user',
             'phone_no' => 'required|unique:user',
             'password' => 'required|min:6|confirmed',
-            'birth_month' => 'required',
+            'dob' => 'required|date_format:d/m/Y',
             'accept_tnc' => 'required',
             'referral_email' => 'both_or_none:referral_phone_no',
             'referral_phone_no' => 'both_or_none:referral_email',

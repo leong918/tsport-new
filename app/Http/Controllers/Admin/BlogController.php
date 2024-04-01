@@ -52,11 +52,12 @@ class BlogController extends BaseController
         try {
             $this->blogRepository->createBlog($request->all());
             DB::commit();
-            return redirect(route('admin.blog.index'))->with('success', "Successfully create blog {$request->name}");
+            return $this->response();
         } catch (\Exception $exception) {
             DB::rollback();
             return response()->json(['msg' => $exception->getMessage()], 500);
         }
+        return redirect(route('admin.blog.index'))->with('success', "Successfully create blog {$request->name}");
     }
 
     public function edit(int $id)

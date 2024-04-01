@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'username' => 'userABC',
                 'email' => 'user@gmail.com',
                 'phone_no' => '60123456789',
-                'birth_month' => 'January',
+                'dob' => '2024-04-01 13:01:10',
                 'password' => '123123',
                 'status' => 1,
                 'referral_email' => 'referral@gmail.com',
