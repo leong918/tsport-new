@@ -48,6 +48,10 @@
     <div class="col-xl-6">
         <table class="table table-hover box-body text-wrap table-bordered">
             <tr>
+                <th>{{ html()->label('Tracking Number :') }}</th>
+                <td><div><span class="editable" data-input-type="text" data-column="tracking_number" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->tracking_number}}">{{ isset($model) && $model->tracking_number ? $model->tracking_number : '' }}</span></div></td>
+            </tr>
+            <tr>
                 <th>{{ html()->label('Order Status :') }}</th>
                 <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->status}}">{{ isset($model) && isset($model->status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status) : '' }}</span></div></td>
             </tr>
@@ -244,7 +248,7 @@ $(document).ready(function(){
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_edited")}}',
                     text: '{{__("page.sales_order_edited")}}',
                     icon: 'success',
@@ -255,7 +259,7 @@ $(document).ready(function(){
                 });
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: error.response.data.msg,
                     icon: 'error',
@@ -344,7 +348,7 @@ $(document).ready(function(){
 
                 productList.push(product);
             }else{
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: '{{__("page.some input fields are empty")}}',
                     icon: 'error',
@@ -363,7 +367,7 @@ $(document).ready(function(){
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_edited")}}',
                     text: '{{__("page.sales_order_edited")}}',
                     icon: 'success',
@@ -374,7 +378,7 @@ $(document).ready(function(){
                 });
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.sales_order_failed")}}',
                     text: error.response.data.msg,
                     icon: 'error',
@@ -415,7 +419,7 @@ $(document).ready(function(){
     $(document).on('click', '.btn-delete', function(e) {
         e.preventDefault();
         var url = $(this).data('url');
-        Swal.fire({
+        swal.fire({
             title: 'Are you sure?',
             text: 'This action is not able to be reverted.',
             icon: 'warning',
@@ -444,7 +448,7 @@ $(document).ready(function(){
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.value) {
-                Swal.fire({
+                swal.fire({
                     title: 'Deleted!',
                     text: 'Record deleted successfully!',
                     icon: 'success',

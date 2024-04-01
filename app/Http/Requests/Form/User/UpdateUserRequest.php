@@ -30,7 +30,7 @@ class UpdateUserRequest extends FormRequest
             'username' => 'required',
             'email' => ['required', Rule::unique('user')->ignore($this->id)],
             'phone_no' => ['required', Rule::unique('user')->ignore($this->id)],
-            'birth_month' => 'required',
+            'dob' => 'required|date_format:d/m/Y',
             'referral_email' => 'both_or_none:referral_phone_no',
             'referral_phone_no' => 'both_or_none:referral_email',
         ];

@@ -66,7 +66,8 @@ class SalesOrderController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->salesOrderRepository->updateSalesOrder($request->all(), $id);
+            $admin_id = auth()->guard('admin')->user()->id;
+            $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin_id);
             DB::commit();
             return $this->response();
         } catch (\Exception $exception) {
@@ -83,7 +84,8 @@ public function updateProduct(Request $request, int $id, int $product_id = null)
             $total = 0;
             $sales_order = $this->salesOrderRepository->find($id);
             if($product_id){
-                $total = $this->salesOrderProductRepository->updateSalesOrderProduct($request->all(), $id, $product_id);
+                $admin_id = auth()->guard('admin')->user()->id;
+                $total = $this->salesOrderProductRepository->updateSalesOrderProduct($request->all(), $id, $product_id, $admin_id);
             }else{
                 $total = $this->salesOrderProductRepository->createSalesOrderProduct($request->all(), $id);
             }
