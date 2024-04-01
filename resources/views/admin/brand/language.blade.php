@@ -3,7 +3,6 @@
         <tbody >
             <tr>
                 <tr>
-                    {{-- <td scope="col">{{__('page.name')}}</td> --}}
                     <td scope="col">{{__('Name')}}</td>
                 </tr>
                 <tr>
@@ -12,7 +11,6 @@
                     </td>
                 </tr>
                 <tr>
-                    {{-- <td scope="col">{{__('page.description')}}</td> --}}
                     <td scope="col">{{__('Description')}}</td>
                 </tr>
                 <tr>

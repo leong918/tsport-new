@@ -13,7 +13,7 @@
 
                             {{--------------- display product attribute when attribute = 1 ------------}}
                             @if ($model->productAttribute->isNotEmpty())
-                                <div class="col-sm-12 product-attribute-input">
+                                <div class="col-sm-12 product-attribute-input mt-3">
                                     <div class="row mb-3">
                                         <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
                                             <div class="card">
@@ -131,9 +131,6 @@
                                     </div>
                                 </div>
                             @endif
-
-
-                            @include('admin.product.language')
 
                             <div class="col-sm-12">
                                 <div class="my-3 float-end">

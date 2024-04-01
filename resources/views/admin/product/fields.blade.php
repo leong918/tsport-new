@@ -160,6 +160,8 @@
     </div>
 </div>
 
+@include('admin.product.language')
+
 @section('script')
 @parent
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -347,15 +349,10 @@
         }
 
         //------------------------------------------------------------------------------------------
-        var additionalTermOption = 0;
-        var attributeCount = 1;
-        var attributeCountOnRender = $('.optionContent').length;
+        var additionalTermOption = $('.optionContent .termWrapper').length;
+        var attributeCount = $('.optionContent').length;
 
-        var optionContent = $('.optionContent').data('option-id');
-        var termWrappers = $('.optionContent[data-option-id="' + optionContent + '"]').find('.termWrapper');
-        var termCountOnRender = termWrappers.length;
-
-        if (attributeCountOnRender > 1) {
+        if (attributeCount > 1) {
             $('.optionContent:not(:first-child)').addClass('mt-3');
             $('.optionContent:not(:first-child) .back').append(
                 '<button class="btn btn-danger btn-remove-option" type="button"><i class="fas fa-trash-alt"></i></button>'
@@ -373,45 +370,21 @@
             $(this).parents('.termWrapper').remove();
         })
 
+        //----------------- add attribute term -------------------
         $('body').on('click', '.btn-addOption', function() {
             var template = document.getElementById('optionVariationLayout').innerHTML;
-
-            var optionContent = $(this).closest('.optionContent');
-            var option_id = optionContent.data('option-id');
-            var termWrappers = optionContent.find('.termWrapper');
-            var termCountOnRender = termWrappers.length;
-
-            @if (isset($model))
             var rendered = Mustache.render(template, {
-                id: option_id,
-                variation_id: termCountOnRender,
-            });
-            $(this).parents('.optionContent').find('.list-group').append(rendered);
-            termCountOnRender++;
-            
-            @else
-            var rendered = Mustache.render(template, {
-                id: option_id,
+                id: attributeCount,
                 variation_id: additionalTermOption,
             });
             $(this).parents('.optionContent').find('.list-group').append(rendered);
             additionalTermOption++;
-            @endif
         })
 
+
+        //------------ add attribute ------------------
         $('#addOptionBtn').on('click', function() {
             var template = document.getElementById('moreOptionLayout').innerHTML;
-            @if (isset($model))
-            var rendered = Mustache.render(template, {
-                id: attributeCountOnRender,
-                variation_id: additionalTermOption,
-            });
-            
-            $('#optionContent').append(rendered);
-            attributeCountOnRender++;
-            additionalTermOption++;
-
-            @else
             var rendered = Mustache.render(template, {
                 id: attributeCount,
                 variation_id: additionalTermOption,
@@ -420,12 +393,7 @@
             $('#optionContent').append(rendered);
             attributeCount++;
             additionalTermOption++;
-            @endif
-
-            // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender);
         })
-
-        // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender, termCountOnRender);
 
 
         $("#product").submit(function(e) {

@@ -47,7 +47,6 @@ class ProductDescriptionRepository extends BaseRepository
             $data['description'] = $language['description']; 
             $data['ingredient'] = $language['ingredient']; 
             $data['usage'] = $language['usage']; 
-            $data['additional_information'] = $language['additional_information']; 
 
             $model = new ProductDescription();
             $model->fill($data);

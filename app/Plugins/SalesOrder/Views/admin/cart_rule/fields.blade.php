@@ -234,7 +234,7 @@
                 $('#product-select, #category-select, #brand-select').prop("disabled", true);
                 $('.brandCol, .categoryCol, .productCol').addClass('d-none');
             @else
-                $('.type').val() != 'coupon' ? $('.coupon_code').prop('disabled', true) : $('.coupon_code').prop(
+                $('.type').val() != 'coupon' ? $('.coupon_code').prop('disabled', true).val('') : $('.coupon_code').prop(
                     'disabled', false);
                 checkTargetTable();
             @endif
@@ -242,8 +242,8 @@
 
             //--------------- type field on change --------------------
             $('.type').on('change', function() {
-                $(this).val() != 0 ? $('.coupon_code').prop('disabled', false) : $('.coupon_code').prop(
-                    'disabled', true).val('');
+                $(this).val() != 'coupon' ? $('.coupon_code').prop('disabled', true).val('') : $('.coupon_code').prop(
+                    'disabled', false);
             });
 
             //---------------- target table field on change ------------------------

@@ -18,19 +18,11 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header"><strong>English</strong> </div>
-                                        <div class="card-body">
-                                            @include("admin.brand.en_fields")
-                                        </div>
-                                    </div>
-                                </div>                        
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header"><strong>Chinese</strong></div>
                                         <div class="card-body">
-                                            @include("admin.brand.cn_fields")
+                                            @include("admin.brand.language")
                                         </div>
                                     </div>
                                 </div>

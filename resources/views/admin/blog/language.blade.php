@@ -2,7 +2,7 @@
     <tbody >
         <tr>
             <tr>
-                <td scope="col">{{__('page.name')}}</td>
+                <td scope="col">Name</td>
             </tr>
             <tr>
                 <td>
@@ -10,7 +10,7 @@
                 </td>
             </tr>
             <tr>
-                <td scope="col">{{__('page.image')}}</td>
+                <td scope="col">Image</td>
             </tr>
             <tr>
                 <td scope="col">
@@ -23,7 +23,7 @@
                 </td>
             </tr>
             <tr>
-                <td scope="col">{{__('page.description')}}</td>
+                <td scope="col">Description</td>
             </tr>
             <tr>
                 <td>

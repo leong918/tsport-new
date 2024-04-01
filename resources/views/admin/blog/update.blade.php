@@ -23,19 +23,11 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header"><strong>English</strong> </div>
-                                        <div class="card-body">
-                                            @include("admin.blog.en_fields")
-                                        </div>
-                                    </div>
-                                </div>                        
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header"><strong>Chinese</strong></div>
                                         <div class="card-body">
-                                            @include("admin.blog.cn_fields")
+                                            @include("admin.blog.language")
                                         </div>
                                     </div>
                                 </div>
@@ -47,7 +39,6 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
-
                             {{ html()->form()->close() }}
                         </div>
                     </div>
