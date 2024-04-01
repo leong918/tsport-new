@@ -31,8 +31,8 @@ class SalesOrder extends Model
         'COMPLETED' => 1,
         'PROCESSING' => 2,
         'ONHOLD' => 3,
-        'CANCELLED' => -1,
-        'FAILED' => -2,
+        'FAILED' => -1,
+        'CANCELLED' => -2,
         'REFUNDED' => -3,
     ];
 
@@ -40,6 +40,7 @@ class SalesOrder extends Model
         'UNPAID' => 0,
         'PAID' => 1,
         'FAILED' => -1,
+        'CANCELED' => -2,
     ];
 
     protected $table = 'sales_order';
