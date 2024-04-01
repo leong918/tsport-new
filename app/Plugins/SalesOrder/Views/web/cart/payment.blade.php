@@ -113,7 +113,7 @@
                     data: {
                         payment_method: payment_method,
                         stripe_payment_intent_id: $('#payment-element').data('code'),
-                        cart_total: "{{ json_encode($cartTotal) }}"
+                        cart_total: "{{ $cartTotal['total'] }}"
                     }
                 })
                 .then(response => {
@@ -135,11 +135,14 @@
                     }
                 })
                 .catch(error => {
-                    if (error.redirect == true) {
-                        window.location.reload();
-                    } else {
-                        $(this).attr('disabled', false);
-                        showSwal('Fail!', error.msg);
+                    if (error && error.response && error.response.data) {
+                        const responseData = error.response.data;
+                        if (responseData.redirect) {
+                            window.location.reload();
+                        } else {
+                            $(this).attr('disabled', false);
+                            showSwal('Fail!', responseData.msg);
+                        }
                     }
                 });
             }

@@ -310,4 +310,24 @@ class ProductRepository extends BaseRepository
             }
         }
     }
+
+    public function calculatePointEarned($user_cart)
+    {
+        $point = 0;
+
+        foreach ($user_cart as $cart) {
+            if ($cart->product_attribute_term) {
+                foreach (json_decode($cart->product_attribute_term) as $product_attribute_term_id) {
+                    $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+                    $product_attribute_term = $productAttributeTermRepository->find($product_attribute_term_id);
+                    $point += $product_attribute_term->point_value;
+                }
+            } else {
+                $product = Product::find($cart->product_id);
+                $point += $product->point_value;
+            }
+        }
+
+        return $point;
+    }
 }

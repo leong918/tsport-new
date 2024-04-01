@@ -5,7 +5,7 @@
  */
 
 import Swal from 'sweetalert2';
-window.Swal = Swal;
+window.swal = Swal;
 
 import axios from 'axios';
 window.axios = axios;

@@ -114,7 +114,7 @@
                 data: formData,
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Success</p>',
                     html: '<p class="swal-register-content-1">User Info Edited Successfully</p>',
                     showConfirmButton: false,
@@ -129,7 +129,7 @@
                         swalDialog.style.width = parentWidth + 'px';
 
                         $('#custom-close-button').click(function() {
-                            Swal.close();
+                            swal.close();
                         });
                     }
                 }).then((result) => {
@@ -147,7 +147,7 @@
                 } else if(error.response.data.message){
                     errorMessage = error.response.data.message;
                 }
-                Swal.fire({
+                swal.fire({
                     title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Error</p>',
                     html: '<p class="swal-register-content-1">' + errorMessage + '</p>',
                     showConfirmButton: false,
@@ -162,7 +162,7 @@
                         swalDialog.style.width = parentWidth + 'px';
 
                         $('#custom-close-button').click(function() {
-                            Swal.close();
+                            swal.close();
                         });
                     }
                 })
