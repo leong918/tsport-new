@@ -156,7 +156,7 @@ class UserCartRepository extends BaseRepository
             $data = array_merge($data, $shipping_data);
         }
 
-        $data['total'] = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'] + $data['shipping_fee'];
+        $data['total'] = round($data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'] + $data['shipping_fee'], 2);
         return $data;
     }
 
@@ -175,5 +175,10 @@ class UserCartRepository extends BaseRepository
         }
 
         return $subtotal;
+    }
+
+    public function clearCart($user_id)
+    {
+        UserCart::where('user_id', $user_id)->delete();
     }
 }

@@ -9,6 +9,7 @@ use App\Repositories\ProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
+use App\Plugins\SalesOrder\Repositories\SalesOrderTotalRepository;
 use App\Plugins\SalesOrder\Repositories\CartRuleRepository;
 use App\Http\Controllers\Web\BaseController;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class CartController extends BaseController
     private SalesOrderRepository $salesOrderRepository;
     private SalesOrderProductRepository $salesOrderProductRepository;
     private SalesOrderLogRepository $salesOrderLogRepository;
+    private SalesOrderTotalRepository $salesOrderTotalRepository;
     private CartRuleRepository $cartRuleRepository;
 
     public function __construct(
@@ -34,6 +36,7 @@ class CartController extends BaseController
         SalesOrderRepository $salesOrderRepository,
         SalesOrderProductRepository $salesOrderProductRepository,
         SalesOrderLogRepository $salesOrderLogRepository,
+        SalesOrderTotalRepository $salesOrderTotalRepository,
         CartRuleRepository $cartRuleRepository
     ) {
         $this->userCartRepository = $userCartRepository;
@@ -43,6 +46,7 @@ class CartController extends BaseController
         $this->salesOrderRepository = $salesOrderRepository;
         $this->salesOrderProductRepository = $salesOrderProductRepository;
         $this->salesOrderLogRepository = $salesOrderLogRepository;
+        $this->salesOrderTotalRepository = $salesOrderTotalRepository;
         $this->cartRuleRepository = $cartRuleRepository;
     }
 
@@ -166,35 +170,35 @@ class CartController extends BaseController
         $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
 
         if ($cart_count <= 0) {
-            return redirect()->route('cart.shopping_cart');
+            return redirect(route('cart.shopping_cart'));
         }
 
         if (!$request->session()->get('cart-' . auth()->user()->id)) {
-            return redirect()->route('cart.checkout')->with('swal_error', 'Session Expired! Please confirm your address again.');
+            return redirect(route('cart.checkout'))->with('swal_error', 'Session Expired! Please confirm your address again.');
         }
 
         try {
             // refetch user cart total
             $user_data = $this->getUserDataAndType();
             $addressData = $request->session()->get('cart-' . auth()->user()->id);
-            $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
             $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
             $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
-            $intentSecret = json_encode($this->createPaymentIntent());
+            $intentSecret = json_encode($this->createPaymentIntent($cartTotal['total']));
 
             return view('sales_order::web.cart.payment', compact('addressData', 'intentSecret', 'cartTotal'));
         } catch (\Exception $e) {
-            return redirect()->route('cart.checkout')->with('swal_error', $e->getMessage());
+            return redirect(route('cart.checkout'))->with('swal_error', $e->getMessage());
         }
     }
 
-    private function createPaymentIntent($cartTotal = 853)
+    private function createPaymentIntent($cartTotal)
     {
+        $total_amount = str_replace('.', '', number_format($cartTotal, 2));
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
 
         $paymentIntent = $stripe->paymentIntents->create([
-            'amount' => $cartTotal,
-            'currency' => 'hkd',
+            'amount' => $total_amount,
+            'currency' => 'hkd'
         ]);
 
         $output = [
@@ -208,10 +212,15 @@ class CartController extends BaseController
     {
         $user_data = $this->getUserDataAndType();
         $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
+        $addressData = $request->session()->get('cart-' . auth()->user()->id);
+        $coupon_session = $request->session()->get('coupon-' . auth()->user()->id) ?? array();
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
 
-        // // //
         //do checking check total is same or not, if not same need redirect back
-        // // //
+        if ($request->cart_total != $cartTotal['total']) {
+            session()->flash('swal_error', 'Cart total is different, please refer latest price');
+            return response()->json(['msg' => null, 'redirect' => true], 500);
+        }
 
         // refresh the page again to trigger error or generate new payment intent id
         if ($user_cart->count() <= 0 || !$request->session()->get('cart-' . auth()->user()->id)) {
@@ -224,10 +233,14 @@ class CartController extends BaseController
             $data['user_id'] = auth()->user()->id;
             $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
             $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
-
+            
             if (!$order) {
-                $order = $this->salesOrderRepository->createOrder($data);
+                $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
+                $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
                 $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
+                $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
+                $this->userRepository->deductFullPoint($order);
+
                 $description = 'New Order';
                 $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
             }

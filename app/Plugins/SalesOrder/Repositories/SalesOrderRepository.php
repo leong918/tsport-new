@@ -12,6 +12,8 @@ use App\Mail\CustomerNoteMail;
 use Illuminate\Container\Container;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Repositories\CountryRepository;
+use App\Repositories\UserRepository;
+use Carbon\Carbon;
 
 class SalesOrderRepository extends BaseRepository
 {
@@ -64,7 +66,8 @@ class SalesOrderRepository extends BaseRepository
             $table->decimal('shipping', 16, 2)->default(0);
             $table->decimal('discount', 16, 2)->default(0);
             $table->decimal('total', 16, 2)->default(0);
-            $table->integer('point')->default(0);
+            $table->integer('point_earned')->default(0);
+            $table->integer('point_used')->default(0);
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('payment_status')->default(0);
             $table->tinyInteger('shipping_fee_status')->default(0);
@@ -81,6 +84,7 @@ class SalesOrderRepository extends BaseRepository
             $table->longText('customer_note')->nullable();
             $table->tinyInteger('is_free_shipping')->default(0);
             $table->tinyInteger('is_pay_later')->default(0);
+            $table->timestamp('payment_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -161,8 +165,7 @@ class SalesOrderRepository extends BaseRepository
         foreach($input as $key => $value)
         {
             $previousValue = $sales_order->$key;
-            if($key == 'shipping')
-            {
+            if($key == 'shipping') {
                 if($value > $previousValue)
                 {
                     $sales_order->total += ($value - $previousValue);
@@ -172,10 +175,8 @@ class SalesOrderRepository extends BaseRepository
 
             }
 
-            if($key == 'discount')
-            {
-                if($value > $previousValue)
-                {
+            if($key == 'discount') {
+                if($value > $previousValue) {
                     $sales_order->total -= ($value - $previousValue);
                 }else{
                     $sales_order->total += ($previousValue - $value);
@@ -183,8 +184,7 @@ class SalesOrderRepository extends BaseRepository
 
             }
 
-            if($key == 'country_id')
-            {   
+            if($key == 'country_id') {   
                 $countryRepository = new CountryRepository(new Container());
                 $country = $countryRepository->find($value);
                 $sales_order->country = $country->name; 
@@ -194,14 +194,12 @@ class SalesOrderRepository extends BaseRepository
             $sales_order->save();
 
             //For log purpose
-            if($key == 'status')
-            {
+            if($key == 'status') {
                 $previousValue = renderModelData(SalesOrder::ORDER_STATUS, $previousValue);
                 $value = renderModelData(SalesOrder::ORDER_STATUS, $value);
             }
 
-            if($key == 'payment_method')
-            {
+            if($key == 'payment_method') {
                 $previousValue = renderModelData(SalesOrder::PAYMENT_METHOD, $previousValue);
                 $value = renderModelData(SalesOrder::PAYMENT_METHOD, $value);
             }
@@ -210,8 +208,7 @@ class SalesOrderRepository extends BaseRepository
             $admin_id = auth()->guard('admin')->user()->id;
             $description = "Change ". $key ." from ". $previousValue ." to ". $value;
             $salesOrderlogRepository->createLog($sales_order, $admin_id,'admin', 1, $description);
-            if($key == 'customer_note')
-            {
+            if($key == 'customer_note') {
                 $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>".$value."</b>";
                 Mail::to($sales_order->user->email)->send(new CustomerNoteMail($description));
             }
@@ -225,21 +222,27 @@ class SalesOrderRepository extends BaseRepository
         $model->save();
     }
 
-    public function createOrder($data)
+    public function createOrder($data, $cartTotal)
     {
-        $sales_order_id = null;
-        if ($data['payment_method'] === 'stripe') {
-            $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
-            $id_generator->length(6);
-            $sales_order_id = $id_generator->generate();
-        }
+        $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
+        $id_generator->length(6);
+        $sales_order_id = $id_generator->generate();
 
         $order = new SalesOrder();
         $order->fill($data['address']);
+        $order->delivery_partner = $cartTotal['delivery_partner'];
         $order->user_id = $data['user_id'];
+        $order->point_earned = $data['point_earned'];
         $order->sales_order_id = $sales_order_id;
+        $order->subtotal = $cartTotal['subtotal'];
+        $order->shipping = $cartTotal['shipping_fee'];
+        $order->discount = $cartTotal['total_discount_amount'];
+        $order->total = $cartTotal['total'];
+        $order->point_used = $cartTotal['point_redemption'];
         $order->payment_method = $data['payment_method'];
         $order->stripe_payment_intent_id = $data['payment_method'] === 'stripe' ? $data['stripe_payment_intent_id']['clientSecret'] : null;
+        $order->is_free_shipping = $cartTotal['is_free_shipping'];
+        $order->is_pay_later = $cartTotal['is_pay_later'];
         $order->save();
 
         return $order;
@@ -253,5 +256,43 @@ class SalesOrderRepository extends BaseRepository
     public function getOrderByPaymentIntentId($payment_intent_id)
     {
         return SalesOrder::where('stripe_payment_intent_id', $payment_intent_id)->first();
+    }
+
+    public function updateStripeSalesOrder($stripe_client_secret, $status)
+    {
+        $sales_order = SalesOrder::where('stripe_payment_intent_id', $stripe_client_secret)->first();
+        if ($sales_order) {
+            $order_status = $status == 1 ? 2 : -2;
+            $description = 'Stripe Payment Update. Status: ' . array_flip(SalesOrder::ORDER_STATUS)[$status];
+
+            $sales_order->payment_status = $status;
+            $sales_order->status = $order_status;
+
+            if ($status == 1) {
+                $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
+                $sales_order->payment_at = Carbon::now();
+
+                $userCartRepository = new UserCartRepository(new Container());
+                $userCartRepository->clearCart($sales_order->user_id);
+                session()->flush('cart-' . $sales_order->user_id);
+                session()->flush('coupon-' . $sales_order->user_id);
+
+                if ($sales_order->point_earned > 0) {
+                    //add point
+                    $userRepository = new UserRepository(new Container());
+                    $userRepository->addOrderPoint($sales_order);
+                }
+            } else {
+                if ($sales_order->point_used > 0) {
+                    // return point
+                    $userRepository = new UserRepository(new Container());
+                    $userRepository->returnFullPoint($sales_order, array_flip(SalesOrder::ORDER_STATUS)[$status]);
+                }
+            }
+            $sales_order->save();
+
+            $salesOrderLogRepository = new SalesOrderLogRepository(new Container());
+            $salesOrderLogRepository->createLog($sales_order, $sales_order->user_id, 'user', $order_status, $description);
+        }
     }
 }

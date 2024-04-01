@@ -12,6 +12,15 @@ class SalesOrderTotal extends Model
 
     protected $table = 'sales_order_total';
 
+    public const TOTAL_SORT = [
+        'SUBTOTAL' => 1,
+        'DISCOUNT' => 2,
+        'COUPON' => 3,
+        'POINT_REDEMPTION' => 4,
+        'SHIPPING_FEE' => 5,
+        'TOTAL' => 6,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

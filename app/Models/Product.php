@@ -33,6 +33,7 @@ class Product extends Model
         'sku',
         'alias',
         'quantity',
+        'point_value',
         'status',
         'sort',
         'is_best_seller',

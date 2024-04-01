@@ -46,7 +46,7 @@
                 data: formData,
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Password Reset Succefully</p>',
                     html: '<p class="swal-register-content-1">Your password has been reseted.</p>',
                     showConfirmButton: false,
@@ -61,7 +61,7 @@
                         swalDialog.style.width = parentWidth + 'px';
 
                         $('#custom-close-button').click(function() {
-                            Swal.close();
+                            swal.close();
                         });
                     }
                 }).then((result) => {
@@ -82,7 +82,7 @@
                     errorMessage = error.response.data.error;
                 }
 
-                Swal.fire({
+                swal.fire({
                     title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Failed</p>',
                     html: '<p class="swal-register-content-1">'+ errorMessage ?? 'Some errors occurs.' +'</p>',
                     showConfirmButton: false,
@@ -97,7 +97,7 @@
                         swalDialog.style.width = parentWidth + 'px';
 
                         $('#custom-close-button').click(function() {
-                            Swal.close();
+                            swal.close();
                         });
                     }
                 });
