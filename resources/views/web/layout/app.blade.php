@@ -68,7 +68,7 @@
     })
     
     function showSwal(title = "", text = ""){ 
-        Swal.fire({
+        swal.fire({
             title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">' + title + '</p>',
             html: '<p class="swal-register-content-1">' + text + ' </p> ',
             backdrop: false,
@@ -85,7 +85,6 @@
     }
 
     function updateColumnValue(array) {
-        console.log(array);
         $('.subtotal-price').html('$' + array.subtotal.toFixed(2));
         $('.point-price').html('$' + array.point_redemption.toFixed(2));
         $('.order-total-price').html('$' + array.total.toFixed(2));
