@@ -47,6 +47,17 @@ class PluginController extends BaseController
         }
     }
 
+    public function uninstall($id)
+    {
+        try {
+            $this->pluginRepository->uninstallPlugin($id);
+
+            return $this->response();
+        } catch (\Exception $e) {
+            return $this->response()->json(['msg' => $e->getMessage()], 500);
+        }
+    }
+
     public function destroy(int $id)
     {
         $this->pluginRepository->deleteById($id);
