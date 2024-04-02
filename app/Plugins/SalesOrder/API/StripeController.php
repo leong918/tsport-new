@@ -13,19 +13,20 @@ class StripeController extends Controller
     private SalesOrderRepository $salesOrderRepository;
 
     public function __construct(
-        SalesOrderRepository $salesOrderRepository,
+        SalesOrderRepository $salesOrderRepository
     ) {
         $this->salesOrderRepository = $salesOrderRepository;
     }
 
-    public function webhook(Request $request) {
+    public function webhook(Request $request)
+    {
         $payload = $request->getContent();
 
         try {
             $event = Event::constructFrom(
                 json_decode($payload, true)
             );
-        } catch(\UnexpectedValueException $e) {
+        } catch (\UnexpectedValueException $e) {
             // Invalid payload
             http_response_code(400);
             exit();
@@ -63,7 +64,7 @@ class StripeController extends Controller
         return $this->response(['status' => 'success']);
     }
 
-    public function paymentSucceed($object) 
+    public function paymentSucceed($object)
     {
         $this->salesOrderRepository->updateStripeSalesOrder($object->client_secret, 1);
     }
@@ -78,5 +79,3 @@ class StripeController extends Controller
         $this->salesOrderRepository->updateStripeSalesOrder($object->client_secret, -2);
     }
 }
-?>
-
