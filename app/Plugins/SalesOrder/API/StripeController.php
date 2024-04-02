@@ -49,6 +49,14 @@ class StripeController extends Controller
                 }
 
                 break;
+            case 'payment_intent.canceled':
+                try {
+                    $this->paymentCanceled($event->data->object);
+                } catch (\Exception $e) {
+                    return $this->response(['status' => 'fail', 'msg' => $e->getMessage()], 'ERROR');
+                }
+
+                break;
             default:
                 return $this->response(['status' => 'fail', 'msg' => 'Received unknown event type ' . $event->type], 'ERROR');
         }
@@ -64,5 +72,10 @@ class StripeController extends Controller
     public function paymentFailed($object)
     {
         $this->salesOrderRepository->updateStripeSalesOrder($object->client_secret, -1);
+    }
+
+    public function paymentCanceled($object)
+    {
+        $this->salesOrderRepository->updateStripeSalesOrder($object->client_secret, -2);
     }
 }
