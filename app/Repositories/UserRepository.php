@@ -133,14 +133,17 @@ class UserRepository extends BaseRepository
         $user = User::find($order->user_id);
         $point = $user->point;
 
-        $user->point = 0;
-        $user->save();
+        if ($point > 0) {
+            $user->point = 0;
+            $user->save();
 
-        $pointLogRepository = new PointLogRepository(new Container());
-        $pointLogData['user_id'] = $user->id;
-        $pointLogData['point'] = -$point;
-        $pointLogData['remark'] = 'Create New Order '.$order->sales_order_id;
-        $pointLogRepository->create($pointLogData);
+            $pointLogRepository = new PointLogRepository(new Container());
+            $pointLogData['user_id'] = $user->id;
+            $pointLogData['sales_order_id'] = $order->id;
+            $pointLogData['point'] = -$point;
+            $pointLogData['remark'] = 'Create New Order ' . $order->sales_order_id;
+            $pointLogRepository->create($pointLogData);
+        }
     }
 
     public function returnFullPoint($order, $status)
@@ -151,8 +154,9 @@ class UserRepository extends BaseRepository
 
         $pointLogRepository = new PointLogRepository(new Container());
         $pointLogData['user_id'] = $user->id;
+        $pointLogData['sales_order_id'] = $order->id;
         $pointLogData['point'] = $order->point_used;
-        $pointLogData['remark'] = 'Return Point due to order '.$order->sales_order_id.' '.$status;
+        $pointLogData['remark'] = 'Return Point due to order ' . $order->sales_order_id . ' ' . $status;
         $pointLogRepository->create($pointLogData);
     }
 
@@ -164,8 +168,9 @@ class UserRepository extends BaseRepository
 
         $pointLogRepository = new PointLogRepository(new Container());
         $pointLogData['user_id'] = $user->id;
+        $pointLogData['sales_order_id'] = $order->id;
         $pointLogData['point'] = $order->point_earned;
-        $pointLogData['remark'] = 'Add point from order '.$order->sales_order_id;
+        $pointLogData['remark'] = 'Add point from order ' . $order->sales_order_id;
         $pointLogRepository->create($pointLogData);
     }
 }
