@@ -46,7 +46,7 @@ class BlogRepository extends BaseRepository
     {
         $this->verifyDescription($input);
 
-        $input['published_at'] = Carbon::createFromFormat('d/m/Y', $input['published_at'])->startOfDay();
+        $input['published_at'] = $input['published_at'] ? Carbon::parse($input['published_at'])->format('Y-m-d H:i:s') : null;
         $model = new Blog();
         $model->fill($input);
         $model->save();
@@ -59,7 +59,7 @@ class BlogRepository extends BaseRepository
     {
         $this->verifyDescription($input, true);
         
-        $input['published_at'] = Carbon::createFromFormat('d/m/Y', $input['published_at'])->startOfDay();
+        $input['published_at'] = $input['published_at'] ? Carbon::parse($input['published_at'])->format('Y-m-d H:i:s') : null;
 
         $model = Blog::findOrFail($id);
         $model->fill($input);
@@ -81,9 +81,6 @@ class BlogRepository extends BaseRepository
         foreach ($input['language'] as $key => $language) {
             $lang = ($key == 'cn' ? 'Chinese' : 'English');
 
-            if (isset($language['name']) == false) {
-                throw new \Exception(__('Name for '.$lang.' cannot be empty!'));
-            }
             if (isset($language['image']) == false && $update == false) {
                 throw new \Exception(__('Image for '.$lang.' cannot be empty!'));
             }

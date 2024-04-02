@@ -19,6 +19,7 @@
             {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
         </div>
     </div>
+    
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Image') }}
@@ -33,6 +34,12 @@
             {{ html()->file('logo')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
             <br />
             <img class="img-fluid" {{isset($model) && $model->logo ? 'src='.$model->logo : ''}} />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Description') }}
+            {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->description : "")->class('form-control wysiwyg') }}
         </div>
     </div>
 </div>

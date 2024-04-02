@@ -70,10 +70,10 @@ class CategoryRepository extends BaseRepository
 
     public function createCategory(array $input)
     {
-        $this->verifyDescription($input);
-
         $this->upload_path = 'category';
         $this->uploadFile($input['image']);
+
+        $this->verifyParentCategory($input);
 
         $model = new Category();
         $model->fill($input);
@@ -86,10 +86,9 @@ class CategoryRepository extends BaseRepository
 
     public function updateCategory(array $input, int $id)
     {
-        $this->verifyDescription($input);
-
         $model = Category::findOrFail($id);
 
+        $this->verifyParentCategory($input);
         $this->verifyChildCategory($model, $input);
 
         $model->fill($input);
@@ -119,23 +118,23 @@ class CategoryRepository extends BaseRepository
         Category::where('parent_category_id', $parent_id)->delete();
     }
 
-    private function verifyDescription($input)
-    {
-        foreach ($input['language'] as $key => $language) {
-            $lang = ($key == 'cn' ? 'Chinese' : 'English');
-
-            if (isset($language['name']) == false) {
-                throw new \Exception(__('Name for ' . $lang . ' cannot be empty!'));
-            }
-        }
-    }
-
     private function verifyChildCategory($model, $input)
     {
         $sub_category = Category::where(['parent_category_id' => $model->id, 'status' => 1])->first();
 
         if (isset($input['parent_category_id']) && isset($sub_category)) {
             throw new \Exception(__('This category has sub category named ' . $sub_category->name . '!'));
+        }
+    }
+
+    private function verifyParentCategory($input)
+    {
+        $parent_category = Category::where(['id' => $input['parent_category_id'], 'status' => 1])->first();
+
+        if ($parent_category->parent_category_id) {
+            $category_name = Category::where(['id' => $parent_category->parent_category_id, 'status' => 1])->first()->name;
+
+            throw new \Exception(__('This category has parent category named ' . $category_name . '!'));
         }
     }
 }

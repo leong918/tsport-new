@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('top_bar', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->integer('font_size');
+            $table->string('name');
             $table->string('background_color');
-            $table->string('font_color');
             $table->tinyInteger('status')->default(0);
+            $table->string('content');
             $table->timestamps();
             $table->softDeletes();
         });

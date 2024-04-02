@@ -45,7 +45,7 @@ class BlogDetailRepository extends BaseRepository
         foreach ($input['language'] as $key => $language) {
             $data['blog_id'] = $blog_id;
             $data['language'] = $key;
-            $data['name'] = $language['name'];
+            $data['name'] = $input['name'];
             $data['content'] = $language['content']; 
 
             if(isset($language['image'])){

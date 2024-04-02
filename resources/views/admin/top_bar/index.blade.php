@@ -23,7 +23,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Title</th>
+                                            <th>Name</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
@@ -56,8 +56,8 @@
                     },
                     columns: [
                         {
-                            data: 'title',
-                            name: 'title'
+                            data: 'name',
+                            name: 'name'
                         },
                         {
                             data: 'status',

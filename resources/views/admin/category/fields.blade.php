@@ -123,24 +123,24 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
-                    title: '{{__("page.category_added")}}',
-                    text: '{{__("page.txt_category_added")}}',
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Category Added',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                        confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/category/index');
                 }, 1000);
             })
             .catch(error => {
-                swal.fire({
-                    title: '{{__("page.category_fail_add")}}',
+                Swal.fire({
+                    title: 'Fail',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

@@ -9,10 +9,10 @@
         <div class="col-md-6">
             <!--cart-->
             @if(count($product->productAttribute) > 0)
-            <a class="cart-container" href="{{route('web.product_detail', ['alias' => $product->alias])}}">
+            <div class="cart-container cart-button-redirect" data-href="{{route('web.product_detail', ['alias' => $product->alias])}}">
                 <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
                 <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-            </a>
+            </div>
             @else
             <div class="cart-container cart-button-hover" data-id="{{ $product->id }}" data-url="{{ route('cart.add_to_cart') }}">
                 <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">

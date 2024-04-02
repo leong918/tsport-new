@@ -11,7 +11,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-3">
-                                        {{ html()->text('output')->attribute('readonly', true)->placeholder('Title will be displayed here')->class('form-control text-center output')->required() }}
+                                        <div class="form-control output" id="output" style="min-height: 37px"></div>
                                     </div>
                                 </div>
                             </div>

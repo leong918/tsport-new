@@ -83,9 +83,17 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Point') }}
-                        {{ html()->number('point')->placeholder('Enter point')->attribute('min', 0)->class('form-control') }}
+                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control')->required() }}
                     </div>
                 </div>
+                @if (!isset($model))
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            {{ html()->label('Has Attribute') }}
+                            {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
+                        </div>
+                    </div>
+                @endif
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Sort') }}
@@ -112,14 +120,6 @@
                         {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control')->required() }}
                     </div>
                 </div>
-                @if (!isset($model))
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            {{ html()->label('Has Attribute') }}
-                            {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
-                        </div>
-                    </div>
-                @endif
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Has Backorder') }}
@@ -140,6 +140,30 @@
                     </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Information') }}
+                        {{ html()->textarea('language[cn][information]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->information : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Description') }}
+                        {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->description : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Ingredient') }}
+                        {{ html()->textarea('language[cn][ingredient]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->ingredient : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Usage') }}
+                        {{ html()->textarea('language[cn][usage]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->usage : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-12">
                     <div class="mb-3">
                         {{ html()->label('Image') }}
                         {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control')->required(isset($model) && $model->productImage->count() > 0 ? false : true) }}
@@ -347,15 +371,10 @@
         }
 
         //------------------------------------------------------------------------------------------
-        var additionalTermOption = 0;
-        var attributeCount = 1;
-        var attributeCountOnRender = $('.optionContent').length;
+        var additionalTermOption = $('.optionContent .termWrapper').length;
+        var attributeCount = $('.optionContent').length;
 
-        var optionContent = $('.optionContent').data('option-id');
-        var termWrappers = $('.optionContent[data-option-id="' + optionContent + '"]').find('.termWrapper');
-        var termCountOnRender = termWrappers.length;
-
-        if (attributeCountOnRender > 1) {
+        if (attributeCount > 1) {
             $('.optionContent:not(:first-child)').addClass('mt-3');
             $('.optionContent:not(:first-child) .back').append(
                 '<button class="btn btn-danger btn-remove-option" type="button"><i class="fas fa-trash-alt"></i></button>'
@@ -373,45 +392,22 @@
             $(this).parents('.termWrapper').remove();
         })
 
+        //----------------- add attribute term -------------------
         $('body').on('click', '.btn-addOption', function() {
+            var option_id = $(this).parents('.optionContent').data('option-id');
             var template = document.getElementById('optionVariationLayout').innerHTML;
-
-            var optionContent = $(this).closest('.optionContent');
-            var option_id = optionContent.data('option-id');
-            var termWrappers = optionContent.find('.termWrapper');
-            var termCountOnRender = termWrappers.length;
-
-            @if (isset($model))
-            var rendered = Mustache.render(template, {
-                id: option_id,
-                variation_id: termCountOnRender,
-            });
-            $(this).parents('.optionContent').find('.list-group').append(rendered);
-            termCountOnRender++;
-            
-            @else
             var rendered = Mustache.render(template, {
                 id: option_id,
                 variation_id: additionalTermOption,
             });
             $(this).parents('.optionContent').find('.list-group').append(rendered);
             additionalTermOption++;
-            @endif
         })
 
+
+        //------------ add attribute ------------------
         $('#addOptionBtn').on('click', function() {
             var template = document.getElementById('moreOptionLayout').innerHTML;
-            @if (isset($model))
-            var rendered = Mustache.render(template, {
-                id: attributeCountOnRender,
-                variation_id: additionalTermOption,
-            });
-            
-            $('#optionContent').append(rendered);
-            attributeCountOnRender++;
-            additionalTermOption++;
-
-            @else
             var rendered = Mustache.render(template, {
                 id: attributeCount,
                 variation_id: additionalTermOption,
@@ -420,12 +416,7 @@
             $('#optionContent').append(rendered);
             attributeCount++;
             additionalTermOption++;
-            @endif
-
-            // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender);
         })
-
-        // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender, termCountOnRender);
 
 
         $("#product").submit(function(e) {

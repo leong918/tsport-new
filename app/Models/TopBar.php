@@ -32,11 +32,10 @@ class TopBar extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
-        'font_size',
+        'name',
         'background_colour',
-        'font_colour',
         'status',
+        'content',
     ];
 
     /**
