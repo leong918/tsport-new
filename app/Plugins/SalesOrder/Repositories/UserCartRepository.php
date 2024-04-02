@@ -116,7 +116,7 @@ class UserCartRepository extends BaseRepository
                 'user_id' => $user_id,
                 'user_ip' => $user_ip,
                 'product_id' => $empty_cart->product_id,
-                'product_attribute_term_id' => $empty_cart->product_attribute_term_id,
+                'product_attribute_term' => $empty_cart->product_attribute_term,
             ])->first();
 
             if ($existing_cart) {

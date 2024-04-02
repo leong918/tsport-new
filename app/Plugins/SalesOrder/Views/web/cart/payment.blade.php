@@ -146,7 +146,14 @@
                     if (error && error.response && error.response.data) {
                         var responseData = error.response.data;
                         if (responseData.redirect) {
-                            window.location.reload();
+                            if (responseData.msg) {
+                                showSwal('Fail!', responseData.msg);
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                window.location.reload();
+                            }
                         } else {
                             $(this).attr('disabled', false);
                             showSwal('Fail!', responseData.msg);
