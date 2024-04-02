@@ -24,10 +24,8 @@ class UpdateTopBarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'font_size' => 'required',
+            'name' => 'required',
             'background_colour' => 'required',
-            'font_colour' => 'required',
             'status' => 'required',
         ];
     }

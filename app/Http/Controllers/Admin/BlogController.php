@@ -9,6 +9,7 @@ use App\Repositories\BlogRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class BlogController extends BaseController
 {
@@ -63,6 +64,7 @@ class BlogController extends BaseController
     public function edit(int $id)
     {
         $model = $this->blogRepository->find($id);
+        $model->published_at = $model->published_at ? Carbon::parse($model->published_at)->format('Y-m-d g:i A') : null;
         return $this->view('blog.update', compact('model'));
     }
 

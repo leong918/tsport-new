@@ -83,9 +83,17 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Point') }}
-                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control') }}
+                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control')->required() }}
                     </div>
                 </div>
+                @if (!isset($model))
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            {{ html()->label('Has Attribute') }}
+                            {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
+                        </div>
+                    </div>
+                @endif
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Sort') }}
@@ -112,14 +120,6 @@
                         {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control')->required() }}
                     </div>
                 </div>
-                @if (!isset($model))
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            {{ html()->label('Has Attribute') }}
-                            {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
-                        </div>
-                    </div>
-                @endif
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Has Backorder') }}
@@ -448,9 +448,9 @@
                     confirmButtonClass: 'btn btn-success',
                     confirmButtonText: 'OK',
                 });
-                // setTimeout(function() {
-                //     window.location.replace('/admin/product/index');
-                // }, 1000);
+                setTimeout(function() {
+                    window.location.replace('/admin/product/index');
+                }, 1000);
             })
             .catch(error => {
                 swal.fire({

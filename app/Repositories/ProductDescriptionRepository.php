@@ -42,7 +42,7 @@ class ProductDescriptionRepository extends BaseRepository
         foreach ($input['language'] as $key => $language) {
             $data['product_id'] = $product_id;
             $data['language'] = $key;
-            $data['name'] = $language['name'];
+            $data['name'] = $input['name'];
             $data['information'] = $language['information']; 
             $data['description'] = $language['description']; 
             $data['ingredient'] = $language['ingredient']; 

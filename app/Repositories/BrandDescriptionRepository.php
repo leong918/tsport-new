@@ -45,7 +45,7 @@ class BrandDescriptionRepository extends BaseRepository
         foreach ($input['language'] as $key => $language) {
             $data['brand_id'] = $brand_id;
             $data['language'] = $key;
-            $data['name'] = $language['name'];
+            $data['name'] = $input['name'];
             $data['description'] = $language['description']; 
 
             $model = new BrandDescription();

@@ -107,9 +107,6 @@ class BrandRepository extends BaseRepository
         foreach ($input['language'] as $key => $language) {
             $lang = ($key == 'cn' ? 'Chinese' : 'English');
 
-            if (isset($language['name']) == false) {
-                throw new \Exception(__('Name for '.$lang.' cannot be empty!'));
-            }
             if (isset($language['description']) == false) {
                 throw new \Exception(__('Description for '.$lang.' cannot be empty!'));
             }

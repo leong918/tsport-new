@@ -5,9 +5,11 @@
         <img class="hide" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-2.png')}}" alt="Bootstrap">
     </a>
 
-    <div class="container-fluid fixed-top">
-        <div class="text-top">Free Shipping on Orders of $800 Within Hong Kong</div>
+    @if (isset($top_bar))
+    <div class="container-fluid fixed-top" style="background-color: {{ $top_bar->background_colour }}">
+        <div class="text-top">{!! $top_bar->content !!}</div>
     </div>
+    @endif
     
     <nav class="navbar bg-body-tertiary fixed-top">
         <div class="container">
