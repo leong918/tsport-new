@@ -121,7 +121,7 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.brand_added")}}',
                     text: '{{__("page.txt_brand_added")}}',
                     icon: 'success',
@@ -133,9 +133,9 @@
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.brand_fail_add")}}',
-                    text: error.response.data.msg,
+                    text: '123',
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: '{{__("page.ok")}}',

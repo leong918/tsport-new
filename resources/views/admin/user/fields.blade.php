@@ -33,27 +33,13 @@
     </div>
     <div class="col-md-6">
         <div class="mb-3">
-            {{ html()->label('Birth Month') }}
-            {{-- <div class="input-group" id="datetimepicker1" data-td-target-input="nearest" data-td-target-toggle="nearest">
-                <input id="datetimepicker1Input" type="text" name="dob" class="form-control" data-td-target="#datetimepicker1" required/>
-                <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
-                    <span class="fas fa-calendar"></span>
-                </span>
-            </div> --}}
-            <select class="form-control" name="birth_month">
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-            </select>
+            {{ html()->label('Date of Birth') }}
+            <div class="input-group datePicker" data-td-target-input="nearest"
+                data-td-target-toggle="nearest">
+                <input id="dobDatePicker" type="datetime" class="form-control" name="dob"
+                    data-td-target="#dob" data-td-toggle="datetimepicker" 
+                    value="{{ isset($model) ? \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $model->dob)->format('d/m/Y') : null }}"/>
+            </div>
         </div>
     </div>
     <div class="col-md-6">
@@ -89,35 +75,13 @@
 
 @section('script')
 @parent
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/tempus-dominus.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/jQuery-provider.js"></script>
 <script>
-    var dateString = '{{ isset($model) && $model->dob ? $model->dob : '' }}'; 
-    if(dateString){
-        var date = new Date(dateString);
-    }else{
-        var date = new Date();
-    }
-
-    var day = date.getDate();
-    var month = date.getMonth() + 1; 
-    var year = date.getFullYear();
-    var dob = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
-
     $(document).ready(function() { 
-        $('#datetimepicker1').tempusDominus({
-            defaultDate: dob,
-            localization: {
-                format: 'dd/MM/yyyy',
-            },
-            display:{
-                theme: 'light',
-                components: {
-                    clock: false,
-                },
-            },
+        $('#dobDatePicker').tempusDominus({
+                localization: {
+                    format: 'dd/MM/yyyy'
+                }
+            });
         });
-    });
-</script> --}}
+</script>
 @endsection

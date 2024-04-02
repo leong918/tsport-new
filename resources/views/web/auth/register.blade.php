@@ -1,4 +1,5 @@
 @extends('web.layout.app')
+
 @section('content')
 <div id="register" class="margin-header">
     <div class="container">
@@ -26,8 +27,16 @@
                             <label class="placeholder-label">Phone no. *</label>
                             <div class="input-desc">cannot be changed after becoming a member</div>
                         </div>
-                        <div class="mb-20 input-container dropdown">
-                            {{ html()->hidden('birth_month')->placeholder('')->id('birth-month')->required() }}
+                        <div class="mb-20 input-container">
+                            <div class="input-group datePicker" data-td-target-input="nearest"
+                                data-td-target-toggle="nearest">
+                                <input id="dobRegisterDatePicker" type="datetime" class="form-control" name="dob"
+                                    data-td-target="#dob" data-td-toggle="datetimepicker" />
+                            </div>
+                            <label class="placeholder-label">Date of Birth. *</label>
+                            <div class="input-desc">cannot be changed after becoming a member</div>
+                            {{-- birth month --}}
+                            {{-- {{ html()->hidden('birth_month')->placeholder('')->id('birth-month')->required() }}
                             <input type="text" placeholder=" " class="birth-input" required readonly/>
                             <ul id="month-dropdown">
                                 <li>January</li>
@@ -42,9 +51,7 @@
                                 <li>October</li>
                                 <li>November</li>
                                 <li>December</li>
-                            </ul>
-                            <label class="placeholder-label" required>Birth Month *</label>
-                            <div class="input-desc">cannot be changed after becoming a member</div>
+                            </ul> --}}
                         </div>
                         <div class="mb-40 input-container">
                             {{ html()->password('password')->placeholder('')->class('')->required() }}
@@ -93,24 +100,31 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $('.input-container input.birth-input').focus(function() {
-            $('#month-dropdown').addClass('visible');
-        });
+        // birth month
+        // $('.input-container input.birth-input').focus(function() {
+        //     $('#month-dropdown').addClass('visible');
+        // });
     
-        $("#month-dropdown li").click(function() {
-            $('#birth-month').val($(this).text());
-            $('.birth-input').val($(this).text());
-           $('#month-dropdown').removeClass('visible');
-        });
+        // $("#month-dropdown li").click(function() {
+        //     $('#birth-month').val($(this).text());
+        //     $('.birth-input').val($(this).text());
+        //    $('#month-dropdown').removeClass('visible');
+        // });
         
-        $('.input-container input.birth-input').on('blur', function() {
-            setTimeout(function() {
-                if (!$('.input-container input.birth-input').is(':focus') && !$('#month-dropdown').is(':focus')) {
-                    $('#month-dropdown').removeClass('visible');
+        // $('.input-container input.birth-input').on('blur', function() {
+        //     setTimeout(function() {
+        //         if (!$('.input-container input.birth-input').is(':focus') && !$('#month-dropdown').is(':focus')) {
+        //             $('#month-dropdown').removeClass('visible');
+        //         }
+        //     }, 100);
+        // });
+        
+        $('#dobRegisterDatePicker').tempusDominus({
+                localization: {
+                    format: 'dd/MM/yyyy'
                 }
-            }, 100);
-        });
-        
+            });
+
         var parentElement = document.getElementsByClassName('register-container')[0];
         $("#register_form").submit(function(e) {
             $(this).find('button[type="submit"]').attr('disabled','disabled');

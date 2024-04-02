@@ -22,11 +22,11 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Published Date') }}
-            <div class="input-group" id="datetimepicker1" data-td-target-input="nearest" data-td-target-toggle="nearest">
-                <input id="datetimepicker1Input" type="text" name="published_at" class="form-control" data-td-target="#datetimepicker1" required/>
-                <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
-                    <span class="fas fa-calendar"></span>
-                </span>
+            <div class="input-group datePicker" data-td-target-input="nearest"
+                data-td-target-toggle="nearest">
+                <input id="publishedDatePicker" type="datetime" class="form-control" name="published_at"
+                    data-td-target="#published_at" data-td-toggle="datetimepicker" 
+                    value="{{ isset($model) ? \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $model->published_at)->format('d/m/Y') : null }}"/>
             </div>
         </div>
     </div>
@@ -36,34 +36,13 @@
 @parent
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/tempus-dominus.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/jQuery-provider.js"></script>
 <script>
-    var dateString = '{{ isset($model) && $model->published_at ? $model->published_at : '' }}'; 
-    if(dateString){
-        var date = new Date(dateString);
-    }else{
-        var date = new Date();
-    }
-    var day = date.getDate();
-    var month = date.getMonth() + 1; 
-    var year = date.getFullYear();
-    var published_at = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
-
     $(document).ready(function() { 
-        $('#datetimepicker1').tempusDominus({
-            defaultDate: published_at,
-            localization: {
-                format: 'dd/MM/yyyy',
-            },
-            display:{
-                theme: 'light',
-                components: {
-                    clock: false,
-                },
-            },
-        });
+        $('#publishedDatePicker').tempusDominus({
+                localization: {
+                    format: 'dd/MM/yyyy'
+                }
+            });
 
         var editor_config = {
             path_absolute : "{{ config('app.url') .'/' }}",
@@ -142,7 +121,7 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.blog_added")}}',
                     text: '{{__("page.txt_blog_added")}}',
                     icon: 'success',
@@ -154,7 +133,7 @@
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
+                swal.fire({
                     title: '{{__("page.blog_fail_add")}}',
                     text: error.response.data.msg,
                     icon: 'error',
