@@ -42,7 +42,7 @@ class SalesOrderTotalRepository extends BaseRepository
                     $salesOrderLog->title = $cart_rule['name'];
                     $salesOrderLog->code = $key;
                     $salesOrderLog->value = $cart_rule['discount_amount'];
-                    $salesOrderLog->text = '$ '.$cart_rule['discount_amount'];
+                    $salesOrderLog->text = '$' . $cart_rule['discount_amount'];
                     $salesOrderLog->sort = SalesOrderTotal::TOTAL_SORT[strtoupper($key)];
                     $salesOrderLog->save();
                 }
@@ -53,7 +53,7 @@ class SalesOrderTotalRepository extends BaseRepository
                 $salesOrderLog->title = ucfirst(str_replace('_', ' ', $key));
                 $salesOrderLog->code = $key;
                 $salesOrderLog->value = $total;
-                $salesOrderLog->text = '$ '.$total;
+                $salesOrderLog->text = '$' . $total;
                 $salesOrderLog->sort = SalesOrderTotal::TOTAL_SORT[strtoupper($key)];
                 $salesOrderLog->save();
             }
