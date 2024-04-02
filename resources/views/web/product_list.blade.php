@@ -1,7 +1,7 @@
 @foreach($product_list as $product)
     <a href="{{route('web.product_detail', ['alias' => $product->alias])}}" class="product-container col product-img">
         <div class="product-image position-relative">
-            <img class="show" src="{{$product->productImage()->first()->url}}">
+            <img class="show" src="{{$product->productImage->first()->url}}">
             @if(function_exists('salesOrderRenderView'))
             {{ salesOrderRenderView('product_list_hover_web', $product) }}
             @endif

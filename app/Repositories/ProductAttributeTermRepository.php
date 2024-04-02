@@ -57,6 +57,7 @@ class ProductAttributeTermRepository extends BaseRepository
             $term_model->product_id = $productAttribute->product_id;
             $term_model->name = $term['term_name'];
             $term_model->sku = $term['term_sku'];
+            $term_model->point_value = $term['term_add_on_point'];
 
             //----------- check create/ update stock  ------------
             if (!isset($term['stock_amount'])) {

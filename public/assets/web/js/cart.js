@@ -1,4 +1,9 @@
 $(function() {
+    $('.cart-button-redirect').on('click', function(e) {
+        e.preventDefault();
+        window.location.href($(this).data('href'));
+    })
+
     $('.cart-button-hover').on('click', function(e) {
         e.preventDefault();
         var product_id = $(this).data('id');

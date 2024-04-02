@@ -23,8 +23,7 @@
                 <span class="text-capitalize">
                     Search Result
                 </span>
-                @endif
-                
+                @endif   
             </div>
         </div>
     </div>
@@ -85,6 +84,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 @endsection

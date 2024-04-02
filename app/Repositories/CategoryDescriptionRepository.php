@@ -9,8 +9,7 @@ class CategoryDescriptionRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -39,14 +38,12 @@ class CategoryDescriptionRepository extends BaseRepository
     {
         CategoryDescription::where('category_id', $category_id)->delete();
 
-        foreach ($input['language'] as $key => $language) {
-            $data['category_id'] = $category_id;
-            $data['language'] = $key;
-            $data['name'] = $language['name'];
+        $data['category_id'] = $category_id;
+        $data['language'] = 'cn';
+        $data['name'] = $input['name'];
 
-            $model = new CategoryDescription();
-            $model->fill($data);
-            $model->save();
-        }
+        $model = new CategoryDescription();
+        $model->fill($data);
+        $model->save();
     }
 }

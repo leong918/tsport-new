@@ -23,7 +23,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Image</th>
+                                            <th style="width: 20%">Image</th>
                                             <th>Parent Category</th>
                                             <th>Name</th>
                                             <th>Status</th>

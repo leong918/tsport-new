@@ -29,7 +29,7 @@ class UpdateBlogRequest extends FormRequest
             'name' => 'required',
             'status' => 'required',
             'sort' => 'required',
-            'published_at' => 'required|date_format:d/m/Y',
+            'published_at' => 'required',
         ];
     }
     

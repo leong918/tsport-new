@@ -56,7 +56,7 @@
                                         data-selected-price="0" value="" required readonly>
                                     <ul id="{{ $product_attribute->name }}-dropdown" class="attribute-dropdown">
                                         @foreach ($product_attribute->productAttributeTerm()->get() as $term)
-                                            <li data-value="{{ $term->id }}"
+                                            <li data-point="{{ $term->point_value }}"
                                                 data-add-on-price="{{ $term->getCurrencyParameters('HKD')->price }}">{{ $term->name }}</li>
                                         @endforeach
                                     </ul>
@@ -77,7 +77,7 @@
 
                     <div class="row">
                         <div class="col-12 product-details-wrapper mx-auto">
-                            <div class="product-details-list">{!! $product->getParameters('en')->information !!}</div>
+                            <div class="product-details-list">{!! $product->getParameters('cn')->information !!}</div>
                         </div>
                     </div>
                     <div>
@@ -111,24 +111,24 @@
                 <div class="tab-content description" id="myTabContent">
                     <div class="tab-pane fade show active" id="desciption" role="tabpanel" aria-labelledby="desciption-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('en')->description !!}
+                            {!! $product->getParameters('cn')->description !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('en')->ingredient !!}
+                            {!! $product->getParameters('cn')->ingredient !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="usage" role="tabpanel" aria-labelledby="usage-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('en')->usage !!}
+                            {!! $product->getParameters('cn')->usage !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('en')->additional_information !!}
+                            {!! $product->getParameters('cn')->additional_information !!}
 
-                            @if ($product_attribute_list->where('is_variation', 0))
+                            @if ($product_attribute_list->isNotEmpty() && $product_attribute_list->where('is_variation', 0))
                                 <div class="row mt-5">
                                     <div class="col-md-4">
                                         <div>Product Attribute</div>

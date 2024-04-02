@@ -11,9 +11,9 @@
 
                             @include('admin.product.fields')
 
-                            {{--------------- display product attribute when attribute = 1 ------------}}
+                            {{-- ------------- display product attribute when attribute = 1 ---------- --}}
                             @if ($model->productAttribute->isNotEmpty())
-                                <div class="col-sm-12 product-attribute-input">
+                                <div class="col-sm-12 product-attribute-input mt-3">
                                     <div class="row mb-3">
                                         <div class="col-md-12 col-xl-12 col-xs-12 col-sm-12">
                                             <div class="card">
@@ -51,60 +51,90 @@
                                                                             <li class="list-group-item termWrapper d-flex align-items-center"
                                                                                 data-option-variation-id="{{ $key }}">
                                                                                 <div class="col-md-10 col-10">
-                                                                                        <div class="inputBoxes d-flex flex-wrap ">
-                                                                                            <div class="col-md-6 col-6 border-end">
-                                                                                                <div class="m-2 ms-0">
-                                                                                                    <label for="">Attribute Term</label>
-                                                                                                    <textarea 
-                                                                                                        class="form-control"
-                                                                                                        required
-                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][term_name]"
-                                                                                                        style="height: 37px">{{ $term->name }}</textarea>
-                                                                                                </div>
-                                                                                                <div class="m-2 ms-0">
-                                                                                                    <label for="">SKU</label>
-                                                                                                    <input type="text"
-                                                                                                        class="form-control"
-                                                                                                        required
-                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][term_sku]"
-                                                                                                        value="{{ $term->sku }}">
-                                                                                                </div>
-                                                                                                <div class="m-2 ms-0">
-                                                                                                    <label for="">Add On Price</label>
-                                                                                                    <input type="number"
-                                                                                                        class="form-control" required
-                                                                                                        min="0.01"
-                                                                                                        step="0.01"
-                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][term_add_on_price]"
-                                                                                                        value="{{ $term->getCurrencyParameters('HKD')->price }}">
-                                                                                                </div>
+                                                                                    <div
+                                                                                        class="inputBoxes d-flex flex-wrap ">
+                                                                                        <div
+                                                                                            class="col-md-6 col-6 border-end">
+                                                                                            <div class="m-2 ms-0">
+                                                                                                <label
+                                                                                                    for="">Attribute
+                                                                                                    Term</label>
+                                                                                                <textarea class="form-control" required rows="2"
+                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_name]">{{ $term->name }}</textarea>
                                                                                             </div>
-                                                                                            
-                                                                                            <div class="col-md-5 col-5">
-                                                                                                    <div class="m-2">
-                                                                                                        <label for="stockStatus">Stock Adjustment</label>
-                                                                                                        <div class="d-flex input-group">
-                                                                                                            <select name="option[{{ $attribute_key }}][variation][{{ $key }}][stock_option]" class="form-select stockOption rounded-0 rounded-start" aria-label="select stock status" style="max-width: 35%">
-                                                                                                                <option value="0">ADD</option>
-                                                                                                                <option value="1">MINUS</option>
-                                                                                                            </select>
-                                                                                                            <input type="number" name="option[{{ $attribute_key }}][variation][{{ $key }}][stock_amount]" id="stockOptionAmount" min="1" class="form-control rounded-0 rounded-end" aria-label="Text input with dropdown button">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="m-2">
-                                                                                                        <label for="">Balance</label>
-                                                                                                        <input type="number"
-                                                                                                            class="form-control border-0"
-                                                                                                            readonly min="1"
-                                                                                                            name="option[{{ $attribute_key }}][variation][{{ $key }}][term_qty]"
-                                                                                                            value="{{ $term->quantity }}" 
-                                                                                                            style="box-shadow: none; background-color: #d8dbe0">
-                                                                                                    </div>
+                                                                                            <div class="m-2 ms-0">
+                                                                                                <label
+                                                                                                    for="">SKU</label>
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    required
+                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_sku]"
+                                                                                                    value="{{ $term->sku }}">
+                                                                                            </div>
+                                                                                            <div class="m-2 ms-0">
+                                                                                                <label for="">Add On
+                                                                                                    Price</label>
+                                                                                                <input type="number"
+                                                                                                    class="form-control"
+                                                                                                    required min="0.01"
+                                                                                                    step="0.01"
+                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_add_on_price]"
+                                                                                                    value="{{ $term->getCurrencyParameters('HKD')->price }}">
+                                                                                            </div>
+                                                                                            <div class="m-2 ms-0">
+                                                                                                <label for="">Add On
+                                                                                                    Point</label>
+                                                                                                <input type="number"
+                                                                                                    class="form-control"
+                                                                                                    required min="0"
+                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_add_on_point]"
+                                                                                                    value="{{ $term->point_value }}">
                                                                                             </div>
                                                                                         </div>
+
+                                                                                        <div class="col-md-5 col-5">
+                                                                                            <div class="m-2">
+                                                                                                <label
+                                                                                                    for="stockStatus">Stock
+                                                                                                    Adjustment</label>
+                                                                                                <div
+                                                                                                    class="d-flex input-group">
+                                                                                                    <select
+                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][stock_option]"
+                                                                                                        class="form-select stockOption rounded-0 rounded-start"
+                                                                                                        aria-label="select stock status"
+                                                                                                        style="max-width: 35%">
+                                                                                                        <option
+                                                                                                            value="0">
+                                                                                                            ADD</option>
+                                                                                                        <option
+                                                                                                            value="1">
+                                                                                                            MINUS</option>
+                                                                                                    </select>
+                                                                                                    <input type="number"
+                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][stock_amount]"
+                                                                                                        id="stockOptionAmount"
+                                                                                                        min="1"
+                                                                                                        class="form-control rounded-0 rounded-end"
+                                                                                                        aria-label="Text input with dropdown button">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="m-2">
+                                                                                                <label
+                                                                                                    for="">Balance</label>
+                                                                                                <input type="number"
+                                                                                                    class="form-control border-0"
+                                                                                                    readonly min="1"
+                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_qty]"
+                                                                                                    value="{{ $term->quantity }}"
+                                                                                                    style="box-shadow: none; background-color: #d8dbe0">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                                 <div class="col-md-2 col-2">
-                                                                                    <div class="d-flex justify-content-end termBtnControl">
+                                                                                    <div
+                                                                                        class="d-flex justify-content-end termBtnControl">
                                                                                     </div>
                                                                                 </div>
                                                                             </li>
@@ -112,11 +142,16 @@
                                                                     </ul>
                                                                     <div class="card-footer">
                                                                         <div class="d-flex align-items-center mb-2">
-                                                                            <input type="checkbox" data-checkbox="{{ $attribute->status }}" name="option[{{ $attribute_key }}][attribute_status]">
-                                                                            <span class="ms-2">Visible on product page</span>
+                                                                            <input type="checkbox"
+                                                                                data-checkbox="{{ $attribute->status }}"
+                                                                                name="option[{{ $attribute_key }}][attribute_status]">
+                                                                            <span class="ms-2">Visible on product
+                                                                                page</span>
                                                                         </div>
                                                                         <div class="d-flex align-items-center">
-                                                                            <input type="checkbox" data-checkbox="{{ $attribute->is_variation }}" name="option[{{ $attribute_key }}][is_variation]">
+                                                                            <input type="checkbox"
+                                                                                data-checkbox="{{ $attribute->is_variation }}"
+                                                                                name="option[{{ $attribute_key }}][is_variation]">
                                                                             <span class="ms-2">Used for variations</span>
                                                                         </div>
                                                                     </div>
@@ -127,13 +162,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                     </div>
                                 </div>
                             @endif
-
-
-                            @include('admin.product.language')
 
                             <div class="col-sm-12">
                                 <div class="my-3 float-end">
@@ -151,30 +183,33 @@
             </div>
         </div>
 
-        {{---------------------------------  only display when attribute is 0 ---------------------------- --}}
-        <div class="modal fade modal-lg" id="stockModal" tabindex="-1" role="dialog" aria-labelledby="stockModalLabel">
+        {{-- -------------------------------  only display when attribute is 0 ---------------------------- --}}
+        <div class="modal fade modal-lg" id="stockModal" tabindex="-1" role="dialog"
+            aria-labelledby="stockModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
                     {{ html()->model($model)->form('PUT', route('admin.product.updateStock.put', ['id' => $model->id]))->acceptsFiles()->id('stock')->open() }}
-                    
+
                     <div class="modal-header">
                         <h5 class="modal-title text-dark" id="stockModalLabel">Stock Adjustment</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row productStockRow">
-                            <div class="col-md-8 col-12"> 
+                            <div class="col-md-8 col-12">
                                 <div class="d-flex justify-content-between">
                                     <button type="button" class="btn btn-success addBtn" style="width: 47%">Add</button>
-                                    <button type="button" class="btn btn-danger minusBtn" style="width: 47%">Minus</button>
+                                    <button type="button" class="btn btn-danger minusBtn"
+                                        style="width: 47%">Minus</button>
                                 </div>
                                 <div class="col-md-12 mt-3">
                                     <div class="mb-3">
                                         <p class="text-dark">
-                                            <input readonly name="type" type="text" class="stockStatus border-0" value="ADD" style="font-weight: bold; width: 13%"> Stock
+                                            <input readonly name="type" type="text" class="stockStatus border-0"
+                                                value="ADD" style="font-weight: bold; width: 13%"> Stock
                                         </p>
-                                        {{ html()->number('quantity')->value(0)->attribute('min' , 1)->class('form-control')->required() }}
+                                        {{ html()->number('quantity')->value(0)->attribute('min', 1)->class('form-control')->required() }}
                                     </div>
                                 </div>
                             </div>
@@ -187,15 +222,14 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-warning"
-                            data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-info">Submit</button>
                     </div>
 
                     {{ html()->form()->close() }}
                 </div>
             </div>
-        </div> 
+        </div>
     </main>
 @endsection
 
@@ -218,28 +252,38 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item termWrapper" data-option-variation-id="@{{ variation_id }}">
-                    <div class="col-md-11 col-11">
-                        <div class="d-flex flex-wrap justify-content-between">
+                    <div class="col-md-10 col-10">
                             <div class="inputBoxes d-flex flex-wrap">
-                                <div class="m-2 ms-0">
-                                    <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" style="height: 37px"></textarea>
+                                <div class="col-md-6 col-6 border-end">
+                                    <div class="m-2 ms-0">
+                                        <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="2"></textarea>
+                                    </div>
+                                    <div class="m-2 ms-0">
+                                        <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
+                                    </div>
+                
+                                    <div class="m-2 ms-0">
+                                        <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
+                                    </div>
                                 </div>
-                                <div class="m-2 ms-0">
-                                    <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
-                                </div>
-                                <div class="m-2 ms-0">
-                                    <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
-                                </div>
-                                <div class="m-2 ms-0">
-                                    <input type="number"
-                                        class="form-control" required
-                                        min="0.01"
-                                        step="0.01"
-                                        placeholder="{{ __('Add On Price') }}"
-                                        name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
-                                </div>
+                                <div class="col-md-5 col-5">
+                                    <div class="m-2 ms-2">
+                                        <input type="number"
+                                            class="form-control" required
+                                            min="0.01"
+                                            step="0.01"
+                                            placeholder="{{ __('Add On Price') }}"
+                                            name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
+                                    </div>
+                                    <div class="m-2 ms-2">
+                                        <input type="number"
+                                            class="form-control" required
+                                            min="0"
+                                            placeholder="{{ __('Add On Point') }}"
+                                            name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_point]">
+                                    </div>  
+                                </div> 
                             </div>
-                        </div>
                     </div>
                 </li>
             </ul>
@@ -258,21 +302,23 @@
 </script>
 
 <script id="optionVariationLayout" type="x-tmpl-mustache">
-    <li class="list-group-item termWrapper" data-option-variation-id="@{{ variation_id }}">
-        <div class="row">
-            <div class="col-md-11 col-11">
-                <div class="d-flex flex-wrap justify-content-between">
-                    <div class="inputBoxes d-flex flex-wrap">
+    <li class="list-group-item termWrapper d-flex align-items-center" data-option-variation-id="@{{ variation_id }}">
+        <div class="col-md-10 col-10">
+                <div class="inputBoxes d-flex flex-wrap">
+                    <div class="col-md-6 col-6 border-end">
                         <div class="m-2 ms-0">
-                            <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" style="height: 37px"></textarea>
+                            <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="2"></textarea>
                         </div>
                         <div class="m-2 ms-0">
                             <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
                         </div>
+    
                         <div class="m-2 ms-0">
                             <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
                         </div>
-                        <div class="m-2 ms-0">
+                    </div>
+                    <div class="col-md-5 col-5">
+                        <div class="m-2 ms-2">
                             <input type="number"
                                 class="form-control" required
                                 min="0.01"
@@ -280,17 +326,21 @@
                                 placeholder="{{ __('Add On Price') }}"
                                 name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
                         </div>
-                    </div>
+                        <div class="m-2 ms-2">
+                            <input type="number"
+                                class="form-control" required
+                                min="0"
+                                placeholder="{{ __('Add On Point') }}"
+                                name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_point]">
+                        </div>  
+                    </div> 
                 </div>
-            </div>
-            
-            <div class="col-md-1 col-1 d-flex justify-content-end align-items-center">
-                <div class="">
-                    <button class="btn btn-danger btn-remove-variation" type="button"><i class="fas fa-trash-alt"></i></button>
-                </div>
+        </div>
+        <div class="col-md-2 col-2 d-flex justify-content-end align-items-center">
+            <div class="">
+                <button class="btn btn-danger btn-remove-variation" type="button"><i class="fas fa-trash-alt"></i></button>
             </div>
         </div>
     </li>
 </script>
-
 @endsection

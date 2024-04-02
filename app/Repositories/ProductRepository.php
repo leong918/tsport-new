@@ -118,12 +118,12 @@ class ProductRepository extends BaseRepository
     }
 
 
-    public function getProductByCategoryType(string $category_id, string $currency_code) //int $category_id = null
+    public function getProductByCategoryType(string $category_id, string $currency_code) 
     {
         $query =  Product::leftjoin('category', 'product.category_id', '=', 'category.id')
             ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->whereNull('product_price.deleted_at')
-            ->where(['category.id' => $category_id, 'product_price.code' => $currency_code]);
+            ->where(['category.id' => $category_id, 'product_price.code' => $currency_code, 'product_price.product_attribute_term_id' => null]);
 
         return $query->orderBy('product.created_at', 'desc')
             ->selectRaw('product.*, product_price.code, product_price.price')
@@ -293,9 +293,6 @@ class ProductRepository extends BaseRepository
         foreach ($input['language'] as $key => $language) {
             $lang = ($key == 'cn' ? 'Chinese' : 'English');
 
-            if (isset($language['name']) == false) {
-                throw new \Exception(__('Name for ' . $lang . ' cannot be empty!'));
-            }
             if (isset($language['information']) == false) {
                 throw new \Exception(__('Information for ' . $lang . ' cannot be empty!'));
             }
