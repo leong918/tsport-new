@@ -17,7 +17,7 @@ $(function() {
             }
         })
         .then(response => {
-            $('#cart-count').html(response.data.cart_count);
+            $('#cart-count').removeClass('d-none').text(response.data.cart_count);
             
             swal.fire({
                 title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Success!</p>',
