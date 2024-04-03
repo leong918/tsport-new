@@ -25,7 +25,14 @@
                                 <td>
                                     <div class="d-flex">
                                         <img src="{{ $cart->product->getFirstProductImage()->url }}">
-                                        <div class="product-desc">{{ $cart->product->getParameters('cn')->name }}</div>
+                                        <div class="product-desc">
+                                            {{ $cart->product->getParameters('cn')->name }}
+                                            @if($cart->product_attribute_term)
+                                            <div class="attribute-desc ms-2">
+                                                {!! $cart->description !!}
+                                            </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="unit-price">${{ number_format($cart->price, 2) }}</td>

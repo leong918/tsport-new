@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\CategoryRepository;
 use App\Repositories\ProductRepository;
-use App\Repositories\ProductAttributeRepository;
 use App\Repositories\SettingRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\BlogRepository;
@@ -25,19 +24,17 @@ class AppController extends BaseController
     private UserRepository $userRepository;
     private SettingRepository $settingRepository;
     private SliderRepository $sliderRepository;
-    private ProductAttributeRepository $productAttributeRepository;
 
     public function __construct(
-        ProductRepository $productRepository, 
-        CategoryRepository $categoryRepository, 
-        BrandRepository $brandRepository, 
-        BlogRepository $blogRepository, 
-        BlogCommentRepository $blogCommentRepository, 
-        UserRepository $userRepository, 
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        BrandRepository $brandRepository,
+        BlogRepository $blogRepository,
+        BlogCommentRepository $blogCommentRepository,
+        UserRepository $userRepository,
         SettingRepository $settingRepository,
         SliderRepository $sliderRepository,
-        ProductAttributeRepository $productAttributeRepository,
-    ){
+    ) {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
@@ -46,7 +43,6 @@ class AppController extends BaseController
         $this->userRepository = $userRepository;
         $this->settingRepository = $settingRepository;
         $this->sliderRepository = $sliderRepository;
-        $this->productAttributeRepository = $productAttributeRepository;
     }
 
     public function index()
@@ -91,31 +87,28 @@ class AppController extends BaseController
         }
     }
 
-
     public function productDetail(string $alias)
     {
         $product = $this->productRepository->getProductByAlias($alias, 'HKD');
         $product_category = $this->categoryRepository->find($product->category_id);
+        dd($product_category);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
-        $product_attribute_list = $this->productAttributeRepository->getListing()
-                                ->where(['product_id' => $product->id, 'status' => 1])->get();
 
-        if ($product_parent_category) {
-            return $this->view('product_detail', compact('product', 'product_parent_category', 'product_attribute_list'));
-        } else {
-            return $this->view('product_detail', compact('product', 'product_attribute_list'));
-        }
+        return $this->view('product_detail', compact('product', 'product_parent_category'));
     }
+
     public function productNew()
     {
         $product_list = $this->productRepository->getNewProduct('HKD');
         return $this->view('product_new', compact('product_list'));
     }
+
     public function bestSeller()
     {
         $product_list = $this->productRepository->getBestSellingProduct('HKD');
         return $this->view('best_seller', compact('product_list'));
     }
+
     public function brand(int $brand_id)
     {
         $brand = $this->brandRepository->find($brand_id);
@@ -125,11 +118,13 @@ class AppController extends BaseController
 
         return $this->view('brand', compact('brand', 'category_list', 'product_list'));
     }
+
     public function blog()
     {
         $blog_list = $this->blogRepository->getListing()->get();
         return $this->view('blog', compact('blog_list'));
     }
+
     public function blogDetail(int $blog_id)
     {
         $blog = $this->blogRepository->find($blog_id);
@@ -159,10 +154,12 @@ class AppController extends BaseController
     {
         return $this->view('voucher');
     }
+
     public function howTo()
     {
         return $this->view('how_to');
     }
+
     public function search()
     {
         return $this->view('search_result');

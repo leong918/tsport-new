@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Form\Brand\UpdateBrandRequest;
 use App\Http\Requests\Form\Brand\CreateBrandRequest;
 use App\Repositories\BrandRepository;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -12,10 +13,14 @@ use Illuminate\Support\Facades\DB;
 class BrandController extends BaseController
 {
     private BrandRepository $brandRepository;
+    private ProductRepository $productRepository;
 
-    public function __construct(BrandRepository $brandRepository)
-    {
+    public function __construct(
+        BrandRepository $brandRepository,
+        ProductRepository $productRepository
+    ) {
         $this->brandRepository = $brandRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function index(Request $request)
@@ -85,6 +90,7 @@ class BrandController extends BaseController
     public function destroy(int $id)
     {
         $this->brandRepository->delete($id);
+        $this->productRepository->deleteByBrandId($id);
         return $this->response();
     }
 

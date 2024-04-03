@@ -8,6 +8,7 @@ use Illuminate\Container\Container;
 use App\Plugins\SalesOrder\Repositories\CartRuleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\ProductAttributeRepository;
 use App\Repositories\ProductAttributeTermRepository;
 use App\Repositories\CountryRepository;
 
@@ -40,16 +41,18 @@ class UserCartRepository extends BaseRepository
     {
         $cart = UserCart::where('product_id', $data['product_id']);
 
+        if (isset($data['attribute'])) {
+            ksort($data['attribute']);
+            $data['product_attribute_term'] = json_encode($data['attribute']);
+
+            $cart->where('product_attribute_term', $data['product_attribute_term']);
+        }
+
         // when guest add cart
         if (!$data['user_id']) {
             $cart->where('user_ip', $data['user_ip'])->whereNull('user_id');
         } else {
             $cart->where('user_id', $data['user_id']);
-        }
-
-        // when product have attribute
-        if (isset($data['product_attribute_term_id'])) {
-            $cart->where('product_attribute_term_id', $data['product_attribute_term_id']);
         }
 
         $cart = $cart->first();
@@ -80,6 +83,21 @@ class UserCartRepository extends BaseRepository
         }
 
         $this->recalculateCart($cart);
+
+        foreach ($cart as &$cart_content) {
+            $description = null;
+
+            foreach (json_decode($cart_content->product_attribute_term) as $key => $product_attribute_term) {
+                $productAttributeRepository = new ProductAttributeRepository(new Container());
+                $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+
+                $productAttribute = $productAttributeRepository->find($key);
+                $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
+                $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+            }
+            $cart_content->description = $description;
+        }
+
         return $cart;
     }
 
@@ -138,8 +156,18 @@ class UserCartRepository extends BaseRepository
         $data['shipping_fee'] = 0;
         $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
 
+        $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
         foreach ($cart_list as $cart) {
-            $data['subtotal'] += $cart->product->getCurrencyParameters('HKD')->price * $cart->quantity;
+            $subtotal = 0;
+            $subtotal += $cart->product->getCurrencyParameters('HKD')->price;
+
+            if ($cart->product_attribute_term) {
+                foreach (json_decode($cart->product_attribute_term) as $product_attribute_term_id) {
+                    $product_attribute_term = $productAttributeTermRepository->find($product_attribute_term_id);
+                    $subtotal += $product_attribute_term->getCurrencyParameters('HKD')->price;
+                }
+            }
+            $data['subtotal'] += $subtotal * $cart->quantity;
         }
 
         $cartRuleRepository = new CartRuleRepository(new Container());
@@ -180,5 +208,25 @@ class UserCartRepository extends BaseRepository
     public function clearCart($user_id)
     {
         UserCart::where('user_id', $user_id)->delete();
+    }
+
+    public function removeDeletedProductCart($deleted_attribute, $product_id, $type)
+    {
+        $array_ids = $deleted_attribute->get()->pluck('id')->toArray();
+        $related_cart = UserCart::where('product_id', $product_id)->get();
+
+        foreach ($related_cart as &$cart) {
+            foreach (json_decode($cart->product_attribute_term) as $key => $value) {
+                if ($type == 'attibute') {
+                    if (in_array($key, $array_ids)) {
+                        $cart->delete();
+                    }
+                } else {
+                    if (in_array($value, $array_ids)) {
+                        $cart->delete();
+                    }
+                }
+            }
+        }
     }
 }
