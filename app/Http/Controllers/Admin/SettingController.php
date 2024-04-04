@@ -36,6 +36,41 @@ class SettingController extends BaseController
         return $this->view('setting.global_index', compact('setting_model'));
     }
 
+    public function aboutIndex(Request $request)
+    {
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('setting.about_index', compact('setting_model'));
+    }
+
+    public function aboutMembership(Request $request)
+    {
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('setting.about_membership', compact('setting_model'));
+    }
+
+    public function aboutContact(Request $request)
+    {
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('setting.about_contact', compact('setting_model'));
+    }
+
+    public function aboutTnc(Request $request)
+    {
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('setting.about_tnc', compact('setting_model'));
+    }
+
+    public function aboutShipping(Request $request)
+    {
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('setting.about_shipping', compact('setting_model'));
+    }
+
     public function updateSlider(Request $request)
     {
         $this->sliderRepository->updateSlider($request->all());
@@ -58,8 +93,71 @@ class SettingController extends BaseController
         return redirect(route('admin.setting.global_index'))->with('success', "Successfully update setting");
     }
 
+    public function updateAbout(Request $request)
+    {
+        $data = $request->all();
+        $data['about_banner'] = $this->settingRepository->uploadImage($data['about_banner']);
+        $data['about_right_image'] = $this->settingRepository->uploadImage($data['about_right_image']);
+
+        $this->updateSetting($data);
+
+        return redirect(route('admin.setting.about_index'))->with('success', "Successfully update setting");
+    }
+
+    public function updateAboutMembership(Request $request)
+    {
+        $data = $request->all();
+        $data['membership_banner'] = $this->settingRepository->uploadImage($data['membership_banner']);
+
+        $this->updateSetting($data);
+
+        return redirect(route('admin.setting.about_membership'))->with('success', "Successfully update setting");
+    }
+
+    public function updateAboutContact(Request $request)
+    {
+        $data = $request->all();
+        $data['contact_banner'] = $this->settingRepository->uploadImage($data['contact_banner']);
+
+        $this->updateSetting($data);
+
+        return redirect(route('admin.setting.about_contact'))->with('success', "Successfully update setting");
+    }
+
+    public function updateAboutTnc(Request $request)
+    {
+        $data = $request->all();
+        $data['tnc_banner'] = $this->settingRepository->uploadImage($data['tnc_banner']);
+
+        $this->updateSetting($data);
+
+        return redirect(route('admin.setting.about_tnc'))->with('success', "Successfully update setting");
+    }
+
+    public function updateAboutShipping(Request $request)
+    {
+        $data = $request->all();
+        $data['shipping_banner'] = $this->settingRepository->uploadImage($data['shipping_banner']);
+
+        $this->updateSetting($data);
+
+        return redirect(route('admin.setting.about_shipping'))->with('success', "Successfully update setting");
+    }
+
+    public function updateFaqBanner(Request $request)
+    {
+        $data = $request->all();
+        $data['faq_banner'] = $this->settingRepository->uploadImage($data['faq_banner']);
+
+        $this->updateSetting($data);
+
+        return redirect(route('admin.faq.index'))->with('success', "Successfully update faq");
+    }
+
     private function updateSetting($data)
     {
+        unset($data['_token']);
+
         foreach ($data as $key => $value) {
             $this->settingRepository->updateValueByKey($key, $value);
         }
