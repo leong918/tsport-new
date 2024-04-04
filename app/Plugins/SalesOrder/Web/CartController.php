@@ -235,7 +235,10 @@ class CartController extends BaseController
             $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
 
             if (!$order) {
+                $user = $this->userRepository->find($data['user_id']);
                 $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
+                $data['point_used'] = $user->point;
+
                 $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
                 $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
                 $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
@@ -268,7 +271,7 @@ class CartController extends BaseController
             }
         }
 
-        if (!$sales_order || $sales_order->user_id != auth()->user()->id) {
+        if ((!auth()->user() || !$sales_order) && $sales_order->user_id != auth()->user()->id) {
             return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
         }
 
