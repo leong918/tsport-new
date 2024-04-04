@@ -5,7 +5,13 @@
     <div class="product-banner">
         <img src="{{asset('assets/web/assets/img/product/product_bg.png')}}" />
         <div class="product-title-wrapper">
-            <div class="product-title text-capitalize">{{ isset($current_category) ? $current_category->name : "Search Result" }}</div> 
+            @if(isset($current_category))
+            <div class="product-title text-capitalize">{{$current_category->name}}</div> 
+            @elseif(isset($search_keyword))
+            <div class="product-title text-capitalize">Search Result</div> 
+            @else
+            <div class="product-title text-capitalize">Products</div> 
+            @endif
             <div class="product-nav d-flex justify-content-center">
                 <span><a class="text-decoration-none" href="{{ route('web.home') }}">Home</a></span>
                 @if (!empty($current_category->parent_category_id))
@@ -19,17 +25,16 @@
                         {{ $current_category->name }}
                     </a>
                 </span>
+                @elseif(isset($search_keyword))
+                <span class="text-capitalize">Search Result</span>
                 @else
-                <span class="text-capitalize">
-                    Search Result
-                </span>
+                <span class="text-capitalize">Products</span>
                 @endif   
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row justify-content-center content-wrapper">
-            @if(isset($current_category) && isset($brand_list))
             <div class="d-block d-md-none filter-wrapper row">
                 <a href="#offcanvasNav"  data-bs-toggle="offcanvas" class="d-inline-block"><img src="{{asset('assets/web/assets/img/product/filter.png')}}" /></a>
             </div>
@@ -39,7 +44,7 @@
                         <div class="category-wrapper">
                             <div class="list-title">Category</div>
                             <ul>
-                                <li><a href="#" class="category-btn" data-category-id={{$current_category->id}}>{{ $current_category->name }}</a></li>
+                                <li><a href="#" class="category-btn" data-category-id={{isset($current_category) ? $current_category->id : '0'}}>{{ isset($current_category) ? $current_category->name : ''}}</a></li>
                             </ul>
                         </div>
                         <div class="brand-wrapper">
@@ -54,16 +59,17 @@
                 </div>
             </div>
             <div class="d-none d-md-block col-md-3 nav-wrapper">
-                @if ($sub_category->count() > 0)
+                @if (isset($category_list) && !isset($search_keyword) && $category_list->count() > 0)
                 <div class="category-wrapper">
                     <div class="list-title">Category</div>
                     <ul>
-                        @foreach ($sub_category as $category)
+                        @foreach ($category_list as $category)
                             <li><a href="{{ route('web.product', ['category_id' => $category->id]) }}" class="category-btn" data-category-id={{$category->id}}>{{ $category->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
                 @endif
+                @if(!isset($search_keyword))
                 <div class="brand-wrapper">
                     <div class="list-title">Brands</div>
                     <ul>
@@ -72,9 +78,9 @@
                         @endforeach
                     </ul>
                 </div>
+                @endif
             </div>
-            @endif
-            <div class="col-sm-12 {{ isset($current_category) && isset($brand_list) ? 'col-md-9' : 'col-md-12 product-wrapper-padding' }} product-wrapper">
+            <div class="col-sm-12 {{ isset($category_list) && isset($brand_list) && !isset($search_keyword) ? 'col-md-9' : 'col-md-12 product-wrapper-padding' }} product-wrapper">
                 <div class="product">
                     <div class="container">
                         {!! isset($search_keyword) ? '<div class="total-count-item"> Showing '.$product_list->count().' results for "'.$search_keyword.'"</div>' : '' !!}

@@ -66,6 +66,7 @@ class SalesOrderRepository extends BaseRepository
             $table->decimal('subtotal', 16, 2)->default(0);
             $table->decimal('shipping', 16, 2)->default(0);
             $table->decimal('discount', 16, 2)->default(0);
+            $table->decimal('point_redemption', 16, 2)->default(0);
             $table->decimal('total', 16, 2)->default(0);
             $table->integer('point_earned')->default(0);
             $table->integer('point_used')->default(0);
@@ -248,13 +249,14 @@ class SalesOrderRepository extends BaseRepository
         $order->fill($data['address']);
         $order->delivery_partner = $cartTotal['delivery_partner'];
         $order->user_id = $data['user_id'];
-        $order->point_earned = $data['point_earned'];
         $order->sales_order_id = $sales_order_id;
         $order->subtotal = $cartTotal['subtotal'];
         $order->shipping = $cartTotal['shipping_fee'];
         $order->discount = $cartTotal['total_discount_amount'];
+        $order->point_redemption = $cartTotal['point_redemption'];
         $order->total = $cartTotal['total'];
-        $order->point_used = $cartTotal['point_redemption'];
+        $order->point_earned = $data['point_earned'];
+        $order->point_used = $data['point_used'];
         $order->payment_method = $data['payment_method'];
         $order->stripe_payment_intent_id = $data['payment_method'] === 'stripe' ? $data['stripe_payment_intent_id']['clientSecret'] : null;
         $order->is_free_shipping = $cartTotal['is_free_shipping'];

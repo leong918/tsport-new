@@ -57,24 +57,27 @@ class AppController extends BaseController
 
     public function product(Request $request, string $category_id = null)
     {
+        $product_list = $this->productRepository->getProductByCurrencyCode('HKD')->get();
+        $category_list = $this->categoryRepository->getListingForNav();
+        $brand_list = $this->brandRepository->getListingForNav();
+        $current_category = null;
+        $search_keyword = null;
+        $parent_category = null;
+
         //product page with filtering
         if ($request->ajax()) {
             if ($category_id) {
                 $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
-                return $this->view('product_list', compact('product_list'));
             }
         }
 
         //product page without filtering 
         if ($category_id) {
             $current_category = $this->categoryRepository->find($category_id);
-            $sub_category = $this->categoryRepository->getSubCategoryByCategoryId($current_category->id);
+            $category_list = $this->categoryRepository->getSubCategoryByCategoryId($current_category->id);
             $parent_category = $this->categoryRepository->find($current_category->parent_category_id);
 
-            $brand_list = $this->brandRepository->getListing()->where('status', 1)->orderBy('sort', 'asc')->get();
             $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
-
-            return $this->view('product', compact('sub_category', 'current_category', 'brand_list', 'product_list', 'parent_category'));
         }
 
         //search page
@@ -82,9 +85,9 @@ class AppController extends BaseController
             $search_keyword = $request->input('search_keyword');
 
             $product_list = $this->productRepository->getProductByTagOrKeywords($search_keyword, 'HKD');
-
-            return $this->view('product', compact('product_list', 'search_keyword'));
         }
+
+        return $this->view('product', compact('product_list', 'category_list', 'brand_list', 'search_keyword', 'current_category', 'parent_category'));
     }
 
     public function productDetail(string $alias)

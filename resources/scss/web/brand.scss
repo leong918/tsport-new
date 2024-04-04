@@ -164,6 +164,9 @@
                     img.show{
                         clip-path: ellipse(100% 100% at 50% 50%);
                         transition: clip-path 0.5s, transform 0.3s ease-in-out;
+                        height: 310px;
+                        object-fit: cover;
+                        width: 100%;
                     }
                 }
 
@@ -220,8 +223,9 @@
     
             .product-image {
                 img.show{
-                    height: 280px;  
+                    height: 310px;
                     object-fit: cover;
+                    width: 100%;
                 }
 
                 &:hover{
@@ -373,7 +377,6 @@
                 @media (max-width: 1024px) {}
     
                 @media (max-width: 767px) {
-                    font-size: 21px;
                     padding-top: 0px;
                 }
             }
