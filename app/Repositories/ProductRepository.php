@@ -59,19 +59,10 @@ class ProductRepository extends BaseRepository
         return $productListDropdown;
     }
 
-    public function getAllActiveProduct()
-    {
-        return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null])
-            ->orderBy('product.sort', 'desc')
-            ->selectRaw('product.*,product_price.code, product_price.price');
-    }
-
-
     public function getProductByCurrencyCode(string $currency_code)
     {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null])
+            ->where(['product.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->where('product_price.code', $currency_code)
             ->orderBy('product.created_at', 'desc')
             ->selectRaw('product.*,product_price.code, product_price.price');
@@ -91,7 +82,7 @@ class ProductRepository extends BaseRepository
     public function getProductByKeywords(string $keyword, string $currency_code)
     {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null])
+            ->where(['product.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->where(['product_price.code' => $currency_code])
             ->where('product.name', 'LIKE', '%' . $keyword . '%')
             ->distinct('product.id')
@@ -105,7 +96,7 @@ class ProductRepository extends BaseRepository
         return Product::leftjoin('product_tag', 'product.id', '=', 'product_tag.product_id')
             ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->leftjoin('tag', 'tag.id', '=', 'product_tag.tag_id')
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null])
+            ->where(['product.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->where(['product_price.code' => $currency_code])
             ->where('tag.name', 'LIKE', '%' . $keyword . '%')
             ->distinct('product.id')
@@ -119,7 +110,7 @@ class ProductRepository extends BaseRepository
         return Product::leftjoin('product_tag', 'product.id', '=', 'product_tag.product_id')
             ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->leftjoin('tag', 'tag.id', '=', 'product_tag.tag_id')
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null])
+            ->where(['product.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->where(['product_price.code' => $currency_code])
             ->where(function ($query) use ($keyword) {
                 $query->where('tag.name', 'LIKE', '%' . $keyword . '%')
@@ -166,7 +157,7 @@ class ProductRepository extends BaseRepository
     {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->where(['product_price.code' => $currency_code, 'product.is_best_seller' => 1])
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null])
+            ->where(['product.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->selectRaw('product.*, product_price.code, product_price.price')
             ->get();
     }
@@ -175,7 +166,7 @@ class ProductRepository extends BaseRepository
     {
         return Product::leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->where(['product_price.code' => $currency_code, 'product.is_new' => 1])
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null])
+            ->where(['product.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->selectRaw('product.*, product_price.code, product_price.price')
             ->get();
     }

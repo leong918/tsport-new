@@ -259,6 +259,21 @@
             img.show{
                 clip-path: ellipse(100% 100% at 50% 50%);
                 transition: clip-path 0.5s, transform 0.3s ease-in-out;
+                height: 388px;
+                object-fit: cover;
+                width: 100%;
+            }
+
+            @media (min-width: 768px) and (max-width: 1200px){
+                img.show{
+                    height: 268px;  
+                }
+            }
+
+            @media (max-width: 767px){
+                img.show{
+                    height: 30vh;  
+                }
             }
         }
 
@@ -484,6 +499,21 @@
             img.show{
                 clip-path: ellipse(100% 100% at 50% 50%);
                 transition: clip-path 0.5s, transform 0.3s ease-in-out;
+                height: 470px;
+                object-fit: cover;
+                width: 100%;
+            }
+
+            @media (min-width: 768px) and (max-width: 1200px){
+                img.show{
+                    height: 268px;  
+                }
+            }
+
+            @media (max-width: 767px){
+                img.show{
+                    height: 30vh;  
+                }
             }
         }
 
@@ -882,6 +912,21 @@
             img.show{
                 clip-path: ellipse(100% 100% at 50% 50%);
                 transition: clip-path 0.5s, transform 0.3s ease-in-out;
+                height: 310px;
+                object-fit: cover;
+                width: 100%;
+            }
+
+            @media (min-width: 768px) and (max-width: 1200px){
+                img.show{
+                    height: 268px;  
+                }
+            }
+
+            @media (max-width: 767px){
+                img.show{
+                    height: 30vh;  
+                }
             }
         }
 

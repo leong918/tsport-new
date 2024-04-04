@@ -44,7 +44,7 @@ class SalesOrder extends Model
     ];
 
     protected $table = 'sales_order';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -104,18 +104,23 @@ class SalesOrder extends Model
         );
     }
 
-    public function salesOrderProduct() : HasMany
+    public function salesOrderProduct(): HasMany
     {
         return $this->hasMany(SalesOrderProduct::class);
     }
 
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function salesOrderLog() : HasMany
+    public function salesOrderLog(): HasMany
     {
         return $this->hasMany(SalesOrderLog::class);
+    }
+
+    public function salesOrderTotal(): HasMany
+    {
+        return $this->hasMany(SalesOrderTotal::class);
     }
 }

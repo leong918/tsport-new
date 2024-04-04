@@ -10,8 +10,7 @@ class ProductPriceRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -56,6 +55,8 @@ class ProductPriceRepository extends BaseRepository
 
     public function createAttributeTermPrice(array $input, $term_model)
     {
+        ProductPrice::where('product_id', $term_model->product_id)->where('product_attribute_term_id', $term_model->id)->delete();
+
         $productRepository = new ProductRepository(new Container());
         $product = $productRepository->find($term_model->product_id);
 

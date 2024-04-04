@@ -58,60 +58,33 @@
                             </tr> --}}
                         </table>
                         <div class="mobile-cart-item-list d-block d-md-none">
+                            @foreach($sales_order->salesOrderProduct as $orderProduct)
                             <div class="cart-item-wrapper">
                                 <div class="d-flex">
-                                    <img src="{{asset('assets/web/assets//img/shopping_cart/product_1.png')}}">
+                                    <img src="{{ $orderProduct->product_image }}">
                                     <div class="cart-item-details d-flex flex-column justify-content-between items-center">
                                         <div class="product-desc">
-                                            【全新升級配方】LOVINAH DRAGON'S BLOOD
-                                            BRIGHTENING+HYDARTING FACE TONIC
-                                            龍血樹抗氧亮肌爽膚水100ML
+                                            【{{ $orderProduct->product_name }}
                                         </div>
                                         <div class="product-price d-flex">
                                             <div class="label">Price:</div>
-                                            <div class="data">$490</div>
+                                            <div class="data">${{ $orderProduct->price }}</div>
                                         </div>
                                         <div class="product-price-wrapper d-flex justify-content-between">
                                             <div class="d-flex quantity-wrapper">
                                                 <div class="label">Quantity:</div>
-                                                <input type="text" value="1" class="quantity-text" readonly />
+                                                <div class="data">{{ $orderProduct->quantity }}</div>
                                             </div>
                                             <div class="d-flex total-wrapper">
                                                 <div class="label">Total:</div>
-                                                <div class="data">$490</div>
+                                                <div class="data">${{ $orderProduct->total_price }}</div>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
-                            <div class="cart-item-wrapper">
-                                <div class="d-flex">
-                                    <img src="{{asset('assets/web/assets//img/shopping_cart/product_2.png')}}">
-                                    <div class="cart-item-details d-flex flex-column justify-content-between items-center">
-                                        <div class="product-desc">
-                                            【全新升級配方】LOVINAH DRAGON'S BLOOD
-                                            BRIGHTENING+HYDARTING FACE TONIC
-                                            龍血樹抗氧亮肌爽膚水100ML
-                                        </div>
-                                        <div class="product-price d-flex">
-                                            <div class="label">Price:</div>
-                                            <div class="data">$490</div>
-                                        </div>
-                                        <div class="product-price-wrapper d-flex justify-content-between">
-                                            <div class="d-flex quantity-wrapper">
-                                                <div class="label">Quantity:</div>
-                                                <input type="text" value="1" class="quantity-text" readonly />
-                                            </div>
-                                            <div class="d-flex total-wrapper">
-                                                <div class="label">Total:</div>
-                                                <div class="data">$490</div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                             {{-- <div class="giveaway-desc">
                                 Giveaway
                             </div>
@@ -149,37 +122,42 @@
                                 <div class="d-flex justify-content-between data-content-wrapper">
                                     <div class="label">Subtotal</div>
                                     <div class="data-label">
-                                        <div class="price">$980</div>
+                                        <div class="price">${{ $sales_order->subtotal }}</div>
                                     </div>
                                 </div>
                             </div>
+                            @if($sales_order->salesOrderTotal->where('code', 'discount')->count() > 0)
                             <div class="discount">
                                 <div class="label">Discount</div>
+                                @foreach($sales_order->salesOrderTotal->where('code', 'discount') as $discount)
                                 <div class="d-flex justify-content-between data-content-wrapper">
-                                    <div class="inner-label">Member discount</div>
+                                    <div class="inner-label">{{ $discount->title }}</div>
                                     <div class="data-label">
-                                        <div class="price">-$49</div>
+                                        <div class="price">-${{ $discount->value }}</div>
                                     </div>
                                 </div>
+                                @endforeach
                             </div>
+                            @endif
+                            @if($sales_order->salesOrderTotal->where('code', 'coupon')->count() > 0)
                             <div class="coupon">
                                 <div class="label">Coupon</div>
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex justify-content-between data-content-wrapper">
-                                        <div class="inner-label">IOTH-JM-VO-D12</div>
-                                        <div class="data-label">
-                                            <div class="price">-$98</div>
-                                        </div>
+                                @foreach($sales_order->salesOrderTotal->where('code', 'coupon') as $coupon)
+                                <div class="d-flex justify-content-between data-content-wrapper">
+                                    <div class="inner-label">{{ $coupon->title }}</div>
+                                    <div class="data-label">
+                                        <div class="price">-${{ $coupon->value }}</div>
                                     </div>
                                 </div>
-
+                                @endforeach
                             </div>
+                            @endif
                             <div class="point-redemption">
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex justify-content-between data-content-wrapper">
                                         <div class="label">Point redemption</div>
                                         <div class="data-label">
-                                            <div class="price">$10</div>
+                                            <div class="price">-${{ $sales_order->point_redemption }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -188,7 +166,7 @@
                                 <div class="d-flex justify-content-between data-content-wrapper">
                                     <div class="label">Shipping Fee</div>
                                     <div class="data-label">
-                                        <div class="price">SF EXPRESS : $30</div>
+                                        <div class="price">{{ $sales_order->delivery_partner.' : $'.$sales_order->shipping }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -196,7 +174,7 @@
                                 <div class="data-content-wrapper">
                                     <div class="inner-label">Shipping To:</div>
                                     <div class="inner-label">
-                                        ABC XXXXXXXXXX HONG KONG ISLAND.
+                                        {{ $sales_order->address.', '.$sales_order->postcode.', '.$sales_order->city.', '.$sales_order->state.', '.$sales_order->country }}
                                     </div>
                                 </div>
                             </div>
@@ -205,7 +183,7 @@
                                 <div class="d-flex justify-content-between data-content-wrapper">
                                     <div class="label">Total</div>
                                     <div class="data-label">
-                                        <div class="price">$980</div>
+                                        <div class="price">${{ $sales_order->total }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -263,43 +241,32 @@
         <div class="swiper mySwiper-newproduct">
             <div class="swiper-wrapper">
                 @foreach ($product_list as $product)
-                <div class="swiper-slide new-launches-product-img">
-                    <div class="product-image position-relative">
-                        <a href="{{ route('web.product_detail', ['alias' => $product->alias]) }}">
-                            <img class="show" src="{{ $product->productImage()->first()->url }}">
-                        </a>
-                        <div class="wishlist-cart-container">
-                            <div class="row text-center">
-                                <div class="col-md-6">
-                                    <!-- wishlist -->
-                                    <div class="wishlist-container">
-                                        <img class="wishlist-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                        <img class="wishlist-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <!--cart-->
-                                    <div class="cart-container">
-                                        <img class="cart-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                        <img class="cart-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
+                <div class="swiper-slide product-img">
+                    <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
+                        <div class="product-image position-relative">
+                            <img class="show" src="{{$product->productImage->first()->url}}">
+                            @if(function_exists('salesOrderRenderView'))
+                            {{ salesOrderRenderView('product_list_hover_web', $product) }}
+                            @endif
+                        </div>
+                        <div class="product-info">
+                            <div class="rating-wishlist">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
+                                @if(function_exists('salesOrderRenderView'))
+                                {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                @endif
+                            </div>
+                            <div class="product-description">{{ $product->name }}</div>
+                            <div class="price-cart">
+                                <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                @if(function_exists('salesOrderRenderView'))
+                                {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
+                                @endif
                             </div>
                         </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="rating-wishlist">
-                            @if(function_exists('reviewRenderView'))
-                            {{ reviewRenderView('common_star_rating') }}
-                            @endif
-                            <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                        </div>
-                        <div class="product-description">{{ $product->name }}</div>
-                        <div class="price-cart">
-                            <div class="product-price">$ {{ $product->productPrice[0]->price }} </div>
-                            <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 @endforeach
             </div>
@@ -307,3 +274,31 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+<script type="text/javascript">
+    var swiper = new Swiper(".mySwiper-newproduct", {
+        autoplay: {
+            delay: 3000,
+        },
+
+        breakpoints: {
+            375: {
+                slidesPerView: 1.75,
+                spaceBetween: 20,
+            },
+            640: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            1024: {
+                slidesPerView: 5,
+                spaceBetween: 20,
+            },
+        }
+    });
+</script>
+@endpush

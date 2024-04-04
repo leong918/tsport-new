@@ -76,7 +76,7 @@
         padding: 100px 0 180px 0;
 
         @media only screen and (max-width:767px){
-            padding: 10px 0 180px 0;
+            padding: 50px 0 180px 0;
         }
         .filter-wrapper{
             padding:10px;
@@ -224,7 +224,7 @@
     
             .product-image {
                 img.show{
-                    height: 40vh;  
+                    height: 341px;  
                     object-fit: cover;
                 }
 
@@ -381,7 +381,6 @@
                 @media (max-width: 1024px) {}
     
                 @media (max-width: 767px) {
-                    font-size: 21px;
                     padding-top: 0px;
                 }
             }
