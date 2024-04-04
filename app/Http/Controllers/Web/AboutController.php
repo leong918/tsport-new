@@ -2,30 +2,55 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Repositories\SettingRepository;
+use App\Repositories\FaqRepository;
+
 class AboutController extends BaseController
 {
+    private SettingRepository $settingRepository;
+    private FaqRepository $faqRepository;
+
+    public function __construct(SettingRepository $settingRepository, FaqRepository $faqRepository)
+    {
+        $this->settingRepository = $settingRepository;
+        $this->faqRepository = $faqRepository;
+    }
+
     public function about()
     {
-        return $this->view('about');
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('about', compact('setting_model'));
     }
     public function aboutContact()
     {
-        return $this->view('about_contact');
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('about_contact', compact('setting_model'));
     }
     public function aboutMembership()
     {
-        return $this->view('about_membership');
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('about_membership', compact('setting_model'));
     }
     public function aboutPoint()
     {
-        return $this->view('about_points');
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+        $faq_model = $this->faqRepository->getListing()->get();
+
+        return $this->view('about_points', compact('setting_model', 'faq_model'));
     }
     public function aboutShipping()
     {
-        return $this->view('about_shipping');
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('about_shipping', compact('setting_model'));
     }
     public function aboutTnc()
     {
-        return $this->view('about_tnc');
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+
+        return $this->view('about_tnc', compact('setting_model'));
     }
 }

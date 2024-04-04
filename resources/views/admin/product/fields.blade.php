@@ -94,12 +94,6 @@
                         </div>
                     </div>
                 @endif
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('Sort') }}
-                        {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)->class('form-control') }}
-                    </div>
-                </div>
                 @if (!isset($model))
                     <div class="col-md-6">
                         <div class="mb-3">
