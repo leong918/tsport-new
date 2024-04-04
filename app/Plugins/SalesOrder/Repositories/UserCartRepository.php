@@ -87,14 +87,17 @@ class UserCartRepository extends BaseRepository
         foreach ($cart as &$cart_content) {
             $description = null;
 
-            foreach (json_decode($cart_content->product_attribute_term) as $key => $product_attribute_term) {
-                $productAttributeRepository = new ProductAttributeRepository(new Container());
-                $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+            if ($cart->product_attribute_term) {
+                foreach (json_decode($cart_content->product_attribute_term) as $key => $product_attribute_term) {
+                    $productAttributeRepository = new ProductAttributeRepository(new Container());
+                    $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
 
-                $productAttribute = $productAttributeRepository->find($key);
-                $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
-                $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+                    $productAttribute = $productAttributeRepository->find($key);
+                    $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
+                    $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+                }
             }
+
             $cart_content->description = $description;
         }
 
@@ -191,7 +194,7 @@ class UserCartRepository extends BaseRepository
     public function updateCartQty($data)
     {
         $subtotal = 0;
-        $cart = UserCart::find($data['cart_id'])->first();
+        $cart = UserCart::find($data['cart_id']);
 
         if ($data['quantity'] > 0) {
             $subtotal = $cart->product->getCurrencyParameters('HKD')->price * $data['quantity'];
