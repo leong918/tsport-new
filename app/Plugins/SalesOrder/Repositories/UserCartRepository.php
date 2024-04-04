@@ -87,7 +87,7 @@ class UserCartRepository extends BaseRepository
         foreach ($cart as &$cart_content) {
             $description = null;
 
-            if ($cart->product_attribute_term) {
+            if ($cart_content->product_attribute_term) {
                 foreach (json_decode($cart_content->product_attribute_term) as $key => $product_attribute_term) {
                     $productAttributeRepository = new ProductAttributeRepository(new Container());
                     $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
