@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Repositories\PointLogRepository;
+use App\Repositories\UserRepository;
 
 class CheckUserPointExpiry extends Command
 {
@@ -20,14 +22,19 @@ class CheckUserPointExpiry extends Command
      */
     protected $description = 'Check user point expiry';
 
+    private PointLogRepository $pointLogRepository;
+    private UserRepository $userRepository;
+
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PointLogRepository $pointLogRepository, UserRepository $userRepository)
     {
         parent::__construct();
+        $this->pointLogRepository = $pointLogRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -37,5 +44,20 @@ class CheckUserPointExpiry extends Command
      */
     public function handle()
     {
+        $point_logs = $this->pointLogRepository->getUnusedPoint();
+
+        foreach ($point_logs as &$point_log) {
+            $user = $this->userRepository->find($point_log->user_id);
+            $user->point -= $point_log->point;
+            $user->save();
+
+            $pointLogData['user_id'] = $user->id;
+            $pointLogData['point'] = $point_log->point;
+            $pointLogData['type'] = 'OUT';
+            $pointLogData['remark'] = 'Expired Point Deduction. ID: ' . $point_log->id;
+            $this->pointLogRepository->create($pointLogData);
+
+            $point_log->delete();
+        }
     }
 }

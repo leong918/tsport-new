@@ -18,6 +18,13 @@ class Kernel extends ConsoleKernel
             ->runInBackground()
             ->emailOutputTo('vvinners.development@gmail.com')
             ->emailOutputOnFailure('vvinners.development@gmail.com');
+
+        $schedule->command('check:user_point_expiry')
+            ->daily()
+            ->timezone('Asia/Kuala_Lumpur')
+            ->runInBackground()
+            ->emailOutputTo('vvinners.development@gmail.com')
+            ->emailOutputOnFailure('vvinners.development@gmail.com');
     }
 
     /**

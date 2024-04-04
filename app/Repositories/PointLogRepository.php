@@ -61,4 +61,15 @@ class PointLogRepository extends BaseRepository
                 'is_used' => 0
             ]);
     }
+
+    public function getUnusedPoint()
+    {
+        return PointLog::where('is_used', 0)
+            ->where('type', 'IN')
+            ->whereNull('used_sales_order_id')
+            ->whereNull('used_at')
+            ->where('is_expired', 0)
+            ->whereDate('expired_at', '<=', Carbon::now())
+            ->get();
+    }
 }
