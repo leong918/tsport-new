@@ -35,7 +35,6 @@ class Product extends Model
         'quantity',
         'point_value',
         'status',
-        'sort',
         'is_best_seller',
         'is_new',
         'is_attribute',
