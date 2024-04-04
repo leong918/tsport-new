@@ -20,7 +20,7 @@ class SalesOrderProduct extends Model
     protected $fillable = [
         'sales_order_id',
         'product_id',
-        'product_attribute_term_id',
+        'product_attribute_term',
         'product_name',
         'product_attribute_term_name',
         'price',

@@ -6,6 +6,7 @@ use App\Plugins\SalesOrder\Models\SalesOrderProduct;
 use App\Repositories\BaseRepository;
 use Illuminate\Container\Container;
 use App\Repositories\ProductRepository;
+use App\Repositories\ProductAttributeRepository;
 use App\Repositories\ProductAttributeTermRepository;
 
 class SalesOrderProductRepository extends BaseRepository
@@ -36,21 +37,29 @@ class SalesOrderProductRepository extends BaseRepository
     public function createOrderProduct($order, $data)
     {
         $productRepository = new ProductRepository(new Container());
+        $productAttributeRepository = new ProductAttributeRepository(new Container());
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
 
         foreach ($data as $cart) {
             $product = $productRepository->find($cart->product_id);
-            $productAttributeTerm = $productAttributeTermRepository->find($cart->product_attribute_term_id);
-
             $price = $product->getCurrencyParameters('HKD')->price;
+            $description = null;
+
+            if ($cart->product_attribute_term) {
+                foreach (json_decode($cart->product_attribute_term) as $key => $product_attribute_term) {
+                    $productAttribute = $productAttributeRepository->find($key);
+                    $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
+                    $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+                }
+            }
 
             $orderProduct = new SalesOrderProduct();
             $orderProduct->sales_order_id = $order->id;
             $orderProduct->product_id = $cart->product_id;
-            $orderProduct->product_attribute_term_id = $cart->product_attribute_term_id;
+            $orderProduct->product_attribute_term = $cart->productAttributeTerm;
             $orderProduct->product_image = $product->getFirstProductImage()->url;
             $orderProduct->product_name = $product->name;
-            $orderProduct->product_attribute_term_name = $productAttributeTerm ? $productAttributeTerm->name : null;
+            $orderProduct->product_attribute_term_name = $description;
             $orderProduct->price = $price;
             $orderProduct->quantity = $cart->quantity;
             $orderProduct->total_price = $cart->quantity * $price;
@@ -86,9 +95,9 @@ class SalesOrderProductRepository extends BaseRepository
             $product_list .= $salesOrderProduct->product_name . " <br> ";
         }
 
-        $description = "Add Product <br>".$product_list;
+        $description = "Add Product <br>" . $product_list;
         // create log
-        $salesOrderlogRepository->createLog($sales_order, $admin_id,'admin', 1, $description);
+        $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
 
         return $total;
     }
@@ -118,13 +127,13 @@ class SalesOrderProductRepository extends BaseRepository
                 $description = "Update product " . $sales_order_product->product_name . $key . " from " . $previousValue->$key . " to " . $value;
             }
 
-            $salesOrderlogRepository->createLog($sales_order, $admin_id,'admin', 1, $description);
+            $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
         }
         return $total;
     }
 
     public function deleteProductBySalesOrderId(int $sales_order_id)
     {
-        return SalesOrderProduct::where('sales_order_id',$sales_order_id)->delete();
+        return SalesOrderProduct::where('sales_order_id', $sales_order_id)->delete();
     }
 }

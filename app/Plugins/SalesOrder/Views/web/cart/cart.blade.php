@@ -85,7 +85,16 @@
                                     <img src="{{ $cart->product->getFirstProductImage()->url }}">
                                     <div class="cart-item-details d-flex flex-column justify-content-between items-center w-100">
                                         <div class="d-flex justify-content-between">
-                                            <div class="product-desc">{{ $cart->product->getParameters('cn')->name }}</div>
+                                            <div class="product-desc-wrapper">
+                                                <div class="product-desc">
+                                                    {{ $cart->product->getParameters('cn')->name }}
+                                                </div>
+                                                @if($cart->product_attribute_term)
+                                                <div class="attribute-desc ms-2">
+                                                    {!! $cart->description !!}
+                                                </div>
+                                                @endif
+                                            </div>
                                             <div>
                                                 <button class="remove-button" data-cart-id="{{ $cart->id }}">
                                                     <img src="{{asset('assets/web/assets/img/shopping_cart/remove.png')}}" />

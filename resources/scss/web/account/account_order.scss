@@ -941,11 +941,10 @@
                 justify-content: space-between;
                 padding-bottom: 70px;
                 @media (max-width: 767px) {
-                    padding: 0px;
+                    padding: 15px;
                     padding-bottom: 55px;
                 }
 
-                
                 .input-container{
                     position: relative;
 
@@ -1008,9 +1007,6 @@
         }
     }
     .empty-addr{
-        @media only screen and (max-width:575px){
-            padding: 25px 15px;
-        }
         .table-wrap{
             overflow: auto;
         }

@@ -131,33 +131,15 @@ class UserRepository extends BaseRepository
     public function deductFullPoint($order)
     {
         $user = User::find($order->user_id);
-        $point = $user->point;
-
-        if ($point > 0) {
-            $user->point = 0;
-            $user->save();
-
-            $pointLogRepository = new PointLogRepository(new Container());
-            $pointLogData['user_id'] = $user->id;
-            $pointLogData['sales_order_id'] = $order->id;
-            $pointLogData['point'] = -$point;
-            $pointLogData['remark'] = 'Create New Order ' . $order->sales_order_id;
-            $pointLogRepository->create($pointLogData);
-        }
+        $user->point = 0;
+        $user->save();
     }
 
-    public function returnFullPoint($order, $status)
+    public function returnFullPoint($order)
     {
         $user = User::find($order->user_id);
         $user->point += $order->point_used;
         $user->save();
-
-        $pointLogRepository = new PointLogRepository(new Container());
-        $pointLogData['user_id'] = $user->id;
-        $pointLogData['sales_order_id'] = $order->id;
-        $pointLogData['point'] = $order->point_used;
-        $pointLogData['remark'] = 'Return Point due to order ' . $order->sales_order_id . ' ' . $status;
-        $pointLogRepository->create($pointLogData);
     }
 
     public function addOrderPoint($order)
@@ -170,7 +152,17 @@ class UserRepository extends BaseRepository
         $pointLogData['user_id'] = $user->id;
         $pointLogData['sales_order_id'] = $order->id;
         $pointLogData['point'] = $order->point_earned;
+        $pointLogData['type'] = 'IN';
         $pointLogData['remark'] = 'Add point from order ' . $order->sales_order_id;
+        $pointLogData['expired_at'] = Carbon::now()->addMonths(6);
         $pointLogRepository->create($pointLogData);
+    }
+
+    public function getUserByLevelValidity()
+    {
+        return User::where('status', 1)
+            ->where('level_id', '!=', '1')
+            ->whereDate('level_validity', Carbon::today()->subDay())
+            ->get();
     }
 }

@@ -29,7 +29,11 @@ class PointLog extends Model
         'user_id',
         'sales_order_id',
         'point',
-        'remark'
+        'type',
+        'remark',
+        'is_used',
+        'is_expired',
+        'expired_at'
     ];
 
     /**
@@ -37,17 +41,14 @@ class PointLog extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     protected function createdAt(): Attribute
     {

@@ -12,7 +12,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('downgrade:user_level')
+            ->daily()
+            ->timezone('Asia/Kuala_Lumpur')
+            ->runInBackground()
+            ->emailOutputTo('vvinners.development@gmail.com')
+            ->emailOutputOnFailure('vvinners.development@gmail.com');
     }
 
     /**
@@ -20,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
