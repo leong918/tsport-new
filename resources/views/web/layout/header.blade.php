@@ -42,7 +42,7 @@
                     @endif
 
                     <!--navbar-toggle-->
-                    <a class="navbar-toggler-concept" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <a class="navbar-toggler-concept" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                         <span class="narber-toggler-concept">
                             <img src="{{asset('assets/web/assets/img/navigation/menu_icon.png')}}" alt="Bootstrap" width="25" height="24">
                         </span>
@@ -51,7 +51,7 @@
             </div>
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header align-self-end">
-                    <a type="button" class="" data-bs-dismiss="offcanvas" aria-label="Close">
+                    <a data-bs-dismiss="offcanvas" aria-label="Close">
                         <img src="{{asset('assets/web/assets/img/navigation/cross.png')}}" alt="Bootstrap" width="30" height="30">
                     </a>
                 </div>

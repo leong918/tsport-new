@@ -217,7 +217,7 @@
                             <div class="oval">
                                 <div class="main-title">BEST SELLER</div>
                                 <div class="explore-button">
-                                    <a class="btn btn-primary" id="explore-now" type="button" href="{{route('web.best_seller')}}">EXPLORE NOW</a>
+                                    <a class="btn btn-primary" id="explore-now" href="{{route('web.best_seller')}}">EXPLORE NOW</a>
                                 </div>
                             </div>
                         </div>
@@ -310,7 +310,7 @@
                                 <div class="blog-date">{{ $blog->publishedDate()  }}</div>
                                 <div class="blog-main">{{ $blog->name  }}</div>
                             </div>
-                            <div class="blog-button" type="button">
+                            <div class="blog-button">
                                 <div style="color: inherit"">READ MORE</div>
                             </div>
                         </div>
