@@ -118,27 +118,42 @@
                 })
                 .then(response => {
                     if (response.data.order.payment_method === 'stripe') {
-                        const { error } = stripe.confirmPayment({
+                        var error = stripe.confirmPayment({
                             elements,
                             confirmParams: {
                                 return_url: $(this).data('return-url') + '?order_id=' + response.data.order.sales_order_id,
                             },
                         });
 
-                        if (error.type === "card_error" || error.type === "validation_error") {
-                            showSwal('Fail!', error.message);
-                        } else {
-                            showSwal('Fail!', 'An unexpected error occurred.');
-                        }
+                        error.then(function(result) {
+                            var errorType = result.error.type;
+
+                            if (errorType === "card_error" || errorType === "validation_error") {
+                                showSwal('Fail!', errorType.message);
+                            } else {
+                                showSwal('Fail!', 'An unexpected error occurred.');
+                            }
+
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                        });
                     } else {
                         window.location.replace("{{ route('cart.complete') }}" + "?order_id=" + response.data.order.sales_order_id);
                     }
                 })
                 .catch(error => {
                     if (error && error.response && error.response.data) {
-                        const responseData = error.response.data;
+                        var responseData = error.response.data;
                         if (responseData.redirect) {
-                            window.location.reload();
+                            if (responseData.msg) {
+                                showSwal('Fail!', responseData.msg);
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                window.location.reload();
+                            }
                         } else {
                             $(this).attr('disabled', false);
                             showSwal('Fail!', responseData.msg);

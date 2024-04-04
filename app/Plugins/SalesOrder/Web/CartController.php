@@ -82,9 +82,10 @@ class CartController extends BaseController
         // refetch user cart total
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null);
+        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
 
-        return $this->response(['subtotal' => number_format($subtotal, 2), 'cartTotal' => $cartTotal], 'OK');
+        return $this->response(['subtotal' => number_format($subtotal, 2), 'cartTotal' => $cartTotal, 'cartCount' => $cart_count], 'OK');
     }
 
     public function applyCoupon(Request $request)
@@ -100,7 +101,7 @@ class CartController extends BaseController
         session(['coupon-' . $user_data['user_data'] => $coupon_session]);
 
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
@@ -116,7 +117,7 @@ class CartController extends BaseController
         session(['coupon-' . $user_data['user_data'] => $coupon_session]);
 
         $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? null;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null, $addressData);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
@@ -218,8 +219,7 @@ class CartController extends BaseController
 
         //do checking check total is same or not, if not same need redirect back
         if ($request->cart_total != $cartTotal['total']) {
-            session()->flash('swal_error', 'Cart total is different, please refer latest price');
-            return response()->json(['msg' => null, 'redirect' => true], 500);
+            return response()->json(['msg' => 'Cart total is different, please refer latest price', 'redirect' => true], 500);
         }
 
         // refresh the page again to trigger error or generate new payment intent id
@@ -235,7 +235,10 @@ class CartController extends BaseController
             $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
 
             if (!$order) {
+                $user = $this->userRepository->find($data['user_id']);
                 $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
+                $data['point_used'] = $user->point;
+
                 $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
                 $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
                 $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
@@ -268,7 +271,7 @@ class CartController extends BaseController
             }
         }
 
-        if (!$sales_order || $sales_order->user_id != auth()->user()->id) {
+        if ((!auth()->user() || !$sales_order) && $sales_order->user_id != auth()->user()->id) {
             return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
         }
 

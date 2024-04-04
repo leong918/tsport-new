@@ -22,7 +22,7 @@ class UserCart extends Model
     protected $fillable = [
         'user_id',
         'product_id',
-        'product_attribute_term_id',
+        'product_attribute_term',
         'user_ip',
         'quantity',
     ];

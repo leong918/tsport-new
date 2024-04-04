@@ -5,7 +5,5 @@
 
 <a class="navbar-cart-icon" href="{{route('cart.shopping_cart')}}" type="button">
     <img src="{{asset('assets/web/assets/img/navigation/cart.png')}}" alt="Bootstrap" width="25" height="24">
-    @if($cart_count > 0)
-    <span id="cart-count">{{ $cart_count }}</span>
-    @endif
+    <span id="cart-count" class="{{ $cart_count > 0 ? '' : 'd-none' }}">{{ $cart_count }}</span>
 </a>

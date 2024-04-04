@@ -35,7 +35,6 @@ class Product extends Model
         'quantity',
         'point_value',
         'status',
-        'sort',
         'is_best_seller',
         'is_new',
         'is_attribute',
@@ -110,7 +109,7 @@ class Product extends Model
 
     public function getCurrencyParameters(string $currency)
     {
-        return $this->productPrice->where('code', $currency)->first();
+        return $this->productPrice->where('code', $currency)->whereNull('product_attribute_term_id')->first();
     }
 
     public function getParameters(string $params)

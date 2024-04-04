@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer("quantity")->default(0);
             $table->integer("point_value")->default(0);
             $table->tinyInteger("status")->default(0);
-            $table->integer("sort")->default(0);
             $table->tinyInteger("is_best_seller")->default(0);
             $table->tinyInteger("is_new")->default(0);
             $table->tinyInteger("is_backorder")->default(0);

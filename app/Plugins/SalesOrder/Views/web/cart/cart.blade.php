@@ -2,8 +2,7 @@
 @section('content')
 <div id="shopping_cart" class="overflow-x-hidden margin-header">
     <div class="container">
-        @if(count($cartList) > 0)
-        <div class="row justify-content-center">
+        <div class="row justify-content-center {{ count($cartList) > 0 ? '' : 'd-none' }}" id="fullCartSection">
             <div class="shopping-cart-wrapper">
                 <div class="shopping-cart-title">Shopping Cart</div>
                 <div class="row justify-content-center shopping-cart-content">
@@ -26,7 +25,14 @@
                                 <td>
                                     <div class="d-flex">
                                         <img src="{{ $cart->product->getFirstProductImage()->url }}">
-                                        <div class="product-desc">{{ $cart->product->getParameters('cn')->name }}</div>
+                                        <div class="product-desc">
+                                            {{ $cart->product->getParameters('cn')->name }}
+                                            @if($cart->product_attribute_term)
+                                            <div class="attribute-desc ms-2">
+                                                {!! $cart->description !!}
+                                            </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="unit-price">${{ number_format($cart->price, 2) }}</td>
@@ -188,8 +194,7 @@
                 </div>
             </div>
         </div>
-        @else
-        <div class="row justify-content-center">
+        <div class="row justify-content-center {{ count($cartList) > 0 ? 'd-none' : '' }}" id="emptyCartSection">
             <div class="shopping-cart-wrapper">
                 <div class="shopping-cart-title">Shopping Cart</div>
                 <div class="empty-cart-content">
@@ -197,7 +202,6 @@
                 </div>
             </div>
         </div>
-        @endif
     </div>
 </div>
 @endsection
@@ -256,6 +260,16 @@ $(document).ready(function() {
             $('#apply-coupon-btn').prop('disabled', false);
             $(this).parents('.cart-main-list').find('.total-price').html('$' + response.data.subtotal);
             updateColumnValue(response.data.cartTotal);
+
+            if (response.data.cartCount > 0) {
+                $('#fullCartSection').removeClass('d-none');
+                $('#emptyCartSection').addClass('d-none');
+                $('#cart-count').removeClass('d-none').text(response.data.cart_count);
+            } else {
+                $('#fullCartSection').addClass('d-none');
+                $('#emptyCartSection').removeClass('d-none');
+                $('#cart-count').addClass('d-none').text(response.data.cart_count);
+            }
         })
         .catch(error => {
             $('.action-button').prop('disabled', false);
@@ -285,6 +299,16 @@ $(document).ready(function() {
             $('#apply-coupon-btn').prop('disabled', false);
             $(this).parents('.cart-main-list').find('.total-price').html('$' + response.data.subtotal);
             updateColumnValue(response.data.cartTotal);
+
+            if (response.data.cartCount > 0) {
+                $('#fullCartSection').removeClass('d-none');
+                $('#emptyCartSection').addClass('d-none');
+                $('#cart-count').removeClass('d-none').text(response.data.cart_count);
+            } else {
+                $('#fullCartSection').addClass('d-none');
+                $('#emptyCartSection').removeClass('d-none');
+                $('#cart-count').addClass('d-none').text(response.data.cart_count);
+            }
         })
         .catch(error => {
             $('.action-button').prop('disabled', false);

@@ -46,7 +46,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Price') }}    
-                        {{ html()->number('product_price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->where('product_attribute_term_id', null)->first()->price : null )->required() }}
+                        {{ html()->number('product_price')->placeholder('Enter price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->where('product_attribute_term_id', null)->first()->price : null )->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -94,12 +94,6 @@
                         </div>
                     </div>
                 @endif
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('Sort') }}
-                        {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)->class('form-control')->required() }}
-                    </div>
-                </div>
                 @if (!isset($model))
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -373,16 +367,6 @@
         //------------------------------------------------------------------------------------------
         var additionalTermOption = $('.optionContent .termWrapper').length;
         var attributeCount = $('.optionContent').length;
-
-        if (attributeCount > 1) {
-            $('.optionContent:not(:first-child)').addClass('mt-3');
-            $('.optionContent:not(:first-child) .back').append(
-                '<button class="btn btn-danger btn-remove-option" type="button"><i class="fas fa-trash-alt"></i></button>'
-                );
-            $('.termWrapper:not(:first-child) .termBtnControl').append(
-                '<button class="btn btn-danger btn-remove-variation ms-2" type="button"><i class="fas fa-trash-alt"></i></button>'
-                )
-        }
 
         $('body').on('click', '.btn-remove-option', function() {
             $(this).parents('.optionContent').remove();

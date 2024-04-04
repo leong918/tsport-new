@@ -76,42 +76,31 @@
                         @endphp
                         @foreach ($product_list as $product)
                         <div class="swiper-slide product-img">
-                            <div class="product-image position-relative">
-                                <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
-                                    <img class="show" src="{{$product->productImage()->first()->url}}">
-                                </a>
-                                <div class="wishlist-cart-container">
-                                    <div class="row text-center">
-                                        <div class="col-md-6">
-                                            <!-- wishlist -->
-                                            <div class="wishlist-container">
-                                                <img class="wishlist-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                <img class="wishlist-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!--cart-->
-                                            <div class="cart-container">
-                                                <img class="cart-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                <img class="cart-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                            </div>
-                                        </div>
+                            <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
+                                <div class="product-image position-relative">
+                                    <img class="show" src="{{$product->productImage->first()->url}}">
+                                    @if(function_exists('salesOrderRenderView'))
+                                    {{ salesOrderRenderView('product_list_hover_web', $product) }}
+                                    @endif
+                                </div>
+                                <div class="product-info">
+                                    <div class="rating-wishlist">
+                                        @if(function_exists('reviewRenderView'))
+                                        {{ reviewRenderView('common_star_rating') }}
+                                        @endif
+                                        @if(function_exists('salesOrderRenderView'))
+                                        {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                        @endif
+                                    </div>
+                                    <div class="product-description">{{ $product->name }}</div>
+                                    <div class="price-cart">
+                                        <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                        @if(function_exists('salesOrderRenderView'))
+                                        {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
+                                        @endif
                                     </div>
                                 </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="rating-wishlist">
-                                    @if(function_exists('reviewRenderView'))
-                                    {{ reviewRenderView('common_star_rating') }}
-                                    @endif
-                                    <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                </div>
-                                <div class="product-description">{{ $product->name }}</div>
-                                <div class="price-cart">
-                                    <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
-                                    <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         @endforeach
                     </div>
@@ -141,42 +130,31 @@
                         @endphp
                         @foreach ($product_list as $product)
                         <div class="swiper-slide product-img">
-                            <div class="product-image position-relative">
-                                <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
-                                    <img class="show" src="{{$product->productImage()->first()->url}}">
-                                </a>
-                                <div class="wishlist-cart-container">
-                                    <div class="row text-center">
-                                        <div class="col-md-6">
-                                            <!-- wishlist -->
-                                            <div class="wishlist-container">
-                                                <img class="wishlist-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                <img class="wishlist-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!--cart-->
-                                            <div class="cart-container">
-                                                <img class="cart-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                <img class="cart-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                            </div>
-                                        </div>
+                            <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
+                                <div class="product-image position-relative">
+                                    <img class="show" src="{{$product->productImage->first()->url}}">
+                                    @if(function_exists('salesOrderRenderView'))
+                                    {{ salesOrderRenderView('product_list_hover_web', $product) }}
+                                    @endif
+                                </div>
+                                <div class="product-info">
+                                    <div class="rating-wishlist">
+                                        @if(function_exists('reviewRenderView'))
+                                        {{ reviewRenderView('common_star_rating') }}
+                                        @endif
+                                        @if(function_exists('salesOrderRenderView'))
+                                        {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                        @endif
+                                    </div>
+                                    <div class="product-description">{{ $product->name }}</div>
+                                    <div class="price-cart">
+                                        <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                        @if(function_exists('salesOrderRenderView'))
+                                        {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
+                                        @endif
                                     </div>
                                 </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="rating-wishlist">
-                                    @if(function_exists('reviewRenderView'))
-                                    {{ reviewRenderView('common_star_rating') }}
-                                    @endif
-                                    <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                </div>
-                                <div class="product-description">{{ $product->name }}</div>
-                                <div class="price-cart">
-                                    <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
-                                    <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         @endforeach
                     </div>
@@ -199,42 +177,31 @@
                 @endphp
                 @foreach ($product_list as $product)
                 <div class="swiper-slide new-launches-product-img">
-                    <div class="product-image position-relative">
-                        <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
-                            <img class="show" src="{{$product->productImage()->first()->url}}">
-                        </a>
-                        <div class="wishlist-cart-container">
-                            <div class="row text-center">
-                                <div class="col-md-6">
-                                    <!-- wishlist -->
-                                    <div class="wishlist-container">
-                                        <img class="wishlist-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                        <img class="wishlist-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <!--cart-->
-                                    <div class="cart-container">
-                                        <img class="cart-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                        <img class="cart-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
+                    <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
+                        <div class="product-image position-relative">
+                            <img class="show" src="{{$product->productImage->first()->url}}">
+                            @if(function_exists('salesOrderRenderView'))
+                            {{ salesOrderRenderView('product_list_hover_web', $product) }}
+                            @endif
+                        </div>
+                        <div class="product-info">
+                            <div class="rating-wishlist">
+                                @if(function_exists('reviewRenderView'))
+                                {{ reviewRenderView('common_star_rating') }}
+                                @endif
+                                @if(function_exists('salesOrderRenderView'))
+                                {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                @endif
+                            </div>
+                            <div class="product-description">{{ $product->name }}</div>
+                            <div class="price-cart">
+                                <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                @if(function_exists('salesOrderRenderView'))
+                                {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
+                                @endif
                             </div>
                         </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="rating-wishlist">
-                            @if(function_exists('reviewRenderView'))
-                            {{ reviewRenderView('common_star_rating') }}
-                            @endif
-                            <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                        </div>
-                        <div class="product-description">{{ $product->name }}</div>
-                        <div class="price-cart">
-                            <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
-                            <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 @endforeach
             </div>
@@ -293,47 +260,36 @@
                     @endphp
                     @foreach ($product_list as $product)
                     <div class="recommend-product-container col recommend-product-img">
-                        <div class="product-image position-relative">
-                            <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
-                                <img class="show" src="{{$product->productImage()->first()->url}}">
-                            </a>
-                            <div class="wishlist-cart-container">
-                                <div class="row text-center">
-                                    <div class="col-md-6">
-                                        <!-- wishlist -->
-                                        <div class="wishlist-container">
-                                            <img class="wishlist-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                            <img class="wishlist-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <!--cart-->
-                                        <div class="cart-container">
-                                            <img class="cart-hide" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                            <img class="cart-hover-show" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                        </div>
-                                    </div>
+                        <a href="{{route('web.product_detail', ['alias' => $product->alias])}}">
+                            <div class="product-image position-relative">
+                                <img class="show" src="{{$product->productImage->first()->url}}">
+                                @if(function_exists('salesOrderRenderView'))
+                                {{ salesOrderRenderView('product_list_hover_web', $product) }}
+                                @endif
+                            </div>
+                            <div class="product-info">
+                                <div class="rating-wishlist">
+                                    @if(function_exists('reviewRenderView'))
+                                    {{ reviewRenderView('common_star_rating') }}
+                                    @endif
+                                    @if(function_exists('salesOrderRenderView'))
+                                    {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                    @endif
+                                </div>
+                                <div class="product-description">{{ $product->name }}</div>
+                                <div class="price-cart">
+                                    <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                    @if(function_exists('salesOrderRenderView'))
+                                    {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
+                                    @endif
                                 </div>
                             </div>
-                        </div>
-                        <div class="product-info">
-                            <div class="rating-wishlist">
-                                @if(function_exists('reviewRenderView'))
-                                {{ reviewRenderView('common_star_rating') }}
-                                @endif
-                                <img class="wishlist-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                            </div>
-                            <div class="product-description">{{ $product->name }}</div>
-                            <div class="price-cart">
-                                <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
-                                <img class="cart-mobile" type="button" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     @endforeach
                 </div>
                 <div class="more-button">
-                    <button class="btn btn-primary" id="view-more" type="button">SEE ALL PRODUCTS</button>
+                    <a class="btn btn-primary" id="view-more" href="{{ route('web.product') }}">SEE ALL PRODUCTS</a>
                 </div>
             </div>
         </div>
@@ -345,18 +301,20 @@
             <div class="row row-cols-1 row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
                 @foreach ($blog_list->take(4) as $blog)
                 <div class="blog-container blog-img">
-                    <div class="blog-block">
-                        <div class="img-block">
-                            <img src="{{ $blog->getParameters('cn')->image }}">
+                    <a class="text-decoration-none" style="color: inherit" href="{{route('web.blog_detail', ['blog_id' => $blog->id])}}">
+                        <div class="blog-block">
+                            <div class="img-block">
+                                <img src="{{ $blog->getParameters('cn')->image }}">
+                            </div>
+                            <div class="blog-description">
+                                <div class="blog-date">{{ $blog->publishedDate()  }}</div>
+                                <div class="blog-main">{{ $blog->name  }}</div>
+                            </div>
+                            <div class="blog-button" type="button">
+                                <div style="color: inherit"">READ MORE</div>
+                            </div>
                         </div>
-                        <div class="blog-description">
-                            <div class="blog-date">{{ $blog->publishedDate()  }}</div>
-                            <div class="blog-main">{{ $blog->name  }}</div>
-                        </div>
-                        <div class="blog-button" type="button">
-                            <a class="text-decoration-none" style="color: inherit" href="{{route('web.blog_detail', ['blog_id' => $blog->id])}}">READ MORE</a>
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 @endforeach
             </div>

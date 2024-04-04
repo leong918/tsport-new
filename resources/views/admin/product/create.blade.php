@@ -69,7 +69,7 @@
                                                                                 <div class="m-2 ms-2">
                                                                                     <input type="number"
                                                                                         class="form-control" required
-                                                                                        min="0.01" step="0.01"
+                                                                                        min="0" step="0.01"
                                                                                         placeholder="{{ __('Add On Price') }}"
                                                                                         name="option[0][variation][0][term_add_on_price]">
                                                                                 </div>
@@ -164,7 +164,7 @@
                                     <div class="m-2 ms-2">
                                         <input type="number"
                                             class="form-control" required
-                                            min="0.01"
+                                            min="0"
                                             step="0.01"
                                             placeholder="{{ __('Add On Price') }}"
                                             name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
@@ -215,7 +215,7 @@
                         <div class="m-2 ms-2">
                             <input type="number"
                                 class="form-control" required
-                                min="0.01"
+                                min="0"
                                 step="0.01"
                                 placeholder="{{ __('Add On Price') }}"
                                 name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">

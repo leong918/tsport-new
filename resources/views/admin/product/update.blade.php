@@ -25,9 +25,9 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row" id="optionContent">
-                                                        @foreach ($model->productAttribute as $attribute_key => $attribute)
-                                                            <div class="col-sm-12 optionContent"
-                                                                data-option-id="{{ $attribute_key }}">
+                                                        @foreach ($model->productAttribute as $key => $attribute)
+                                                            <div class="col-sm-12 optionContent {{ count($model->productAttribute) > 0 && $key > 0 ? 'mt-4' : '' }}"
+                                                                data-option-id="old-{{ $attribute->id }}">
                                                                 <div class="card">
                                                                     <div
                                                                         class="card-header bg-light d-flex justify-content-between">
@@ -36,7 +36,7 @@
                                                                                 <input type="text" class="form-control"
                                                                                     style="font-weight: bold;" required
                                                                                     placeholder="{{ __('Product Attribute Name') }}"
-                                                                                    name="option[{{ $attribute_key }}][attribute_name]"
+                                                                                    name="option[old-{{ $attribute->id }}][attribute_name]"
                                                                                     value="{{ $attribute->name }}">
                                                                             </div>
                                                                         </div>
@@ -44,12 +44,15 @@
                                                                             <button class="btn btn-primary btn-addOption"
                                                                                 type="button"><i class="fas fa-plus"></i>
                                                                             </button>
+                                                                            @if($key > 0)
+                                                                            <button class="btn btn-danger btn-remove-option" type="button"><i class="fas fa-trash-alt"></i></button>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
                                                                     <ul class="list-group list-group-flush">
-                                                                        @foreach ($attribute->productAttributeTerm as $key => $term)
+                                                                        @foreach ($attribute->productAttributeTerm as $term_key => $term)
                                                                             <li class="list-group-item termWrapper d-flex align-items-center"
-                                                                                data-option-variation-id="{{ $key }}">
+                                                                                data-option-variation-id="old-{{ $term->id }}">
                                                                                 <div class="col-md-10 col-10">
                                                                                     <div
                                                                                         class="inputBoxes d-flex flex-wrap ">
@@ -60,7 +63,7 @@
                                                                                                     for="">Attribute
                                                                                                     Term</label>
                                                                                                 <textarea class="form-control" required rows="2"
-                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_name]">{{ $term->name }}</textarea>
+                                                                                                    name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_name]">{{ $term->name }}</textarea>
                                                                                             </div>
                                                                                             <div class="m-2 ms-0">
                                                                                                 <label
@@ -68,7 +71,7 @@
                                                                                                 <input type="text"
                                                                                                     class="form-control"
                                                                                                     required
-                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_sku]"
+                                                                                                    name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_sku]"
                                                                                                     value="{{ $term->sku }}">
                                                                                             </div>
                                                                                             <div class="m-2 ms-0">
@@ -76,9 +79,9 @@
                                                                                                     Price</label>
                                                                                                 <input type="number"
                                                                                                     class="form-control"
-                                                                                                    required min="0.01"
+                                                                                                    required min="0"
                                                                                                     step="0.01"
-                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_add_on_price]"
+                                                                                                    name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_add_on_price]"
                                                                                                     value="{{ $term->getCurrencyParameters('HKD')->price }}">
                                                                                             </div>
                                                                                             <div class="m-2 ms-0">
@@ -87,7 +90,7 @@
                                                                                                 <input type="number"
                                                                                                     class="form-control"
                                                                                                     required min="0"
-                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_add_on_point]"
+                                                                                                    name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_add_on_point]"
                                                                                                     value="{{ $term->point_value }}">
                                                                                             </div>
                                                                                         </div>
@@ -100,7 +103,7 @@
                                                                                                 <div
                                                                                                     class="d-flex input-group">
                                                                                                     <select
-                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][stock_option]"
+                                                                                                        name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][stock_option]"
                                                                                                         class="form-select stockOption rounded-0 rounded-start"
                                                                                                         aria-label="select stock status"
                                                                                                         style="max-width: 35%">
@@ -112,7 +115,7 @@
                                                                                                             MINUS</option>
                                                                                                     </select>
                                                                                                     <input type="number"
-                                                                                                        name="option[{{ $attribute_key }}][variation][{{ $key }}][stock_amount]"
+                                                                                                        name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][stock_amount]"
                                                                                                         id="stockOptionAmount"
                                                                                                         min="1"
                                                                                                         class="form-control rounded-0 rounded-end"
@@ -125,18 +128,20 @@
                                                                                                 <input type="number"
                                                                                                     class="form-control border-0"
                                                                                                     readonly min="1"
-                                                                                                    name="option[{{ $attribute_key }}][variation][{{ $key }}][term_qty]"
+                                                                                                    name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_qty]"
                                                                                                     value="{{ $term->quantity }}"
                                                                                                     style="box-shadow: none; background-color: #d8dbe0">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-md-2 col-2">
-                                                                                    <div
-                                                                                        class="d-flex justify-content-end termBtnControl">
+                                                                                @if($term_key > 0)
+                                                                                <div class="col-md-2 col-2 d-flex justify-content-end align-items-center">
+                                                                                    <div class="">
+                                                                                        <button class="btn btn-danger btn-remove-variation" type="button"><i class="fas fa-trash-alt"></i></button>
                                                                                     </div>
                                                                                 </div>
+                                                                                @endif
                                                                             </li>
                                                                         @endforeach
                                                                     </ul>
@@ -144,14 +149,14 @@
                                                                         <div class="d-flex align-items-center mb-2">
                                                                             <input type="checkbox"
                                                                                 data-checkbox="{{ $attribute->status }}"
-                                                                                name="option[{{ $attribute_key }}][attribute_status]">
+                                                                                name="option[old-{{ $attribute->id }}][attribute_status]">
                                                                             <span class="ms-2">Visible on product
                                                                                 page</span>
                                                                         </div>
                                                                         <div class="d-flex align-items-center">
                                                                             <input type="checkbox"
                                                                                 data-checkbox="{{ $attribute->is_variation }}"
-                                                                                name="option[{{ $attribute_key }}][is_variation]">
+                                                                                name="option[old-{{ $attribute->id }}][is_variation]">
                                                                             <span class="ms-2">Used for variations</span>
                                                                         </div>
                                                                     </div>
@@ -270,7 +275,7 @@
                                     <div class="m-2 ms-2">
                                         <input type="number"
                                             class="form-control" required
-                                            min="0.01"
+                                            min="0"
                                             step="0.01"
                                             placeholder="{{ __('Add On Price') }}"
                                             name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
@@ -304,37 +309,37 @@
 <script id="optionVariationLayout" type="x-tmpl-mustache">
     <li class="list-group-item termWrapper d-flex align-items-center" data-option-variation-id="@{{ variation_id }}">
         <div class="col-md-10 col-10">
-                <div class="inputBoxes d-flex flex-wrap">
-                    <div class="col-md-6 col-6 border-end">
-                        <div class="m-2 ms-0">
-                            <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="2"></textarea>
-                        </div>
-                        <div class="m-2 ms-0">
-                            <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
-                        </div>
-    
-                        <div class="m-2 ms-0">
-                            <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
-                        </div>
+            <div class="inputBoxes d-flex flex-wrap">
+                <div class="col-md-6 col-6 border-end">
+                    <div class="m-2 ms-0">
+                        <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="2"></textarea>
                     </div>
-                    <div class="col-md-5 col-5">
-                        <div class="m-2 ms-2">
-                            <input type="number"
-                                class="form-control" required
-                                min="0.01"
-                                step="0.01"
-                                placeholder="{{ __('Add On Price') }}"
-                                name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
-                        </div>
-                        <div class="m-2 ms-2">
-                            <input type="number"
-                                class="form-control" required
-                                min="0"
-                                placeholder="{{ __('Add On Point') }}"
-                                name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_point]">
-                        </div>  
-                    </div> 
+                    <div class="m-2 ms-0">
+                        <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
+                    </div>
+
+                    <div class="m-2 ms-0">
+                        <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
+                    </div>
                 </div>
+                <div class="col-md-5 col-5">
+                    <div class="m-2 ms-2">
+                        <input type="number"
+                            class="form-control" required
+                            min="0"
+                            step="0.01"
+                            placeholder="{{ __('Add On Price') }}"
+                            name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_price]">
+                    </div>
+                    <div class="m-2 ms-2">
+                        <input type="number"
+                            class="form-control" required
+                            min="0"
+                            placeholder="{{ __('Add On Point') }}"
+                            name="option[@{{id}}][variation][@{{ variation_id }}][term_add_on_point]">
+                    </div>  
+                </div> 
+            </div>
         </div>
         <div class="col-md-2 col-2 d-flex justify-content-end align-items-center">
             <div class="">
