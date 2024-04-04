@@ -91,7 +91,6 @@ class AppController extends BaseController
     {
         $product = $this->productRepository->getProductByAlias($alias, 'HKD');
         $product_category = $this->categoryRepository->find($product->category_id);
-        dd($product_category);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
 
         return $this->view('product_detail', compact('product', 'product_parent_category'));
