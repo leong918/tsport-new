@@ -28,6 +28,7 @@ class PointLog extends Model
     protected $fillable = [
         'user_id',
         'sales_order_id',
+        'used_sales_order_id',
         'point',
         'type',
         'remark',
