@@ -5,7 +5,7 @@
     <div class="product-banner">
         <img src="{{asset('assets/web/assets/img/product/product_bg.png')}}" />
         <div class="product-title-wrapper">
-            <div class="product-title text-capitalize">{{ isset($current_category) ? $current_category->name:"Search Result" }}</div> 
+            <div class="product-title text-capitalize">{{ isset($current_category) ? $current_category->name : "Search Result" }}</div> 
             <div class="product-nav d-flex justify-content-center">
                 <span><a class="text-decoration-none" href="{{ route('web.home') }}">Home</a></span>
                 @if (!empty($current_category->parent_category_id))

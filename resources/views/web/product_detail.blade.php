@@ -6,7 +6,7 @@
                 <div class="col-12 row nav-wrapper">
                     <div class="d-flex nav-title-wrapper">
                         <div>Home</div>
-                        @if (!empty($product_parent_category))
+                        @if ($product_parent_category)
                             <div>></div>
                             <div class="text-capitalize">{{ $product_parent_category->name }}</div>
                         @endif
@@ -37,44 +37,13 @@
                                 <div class="col-10 product-title">{{ $product->name }}</div>
                             </div>
                         </div>
-                        <div class="col-2 d-flex justify-content-end wishlist-wrapper">
-                            <img src="{{ asset('assets/web/assets/img/product_details/wishlist_icon.png') }}">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between product-action-wrapper">
-                        <div class="product-price d-flex flex-column justify-content-center"
-                            data-default-price="{{ $product->price }}">
-                            ${{ $product->price }}
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-6">
-                        @if (isset($product_attribute_list))
-                            @foreach ($product_attribute_list->where('is_variation', 1) as $product_attribute)
-                                <div class="input-container mt-4 me-3">
-                                    <input type="text" id="{{ $product_attribute->name }}"
-                                        name="{{ $product_attribute->name }}" class="attribute-input text-start"
-                                        data-selected-price="0" value="" required readonly>
-                                    <ul id="{{ $product_attribute->name }}-dropdown" class="attribute-dropdown">
-                                        @foreach ($product_attribute->productAttributeTerm()->get() as $term)
-                                            <li data-point="{{ $term->point_value }}"
-                                                data-add-on-price="{{ $term->getCurrencyParameters('HKD')->price }}">{{ $term->name }}</li>
-                                        @endforeach
-                                    </ul>
-                                    <label class="placeholder-label">
-                                        Choose {{ $product_attribute->name }}
-                                        <div class="d-flex float-end mt-1">
-                                            <i class='fas fa-angle-down'></i>
-                                        </div>
-                                    </label>
-                                </div>
-                            @endforeach
+                        @if (function_exists('salesOrderRenderView'))
+                            {{ salesOrderRenderView('product_detail_wishlist') }}
                         @endif
                     </div>
-                    <div class="row action-button-wrapper">
-                        <div class="col-12 col-lg-6 ps-0"><button class="cart-button">ADD TO CART</button></div>
-                        <div class="col-12 col-lg-6 pe-0"><button class="buy-button">BUY IT NOW</button></div>
-                    </div>
-
+                    @if (function_exists('salesOrderRenderView'))
+                        {{ salesOrderRenderView('product_detail_cart', $product) }}
+                    @endif
                     <div class="row">
                         <div class="col-12 product-details-wrapper mx-auto">
                             <div class="product-details-list">{!! $product->getParameters('cn')->information !!}</div>
@@ -128,17 +97,17 @@
                         <div class="content-wrapper">
                             {!! $product->getParameters('cn')->additional_information !!}
 
-                            @if ($product_attribute_list->isNotEmpty() && $product_attribute_list->where('is_variation', 0))
+                            @if ($product->productAttribute->where('status', 1)->where('is_variation', 1)->count() > 0)
                                 <div class="row mt-5">
                                     <div class="col-md-4">
                                         <div>Product Attribute</div>
-                                        @foreach ($product_attribute_list->where('is_variation', 0) as $product_attribute)
+                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 1) as $product_attribute)
                                             <div class="mt-2">{{ $product_attribute->name }}</div>
                                         @endforeach
                                     </div>
                                     <div class="col-md-8">
                                         <div>Variation</div>
-                                        @foreach ($product_attribute_list->where('is_variation', 0) as $product_attribute)
+                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 1) as $product_attribute)
                                             <div class="mt-2">
                                                 @php
                                                     $termNames = '';
@@ -237,44 +206,6 @@
         });
 
         $(document).ready(function() {
-
-            //-------- product attribute -----------------------
-            $('.attribute-input').focus(function() {
-                var attribute = $(this).attr('id');
-                var dropdown = attribute + '-dropdown';
-                $('#' + dropdown).addClass('visible');
-            });
-
-
-            $('.attribute-dropdown li').on('click', function() {
-                var default_price = parseFloat($('.product-price').data('default-price'));
-                var attribute = $(this).closest('.input-container').find('.attribute-input').attr('id');
-                var dropdown = attribute + '-dropdown';
-                var add_on_price = $(this).data('add-on-price')
-
-                $('#' + attribute).val($(this).text()).data('selected-price', add_on_price);
-                $('#' + dropdown).removeClass('visible');
-                $('#' + attribute).trigger('paste');
-
-                $('.attribute-input').each(function() {
-                    var selected_price = parseFloat($(this).data('selected-price'));
-                    default_price += selected_price;
-                });
-
-                $('.product-price').text('$' + default_price.toFixed(2));
-            });
-
-            $('.attribute-input').on('blur', function() {
-                var attribute = $(this).attr('id');
-                var dropdown = attribute + '-dropdown';
-                setTimeout(function() {
-                    if (!$('.input-container input#' + attribute).is(':focus') && !$('#' + dropdown)
-                        .is(':focus')) {
-                        $('#' + dropdown).removeClass('visible');
-                    }
-                }, 100);
-            });
-
             //------------------ review star -----------------------
             var selectReviewStar = 0;
 
