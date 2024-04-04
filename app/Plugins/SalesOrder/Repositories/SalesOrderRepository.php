@@ -13,6 +13,7 @@ use Illuminate\Container\Container;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\PointLogRepository;
 use Carbon\Carbon;
 
 class SalesOrderRepository extends BaseRepository
@@ -48,6 +49,7 @@ class SalesOrderRepository extends BaseRepository
         Schema::dropIfExists('sales_order_log');
         Schema::dropIfExists('user_cart');
         Schema::dropIfExists('cart_rule');
+        Schema::dropIfExists('wishlist');
     }
 
     public function installExtension()
@@ -99,7 +101,7 @@ class SalesOrderRepository extends BaseRepository
             $table->id();
             $table->bigInteger('sales_order_id');
             $table->bigInteger('product_id');
-            $table->bigInteger('product_attribute_term_id')->nullable();
+            $table->string('product_attribute_term')->nullable();
             $table->string('product_image');
             $table->string('product_name');
             $table->string('product_attribute_term_name')->nullable();
@@ -170,6 +172,17 @@ class SalesOrderRepository extends BaseRepository
             $table->tinyInteger('status')->default(1);
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::dropIfExists('wishlist');
+
+        Schema::create('wishlist', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('user_id')->nullable();
+            $table->bigInteger('product_id');
+            $table->string('user_ip');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -294,6 +307,16 @@ class SalesOrderRepository extends BaseRepository
                 session()->flush('cart-' . $sales_order->user_id);
                 session()->flush('coupon-' . $sales_order->user_id);
 
+                if ($sales_order->point_used > 0) {
+                    $pointLogRepository = new PointLogRepository(new Container());
+                    $pointLogData['user_id'] = $sales_order->user_id;
+                    $pointLogData['sales_order_id'] = $sales_order->id;
+                    $pointLogData['point'] = $sales_order->point_used;
+                    $pointLogData['type'] = 'OUT';
+                    $pointLogData['remark'] = 'Create New Order ' . $sales_order->sales_order_id;
+                    $pointLogRepository->create($pointLogData);
+                }
+
                 if ($sales_order->point_earned > 0) {
                     //add point
                     $userRepository = new UserRepository(new Container());
@@ -305,7 +328,11 @@ class SalesOrderRepository extends BaseRepository
                 if ($sales_order->point_used > 0) {
                     // return point
                     $userRepository = new UserRepository(new Container());
-                    $userRepository->returnFullPoint($sales_order, array_flip(SalesOrder::ORDER_STATUS)[$status]);
+                    $userRepository->returnFullPoint($sales_order);
+
+                    // return point log
+                    $pointLogRepository = new PointLogRepository(new Container());
+                    $pointLogRepository->returnPointUsed($sales_order);
                 }
             }
             $sales_order->save();

@@ -22,7 +22,14 @@
                                 <td>
                                     <div class="d-flex">
                                         <img src="{{ $orderProduct->product_image }}">
-                                        <div class="product-desc">{{ $orderProduct->product_name }}</div>
+                                        <div class="product-desc">
+                                            {{ $orderProduct->product->getParameters('cn')->name }}
+                                            @if($orderProduct->product_attribute_term)
+                                            <div class="attribute-desc ms-2">
+                                                {!! $orderProduct->description !!}
+                                            </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="unit-price">${{ $orderProduct->price }}</td>
@@ -63,8 +70,15 @@
                                 <div class="d-flex">
                                     <img src="{{ $orderProduct->product_image }}">
                                     <div class="cart-item-details d-flex flex-column justify-content-between items-center">
-                                        <div class="product-desc">
-                                            【{{ $orderProduct->product_name }}
+                                        <div class="product-desc-wrapper">
+                                            <div class="product-desc">
+                                                {{ $orderProduct->product->getParameters('cn')->name }}
+                                            </div>
+                                            @if($orderProduct->product_attribute_term)
+                                            <div class="attribute-desc ms-2">
+                                                {!! $orderProduct->description !!}
+                                            </div>
+                                            @endif
                                         </div>
                                         <div class="product-price d-flex">
                                             <div class="label">Price:</div>

@@ -6,6 +6,7 @@ use App\Plugins\SalesOrder\Repositories\UserCartRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\PointLogRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
@@ -22,6 +23,7 @@ class CartController extends BaseController
     private CountryRepository $countryRepository;
     private UserRepository $userRepository;
     private ProductRepository $productRepository;
+    private PointLogRepository $pointLogRepository;
     private SalesOrderRepository $salesOrderRepository;
     private SalesOrderProductRepository $salesOrderProductRepository;
     private SalesOrderLogRepository $salesOrderLogRepository;
@@ -33,6 +35,7 @@ class CartController extends BaseController
         CountryRepository $countryRepository,
         UserRepository $userRepository,
         ProductRepository $productRepository,
+        PointLogRepository $pointLogRepository,
         SalesOrderRepository $salesOrderRepository,
         SalesOrderProductRepository $salesOrderProductRepository,
         SalesOrderLogRepository $salesOrderLogRepository,
@@ -43,6 +46,7 @@ class CartController extends BaseController
         $this->countryRepository = $countryRepository;
         $this->userRepository = $userRepository;
         $this->productRepository = $productRepository;
+        $this->pointLogRepository = $pointLogRepository;
         $this->salesOrderRepository = $salesOrderRepository;
         $this->salesOrderProductRepository = $salesOrderProductRepository;
         $this->salesOrderLogRepository = $salesOrderLogRepository;
@@ -242,7 +246,11 @@ class CartController extends BaseController
                 $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
                 $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
                 $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
-                $this->userRepository->deductFullPoint($order);
+
+                if ($user->point > 0) {
+                    $this->userRepository->deductFullPoint($order);
+                    $this->pointLogRepository->markPointUsed($order);
+                }
 
                 $description = 'New Order';
                 $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);

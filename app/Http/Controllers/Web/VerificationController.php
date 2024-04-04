@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
+use Carbon\Carbon;
 
 class VerificationController extends Controller
 {
@@ -60,7 +61,9 @@ class VerificationController extends Controller
 
             $pointLogData['user_id'] = $user->id;
             $pointLogData['point'] = 10;
+            $pointLogData['type'] = 'IN';
             $pointLogData['remark'] = '10 points gained from registration.';
+            $pointLogData['expired_at'] = Carbon::now()->addMonths(6);
             $this->pointLogRepository->create($pointLogData);
 
             if (function_exists('updateUserOwnerCart')) {
