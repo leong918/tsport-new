@@ -299,7 +299,7 @@ class ProductRepository extends BaseRepository
     private function verifyDescription($input)
     {
         foreach ($input['language'] as $key => $language) {
-            $lang = ($key == 'cn' ? 'Chinese' : 'English');
+            $lang = ($key == 'zh-CN' ? 'Chinese' : 'English');
 
             if (isset($language['information']) == false) {
                 throw new \Exception(__('Information for ' . $lang . ' cannot be empty!'));

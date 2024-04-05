@@ -39,7 +39,7 @@ class CategoryDescriptionRepository extends BaseRepository
         CategoryDescription::where('category_id', $category_id)->delete();
 
         $data['category_id'] = $category_id;
-        $data['language'] = 'cn';
+        $data['language'] = 'zh-CN';
         $data['name'] = $input['name'];
 
         $model = new CategoryDescription();

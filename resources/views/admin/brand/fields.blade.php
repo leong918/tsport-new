@@ -39,7 +39,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Description') }}
-            {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->description : "")->class('form-control wysiwyg') }}
+            {{ html()->textarea('language[zh-CN][description]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->description : "")->class('form-control wysiwyg') }}
         </div>
     </div>
 </div>
