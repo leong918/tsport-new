@@ -50,8 +50,8 @@ class BlogRepository extends BaseRepository
         $model->fill($input);
         $model->save();
 
-        $productPriceRepository = new BlogDetailRepository(new Container());
-        $productPriceRepository->createBlogDetail($input, $model->id);
+        $blogDescriptionRepository = new BlogDescriptionRepository(new Container());
+        $blogDescriptionRepository->createBlogDescription($input, $model->id);
     }
 
     public function updateBlog(array $input, int $id)
@@ -64,8 +64,8 @@ class BlogRepository extends BaseRepository
         $model->fill($input);
         $model->save();
 
-        $productPriceRepository = new BlogDetailRepository(new Container());
-        $productPriceRepository->createBlogDetail($input, $model->id);
+        $blogDescriptionRepository = new BlogDescriptionRepository(new Container());
+        $blogDescriptionRepository->createBlogDescription($input, $model->id);
     }
 
     public function toggleStatus(int $id)
