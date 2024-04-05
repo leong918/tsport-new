@@ -17,10 +17,10 @@
                 <div class="col-lg-9">
                     <div class="blog-left">
                         <div>
-                            <img src="{{ $blog->getParameters('cn')->image }}" alt="">
+                            <img src="{{ $blog->getParameters('zh-CN')->image }}" alt="">
                         </div>
                         <div class="left-desc">
-                            {!! $blog->getParameters('cn')->content !!}
+                            {!! $blog->getParameters('zh-CN')->content !!}
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                         <a href="{{route('web.blog_detail', ['blog_id' => $blog->id])}}" class="text-decoration-none">
                             <div class="blog-block">
                                 <div class="img-block">
-                                    <img src="{{ $blog->getParameters('cn')->image }}">
+                                    <img src="{{ $blog->getParameters('zh-CN')->image }}">
                                 </div>
                                 <div class="blog-description">
                                     <div class="blog-date">{{ $blog->publishedDate() }}</div>

@@ -122,7 +122,7 @@ class UserRepository extends BaseRepository
         if ($user_id) {
             $user = User::find($user_id);
             $point_redemption_ratio = $settingRepository->getValueByKey('point_redemption_ratio');
-            return round($user->point * $point_redemption_ratio, 2);
+            return round($user->point * (int) $point_redemption_ratio, 2);
         }
 
         return 0;

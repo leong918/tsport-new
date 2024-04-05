@@ -46,7 +46,7 @@
                     @endif
                     <div class="row">
                         <div class="col-12 product-details-wrapper mx-auto">
-                            <div class="product-details-list">{!! $product->getParameters('cn')->information !!}</div>
+                            <div class="product-details-list">{!! $product->getParameters('zh-CN')->information !!}</div>
                         </div>
                     </div>
                     <div>
@@ -80,22 +80,22 @@
                 <div class="tab-content description" id="myTabContent">
                     <div class="tab-pane fade show active" id="desciption" role="tabpanel" aria-labelledby="desciption-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('cn')->description !!}
+                            {!! $product->getParameters('zh-CN')->description !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('cn')->ingredient !!}
+                            {!! $product->getParameters('zh-CN')->ingredient !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="usage" role="tabpanel" aria-labelledby="usage-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('cn')->usage !!}
+                            {!! $product->getParameters('zh-CN')->usage !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('cn')->additional_information !!}
+                            {!! $product->getParameters('zh-CN')->additional_information !!}
 
                             @if ($product->productAttribute->where('status', 1)->where('is_variation', 1)->count() > 0)
                                 <div class="row mt-5">

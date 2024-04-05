@@ -33,17 +33,17 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Image') }}
-            {{ html()->file('language[cn][image]')->accept('image/*')->class('form-control')->required( isset($model) && $model->getParameters('cn') ? false : true)}}
-            {{ html()->hidden('language[cn][original_image]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->image : '') }}
+            {{ html()->file('language[zh-CN][image]')->accept('image/*')->class('form-control')->required( isset($model) && $model->getParameters('zh-CN') ? false : true)}}
+            {{ html()->hidden('language[zh-CN][original_image]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->image : '') }}
             <div class="text-center my-2">
-                <img class="img-fluid" {{isset($model) && $model->getParameters('cn') ? 'src='.$model->getParameters('cn')->image : ''}} />
+                <img class="img-fluid" {{isset($model) && $model->getParameters('zh-CN') ? 'src='.$model->getParameters('zh-CN')->image : ''}} />
             </div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Description') }}
-            {{ html()->textarea('language[cn][content]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->content : "")->class('form-control wysiwyg') }}
+            {{ html()->textarea('language[zh-CN][content]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->content : "")->class('form-control wysiwyg') }}
         </div>
     </div>
 </div>

@@ -26,7 +26,7 @@
                                     <div class="d-flex">
                                         <img src="{{ $cart->product->getFirstProductImage()->url }}">
                                         <div class="product-desc">
-                                            {{ $cart->product->getParameters('cn')->name }}
+                                            {{ $cart->product->getParameters('zh-CN')->name }}
                                             @if($cart->product_attribute_term)
                                             <div class="attribute-desc ms-2">
                                                 {!! $cart->description !!}
@@ -87,7 +87,7 @@
                                         <div class="d-flex justify-content-between">
                                             <div class="product-desc-wrapper">
                                                 <div class="product-desc">
-                                                    {{ $cart->product->getParameters('cn')->name }}
+                                                    {{ $cart->product->getParameters('zh-CN')->name }}
                                                 </div>
                                                 @if($cart->product_attribute_term)
                                                 <div class="attribute-desc ms-2">

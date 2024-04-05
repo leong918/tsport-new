@@ -136,25 +136,25 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Information') }}
-                        {{ html()->textarea('language[cn][information]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->information : "")->class('form-control wysiwyg') }}
+                        {{ html()->textarea('language[zh-CN][information]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->information : "")->class('form-control wysiwyg') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Description') }}
-                        {{ html()->textarea('language[cn][description]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->description : "")->class('form-control wysiwyg') }}
+                        {{ html()->textarea('language[zh-CN][description]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->description : "")->class('form-control wysiwyg') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Ingredient') }}
-                        {{ html()->textarea('language[cn][ingredient]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->ingredient : "")->class('form-control wysiwyg') }}
+                        {{ html()->textarea('language[zh-CN][ingredient]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->ingredient : "")->class('form-control wysiwyg') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Usage') }}
-                        {{ html()->textarea('language[cn][usage]')->value(isset($model) && $model->getParameters('cn') ? $model->getParameters('cn')->usage : "")->class('form-control wysiwyg') }}
+                        {{ html()->textarea('language[zh-CN][usage]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->usage : "")->class('form-control wysiwyg') }}
                     </div>
                 </div>
                 <div class="col-md-12">
