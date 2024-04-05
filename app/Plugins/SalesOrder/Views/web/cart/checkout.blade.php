@@ -126,7 +126,7 @@ $(document).ready(function() {
     });
 
     $("#country-dropdown li").click(function() {
-        $('#country').val($(this).text());
+        $('#country').attr('value', $(this).text());
         $('#country_id').val($(this).data('value'));
         $('#country-dropdown').removeClass('visible');
         $('#country').trigger('paste');
@@ -151,28 +151,25 @@ $(document).ready(function() {
 
         $('#shipping_address').html(address + ', ' + postcode + ', ' + city + ', ' + state + ', ' + country);
 
-        var form = {};
-        $.each($('#checkoutForm').serializeArray(), function() {
-            form[this.name] = this.value;
-        });
-
-        axios({
-            method: "post",
-            url: "{{ route('cart.update_address') }}",
-            data: {
-                data: form
-            },
-        })
-        .then(response => {
-            $('.payment-button').prop('disabled', false);
-            $('#apply-coupon-btn').prop('disabled', false);
-            updateColumnValue(response.data.cartTotal);
-        })
-        .catch(error => {
-            $('.payment-button').prop('disabled', false);
-            $('#apply-coupon-btn').prop('disabled', false);
-            showSwal('Fail!', error.response.data.msg);
-        });
+        if ($(this).attr('name') == 'country') {
+            axios({
+                method: "post",
+                url: "{{ route('cart.get_shipping_fee') }}",
+                data: {
+                    country_id: $('#country_id').val()
+                },
+            })
+            .then(response => {
+                $('.payment-button').prop('disabled', false);
+                $('#apply-coupon-btn').prop('disabled', false);
+                updateColumnValue(response.data.cartTotal);
+            })
+            .catch(error => {
+                $('.payment-button').prop('disabled', false);
+                $('#apply-coupon-btn').prop('disabled', false);
+                showSwal('Fail!', error.response.data.msg);
+            });
+        }
     })
 
     $('#apply-point-button').on('click', function() {

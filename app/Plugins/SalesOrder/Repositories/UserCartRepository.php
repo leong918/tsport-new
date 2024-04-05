@@ -183,7 +183,7 @@ class UserCartRepository extends BaseRepository
         $data = array_merge($data, $point_redemption_data);
 
         $total_price = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'];
-        if (isset($address) && $address['country_id']) {
+        if (isset($address['country_id']) && $address['country_id']) {
             $countryRepository = new CountryRepository(new Container());
             $shipping_data = $countryRepository->calculateShippingFee($total_price, $address['country_id']);
             $data = array_merge($data, $shipping_data);
