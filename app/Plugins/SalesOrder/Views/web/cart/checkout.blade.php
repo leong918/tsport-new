@@ -1,6 +1,7 @@
 @extends('web.layout.app')
 @section('content')
 <div id="checkout" class="margin-header">
+    <x-alert/>
     <div class="container">
         <div class="row justify-content-center">
             <div class="checkout-wrapper">

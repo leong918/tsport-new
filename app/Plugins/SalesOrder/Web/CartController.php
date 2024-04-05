@@ -274,7 +274,12 @@ class CartController extends BaseController
             if (!$order || $data['payment_method'] !== 'stripe') {
                 $user = $this->userRepository->find($data['user_id']);
                 $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
-                $data['point_used'] = $user->point;
+
+                if ($cartTotal['point_redemption'] > 0 && $user->point > 0) {
+                    $data['point_used'] = $user->point;
+                    $this->userRepository->deductFullPoint($order);
+                    $this->pointLogRepository->markPointUsed($order);
+                }
 
                 $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
                 $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
@@ -285,11 +290,6 @@ class CartController extends BaseController
                     session()->flush('cart-' . $order->user_id);
                     session()->flush('coupon-' . $order->user_id);
                     session()->flush('point-' . $order->user_id);
-                }
-
-                if ($user->point > 0) {
-                    $this->userRepository->deductFullPoint($order);
-                    $this->pointLogRepository->markPointUsed($order);
                 }
 
                 $description = 'New Order';
