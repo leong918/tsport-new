@@ -24,9 +24,9 @@
                                         <img src="{{ $orderProduct->product_image }}">
                                         <div class="product-desc">
                                             {{ $orderProduct->product->getParameters('zh-CN')->name }}
-                                            @if($orderProduct->product_attribute_term)
+                                            @if($orderProduct->product_attribute_term_name)
                                             <div class="attribute-desc ms-2">
-                                                {!! $orderProduct->description !!}
+                                                {!! $orderProduct->product_attribute_term_name !!}
                                             </div>
                                             @endif
                                         </div>
@@ -69,14 +69,14 @@
                             <div class="cart-item-wrapper">
                                 <div class="d-flex">
                                     <img src="{{ $orderProduct->product_image }}">
-                                    <div class="cart-item-details d-flex flex-column justify-content-between items-center">
+                                    <div class="cart-item-details d-flex flex-column justify-content-between items-center w-100">
                                         <div class="product-desc-wrapper">
                                             <div class="product-desc">
                                                 {{ $orderProduct->product->getParameters('zh-CN')->name }}
                                             </div>
-                                            @if($orderProduct->product_attribute_term)
+                                            @if($orderProduct->product_attribute_term_name)
                                             <div class="attribute-desc ms-2">
-                                                {!! $orderProduct->description !!}
+                                                {!! $orderProduct->product_attribute_term_name !!}
                                             </div>
                                             @endif
                                         </div>
@@ -84,7 +84,7 @@
                                             <div class="label">Price:</div>
                                             <div class="data">${{ $orderProduct->price }}</div>
                                         </div>
-                                        <div class="product-price-wrapper d-flex justify-content-between">
+                                        <div class="product-price-wrapper d-flex justify-content-between w-100">
                                             <div class="d-flex quantity-wrapper">
                                                 <div class="label">Quantity:</div>
                                                 <div class="data">{{ $orderProduct->quantity }}</div>

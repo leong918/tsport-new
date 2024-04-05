@@ -152,7 +152,7 @@ class UserCartRepository extends BaseRepository
         }
     }
 
-    public function calculateUserCartTotal($user_data, $coupon_session, $user_id, $address = null)
+    public function calculateUserCartTotal($user_data, $coupon_session, $point_session, $user_id, $address = null)
     {
         $data = array();
         $data['subtotal'] = 0;
@@ -177,8 +177,10 @@ class UserCartRepository extends BaseRepository
         $cart_rule_data = $cartRuleRepository->calculatePriorityRule($cart_list, $coupon_session);
         $data = array_merge($data, $cart_rule_data);
 
+        $max_point_redemption = round($data['subtotal'] - $data['total_discount_amount'], 2);
         $userRepository = new UserRepository(new Container());
-        $data['point_redemption'] = $userRepository->calculateDiscountPoint($user_id);
+        $point_redemption_data = $userRepository->calculateDiscountPoint($user_id, $point_session, $max_point_redemption);
+        $data = array_merge($data, $point_redemption_data);
 
         $total_price = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'];
         if (isset($address) && $address['country_id']) {
