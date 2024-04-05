@@ -36,7 +36,9 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('sales_order/update_product/{id}/{product_id?}', [SalesOrderController::class, 'updateProduct'])->name('updateProduct.put');
         Route::delete('sales_order/delete_product/{id}/{product_id}', [SalesOrderController::class, 'destroySalesOrderProduct'])->name('destroy.deleteProduct');
         Route::delete('sales_order/delete/{id}', [SalesOrderController::class, 'destroy'])->name('destroy.delete');
+        Route::post('sales_order/deleteByList', [SalesOrderController::class, 'destroyByList'])->name('deleteByList');
         Route::post('sales_order/status/{id}', [SalesOrderController::class, 'toggleStatus'])->name('status.post');
+        Route::get('exportByList', [SalesOrderController::class, 'exportByList'])->name('exportByList');
     });
 
     Route::group(['as' => 'admin.cart_rule.', 'prefix' => 'admin'], function () {

@@ -109,22 +109,16 @@
     </div>
     <div class="col-xl-6">
         <table  class="table table-hover box-body text-wrap table-bordered">
-            <tr>
-                <td>Subtotal</td>
-                <td><div><span>{{ isset($model) && $model->subtotal ? $model->subtotal : 0 }}</span></div</td>
-            </tr>
-            <tr>
-                <td>Shipping</td>
-                <td><div><span class="editable" data-input-type="number" data-column="shipping" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->shipping}}">{{ isset($model) && $model->shipping ? $model->shipping : 0 }}</span></div></td>
-            </tr>
-            <tr>
-                <td>Discount</td>
-                <td><div><span class="editable" data-input-type="number" data-column="discount" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->discount }}">{{ isset($model) && $model->discount ? $model->discount : 0 }}</span></div></td>
-            </tr>
-            <tr style="font-weight: bold;">
-                <td style="background-color:#f5f3f3;">Total</td>
-                <td style="background-color:#f5f3f3;"><div><span>{{ isset($model) && $model->total ? $model->total : '' }}</span></div></td>
-            </tr>
+            @foreach($model->salesOrderTotal as $sales_order_total)
+                <tr>
+                    <td>{{ $sales_order_total->title }}</td>
+                    @if($sales_order_total->code != "total" && $sales_order_total->code != "subtotal")
+                        <td><div><span class="editable" data-input-type="number" data-column="order_total_{{ $sales_order_total->id}}" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{ $sales_order_total->value }}">{{$sales_order_total->value }}</span></div></td>
+                    @else
+                        <td><div><span>{{ $sales_order_total->value }}</span></div></td>
+                    @endif
+                </tr>
+            @endforeach
         </table>
     </div>
     <div class="col-xl-6">
@@ -196,7 +190,7 @@ $(document).ready(function(){
             inputField = $("<input type='text' class='form-control'>").val(currentData)
         }else if (inputType == 'number')
         {
-            inputField = $("<input type='number' class='form-control'>").val(currentData)
+            inputField = $("<input type='number' class='form-control' min='0.00' step='0.01'>").val(currentData)
         }else if (inputType == 'textarea')
         {
             inputField = $("<textarea rows='4' cols='50'>").val(currentData)

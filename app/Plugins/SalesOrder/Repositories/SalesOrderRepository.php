@@ -188,41 +188,91 @@ class SalesOrderRepository extends BaseRepository
         });
     }
 
-    public function getListing()
+    public function getListing(array $form_data)
     {
-        return SalesOrder::query()->orderBy('created_at', 'desc');
+        $models = SalesOrder::query()->orderBy('created_at', 'desc');
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'sales_order.sales_order_id') {
+                $models->where($key, 'like', "%{$value}%");
+            }elseif($key === 'date_range'){
+                if(str_contains($value, ' - '))
+                {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+                    $models->whereBetween('created_at', [$dateFrom, $dateTo]);
+                }else{
+                    $date = Carbon::parse($value);
+                    $models->whereDate('created_at', $date);
+                }
+            } else {
+                $models->where($key, $value);
+            }
+        }
+        return $models;
+    }
+
+    public function getListingByID(array $order_id_list)
+    {
+        return SalesOrder::leftJoin('sales_order_product','sales_order_product.sales_order_id' , '=' , 'sales_order.id')
+                            ->leftJoin('product','product.id', '=', 'sales_order_product.product_id')
+                            ->whereIn('sales_order.id', $order_id_list)
+                            ->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku')
+                            ->get();
+    }
+
+    public function getExportListing(array $form_data)
+    {
+        
+        $models = SalesOrder::leftJoin('sales_order_product','sales_order_product.sales_order_id' , '=' , 'sales_order.id')
+        ->leftJoin('product','product.id', '=', 'sales_order_product.product_id');
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'sales_order.sales_order_id') {
+                $models->where($key, 'like', "%{$value}%");
+            }elseif($key === 'date_range'){
+                if(str_contains($value, ' - '))
+                {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+                    $models->whereBetween('sales_order.created_at', [$dateFrom, $dateTo]);
+                }else{
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order.created_at', $date);
+                }
+            } else {
+                $models->where($key, $value);
+            }
+        }
+
+        return $models->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku')->get();
     }
 
     public function updateSalesOrder(array $input, int $id, int $admin_id)
     {
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
+        $salesOderTotalRepository = new SalesOrderTotalRepository(new Container());
         $sales_order = SalesOrder::find($id);
+        $order_total_id = null;
+        $editedOrderTotal = array();
         foreach ($input as $key => $value) {
             $previousValue = $sales_order->$key;
-            if ($key == 'shipping') {
-                if ($value > $previousValue) {
-                    $sales_order->total += ($value - $previousValue);
-                } else {
-                    $sales_order->total -= ($previousValue - $value);
+
+            if(str_starts_with($key, 'order_total_')){
+                $order_total_id = (int)substr($key, strpos($key, "order_total_") + strlen("order_total_"));
+                $editedOrderTotal = $salesOderTotalRepository->updateOrderTotal($id, null, $order_total_id , $value);
+            }else{
+
+                if ($key == 'country_id') {
+                    $countryRepository = new CountryRepository(new Container());
+                    $country = $countryRepository->find($value);
+                    $sales_order->country = $country->name;
                 }
+    
+                $sales_order->$key = $value;
+                $sales_order->save();
             }
-
-            if ($key == 'discount') {
-                if ($value > $previousValue) {
-                    $sales_order->total -= ($value - $previousValue);
-                } else {
-                    $sales_order->total += ($previousValue - $value);
-                }
-            }
-
-            if ($key == 'country_id') {
-                $countryRepository = new CountryRepository(new Container());
-                $country = $countryRepository->find($value);
-                $sales_order->country = $country->name;
-            }
-
-            $sales_order->$key = $value;
-            $sales_order->save();
 
             //For log purpose
             if ($key == 'status') {
@@ -236,7 +286,9 @@ class SalesOrderRepository extends BaseRepository
             }
 
             //after done create log
-            $description = "Change " . $key . " from " . $previousValue . " to " . $value;
+            $editedColumn  = $order_total_id ? $editedOrderTotal['title'] : $key;
+            $previousValue = $order_total_id ? $editedOrderTotal['previousValue'] : $previousValue;
+            $description = "Change <b>" . $editedColumn . "</b> from " . number_format($previousValue, 2) . " to " . number_format($value, 2);
             $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
             if ($key == 'customer_note') {
                 $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
