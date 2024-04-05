@@ -306,6 +306,7 @@ class SalesOrderRepository extends BaseRepository
                 $userCartRepository->clearCart($sales_order->user_id);
                 session()->flush('cart-' . $sales_order->user_id);
                 session()->flush('coupon-' . $sales_order->user_id);
+                session()->flush('point-' . $sales_order->user_id);
 
                 if ($sales_order->point_used > 0) {
                     $pointLogRepository = new PointLogRepository(new Container());
