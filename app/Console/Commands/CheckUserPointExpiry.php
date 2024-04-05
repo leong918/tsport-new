@@ -57,7 +57,8 @@ class CheckUserPointExpiry extends Command
             $pointLogData['remark'] = 'Expired Point Deduction. ID: ' . $point_log->id;
             $this->pointLogRepository->create($pointLogData);
 
-            $point_log->delete();
+            $point_log->is_expired = 1;
+            $point_log->save();
         }
     }
 }
