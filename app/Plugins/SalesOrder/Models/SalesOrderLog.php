@@ -5,7 +5,6 @@ namespace App\Plugins\SalesOrder\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Admin;
 use App\Models\User;
 
@@ -53,7 +52,7 @@ class SalesOrderLog extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
-    
+
     public function admin()
     {
         return $this->hasOne(Admin::class, 'id', 'admin_id');

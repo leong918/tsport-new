@@ -2,18 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Models\BlogDetail;
+use App\Models\BlogDescription;
 use App\Traits\FileUpload;
 
-class BlogDetailRepository extends BaseRepository
+class BlogDescriptionRepository extends BaseRepository
 {
     use FileUpload;
 
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -30,34 +29,34 @@ class BlogDetailRepository extends BaseRepository
      */
     public function model()
     {
-        return BlogDetail::class;
+        return BlogDescription::class;
     }
 
     public function getListing()
     {
-        return BlogDetail::query()->orderBy('created_at', 'desc');
+        return BlogDescription::query()->orderBy('created_at', 'desc');
     }
 
-    public function createBlogDetail(array $input, int $blog_id)
+    public function createBlogDescription(array $input, int $blog_id)
     {
-        BlogDetail::where('blog_id', $blog_id)->delete();
-        
+        BlogDescription::where('blog_id', $blog_id)->delete();
+
         foreach ($input['language'] as $key => $language) {
             $data['blog_id'] = $blog_id;
             $data['language'] = $key;
             $data['name'] = $input['name'];
-            $data['content'] = $language['content']; 
+            $data['content'] = $language['content'];
 
-            if(isset($language['image'])){
+            if (isset($language['image'])) {
                 $this->upload_path = 'blog_detail';
                 $this->uploadFile($language['image']);
 
-                $data['image'] = $this->uploaded_filename; 
-            }else{
-                $data['image'] = $language['original_image']; 
+                $data['image'] = $this->uploaded_filename;
+            } else {
+                $data['image'] = $language['original_image'];
             }
-            
-            $model = new BlogDetail();
+
+            $model = new BlogDescription();
             $model->fill($data);
             $model->save();
         }

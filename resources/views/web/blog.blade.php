@@ -21,7 +21,7 @@
                             <div class="blog-container blog-img">
                                 <div class="blog-block">
                                     <div class="img-block">
-                                        <img src="{{ $blog->getParameters('cn')->image }}">
+                                        <img src="{{ $blog->getParameters('zh-CN')->image }}">
                                     </div>
                                     <div class="blog-description">
                                         <div class="blog-date">{{ $blog->publishedDate()  }}</div>

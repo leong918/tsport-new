@@ -6,23 +6,22 @@ use App\Repositories\LevelChangeLogRepository;
 use App\Repositories\LevelRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Console\Command;
-use Carbon\Carbon;
 
-class UpdateUserLevel extends Command
+class DowngradeUserLevel extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'update:user_level';
+    protected $signature = 'downgrade:user_level';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update user level';
+    protected $description = 'Downgrade user level';
 
     private UserRepository $userRepository;
     private LevelChangeLogRepository $levelChangeLogRepository;
@@ -48,10 +47,10 @@ class UpdateUserLevel extends Command
      */
     public function handle()
     {
-        $user_list = $this->userRepository->makeModel()->where('status',1)->where('level_id', '!=', '1')->whereDate('level_validity', Carbon::today()->subDay())->get();
+        $user_list = $this->userRepository->getUserByLevelValidity();
         $lowest_level = $this->levelRepository->getLowestLeveling();
 
-        foreach($user_list as $user){
+        foreach ($user_list as $user) {
             $data['user_id'] = $user->id;
             $data['level_id'] = $user->level_id;
             $data['new_level_id'] = $lowest_level->id;
@@ -60,7 +59,7 @@ class UpdateUserLevel extends Command
             $data['current_validity'] = null;
 
             $this->levelChangeLogRepository->createLevelLog($data);
-            
+
             $user->level_id = $lowest_level->id;
             $user->level_validity = null;
             $user->save();

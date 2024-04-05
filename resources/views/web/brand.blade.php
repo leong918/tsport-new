@@ -42,7 +42,7 @@
             <div class="col-md-9 product-wrapper" id="targetElement">
                 <div class="tnc">
                     <div class="tnc-para">
-                        {!! $brand->getParameters('cn')->description !!}
+                        {!! $brand->getParameters('zh-CN')->description !!}
                     </div>
                 </div>
                 @foreach($product_list as $category => $category_product_list)

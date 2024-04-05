@@ -13,8 +13,7 @@ class BrandRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -39,8 +38,9 @@ class BrandRepository extends BaseRepository
         return Brand::query()->orderBy('created_at', 'desc');
     }
 
-    public function getListingForNav(){
-        return Brand::where('status',1)->selectRaw('name,id')->get();
+    public function getListingForNav()
+    {
+        return Brand::where('status', 1)->selectRaw('name,id')->get();
     }
 
     public function dropdown(string $key = 'id')
@@ -72,18 +72,18 @@ class BrandRepository extends BaseRepository
     public function updateBrand(array $input, int $id)
     {
         $this->verifyDescription($input);
-        
+
         $model = Brand::findOrFail($id);
         $model->fill($input);
 
-        if(isset($input['image'])){
+        if (isset($input['image'])) {
             //image
             $this->upload_path = 'brand';
-            $this->uploadFile($input['image']);  
+            $this->uploadFile($input['image']);
             $model->image = $this->uploaded_filename;
         }
 
-        if(isset($input['logo'])){
+        if (isset($input['logo'])) {
             $this->upload_path = 'brand';
             $this->uploadFile($input['logo']);
             $model->logo = $this->uploaded_filename;
@@ -105,10 +105,10 @@ class BrandRepository extends BaseRepository
     private function verifyDescription($input)
     {
         foreach ($input['language'] as $key => $language) {
-            $lang = ($key == 'cn' ? 'Chinese' : 'English');
+            $lang = ($key == 'zh-CN' ? 'Chinese' : 'English');
 
             if (isset($language['description']) == false) {
-                throw new \Exception(__('Description for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Description for ' . $lang . ' cannot be empty!'));
             }
         }
     }

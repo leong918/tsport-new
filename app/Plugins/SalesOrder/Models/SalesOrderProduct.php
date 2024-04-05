@@ -5,6 +5,8 @@ namespace App\Plugins\SalesOrder\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Product;
 
 class SalesOrderProduct extends Model
 {
@@ -20,7 +22,7 @@ class SalesOrderProduct extends Model
     protected $fillable = [
         'sales_order_id',
         'product_id',
-        'product_attribute_term_id',
+        'product_attribute_term',
         'product_name',
         'product_attribute_term_name',
         'price',
@@ -47,5 +49,10 @@ class SalesOrderProduct extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 }
