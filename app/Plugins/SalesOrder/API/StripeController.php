@@ -35,13 +35,7 @@ class StripeController extends Controller
         switch ($event->type) {
             case 'payment_intent.succeeded':
                 try {
-                    $sales_order = $this->paymentSucceed($event->data->object);
-
-                    if ($sales_order) {
-                        $request->session()->flush('cart-' . $sales_order->user_id);
-                        $request->session()->flush('coupon-' . $sales_order->user_id);
-                        $request->session()->flush('point-' . $sales_order->user_id);
-                    }
+                    $this->paymentSucceed($event->data->object);
                 } catch (\Exception $e) {
                     return $this->response(['status' => 'fail', 'msg' => $e->getMessage()], 'ERROR');
                 }
@@ -72,7 +66,7 @@ class StripeController extends Controller
 
     public function paymentSucceed($object)
     {
-        return $this->salesOrderRepository->updateStripeSalesOrder($object->client_secret, 1);
+        $this->salesOrderRepository->updateStripeSalesOrder($object->client_secret, 1);
     }
 
     public function paymentFailed($object)
