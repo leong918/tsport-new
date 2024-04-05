@@ -8,15 +8,13 @@
                 {{ html()->form('POST', route("cart.process_checkout"))->id('checkoutForm')->open()}}
                 <div class="row justify-content-center checkout-content">
                     <div class="col-md-12 col-lg-8 checkout-details">
-                        @if($cartTotal['point_redemption'] <= 0 && auth()->user()->point > 0)
-                        <div class="apply-point-section">
+                        <div class="apply-point-section {{ $cartTotal['point_redemption'] <= 0 && auth()->user()->point > 0 ? '' : 'd-none' }}">
                             <div class="point-title">Points Redemption</div>
                             <div class="d-flex point-wrapper mb-5">
                                 <input type="text" class="point-text" placeholder="Point Redemption" readonly value="{{ auth()->user()->point }}"/>
                                 <button class="point-button" id="apply-point-button">APPLY</button>
                             </div>
                         </div>
-                        @endif
                         <div class="shipping-details-wrapper">
                             <div class="shipping-details-title">Shipping Details</div>
                             <div class="shipping-details-container">

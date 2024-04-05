@@ -281,6 +281,7 @@ class CartController extends BaseController
                     $this->userCartRepository->clearCart($order->user_id);
                     session()->flush('cart-' . $order->user_id);
                     session()->flush('coupon-' . $order->user_id);
+                    session()->flush('point-' . $order->user_id);
                 }
 
                 if ($user->point > 0) {
