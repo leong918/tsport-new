@@ -16,6 +16,7 @@ use App\Http\Controllers\Web\BaseController;
 use Illuminate\Http\Request;
 use Stripe\StripeClient;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CartController extends BaseController
 {
@@ -311,8 +312,12 @@ class CartController extends BaseController
         $order_id = $request->order_id;
         $sales_order = $this->salesOrderRepository->getSalesOrderId($order_id);
 
-        if ((!auth()->user() || !$sales_order) && $sales_order->user_id != auth()->user()->id) {
+        if (!auth()->user() || !$sales_order || $sales_order->user_id != auth()->user()->id) {
             return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
+        }
+
+        if (Carbon::parse($sales_order->created_at)->addMinutes(30) < Carbon::now()){
+            return redirect()->route('web.home')->with('swal_error', 'Session Expired! Please view order at order detail!');
         }
 
         if ($request->payment_intent_client_secret) {
