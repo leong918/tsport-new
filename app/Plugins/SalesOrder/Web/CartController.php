@@ -178,15 +178,14 @@ class CartController extends BaseController
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
-    public function updateAddress(Request $request)
+    public function getShippingFee(Request $request)
     {
         $data = $request->all();
-        session(['cart-' . auth()->user()->id => $data['data']]);
-
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $data['data']);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $data);
+
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
@@ -269,7 +268,7 @@ class CartController extends BaseController
             $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
             $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
 
-            if (!$order) {
+            if (!$order || $data['payment_method'] !== 'stripe') {
                 $user = $this->userRepository->find($data['user_id']);
                 $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
                 $data['point_used'] = $user->point;
@@ -277,6 +276,12 @@ class CartController extends BaseController
                 $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
                 $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
                 $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
+
+                if ($data['payment_method'] !== 'stripe') {
+                    $this->userCartRepository->clearCart($order->user_id);
+                    session()->flush('cart-' . $order->user_id);
+                    session()->flush('coupon-' . $order->user_id);
+                }
 
                 if ($user->point > 0) {
                     $this->userRepository->deductFullPoint($order);
