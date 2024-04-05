@@ -96,7 +96,6 @@ class BlogController extends BaseController
     {
         if ($request->ajax()) {
             $id = $request->id;
-            // dd($id);
             if ($id) {
                 $model = $this->blogCommentRepository->getBlogComment($id);
 

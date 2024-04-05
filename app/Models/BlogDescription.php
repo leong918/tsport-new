@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class BlogDetail extends Model
+class BlogDescription extends Model
 {
     use SoftDeletes;
 
@@ -18,7 +18,7 @@ class BlogDetail extends Model
      */
     public static $rules = [];
 
-    protected $table = 'blog_detail';
+    protected $table = 'blog_description';
 
     /**
      * The attributes that are mass assignable.
@@ -38,17 +38,14 @@ class BlogDetail extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     protected function createdAt(): Attribute
     {
@@ -56,8 +53,8 @@ class BlogDetail extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
-    
-    protected function blog() : BelongsTo
+
+    protected function blog(): BelongsTo
     {
         return $this->belongsTo(Blog::class);
     }

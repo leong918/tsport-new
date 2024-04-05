@@ -16,8 +16,8 @@ class Blog extends Model
         'ACTIVE' => 1,
         'INACTIVE' => 0,
     ];
-    
-    
+
+
     /**
      * Validation rules
      *
@@ -44,17 +44,14 @@ class Blog extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     protected function createdAt(): Attribute
     {
@@ -63,9 +60,9 @@ class Blog extends Model
         );
     }
 
-    protected function blogDetail() : HasMany
+    protected function blogDescription(): HasMany
     {
-        return $this->hasMany(BlogDetail::class);
+        return $this->hasMany(BlogDescription::class);
     }
 
     protected function blogComment(): HasMany
@@ -76,12 +73,12 @@ class Blog extends Model
     public function firstLayerBlogComment()
     {
         return $this->blogComment()->whereNull('parent_id')->orderBy('created_at', 'desc')->get();
-    }    
+    }
 
     public function getParameters(string $params)
     {
-        return $this->blogDetail->where('language',$params)->first();
-    } 
+        return $this->blogDetail->where('language', $params)->first();
+    }
 
     public function publishedDate()
     {
