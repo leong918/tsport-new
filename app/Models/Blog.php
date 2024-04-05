@@ -77,7 +77,7 @@ class Blog extends Model
 
     public function getParameters(string $params)
     {
-        return $this->blogDetail->where('language', $params)->first();
+        return $this->blogDescription->where('language', $params)->first();
     }
 
     public function publishedDate()
