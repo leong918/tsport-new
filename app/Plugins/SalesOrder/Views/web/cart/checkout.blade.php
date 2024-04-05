@@ -176,7 +176,10 @@ $(document).ready(function() {
 
         axios({
             method: "post",
-            url: "{{ route('cart.apply_point') }}"
+            url: "{{ route('cart.apply_point') }}",
+            data: {
+                country_id: $('#country_id').val()
+            },
         })
         .then(response => {
             $('.payment-button').prop('disabled', false);

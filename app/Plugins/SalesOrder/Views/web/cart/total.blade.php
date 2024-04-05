@@ -105,7 +105,7 @@
             </div>
         </div>
         <div class="btn-remove-wrapper">
-            <button class="remove-coupon-button" data-id="@{{ id }}">remove</button>
+            <button type="button" class="remove-coupon-button" data-id="@{{ id }}">remove</button>
         </div>
     </div>
 </script>
@@ -113,6 +113,11 @@
     $(document).ready(function() {
         $(document).on('click', '.remove-coupon-button', function() {
             var id = $(this).data('id');
+            var country_id = '';
+
+            if ($('#country_id')[0]){
+                country_id = $('#country_id').val();
+            }
 
             $('.action-button').prop('disabled', true);
             $('.btn-checkout').prop('disabled', true);
@@ -123,7 +128,8 @@
                 method: "post",
                 url: "{{ route('cart.remove_coupon') }}",
                 data: {
-                    coupon_id: id
+                    coupon_id: id,
+                    country_id: country_id
                 }
             })
             .then(response => {
@@ -143,6 +149,12 @@
         })
 
         $(document).on('click', '.remove-point-button', function() {
+            var country_id = '';
+
+            if ($('#country_id')[0]){
+                country_id = $('#country_id').val();
+            }
+
             $('.action-button').prop('disabled', true);
             $('.btn-checkout').prop('disabled', true);
             $('#apply-coupon-btn').prop('disabled', true);
@@ -150,7 +162,10 @@
 
             axios({
                 method: "post",
-                url: "{{ route('cart.remove_point') }}"
+                url: "{{ route('cart.remove_point') }}",
+                data: {
+                    country_id: country_id
+                }
             })
             .then(response => {
                 $('.action-button').prop('disabled', false);
