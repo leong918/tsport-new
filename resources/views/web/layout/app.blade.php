@@ -92,9 +92,16 @@
 
         function updateColumnValue(array) {
             $('.subtotal-price').html('$' + array.subtotal.toFixed(2));
-            $('.point-price').html('$' + array.point_redemption.toFixed(2));
             $('.order-total-price').html('$' + array.total.toFixed(2));
             $('.shipping-price').html(array.delivery_partner + ' : $' + array.shipping_fee.toFixed(2));
+
+            if (array.point_redemption.toFixed(2) > 0) {
+                $('.point-redemption').removeClass('d-none');
+                $('.point-price').html('-$' + array.point_redemption.toFixed(2));
+            } else {
+                $('.point-redemption').addClass('d-none');
+                $('.point-price').html('-$0.00');
+            }
 
             if (Array.isArray(array.discount) && array.discount.length > 0) {
                 $('#discount').removeClass('d-none');

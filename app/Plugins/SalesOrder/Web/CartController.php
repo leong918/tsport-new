@@ -58,8 +58,9 @@ class CartController extends BaseController
     {
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
         $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
 
         return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal'));
     }
@@ -86,7 +87,8 @@ class CartController extends BaseController
         // refetch user cart total
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
         $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
 
         return $this->response(['subtotal' => number_format($subtotal, 2), 'cartTotal' => $cartTotal, 'cartCount' => $cart_count], 'OK');
@@ -105,7 +107,8 @@ class CartController extends BaseController
         session(['coupon-' . $user_data['user_data'] => $coupon_session]);
 
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
@@ -120,8 +123,9 @@ class CartController extends BaseController
         }
         session(['coupon-' . $user_data['user_data'] => $coupon_session]);
 
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
         $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? null;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null, $addressData);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $addressData);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
@@ -146,8 +150,32 @@ class CartController extends BaseController
 
         $countryList = $this->countryRepository->getListing();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData);
         return view('sales_order::web.cart.checkout', compact('countryList', 'addressData', 'cartTotal'));
+    }
+
+    public function applyPoint(Request $request)
+    {
+        $user_data = $this->getUserDataAndType();
+        session(['point-' . $user_data['user_data'] => true]);
+
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
+        return $this->response(['cartTotal' => $cartTotal], 'OK');
+    }
+
+    public function removePoint(Request $request)
+    {
+        $user_data = $this->getUserDataAndType();
+        session(['point-' . $user_data['user_data'] => false]);
+
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? null;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $addressData);
+        return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
     public function updateAddress(Request $request)
@@ -157,7 +185,8 @@ class CartController extends BaseController
 
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $data['data']);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $data['data']);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
@@ -187,7 +216,8 @@ class CartController extends BaseController
             $user_data = $this->getUserDataAndType();
             $addressData = $request->session()->get('cart-' . auth()->user()->id);
             $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-            $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+            $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+            $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData);
             $intentSecret = json_encode($this->createPaymentIntent($cartTotal['total']));
 
             return view('sales_order::web.cart.payment', compact('addressData', 'intentSecret', 'cartTotal'));
@@ -219,7 +249,8 @@ class CartController extends BaseController
         $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
         $addressData = $request->session()->get('cart-' . auth()->user()->id);
         $coupon_session = $request->session()->get('coupon-' . auth()->user()->id) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData);
 
         //do checking check total is same or not, if not same need redirect back
         if ($request->cart_total != $cartTotal['total']) {

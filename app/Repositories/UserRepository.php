@@ -116,16 +116,23 @@ class UserRepository extends BaseRepository
         )->find($user_id)->toArray();
     }
 
-    public function calculateDiscountPoint($user_id)
+    public function calculateDiscountPoint($user_id, $point_session, $max_point_redemption)
     {
+        $data = array();
+        $data['point_redemption'] = 0;
+        $data['point_used'] = 0;
+
         $settingRepository = new SettingRepository(new Container());
-        if ($user_id) {
+        if ($user_id && $point_session) {
             $user = User::find($user_id);
             $point_redemption_ratio = $settingRepository->getValueByKey('point_redemption_ratio');
-            return round($user->point * (int) $point_redemption_ratio, 2);
+            $point_redemption = round($user->point * (int) $point_redemption_ratio, 2);
+
+            $data['point_redemption'] = $point_redemption > $max_point_redemption ? $max_point_redemption : $point_redemption;
+            $data['point_used'] = $user->point;
         }
 
-        return 0;
+        return $data;
     }
 
     public function deductFullPoint($order)
