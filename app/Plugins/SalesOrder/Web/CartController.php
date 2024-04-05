@@ -274,6 +274,7 @@ class CartController extends BaseController
             if (!$order || $data['payment_method'] !== 'stripe') {
                 $user = $this->userRepository->find($data['user_id']);
                 $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
+                $data['point_used'] = 0;
 
                 if ($cartTotal['point_redemption'] > 0 && $user->point > 0) {
                     $data['point_used'] = $user->point;
@@ -310,6 +311,10 @@ class CartController extends BaseController
         $order_id = $request->order_id;
         $sales_order = $this->salesOrderRepository->getSalesOrderId($order_id);
 
+        if ((!auth()->user() || !$sales_order) && $sales_order->user_id != auth()->user()->id) {
+            return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
+        }
+
         if ($request->payment_intent_client_secret) {
             $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
             $paymentIntent = $stripe->paymentIntents->retrieve($request->payment_intent, []);
@@ -317,10 +322,11 @@ class CartController extends BaseController
             if ($paymentIntent->status !== 'succeeded') {
                 return redirect()->route('web.home')->with('swal_error', 'Your order currently in status - ' . $paymentIntent->status . '. Please contact admin for more enquiry.');
             }
-        }
 
-        if ((!auth()->user() || !$sales_order) && $sales_order->user_id != auth()->user()->id) {
-            return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
+            $this->userCartRepository->clearCart($sales_order->user_id);
+            session()->flush('cart-' . $sales_order->user_id);
+            session()->flush('coupon-' . $sales_order->user_id);
+            session()->flush('point-' . $sales_order->user_id);
         }
 
         return view('sales_order::web.cart.complete', compact('sales_order', 'product_list'));

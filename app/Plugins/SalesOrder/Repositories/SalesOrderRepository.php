@@ -302,9 +302,6 @@ class SalesOrderRepository extends BaseRepository
                 $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
                 $sales_order->payment_succeed_at = Carbon::now();
 
-                $userCartRepository = new UserCartRepository(new Container());
-                $userCartRepository->clearCart($sales_order->user_id);
-
                 if ($sales_order->point_used > 0) {
                     $pointLogRepository = new PointLogRepository(new Container());
                     $pointLogData['user_id'] = $sales_order->user_id;
@@ -338,7 +335,5 @@ class SalesOrderRepository extends BaseRepository
             $salesOrderLogRepository = new SalesOrderLogRepository(new Container());
             $salesOrderLogRepository->createLog($sales_order, $sales_order->user_id, 'user', $status, $description);
         }
-
-        return $sales_order;
     }
 }
