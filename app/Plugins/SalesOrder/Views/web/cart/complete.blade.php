@@ -207,10 +207,12 @@
                         <div class="order-received-summary"> 
                             <div class="order-received-title">Your order has been received.</div>
                             <div class="order-no">Order No: {{ $sales_order->sales_order_id }}</div>
+                            @if($sales_order->payment_method)
                             <div class="d-flex payment-method-wrapper">
                                 <div class="payment-method-title">Payment Method :</div>
                                 <div class="payment-method">{{ array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD)[$sales_order->payment_method] }}</div>
                             </div>
+                            @endif
                             <div class="order-received-desc">
                                 <div>Please Whatsapp +852-54425298 with your Order ID when the payment has been settled.</div>
                                 <div>*Please complete payment within 12 hours after placing order. otherwise your order will be cancelled automatically:.</div>

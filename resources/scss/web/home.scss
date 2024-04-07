@@ -264,6 +264,12 @@
                 width: 100%;
             }
 
+            @media (min-width: 1201px) and (max-width: 1500px){
+                img.show{
+                    height: 310px;  
+                }
+            }
+
             @media (min-width: 768px) and (max-width: 1200px){
                 img.show{
                     height: 268px;  
@@ -502,6 +508,12 @@
                 height: 470px;
                 object-fit: cover;
                 width: 100%;
+            }
+
+            @media (min-width: 1201px) and (max-width: 1500px){
+                img.show{
+                    height: 360px;  
+                }
             }
 
             @media (min-width: 768px) and (max-width: 1200px){
