@@ -384,6 +384,9 @@ class SalesOrderRepository extends BaseRepository
                         ->where('status', '>', 0)
                         ->where('created_at', '>', $user->level_upgrade_at)
                         ->sum('total');
+
+                    // status havent updated to database
+                    $total_accumulate_amount += $sales_order->total;
                 }
 
                 // check level upgrade

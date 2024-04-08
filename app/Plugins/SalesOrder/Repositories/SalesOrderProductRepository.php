@@ -42,7 +42,6 @@ class SalesOrderProductRepository extends BaseRepository
 
         foreach ($data as $cart) {
             $product = $productRepository->find($cart->product_id);
-            $price = $product->getCurrencyParameters('HKD')->price;
             $description = null;
 
             if ($cart->product_attribute_term) {
@@ -56,13 +55,13 @@ class SalesOrderProductRepository extends BaseRepository
             $orderProduct = new SalesOrderProduct();
             $orderProduct->sales_order_id = $order->id;
             $orderProduct->product_id = $cart->product_id;
-            $orderProduct->product_attribute_term = $cart->productAttributeTerm;
+            $orderProduct->product_attribute_term = $cart->product_attribute_term;
             $orderProduct->product_image = $product->getFirstProductImage()->url;
             $orderProduct->product_name = $product->name;
             $orderProduct->product_attribute_term_name = $description;
-            $orderProduct->price = $price;
+            $orderProduct->price = $cart->price;
             $orderProduct->quantity = $cart->quantity;
-            $orderProduct->total_price = $cart->quantity * $price;
+            $orderProduct->total_price = $cart->total_price;
             $orderProduct->save();
         }
     }
