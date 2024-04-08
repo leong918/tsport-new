@@ -61,6 +61,7 @@ class DowngradeUserLevel extends Command
             $this->levelChangeLogRepository->createLevelLog($data);
 
             $user->level_id = $lowest_level->id;
+            $user->level_upgrade_at = null;
             $user->level_validity = null;
             $user->save();
         }

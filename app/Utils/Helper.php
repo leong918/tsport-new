@@ -25,6 +25,11 @@ function renderModelData(array $const_array, string $array_value)
     return $const_array[$array_value];
 }
 
+function filter($data)
+{
+    return ($data !== null);
+}
+
 function getPublicIP()
 {
     $client  = @$_SERVER['HTTP_CLIENT_IP'];

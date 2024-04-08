@@ -309,7 +309,7 @@ class CartController extends BaseController
 
         if (!$order || $data['payment_method'] !== 'stripe') {
             $user = $this->userRepository->find($data['user_id']);
-            $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
+            $data['point_earned'] = $this->productRepository->calculatePointEarned($user, $user_cart);
             $data['point_used'] = 0;
 
             if ($cartTotal['point_redemption'] > 0 && $user->point > 0) {
@@ -354,7 +354,7 @@ class CartController extends BaseController
             return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
         }
 
-        if (Carbon::parse($sales_order->created_at)->addMinutes(30) < Carbon::now()){
+        if (Carbon::parse($sales_order->created_at)->addMinutes(30) < Carbon::now()) {
             return redirect()->route('web.home')->with('swal_error', 'Session Expired! Please view order at order detail!');
         }
 

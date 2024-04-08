@@ -119,8 +119,17 @@ class SalesOrder extends Model
         return $this->hasMany(SalesOrderLog::class);
     }
 
-    public function salesOrderTotal(): HasMany
+    public function salesOrderTotal() : HasMany
     {
-        return $this->hasMany(SalesOrderTotal::class);
+        return $this->hasMany(SalesOrderTotal::class)
+                    ->leftJoin('cart_rule', 'sales_order_total.cart_rule_id', '=', 'cart_rule.id')
+                    ->orderBy('sales_order_total.sort')
+                    ->orderBy('cart_rule.priority','desc')
+                    ->selectRaw('sales_order_total.*');
+    }
+
+    public function getSalesOrderTotal(string $title)
+    {
+        return $this->salesOrderTotal->where('title', $title)->get();
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer("leveling");
             $table->decimal('extend_amount', 16, 2);
             $table->decimal('target_amount', 16, 2);
+            $table->tinyInteger('can_earn_point')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
