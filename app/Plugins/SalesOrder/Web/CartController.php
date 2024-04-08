@@ -198,6 +198,26 @@ class CartController extends BaseController
         $data = $request->all();
         session(['cart-' . auth()->user()->id => $data]);
 
+        $user_data = $this->getUserDataAndType();
+        $addressData = $request->session()->get('cart-' . auth()->user()->id);
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData);
+
+        if ($cartTotal['total'] <= 0) {
+            DB::beginTransaction();
+            try {
+                $data['payment_method'] = null;
+                $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
+                $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal);
+                DB::commit();
+                return redirect()->route('cart.complete', ['order_id' => $order->sales_order_id]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return redirect()->back()->with('swal_error', $e->getMessage());
+            }
+        }
+
         return redirect()->route('cart.payment');
     }
 
@@ -267,43 +287,60 @@ class CartController extends BaseController
 
         DB::beginTransaction();
         try {
-            $data = $request->all();
-            $data['user_id'] = auth()->user()->id;
-            $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
-            $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
-
-            if (!$order || $data['payment_method'] !== 'stripe') {
-                $user = $this->userRepository->find($data['user_id']);
-                $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
-                $data['point_used'] = 0;
-
-                if ($cartTotal['point_redemption'] > 0 && $user->point > 0) {
-                    $data['point_used'] = $user->point;
-                    $this->userRepository->deductFullPoint($order);
-                    $this->pointLogRepository->markPointUsed($order);
-                }
-
-                $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
-                $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
-                $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
-
-                if ($data['payment_method'] !== 'stripe') {
-                    $this->userCartRepository->clearCart($order->user_id);
-                    session()->flush('cart-' . $order->user_id);
-                    session()->flush('coupon-' . $order->user_id);
-                    session()->flush('point-' . $order->user_id);
-                }
-
-                $description = 'New Order';
-                $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
-            }
-
+            $order = $this->createEmptySalesOrder($request->all(), $user_cart, $cartTotal);
             DB::commit();
             return response()->json(['order' => $order], 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['msg' => $e->getMessage(), 'redirect' => false], 500);
         }
+    }
+
+    private function createEmptySalesOrder($data, $user_cart, $cartTotal)
+    {
+        $order = null;
+        $data['user_id'] = auth()->user()->id;
+        $data['address'] = session()->get('cart-' . auth()->user()->id);
+
+        if (isset($data['stripe_payment_intent_id'])) {
+            $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
+        }
+
+        if (!$order || $data['payment_method'] !== 'stripe') {
+            $user = $this->userRepository->find($data['user_id']);
+            $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
+            $data['point_used'] = 0;
+
+            if ($cartTotal['point_redemption'] > 0 && $user->point > 0) {
+                $data['point_used'] = $user->point;
+                $this->userRepository->deductFullPoint($user->id);
+            }
+
+            $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
+            $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
+            $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
+
+            //release point earned if total is 0
+            if ($cartTotal['total'] <= 0 && $data['point_earned'] > 0) {
+                $this->userRepository->addOrderPoint($order);
+            }
+
+            if ($order && $order->point_used > 0) {
+                $this->pointLogRepository->markPointUsed($order);
+            }
+
+            if ($data['payment_method'] !== 'stripe') {
+                $this->userCartRepository->clearCart($order->user_id);
+                session()->flush('cart-' . $order->user_id);
+                session()->flush('coupon-' . $order->user_id);
+                session()->flush('point-' . $order->user_id);
+            }
+
+            $description = 'New Order';
+            $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
+        }
+
+        return $order;
     }
 
     public function complete(Request $request)

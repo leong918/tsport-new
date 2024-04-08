@@ -135,9 +135,9 @@ class UserRepository extends BaseRepository
         return $data;
     }
 
-    public function deductFullPoint($order)
+    public function deductFullPoint($user_id)
     {
-        $user = User::find($order->user_id);
+        $user = User::find($user_id);
         $user->point = 0;
         $user->save();
     }
