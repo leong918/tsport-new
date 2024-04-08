@@ -12,16 +12,12 @@
                             <div class="card-header"><strong>Global Setting</strong></div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    {{ html()->label('Spend Amount') }}
-                                    {{ html()->text('spend_amount')->placeholder('Enter Spend Amount')->class('form-control') }}
-                                </div>
-                                <div class="mb-3">
-                                    {{ html()->label('Point Earn') }}
-                                    {{ html()->text('point_earn')->placeholder('Enter Point Earn')->class('form-control') }}
-                                </div>
-                                <div class="mb-3">
                                     {{ html()->label('Point Redemption Ratio (1 Point : $ XX)') }}
-                                    {{ html()->text('point_redemption_ratio')->placeholder('Enter Point Redemption Ratio')->class('form-control') }}
+                                    {{ html()->text('point_redemption_ratio')->placeholder('Enter Point Redemption Ratio')->class('form-control')->required() }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ html()->label('Point Earned By Review') }}
+                                    {{ html()->text('review_point')->placeholder('Enter Point Earned By Review')->class('form-control')->required() }}
                                 </div>
                                 <div class="mb-3">
                                     {{ html()->label('New Order Email Image') }}

@@ -18,7 +18,9 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('remove_coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
         Route::get('wishlist', [CartController::class, 'wishlist'])->name('cart.wishlist');
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-        Route::post('update_address', [CartController::class, 'updateAddress'])->name('cart.update_address');
+        Route::post('apply_point', [CartController::class, 'applyPoint'])->name('cart.apply_point');
+        Route::post('remove_point', [CartController::class, 'removePoint'])->name('cart.remove_point');
+        Route::post('get_shipping_fee', [CartController::class, 'getShippingFee'])->name('cart.get_shipping_fee');
         Route::post('process_checkout', [CartController::class, 'processCheckout'])->name('cart.process_checkout');
         Route::get('payment', [CartController::class, 'payment'])->name('cart.payment');
         Route::post('create_payment_intent', [CartController::class, 'createPaymentIntent'])->name('cart.create_payment_intent');

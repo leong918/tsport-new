@@ -116,21 +116,28 @@ class UserRepository extends BaseRepository
         )->find($user_id)->toArray();
     }
 
-    public function calculateDiscountPoint($user_id)
+    public function calculateDiscountPoint($user_id, $point_session, $max_point_redemption)
     {
+        $data = array();
+        $data['point_redemption'] = 0;
+        $data['point_used'] = 0;
+
         $settingRepository = new SettingRepository(new Container());
-        if ($user_id) {
+        if ($user_id && $point_session) {
             $user = User::find($user_id);
             $point_redemption_ratio = $settingRepository->getValueByKey('point_redemption_ratio');
-            return round($user->point * (int) $point_redemption_ratio, 2);
+            $point_redemption = round($user->point * (int) $point_redemption_ratio, 2);
+
+            $data['point_redemption'] = $point_redemption > $max_point_redemption ? $max_point_redemption : $point_redemption;
+            $data['point_used'] = $user->point;
         }
 
-        return 0;
+        return $data;
     }
 
-    public function deductFullPoint($order)
+    public function deductFullPoint($user_id)
     {
-        $user = User::find($order->user_id);
+        $user = User::find($user_id);
         $user->point = 0;
         $user->save();
     }
@@ -155,6 +162,23 @@ class UserRepository extends BaseRepository
         $pointLogData['type'] = 'IN';
         $pointLogData['remark'] = 'Add point from order ' . $order->sales_order_id;
         $pointLogData['expired_at'] = Carbon::now()->addMonths(6);
+        $pointLogRepository->create($pointLogData);
+    }
+
+    public function addReviewPoint($user_id, $product_id)
+    {
+        $settingRepository = new SettingRepository(new Container());
+        $review_point = $settingRepository->getValueByKey('review_point');
+
+        $user = User::find($user_id);
+        $user->point += $review_point;
+        $user->save();
+
+        $pointLogRepository = new PointLogRepository(new Container());
+        $pointLogData['user_id'] = $user->id;
+        $pointLogData['point'] = $review_point;
+        $pointLogData['type'] = 'IN';
+        $pointLogData['remark'] = 'Earned Point by Review. ID: ' . $product_id;
         $pointLogRepository->create($pointLogData);
     }
 

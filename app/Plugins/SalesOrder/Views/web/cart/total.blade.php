@@ -42,7 +42,7 @@
             @endif
         </div>
     </div>
-    <div class="point-redemption">
+    <div class="point-redemption {{ $cartTotal['point_redemption'] > 0 ? '' : 'd-none' }}">
         <div class="d-flex">
             <div class="d-flex justify-content-between data-content-wrapper">
                 <div class="label">Point redemption</div>
@@ -50,6 +50,7 @@
                     <div class="price point-price">-${{ number_format($cartTotal['point_redemption'], 2) }}</div>
                 </div>
             </div>
+            <div class="btn-remove-wrapper"><button type="button" class="remove-point-button">remove</button></div>
         </div>
     </div>
     <div class="shipping-fee-section {{ isset($addressData) && $addressData['country_id'] ? '' : 'd-none' }}">
@@ -104,7 +105,7 @@
             </div>
         </div>
         <div class="btn-remove-wrapper">
-            <button class="remove-coupon-button" data-id="@{{ id }}">remove</button>
+            <button type="button" class="remove-coupon-button" data-id="@{{ id }}">remove</button>
         </div>
     </div>
 </script>
@@ -112,28 +113,73 @@
     $(document).ready(function() {
         $(document).on('click', '.remove-coupon-button', function() {
             var id = $(this).data('id');
+            var country_id = '';
+
+            if ($('#country_id')[0]){
+                country_id = $('#country_id').val();
+            }
 
             $('.action-button').prop('disabled', true);
             $('.btn-checkout').prop('disabled', true);
             $('#apply-coupon-btn').prop('disabled', true);
+            $('#apply-point-button').prop('disabled', true);
 
             axios({
                 method: "post",
                 url: "{{ route('cart.remove_coupon') }}",
                 data: {
-                    coupon_id: id
+                    coupon_id: id,
+                    country_id: country_id
                 }
             })
             .then(response => {
                 $('.action-button').prop('disabled', false);
                 $('.btn-checkout').prop('disabled', false);
                 $('#apply-coupon-btn').prop('disabled', false);
+                $('#apply-point-button').prop('disabled', false);
                 updateColumnValue(response.data.cartTotal);
             })
             .catch(error => {
                 $('.action-button').prop('disabled', false);
                 $('.btn-checkout').prop('disabled', false);
                 $('#apply-coupon-btn').prop('disabled', false);
+                $('#apply-point-button').prop('disabled', false);
+                showSwal('Fail!', error.response.data.msg);
+            });
+        })
+
+        $(document).on('click', '.remove-point-button', function() {
+            var country_id = '';
+
+            if ($('#country_id')[0]){
+                country_id = $('#country_id').val();
+            }
+
+            $('.action-button').prop('disabled', true);
+            $('.btn-checkout').prop('disabled', true);
+            $('#apply-coupon-btn').prop('disabled', true);
+            $('#apply-point-button').prop('disabled', true);
+
+            axios({
+                method: "post",
+                url: "{{ route('cart.remove_point') }}",
+                data: {
+                    country_id: country_id
+                }
+            })
+            .then(response => {
+                $('.action-button').prop('disabled', false);
+                $('.btn-checkout').prop('disabled', false);
+                $('#apply-coupon-btn').prop('disabled', false);
+                $('#apply-point-button').prop('disabled', false);
+                $('.apply-point-section').removeClass('d-none');
+                updateColumnValue(response.data.cartTotal);
+            })
+            .catch(error => {
+                $('.action-button').prop('disabled', false);
+                $('.btn-checkout').prop('disabled', false);
+                $('#apply-coupon-btn').prop('disabled', false);
+                $('#apply-point-button').prop('disabled', false);
                 showSwal('Fail!', error.response.data.msg);
             });
         })
