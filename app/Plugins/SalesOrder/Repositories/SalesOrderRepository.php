@@ -256,6 +256,7 @@ class SalesOrderRepository extends BaseRepository
         $sales_order = SalesOrder::find($id);
         $order_total_id = null;
         $editedOrderTotal = array();
+
         foreach ($input as $key => $value) {
             $previousValue = $sales_order->$key;
 
@@ -280,15 +281,20 @@ class SalesOrderRepository extends BaseRepository
                 $value = renderModelData(SalesOrder::ORDER_STATUS, $value);
             }
 
+            if ($key == 'payment_status') {
+                $previousValue = renderModelData(SalesOrder::PAYMENT_STATUS, $previousValue);
+                $value = renderModelData(SalesOrder::PAYMENT_STATUS, $value);
+            }
+
             if ($key == 'payment_method') {
                 $previousValue = renderModelData(SalesOrder::PAYMENT_METHOD, $previousValue);
                 $value = renderModelData(SalesOrder::PAYMENT_METHOD, $value);
             }
-
+ 
             //after done create log
             $editedColumn  = $order_total_id ? $editedOrderTotal['title'] : $key;
             $previousValue = $order_total_id ? $editedOrderTotal['previousValue'] : $previousValue;
-            $description = "Change <b>" . $editedColumn . "</b> from " . number_format($previousValue, 2) . " to " . number_format($value, 2);
+            $description = "Change <b>" . $editedColumn . "</b> from " . ($previousValue ? (is_numeric($previousValue) ? number_format($previousValue, 2)  : $previousValue) : '<i>Empty</i>') . " to " . ($value ? (is_numeric($value) ? number_format($value, 2) : $value) : '<i>Empty</i>');
             $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
             if ($key == 'customer_note') {
                 $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
