@@ -14,7 +14,6 @@ use App\Plugins\ProductReview\Repositories\ProductReviewRepository;
 use App\Http\Requests\Form\BlogComment\CreateBlogCommentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class AppController extends BaseController
 {
@@ -103,10 +102,6 @@ class AppController extends BaseController
         $review_record = $this->productReviewRepository->getReviewByProductId($product->id);
         $review_total = $review_record->count();
         $review_list = $review_record->paginate(6);
-
-        foreach($review_list as &$review) {
-            $review->reviewed_at = Carbon::parse($review->created_at)->format('M d, Y');
-        };
 
         return $this->view('product_detail', compact('product', 'product_parent_category', 'review_total', 'review_list'));
     }

@@ -14,7 +14,7 @@
                 @endfor
             </div>
             <div class="reviews-date">
-                {{ $review->reviewed_at }}
+                {{ Carbon\Carbon::parse($review->created_at)->format('M d, Y') }}
             </div>
         </div>
         <div class="customer-wrapper">
