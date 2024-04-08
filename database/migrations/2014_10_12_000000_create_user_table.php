@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('address')->nullable();
             $table->rememberToken();
+            $table->timestamp('level_upgrade_at')->nullable();
             $table->timestamp('level_validity')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
