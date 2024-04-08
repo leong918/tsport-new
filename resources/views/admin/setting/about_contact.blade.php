@@ -31,19 +31,19 @@
                                     </div>
                                     <div class="col-md-6">
                                         {{ html()->label('WhatsApp No') }}
-                                        {{ html()->text('whatsapp_no')->placeholder('Enter WhatsApp no')->class('form-control') }}
+                                        {{ html()->text('whatsapp_no')->placeholder('Enter WhatsApp no')->class('form-control')->required() }}
                                     </div>
                                     <div class="col-md-6 mt-3">
                                         {{ html()->label('Email') }}
-                                        {{ html()->email('contact_email')->placeholder('Enter email')->class('form-control') }}
+                                        {{ html()->email('contact_email')->placeholder('Enter email')->class('form-control')->required() }}
                                     </div>
                                     <div class="col-md-6 mt-3">
                                         {{ html()->label('Address') }}
-                                        {{ html()->text('contact_address')->placeholder('Enter address')->class('form-control') }}
+                                        {{ html()->text('contact_address')->placeholder('Enter address')->class('form-control')->required() }}
                                     </div>
                                     <div class="col-md-6 mt-3">
                                         {{ html()->label('Open Hour') }}
-                                        {{ html()->text('open_hour')->placeholder('Enter open hour')->class('form-control') }}
+                                        {{ html()->text('open_hour')->placeholder('Enter open hour')->class('form-control')->required() }}
                                     </div>
                                     <div class="col-md-6 mt-3">
                                         {{ html()->label('Map URL') }}

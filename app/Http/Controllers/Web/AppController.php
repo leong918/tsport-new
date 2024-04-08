@@ -10,9 +10,11 @@ use App\Repositories\BlogRepository;
 use App\Repositories\BlogCommentRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\SliderRepository;
+use App\Plugins\ProductReview\Repositories\ProductReviewRepository;
 use App\Http\Requests\Form\BlogComment\CreateBlogCommentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AppController extends BaseController
 {
@@ -24,6 +26,7 @@ class AppController extends BaseController
     private UserRepository $userRepository;
     private SettingRepository $settingRepository;
     private SliderRepository $sliderRepository;
+    private ProductReviewRepository $productReviewRepository;
 
     public function __construct(
         ProductRepository $productRepository,
@@ -34,6 +37,7 @@ class AppController extends BaseController
         UserRepository $userRepository,
         SettingRepository $settingRepository,
         SliderRepository $sliderRepository,
+        ProductReviewRepository $productReviewRepository,
     ) {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
@@ -43,6 +47,7 @@ class AppController extends BaseController
         $this->userRepository = $userRepository;
         $this->settingRepository = $settingRepository;
         $this->sliderRepository = $sliderRepository;
+        $this->productReviewRepository = $productReviewRepository;
     }
 
     public function index()
@@ -95,8 +100,15 @@ class AppController extends BaseController
         $product = $this->productRepository->getProductByAlias($alias, 'HKD');
         $product_category = $this->categoryRepository->find($product->category_id);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
+        $review_record = $this->productReviewRepository->getReviewByProductId($product->id);
+        $review_total = $review_record->count();
+        $review_list = $review_record->paginate(6);
 
-        return $this->view('product_detail', compact('product', 'product_parent_category'));
+        foreach($review_list as &$review) {
+            $review->reviewed_at = Carbon::parse($review->created_at)->format('M d, Y');
+        };
+
+        return $this->view('product_detail', compact('product', 'product_parent_category', 'review_total', 'review_list'));
     }
 
     public function productNew()

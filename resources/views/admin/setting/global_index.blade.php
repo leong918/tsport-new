@@ -15,6 +15,10 @@
                                     {{ html()->label('Point Redemption Ratio (1 Point : $ XX)') }}
                                     {{ html()->text('point_redemption_ratio')->placeholder('Enter Point Redemption Ratio')->class('form-control')->required() }}
                                 </div>
+                                <div class="mb-3">
+                                    {{ html()->label('Point Earned By Review') }}
+                                    {{ html()->text('review_point')->placeholder('Enter Point Earned By Review')->class('form-control')->required() }}
+                                </div>
                             </div>
                             <div class="card-footer text-end">
                                 <button type="submit" class="btn btn-primary">Submit</button>
