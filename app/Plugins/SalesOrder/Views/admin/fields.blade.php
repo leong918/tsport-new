@@ -9,39 +9,39 @@
         <table class="table table-hover box-body text-wrap table-bordered">
             <tr>
                 <th>{{ html()->label('Email :') }}</th>
-                <td><div><span>{{ isset($model) && $model->email ? $model->email : '' }}</span></div></td>
+                <td><div><span>{!! isset($model) && $model->email ? $model->email : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('First Name :') }}</th>
-                <td><div><span class="editable" data-input-type="text" data-column="first_name" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->first_name}}">{{ isset($model) && $model->first_name ? $model->first_name : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="first_name" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->first_name}}">{!! isset($model) && $model->first_name ? $model->first_name : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Last Name :') }}</th>
-                <td><div><span class="editable" data-input-type="text" data-column="last_name" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->last_name}}">{{ isset($model) && $model->last_name ? $model->last_name : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="last_name" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->last_name}}">{!! isset($model) && $model->last_name ? $model->last_name : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Company Name :') }}</th>
-                <td><div><span class="editable" data-input-type="text" data-column="company_name" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->company_name}}">{{ isset($model) && $model->company_name ? $model->company_name : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="company_name" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->company_name}}">{!! isset($model) && $model->company_name ? $model->company_name : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Address :') }}</th>
-                <td><div><span class="editable" data-input-type="text" data-column="address" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->address}}">{{ isset($model) && $model->address ? $model->address : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="address" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->address}}">{!! isset($model) && $model->address ? $model->address : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('City :') }}</th>
-                <td><div><span class="editable" data-input-type="text" data-column="city" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->city}}">{{ isset($model) && $model->city ? $model->city : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="city" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->city}}">{!! isset($model) && $model->city ? $model->city : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('State :') }}</th>
-                <td><div><span class="editable" data-input-type="text" data-column="state" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->state}}">{{ isset($model) && $model->state ? $model->state : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="state" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->state}}">{!! isset($model) && $model->state ? $model->state : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Country :') }}</th>
-                <td><div><span class="editable"  data-input-type="select" data-dropdown-list='{{ json_encode($countryDropdown)}}'  data-column="country_id" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->country_id}}">{{ isset($model) && $model->country_id ? $countryDropdown[$model->country_id] : '' }}</span></div></td>
+                <td><div><span class="editable"  data-input-type="select" data-dropdown-list='{{ json_encode($countryDropdown)}}'  data-column="country_id" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->country_id}}">{!! isset($model) && $model->country_id ? $countryDropdown[$model->country_id] : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Postcode :') }}</th>
-                <td><div><span class="editable" data-input-type="text" data-column="postcode" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->postcode}}">{{ isset($model) && $model->postcode ? $model->postcode : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="postcode" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->postcode}}">{!! isset($model) && $model->postcode ? $model->postcode : '<i>Empty</i>' !!}</span></div></td>
             </tr>
         </table>
     </div>
@@ -49,31 +49,31 @@
         <table class="table table-hover box-body text-wrap table-bordered">
             <tr>
                 <th>{{ html()->label('Tracking Number :') }}</th>
-                <td><div><span class="editable" data-input-type="text" data-column="tracking_number" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->tracking_number}}">{{ isset($model) && $model->tracking_number ? $model->tracking_number : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="tracking_number" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->tracking_number}}">{!! isset($model) && $model->tracking_number ? $model->tracking_number : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Order Status :') }}</th>
-                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->status}}">{{ isset($model) && isset($model->status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status) : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->status}}">{!! isset($model) && isset($model->status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status) : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Payment Status :') }}</th>
-                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS)) }}' data-column="payment_status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->payment_status}}">{{ isset($model) && isset($model->payment_status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS, $model->payment_status) : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS)) }}' data-column="payment_status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->payment_status}}">{!! isset($model) && isset($model->payment_status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS, $model->payment_status) : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Shipping Method:') }}</th>
-                <td><div><span></span></div></td>
+                <td><div><span class="editable" data-input-type="text" data-column="delivery_partner" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->delivery_partner}}">{!! isset($model) && $model->delivery_partner ? $model->delivery_partner : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Payment Method :') }}</th>
-                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD)) }}' data-column="payment_method" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->payment_method}}">{{ isset($model) && isset($model->payment_method) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method) : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD)) }}' data-column="payment_method" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->payment_method}}">{!! isset($model) && isset($model->payment_method) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method) : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Earned Points :') }}</th>
-                <td><div><span class="editable" data-input-type="number" data-column="point" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->point}}">{{ isset($model) && $model->point ? $model->point : '' }}</span></div></td>
+                <td><div><span class="editable" data-input-type="number" data-column="point_earned" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->point_earned}}">{!! isset($model) && $model->point_earned ? $model->point_earned : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Created At :') }}</th>
-                <td><div><span>{{ isset($model) && $model->created_at ? $model->created_at : '' }}</span></div></td>
+                <td><div><span>{!! isset($model) && $model->created_at ? $model->created_at : '<i>Empty</i>' !!}</span></div></td>
             </tr>
         </table>
     </div>
@@ -81,8 +81,6 @@
         <table id="salesOrderProductTable" class="table table-hover box-body text-wrap table-bordered">
             <tr>
                 <th>Name</th>
-                <th>Shipping Status</th>
-                <th>Zone</th>
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Total Price</th>
@@ -91,8 +89,6 @@
             @foreach($model->salesOrderProduct as $sales_order_product)
                 <tr>
                     <td>{{ $sales_order_product->product_name }}</td>
-                    <td></td>
-                    <td></td>
                     <td><div><span class="editable" data-input-type="number" data-column="price" data-url="{{ route('admin.sales_order.updateProduct.put',["id" => $model->id, "product_id" => $sales_order_product->id]) }}" data-original-data="{{ $sales_order_product->price }}">{{ $sales_order_product->price }}</span></div></td>
                     <td>{{ $sales_order_product->quantity }}</td>
                     <td>{{ $sales_order_product->total_price }}</td>
@@ -113,7 +109,7 @@
                 <tr>
                     <td>{{ $sales_order_total->title }}</td>
                     @if($sales_order_total->code != "total" && $sales_order_total->code != "subtotal")
-                        <td><div><span class="editable" data-input-type="number" data-column="order_total_{{ $sales_order_total->id}}" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{ $sales_order_total->value }}">{{$sales_order_total->value }}</span></div></td>
+                        <td><div><span class="editable" data-input-type="number" data-column="order_total_{{ $sales_order_total->id}}" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{ $sales_order_total->value }}">{{($sales_order_total->code == 'discount' || $sales_order_total->code == 'coupon' || $sales_order_total->code == 'point_redeemption' ? '- ' : '') . $sales_order_total->value }}</span></div></td>
                     @else
                         <td><div><span>{{ $sales_order_total->value }}</span></div></td>
                     @endif
@@ -124,12 +120,12 @@
     <div class="col-xl-6">
         <table  class="table table-hover box-body text-wrap table-bordered">
             <tr>
-                <td>Customer Note</td>
-                <td><div><span class="editable" data-input-type="textarea" data-column="customer_note" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->customer_note}}">{{ isset($model) && $model->customer_note ? $model->customer_note : 'empty' }}</span></div></td>
+                <td><b>Customer Note</b></td>
+                <td><div><span class="editable" data-input-type="textarea" data-column="customer_note" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->customer_note}}">{!! isset($model) && $model->customer_note ? $model->customer_note : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <td colspan="2">
-                    Order History<br>
+                    <b>Order History</b><br>
                     <div class="table-responsive">
                         <table class="table table-bordered m-0 mt-2">
                             <tr>
@@ -295,12 +291,14 @@ $(document).ready(function(){
                 var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status); ?>";
             }else if (originalColumn == 'payment_method'){
                 var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method); ?>";
+            }else if(originalColumn == 'payment_status'){
+                var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS, $model->payment_status); ?>";
             }else if(originalColumn == 'country_id'){
                 var rendering = "<?php if(isset($model)) echo $countryDropdown[$model->country_id] ?>";
             }
             originalElement = $("<span class='editable' data-input-type='" + originalInputType + "' data-dropdown-list='" + originalDropdown + "'' data-column= '" + originalColumn + "' data-url='" + originalUrl + "' data-original-data='" + originalValue + "'></span>").html(rendering);
         }else{
-            originalElement = $("<span class='editable' data-input-type='" + originalInputType + "' data-column='" + originalColumn + "' data-url='" + originalUrl + "' data-original-data='" + originalValue + "'></span>").html(originalValue);
+            originalElement = $("<span class='editable' data-input-type='" + originalInputType + "' data-column='" + originalColumn + "' data-url='" + originalUrl + "' data-original-data='" + originalValue + "'></span>").html(originalValue != null && originalValue != "" ? originalValue : "<i>Empty</i>");
         }
         inputField.parent().replaceWith(originalElement);
     }

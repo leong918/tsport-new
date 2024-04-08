@@ -15,8 +15,8 @@
                     <label>Status</label>
                     {{ html()->select('sales_order.status')->options([null => ''] + renderSelect(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS))->class('form-control')}}
                 </div>
-                <div class="col-md-12 text-right button-search m-2 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" id="form-export">Export</button>
+                <div class="col-md-12 text-right button-search m-2 d-flex justify-content-end gap-1">
+                    <button type="button" class="btn btn-success" id="form-export">Export (Shipany)</button>
                     <button type="button" class="btn btn-primary" id="form-submit">Search</button>
                 </div>
             </div>

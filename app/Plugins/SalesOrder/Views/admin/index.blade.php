@@ -21,7 +21,7 @@
                                 <div class="d-flex gap-1 my-2">
                                     <div><button class="btn btn-light" id="btn-select-all"><i class="fa-regular fa-square"></i></button></div>
                                     <div><button class="btn btn-danger"  data-url='{{route('admin.sales_order.deleteByList')}}' id="btn-delete-all"><i class="fa fa-trash"></i></button></div>
-                                    <div><button class="btn btn-success" id="btn-export">Export</button></div>
+                                    <div><button class="btn btn-success" id="btn-export">Export (Shipany)</button></div>
                                 </div>  
                                 <table class="table table-bordered">
                                     <thead>
