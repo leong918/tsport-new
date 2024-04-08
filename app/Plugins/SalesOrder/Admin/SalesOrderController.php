@@ -5,31 +5,40 @@ namespace App\Plugins\SalesOrder\Admin;
 use App\Http\Controllers\Controller;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
+use App\Plugins\SalesOrder\Repositories\SalesOrderTotalRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\CountryRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Plugins\SalesOrder\Export\SalesOrderExport;
+use App\Repositories\SettingRepository;
 
 class SalesOrderController extends Controller
 {
     private SalesOrderRepository $salesOrderRepository;
     private SalesOrderProductRepository $salesOrderProductRepository;
+    private SalesOrderTotalRepository $salesOrderTotalRepository;
     private ProductRepository $productRepository;
     private CountryRepository $countryRepository;
-
-    public function __construct(SalesOrderRepository $salesOrderRepository, SalesOrderProductRepository $salesOrderProductRepository, ProductRepository $productRepository, CountryRepository $countryRepository)
+    private SettingRepository $settingRepository;
+    
+    public function __construct(SalesOrderRepository $salesOrderRepository, SalesOrderProductRepository $salesOrderProductRepository, SalesOrderTotalRepository $salesOrderTotalRepository, ProductRepository $productRepository, CountryRepository $countryRepository, SettingRepository $settingRepository)
     {
         $this->salesOrderRepository = $salesOrderRepository;
         $this->salesOrderProductRepository = $salesOrderProductRepository;
+        $this->salesOrderTotalRepository = $salesOrderTotalRepository;
         $this->productRepository = $productRepository;
         $this->countryRepository = $countryRepository;
+        $this->settingRepository = $settingRepository;
     }
 
     public function index(Request $request)
     {   
         if ($request->ajax()) {
-            $model = $this->salesOrderRepository->getListing();
+            $form_data = $request->form_data;
+            $model = $this->salesOrderRepository->getListing($form_data);
             return DataTables::of($model)
                 ->editColumn('product', function ($model) {
                     $product_list = '';
@@ -47,7 +56,10 @@ class SalesOrderController extends Controller
                 ->addColumn('action', function ($model) {
                     return view("sales_order::admin.action", compact('model'));
                 })
-                ->rawColumns(['product'])
+                ->addColumn('checkbox', function ($model) {
+                    return view("sales_order::admin.checkbox", compact('model'));
+                })
+                ->rawColumns(['product','checkbox'])
                 ->make(true);
         }
 
@@ -66,6 +78,7 @@ class SalesOrderController extends Controller
     {
         DB::beginTransaction();
         try {
+
             $admin_id = auth()->guard('admin')->user()->id;
             $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin_id);
             DB::commit();
@@ -77,21 +90,21 @@ class SalesOrderController extends Controller
         return redirect(route('admin.sales_order.index'))->with('success', "Successfully update sales order {$request->name}");
     }
 
-public function updateProduct(Request $request, int $id, int $product_id = null)
+    public function updateProduct(Request $request, int $id, int $product_id = null)
     {
         DB::beginTransaction();
         try {
-            $total = 0;
-            $sales_order = $this->salesOrderRepository->find($id);
+            // $total = 0;
+            // $sales_order = $this->salesOrderRepository->find($id);
             if($product_id){
                 $admin_id = auth()->guard('admin')->user()->id;
-                $total = $this->salesOrderProductRepository->updateSalesOrderProduct($request->all(), $id, $product_id, $admin_id);
+                $this->salesOrderProductRepository->updateSalesOrderProduct($request->all(), $id, $product_id, $admin_id);
             }else{
-                $total = $this->salesOrderProductRepository->createSalesOrderProduct($request->all(), $id);
+                $this->salesOrderProductRepository->createSalesOrderProduct($request->all(), $id);
             }
-            $sales_order->subtotal += $total;
-            $sales_order->total += $total;
-            $sales_order->save();
+            // $sales_order->subtotal += $total;
+            // $sales_order->total += $total;
+            // $sales_order->save();
             
             DB::commit();
             return $this->response();
@@ -110,18 +123,48 @@ public function updateProduct(Request $request, int $id, int $product_id = null)
 
     public function destroySalesOrderProduct(int $id, int $product_id)
     {
-        $sales_order = $this->salesOrderRepository->find($id);
         $sales_order_product = $this->salesOrderProductRepository->find($product_id);
-
-        $sales_order->subtotal -= $sales_order_product->total_price;
-        $sales_order->total -= $sales_order_product->total_price;
-        $sales_order->save();
-
+        $this->salesOrderTotalRepository->updateSubtotalAndTotal($id, $sales_order_product->total_price, "minus");
         $sales_order_product->delete();
     }
 
     public function toggleStatus(int $id)
     {
         $this->salesOrderRepository->toggleStatus($id);
+    }
+
+    public function destroyByList(Request $request)
+    {
+       $data = $request->all();
+       foreach($data['selectedList'] as $selectedID)
+       {
+        $this->salesOrderRepository->delete($selectedID);
+        $this->salesOrderProductRepository->deleteProductBySalesOrderId($selectedID);
+       }
+    }
+
+    public function exportByList(Request $request)
+    {   
+        $sales_order_list = null;
+        $form_data = $request->all();
+        if(isset($form_data['selectedList']) && $form_data['selectedList'] != null)
+        {
+            $data = explode(",",$form_data['selectedList']);
+            $sales_order_list = $this->salesOrderRepository->getListingByID($data);
+        }else{
+            $sales_order_list = $this->salesOrderRepository->getExportListing($form_data);
+        }
+
+        $senderInfoList = $this->settingRepository->getSenderInfo();
+        $senderData = array();
+
+        foreach($senderInfoList as $senderInfo)
+        {
+            $senderData[$senderInfo->key] = $senderInfo->value;
+        }
+
+        $filename = "Sales Order Export.xlsx";
+   
+        return Excel::download(new SalesOrderExport($sales_order_list, $senderData), $filename);
     }
 }

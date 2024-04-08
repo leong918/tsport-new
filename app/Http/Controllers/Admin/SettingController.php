@@ -157,8 +157,10 @@ class SettingController extends BaseController
     private function updateSetting($data)
     {
         unset($data['_token']);
-
         foreach ($data as $key => $value) {
+            if($key == 'new_order_email_image' || $key == 'tracking_number_email_image' || $key == 'shipping_fee_email_image'){
+                $value = $this->settingRepository->uploadImage($value);
+            }
             $this->settingRepository->updateValueByKey($key, $value);
         }
     }
