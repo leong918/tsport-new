@@ -165,7 +165,7 @@ class UserRepository extends BaseRepository
         $pointLogRepository->create($pointLogData);
     }
 
-    public function addReviewPoint($user_id, $product_id)
+    public function addReviewPoint($user_id, $review_id)
     {
         $settingRepository = new SettingRepository(new Container());
         $review_point = $settingRepository->getValueByKey('review_point');
@@ -178,7 +178,7 @@ class UserRepository extends BaseRepository
         $pointLogData['user_id'] = $user->id;
         $pointLogData['point'] = $review_point;
         $pointLogData['type'] = 'IN';
-        $pointLogData['remark'] = 'Earned Point by Review. ID: ' . $product_id;
+        $pointLogData['remark'] = 'Earned Point by Review. ID: ' . $review_id;
         $pointLogRepository->create($pointLogData);
     }
 

@@ -34,6 +34,11 @@ class SalesOrderProductRepository extends BaseRepository
         return SalesOrderProduct::class;
     }
 
+    public function getSalesOrderProductBySalesOrderId(int $id)
+    {
+        return SalesOrderProduct::where('sales_order_id', $id);
+    }
+
     public function createOrderProduct($order, $data)
     {
         $productRepository = new ProductRepository(new Container());

@@ -188,9 +188,9 @@ class SalesOrderRepository extends BaseRepository
         });
     }
 
-    public function getListing()
+    public function getSalesOrderByUserId(int $id)
     {
-        return SalesOrder::query()->orderBy('created_at', 'desc');
+        return SalesOrder::where('user_id', $id);
     }
 
     public function updateSalesOrder(array $input, int $id, int $admin_id)
@@ -335,5 +335,12 @@ class SalesOrderRepository extends BaseRepository
             $salesOrderLogRepository = new SalesOrderLogRepository(new Container());
             $salesOrderLogRepository->createLog($sales_order, $sales_order->user_id, 'user', $status, $description);
         }
+    }
+
+    public function getOrderStatus()
+    {
+        $status = array_flip(SalesOrder::ORDER_STATUS);
+
+        return $status;
     }
 }

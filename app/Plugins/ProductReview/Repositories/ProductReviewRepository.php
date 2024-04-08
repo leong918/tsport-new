@@ -75,6 +75,8 @@ class ProductReviewRepository extends BaseRepository
         $model = new ProductReview();
         $model->fill($data);
         $model->save();
+
+        return $model;
     }
 
     public function toggleStatus(int $id)
