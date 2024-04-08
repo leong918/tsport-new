@@ -59,8 +59,8 @@
                         name: 'username'
                     },
                     {
-                        data: 'product_name',
-                        name: 'product_name'
+                        data: 'name',
+                        name: 'name'
                     },
                     {
                         data: 'rate',
