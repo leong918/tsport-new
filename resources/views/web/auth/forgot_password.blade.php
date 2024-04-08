@@ -95,8 +95,9 @@
                             swal.close();
                         });
                     }
+                }).then((result) => {
+                    $(this).find('button[type="submit"]').attr('disabled',false);
                 });
-                $(this).find('button[type="submit"]').attr('disabled','disabled');
             });
         });
 

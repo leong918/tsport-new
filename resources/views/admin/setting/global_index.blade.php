@@ -7,7 +7,7 @@
                 <x-alert />
                 <div class="row">
                     <div class="col-sm-6">
-                        {{ html()->model($setting_model)->form('POST', route('admin.setting.updateGlobalSetting.post'))->open() }}
+                        {{ html()->model($setting_model)->form('POST', route('admin.setting.updateGlobalSetting.post'))->acceptsFiles()->open() }}
                         <div class="card mb-3">
                             <div class="card-header"><strong>Global Setting</strong></div>
                             <div class="card-body">
@@ -22,6 +22,36 @@
                                 <div class="mb-3">
                                     {{ html()->label('Point Redemption Ratio (1 Point : $ XX)') }}
                                     {{ html()->text('point_redemption_ratio')->placeholder('Enter Point Redemption Ratio')->class('form-control') }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ html()->label('New Order Email Image') }}
+                                    {{ html()->file('new_order_email_image')->accept('image/*')->class('form-control') }}
+                                    <br>
+                                    @if(isset($setting_model['new_order_email_image']) && $setting_model['new_order_email_image'] != null)
+                                        <img class="img-fluid" src="{{ $setting_model['new_order_email_image'] }}" />
+                                    @else
+                                        <span>No image</span>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    {{ html()->label('Tracking Number Email Image') }}
+                                    {{ html()->file('tracking_number_email_image')->accept('image/*')->class('form-control') }}
+                                    <br>
+                                    @if(isset($setting_model['tracking_number_email_image']) && $setting_model['tracking_number_email_image'] != null)
+                                        <img class="img-fluid" src="{{ $setting_model['tracking_number_email_image'] }}" />
+                                    @else
+                                        <span>No image</span>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    {{ html()->label('Shipping Fee Email Image') }}
+                                    {{ html()->file('shipping_fee_email_image')->accept('image/*')->class('form-control') }}
+                                    <br>
+                                    @if(isset($setting_model['shipping_fee_email_image']) && $setting_model['shipping_fee_email_image'] != null)
+                                        <img class="img-fluid" src="{{ $setting_model['shipping_fee_email_image'] }}" />
+                                    @else
+                                        <span>No image</span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="card-footer text-end">
