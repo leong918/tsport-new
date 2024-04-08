@@ -165,6 +165,23 @@ class UserRepository extends BaseRepository
         $pointLogRepository->create($pointLogData);
     }
 
+    public function addReviewPoint($user_id, $product_id)
+    {
+        $settingRepository = new SettingRepository(new Container());
+        $review_point = $settingRepository->getValueByKey('review_point');
+
+        $user = User::find($user_id);
+        $user->point += $review_point;
+        $user->save();
+
+        $pointLogRepository = new PointLogRepository(new Container());
+        $pointLogData['user_id'] = $user->id;
+        $pointLogData['point'] = $review_point;
+        $pointLogData['type'] = 'IN';
+        $pointLogData['remark'] = 'Earned Point by Review. ID: ' . $product_id;
+        $pointLogRepository->create($pointLogData);
+    }
+
     public function getUserByLevelValidity()
     {
         return User::where('status', 1)

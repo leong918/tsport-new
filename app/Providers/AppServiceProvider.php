@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use App\View\Components\Alert;
 use Illuminate\Foundation\AliasLoader;
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrap();
+
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }
