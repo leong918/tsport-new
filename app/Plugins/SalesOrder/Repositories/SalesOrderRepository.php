@@ -180,9 +180,8 @@ class SalesOrderRepository extends BaseRepository
 
         Schema::create('wishlist', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->nullable();
+            $table->bigInteger('user_id');
             $table->bigInteger('product_id');
-            $table->string('user_ip');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -299,7 +298,7 @@ class SalesOrderRepository extends BaseRepository
             $description = 'Stripe Payment Update. Status: ' . array_flip(SalesOrder::ORDER_STATUS)[$status];
 
             $sales_order->payment_status = $status;
-            $sales_order->status = $status == 1 ? 2: $status;
+            $sales_order->status = $status == 1 ? 2 : $status;
 
             if ($status == 1) {
                 $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
