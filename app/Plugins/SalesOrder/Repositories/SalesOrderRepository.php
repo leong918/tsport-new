@@ -348,7 +348,7 @@ class SalesOrderRepository extends BaseRepository
     public function updateStripeSalesOrder($stripe_client_secret, $status)
     {
         $sales_order = SalesOrder::where('stripe_payment_intent_id', $stripe_client_secret)->first();
-        if ($sales_order) {
+        if ($sales_order && $sales_order->status == 0) {
             $description = 'Stripe Payment Update. Status: ' . array_flip(SalesOrder::ORDER_STATUS)[$status];
 
             $sales_order->payment_status = $status;
@@ -377,10 +377,14 @@ class SalesOrderRepository extends BaseRepository
                 // level validation
                 $userRepository = new UserRepository(new Container());
                 $user = $userRepository->find($sales_order->user_id);
-                $total_accumulate_amount = SalesOrder::where('user_id', $user->id)
-                    ->where('status', '>', 0)
-                    ->where('created_at', '>', $user->level_upgrade_at)
-                    ->sum('total');
+                $total_accumulate_amount = 0;
+
+                if ($user->level_upgrade_at) {
+                    $total_accumulate_amount = SalesOrder::where('user_id', $user->id)
+                        ->where('status', '>', 0)
+                        ->where('created_at', '>', $user->level_upgrade_at)
+                        ->sum('total');
+                }
 
                 // check level upgrade
                 $level_upgrade = false;
