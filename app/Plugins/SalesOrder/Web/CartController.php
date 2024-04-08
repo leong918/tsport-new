@@ -252,6 +252,7 @@ class CartController extends BaseController
     private function createPaymentIntent($cartTotal)
     {
         $total_amount = str_replace('.', '', number_format($cartTotal, 2));
+        $total_amount = str_replace(',', '', $total_amount);
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
 
         $paymentIntent = $stripe->paymentIntents->create([
