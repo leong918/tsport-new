@@ -423,7 +423,7 @@ class SalesOrderRepository extends BaseRepository
                         $data['sales_order_id'] = $sales_order->id;
                         $data['remark'] = 'Upgrade from level ' . $user->level->name . ' to ' . $next_level_target->name;
                         $data['previous_validity'] = $user->level_validity;
-                        $data['current_validity'] = null;
+                        $data['current_validity'] = Carbon::now()->addYear();
                         $levelChangeLogRepository->createLevelLog($data);
 
                         $user->level_id = 3;
