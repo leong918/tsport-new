@@ -400,39 +400,22 @@ class SalesOrderRepository extends BaseRepository
                 $levelRepository = new LevelRepository(new Container());
                 $levelChangeLogRepository = new LevelChangeLogRepository(new Container());
 
-                if ($user->level_id == 1) {
-                    $next_level_target = $levelRepository->find(2);
-                    if ($sales_order->total >= $next_level_target->target_amount) {
+                if ($user->level_id == 1 || $user->level_id == 2) {
+                    $current_level = $levelRepository->find($user->level_id);
+                    $next_level_target = $levelRepository->getNextLevel($current_level->leveling);
+                    $check_amount = $user->level_id == 1 ? $sales_order->total : $total_accumulate_amount;
+
+                    if ($check_amount >= $next_level_target->target_amount) {
                         $data['user_id'] = $user->id;
                         $data['level_id'] = $user->level_id;
-                        $data['new_level_id'] = 2;
+                        $data['new_level_id'] = $next_level_target->id;
                         $data['sales_order_id'] = $sales_order->id;
                         $data['remark'] = 'Upgrade from level ' . $user->level->name . ' to ' . $next_level_target->name;
-                        $data['previous_validity'] = Carbon::now();
+                        $data['previous_validity'] = $user->level_validity ?? Carbon::now();
                         $data['current_validity'] = Carbon::now()->addYear();
                         $levelChangeLogRepository->createLevelLog($data);
 
-                        $user->level_id = 2;
-                        $user->level_upgrade_at = Carbon::now();
-                        $user->level_validity = Carbon::now()->addYear();
-                        $user->save();
-
-                        $level_upgrade = true;
-                    }
-                } elseif ($user->level_id == 2) {
-                    $next_level_target = $levelRepository->find(3);
-
-                    if ($total_accumulate_amount >= $next_level_target->target_amount) {
-                        $data['user_id'] = $user->id;
-                        $data['level_id'] = $user->level_id;
-                        $data['new_level_id'] = 3;
-                        $data['sales_order_id'] = $sales_order->id;
-                        $data['remark'] = 'Upgrade from level ' . $user->level->name . ' to ' . $next_level_target->name;
-                        $data['previous_validity'] = $user->level_validity;
-                        $data['current_validity'] = Carbon::now()->addYear();
-                        $levelChangeLogRepository->createLevelLog($data);
-
-                        $user->level_id = 3;
+                        $user->level_id = $next_level_target->id;
                         $user->level_upgrade_at = Carbon::now();
                         $user->level_validity = Carbon::now()->addYear();
                         $user->save();
@@ -443,7 +426,7 @@ class SalesOrderRepository extends BaseRepository
                 // end check level upgrade
 
                 // check level extend
-                if ($level_upgrade == false) {
+                if ($level_upgrade == false && ($user->level_id == 2 || $user->level_id == 3)) {
                     $same_level_target = $levelRepository->find($user->level_id);
                     if ($total_accumulate_amount >= $same_level_target->extend_amount) {
                         $previous_validity = $user->level_validity;
@@ -463,6 +446,7 @@ class SalesOrderRepository extends BaseRepository
                     }
                 }
                 // end check level extend
+                // end level validation
             } else {
                 $sales_order->payment_failed_at = Carbon::now();
 
