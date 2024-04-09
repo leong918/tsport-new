@@ -420,7 +420,7 @@ class SalesOrderRepository extends BaseRepository
                 // end check level upgrade
 
                 // check level extend
-                if ($level_upgrade == false) {
+                if ($level_upgrade == false && ($user->level_id == 2 || $user->level_id == 3)) {
                     $same_level_target = $levelRepository->find($user->level_id);
                     if ($total_accumulate_amount >= $same_level_target->extend_amount) {
                         $previous_validity = $user->level_validity;
