@@ -41,7 +41,10 @@ class LevelRepository extends BaseRepository
     }
 
     public function getLowestLeveling(){
-        return Level::where('leveling',1)->first();
+        return Level::where('leveling', 1)->first();
     }
 
+    public function getNextLevel($leveling) {
+        return Level::where('leveling', $leveling + 1)->first();
+    }
 }
