@@ -199,6 +199,17 @@ class ProductRepository extends BaseRepository
         return $category_list;
     }
 
+    public function getProductAttribute(int $product_id)
+    {
+        return Product::leftjoin('product_attribute','product.id', '=', 'product_attribute.product_id')
+                        ->leftjoin('product_attribute_term', 'product_attribute.id', '=', 'product_attribute_term.product_attribute_id')
+                        ->leftjoin('product_price', 'product_attribute_term.id', '=', 'product_price.product_attribute_term_id')
+                        ->where('product.id',$product_id)
+                        ->selectRaw('product_attribute.name as attribute_name, product_attribute.id as product_attribute_id, product_attribute_term.id, product_attribute_term.name,product_price.code,product_price.price')
+                        ->get();
+
+    }
+
     public function createProduct(array $input)
     {
         $this->verifyDescription($input);
