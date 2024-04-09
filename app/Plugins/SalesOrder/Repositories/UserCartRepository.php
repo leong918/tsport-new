@@ -199,16 +199,16 @@ class UserCartRepository extends BaseRepository
         $cart = UserCart::find($data['cart_id']);
 
         if ($data['quantity'] > 0) {
-            $subtotal += $cart->product->getCurrencyParameters('HKD')->price;
+            $product_subtotal = $cart->product->getCurrencyParameters('HKD')->price;
 
             if ($cart->product_attribute_term) {
                 $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
                 foreach (json_decode($cart->product_attribute_term) as $product_attribute_term_id) {
                     $product_attribute_term = $productAttributeTermRepository->find($product_attribute_term_id);
-                    $subtotal += $product_attribute_term->getCurrencyParameters('HKD')->price;
+                    $product_subtotal += $product_attribute_term->getCurrencyParameters('HKD')->price;
                 }
             }
-            $subtotal += $subtotal * $cart->quantity;
+            $subtotal += $product_subtotal * $cart->quantity;
 
             $cart->quantity = $data['quantity'];
             $cart->save();
