@@ -208,7 +208,7 @@ class UserCartRepository extends BaseRepository
                     $product_subtotal += $product_attribute_term->getCurrencyParameters('HKD')->price;
                 }
             }
-            $subtotal += $product_subtotal * $cart->quantity;
+            $subtotal += $product_subtotal * $data['quantity'];
 
             $cart->quantity = $data['quantity'];
             $cart->save();
