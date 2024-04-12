@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Plugins\SalesOrder\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -107,6 +109,11 @@ class Product extends Model
         return $this->hasMany(ProductAttributeTerm::class);
     }
 
+    // public function wishlist(): HasOne
+    // {
+    //     return $this->hasOne(Wishlist::class);
+    // }
+
     public function getCurrencyParameters(string $currency)
     {
         return $this->productPrice->where('code', $currency)->whereNull('product_attribute_term_id')->first();
@@ -120,6 +127,11 @@ class Product extends Model
     public function getFirstProductImage()
     {
         return $this->productImage->first();
+    }
+
+    public function checkWishlist($product_id)
+    {
+        return Wishlist::where('product_id', $product_id)->exists();
     }
 
     public function checkProductRelated($product_id, $related_product_id)

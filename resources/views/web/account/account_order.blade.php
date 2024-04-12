@@ -20,11 +20,9 @@
                                     <a class="collapse-nav" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
                                         <div class="account-nav" id="order-nav">
                                             <div class="nav-inner">
-                                                <div class="nav-title status">
-                                                    All ({{ $all_count }})
-                                                </div>
+                                                <div class="nav-title status"></div>
                                                 <div class="arrow">
-                                                    <img src="{{asset('assets/web/assets/img/voucher/down.png')}}" alt="">
+                                                    <img class="m-0" src="{{asset('assets/web/assets/img/voucher/down.png')}}" alt="">
                                                 </div>
                                             </div>
                                         </div>
@@ -93,6 +91,16 @@
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function(){
+        var currentStatus = '';
+        var searchParams = new URLSearchParams(window.location.search);
+        searchParams.has('status') ? currentStatus = searchParams.get('status') : currentStatus = 'all';
+
+        $('#collapseExample2 .status').each(function () {
+            var order_status = $(this).data('order-status');
+            order_status == currentStatus ? $('#order-nav .status').text($(this).text()) : null;
+        });
+
+
         $('#collapseExample2').on('shown.bs.collapse', function(){
             $('#order-nav .arrow').find('img').css('transform', 'rotate(180deg)');
         });

@@ -3,6 +3,7 @@
 namespace App\Plugins\SalesOrder\Web;
 
 use App\Plugins\SalesOrder\Repositories\UserCartRepository;
+use App\Plugins\SalesOrder\Repositories\WishlistRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
@@ -30,6 +31,7 @@ class CartController extends BaseController
     private SalesOrderLogRepository $salesOrderLogRepository;
     private SalesOrderTotalRepository $salesOrderTotalRepository;
     private CartRuleRepository $cartRuleRepository;
+    private WishlistRepository $wishlistRepository;
 
     public function __construct(
         UserCartRepository $userCartRepository,
@@ -41,7 +43,8 @@ class CartController extends BaseController
         SalesOrderProductRepository $salesOrderProductRepository,
         SalesOrderLogRepository $salesOrderLogRepository,
         SalesOrderTotalRepository $salesOrderTotalRepository,
-        CartRuleRepository $cartRuleRepository
+        CartRuleRepository $cartRuleRepository,
+        WishlistRepository $wishlistRepository,
     ) {
         $this->userCartRepository = $userCartRepository;
         $this->countryRepository = $countryRepository;
@@ -53,6 +56,7 @@ class CartController extends BaseController
         $this->salesOrderLogRepository = $salesOrderLogRepository;
         $this->salesOrderTotalRepository = $salesOrderTotalRepository;
         $this->cartRuleRepository = $cartRuleRepository;
+        $this->wishlistRepository = $wishlistRepository;
     }
 
     public function cart(Request $request)
@@ -132,9 +136,43 @@ class CartController extends BaseController
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
-    public function wishlist()
+    public function toggleWishlist(Request $request)
     {
-        return view('sales_order::web.cart.wishlist');
+        $data = $request->all();
+
+        $data['user_ip'] = getPublicIP();
+        $data['user_id'] = auth()->user() ? auth()->user()->id : null;
+
+        if ($data['user_id'] == null) {
+            return response()->json(['msg' => 'Please log in before add product to wishlist!'], 500);
+        }
+       
+        $this->wishlistRepository->toggleWishlist($data);
+        $wishlist_count = $this->wishlistRepository->getWishlistByUser($data['user_id'])->count();
+
+        return $this->response(['wishlist_count' => $wishlist_count], 'OK');
+    }
+
+    public function removeWishlist(Request $request)
+    {
+        $data = $request->all();
+        $data['user_id'] = auth()->user() ? auth()->user()->id : null;
+        
+        $this->wishlistRepository->removeWishlist($data['user_id'], $data['product_id']);
+
+        return $this->response(['data' => $data], 'OK');
+    }
+
+    public function wishlist(Request $request)
+    {
+        $data = $request->all();
+        $data['user_ip'] = getPublicIP();
+        $data['user_id'] = auth()->user() ? auth()->user()->id : null;
+
+        $wishlist_record = $this->wishlistRepository->getWishlistByUser($data['user_id']);
+        $wishlist_count = $wishlist_record->count();
+
+        return view('sales_order::web.cart.wishlist', compact('wishlist_record', 'wishlist_count'));
     }
 
     public function checkout(Request $request)

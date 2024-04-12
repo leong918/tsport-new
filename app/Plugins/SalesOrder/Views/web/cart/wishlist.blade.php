@@ -14,30 +14,32 @@
             <div class="col-12 product-wrapper" id="targetElement">
                 <div class="product">
                     <div class="container">
-                        <div class="total-count-item">8 Items</div>
+                        <div class="total-count-item">{{ $wishlist_count > 0 ? $wishlist_count. ' Items' : 'No product in wishlist' }} </div>
                         <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 row-cols-sm-3">
+                            @foreach ($wishlist_record as $wishlist)
                             <div class="product-container col product-img">
-                                <div class="product-image position-relative">
-                                    <img class="show" src="{{asset('assets/web/assets/img/homepage/product-1.png')}}">
-                                    <img class="hide" src="{{asset('assets/web/assets/img/homepage/product-1-hover.png')}}">
-                                    <div class="wishlist-cart-container">
-                                        <div class="row text-center">
-                                            <div class="col-md-6">
-                                                <div class="wishlist-container">
-                                                    <img class="wishlist-hide" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                    <img class="wishlist-hover-show" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
+                                <a href="{{route('web.product_detail', ['alias' => $wishlist->product->alias])}}">
+                                    <div class="product-image position-relative">
+                                        <img class="show" src="{{ $wishlist->product->getFirstProductImage()->url }}">
+                                        <div class="wishlist-cart-container">
+                                            <div class="row text-center">
+                                                <div class="col-md-6">
+                                                    <div class="wishlist-container wishlist-remove-button-hover" data-id="{{ $wishlist->product->id }}" data-url="{{ route('cart.remove_wishlist') }}">
+                                                        <img class="wishlist-hide" src="{{asset('assets/web/assets/img/global/del.png')}}">
+                                                        <img class="wishlist-hover-show bg-white rounded-circle p-2" src="{{asset('assets/web/assets/img/shopping_cart/remove.png')}}">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!--cart-->
-                                                <div class="cart-container">
-                                                    <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                    <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
+                                                <div class="col-md-6">
+                                                    <!--cart-->
+                                                    <div class="cart-container cart-button-hover" data-id="{{ $wishlist->product->id }}" data-url="{{ route('cart.add_to_cart') }}">
+                                                        <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
+                                                        <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                                 <div class="product-info">
                                     <div class="rating-wishlist">
                                         @if(function_exists('reviewRenderView'))
@@ -45,275 +47,14 @@
                                         @endif
                                         <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
                                     </div>
-                                    <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
+                                    <div class="product-description">{{ $wishlist->product->name }}</div>
                                     <div class="price-cart">
-                                        <div class="product-price">$490</div>
+                                        <div class="product-price">${{ $wishlist->product->getCurrencyParameters('HKD')->price }}</div>
                                         <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-container col product-img">
-                                <div class="product-image position-relative">
-                                    <img class="show" src="{{asset('assets/web/assets/img/homepage/product-2.png')}}">
-                                    <img class="hide" src="{{asset('assets/web/assets/img/homepage/product-2-hover.png')}}">
-                                    <div class="wishlist-cart-container">
-                                        <div class="row text-center">
-                                            <div class="col-md-6">
-                                                <!-- wishlist -->
-                                                <div class="wishlist-container">
-                                                    <img class="wishlist-hide" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                    <img class="wishlist-hover-show" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!--cart-->
-                                                <div class="cart-container">
-                                                    <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                    <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="rating-wishlist">
-                                        @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                    <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
-                                    <div class="price-cart">
-                                        <div class="product-price">$490</div>
-                                        <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-container col product-img">
-                                <div class="product-image position-relative">
-                                    <img class="show" src="{{asset('assets/web/assets/img/homepage/product-5.png')}}">
-                                    <img class="hide" src="{{asset('assets/web/assets/img/homepage/product-5-hover.png')}}">
-                                    <div class="wishlist-cart-container">
-                                        <div class="row text-center">
-                                            <div class="col-md-6">
-                                                <!-- wishlist -->
-                                                <div class="wishlist-container">
-                                                    <img class="wishlist-hide" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                    <img class="wishlist-hover-show" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!--cart-->
-                                                <div class="cart-container">
-                                                    <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                    <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="rating-wishlist">
-                                        @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                    <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
-                                    <div class="price-cart">
-                                        <div class="product-price">$490</div>
-                                        <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- offset-md-1 -->
-
-                            <div class="product-container col product-img">
-                                <div class="product-image position-relative">
-                                    <img class="show" src="{{asset('assets/web/assets/img/homepage/product-2.png')}}">
-                                    <img class="hide" src="{{asset('assets/web/assets/img/homepage/product-2-hover.png')}}">
-                                    <div class="wishlist-cart-container">
-                                        <div class="row text-center">
-                                            <div class="col-md-6">
-                                                <!-- wishlist -->
-                                                <div class="wishlist-container">
-                                                    <img class="wishlist-hide" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                    <img class="wishlist-hover-show" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!--cart-->
-                                                <div class="cart-container">
-                                                    <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                    <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="rating-wishlist">
-                                        @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                    <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
-                                    <div class="price-cart">
-                                        <div class="product-price">$490</div>
-                                        <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-container col product-img">
-                                <div class="product-image position-relative">
-                                    <img class="show" src="{{asset('assets/web/assets/img/homepage/product-3.png')}}">
-                                    <img class="hide" src="{{asset('assets/web/assets/img/homepage/product-3-hover.png')}}">
-                                    <div class="wishlist-cart-container">
-                                        <div class="row text-center">
-                                            <div class="col-md-6">
-                                                <!-- wishlist -->
-                                                <div class="wishlist-container">
-                                                    <img class="wishlist-hide" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                    <img class="wishlist-hover-show" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!--cart-->
-                                                <div class="cart-container">
-                                                    <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                    <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="rating-wishlist">
-                                        @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                    <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
-                                    <div class="price-cart">
-                                        <div class="product-price">$490</div>
-                                        <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-container col product-img">
-                                <div class="product-image position-relative">
-                                    <img class="show" src="{{asset('assets/web/assets/img/homepage/product-4.png')}}">
-                                    <img class="hide" src="{{asset('assets/web/assets/img/homepage/product-4-hover.png')}}">
-                                    <div class="wishlist-cart-container">
-                                        <div class="row text-center">
-                                            <div class="col-md-6">
-                                                <!-- wishlist -->
-                                                <div class="wishlist-container">
-                                                    <img class="wishlist-hide" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                    <img class="wishlist-hover-show" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!--cart-->
-                                                <div class="cart-container">
-                                                    <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                    <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="rating-wishlist">
-                                        @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                    <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
-                                    <div class="price-cart">
-                                        <div class="product-price">$490</div>
-                                        <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-container col product-img">
-                                <div class="product-image position-relative">
-                                    <img class="show" src="{{asset('assets/web/assets/img/homepage/product-1.png')}}">
-                                    <img class="hide" src="{{asset('assets/web/assets/img/homepage/product-1-hover.png')}}">
-                                    <div class="wishlist-cart-container">
-                                        <div class="row text-center">
-                                            <div class="col-md-6">
-                                                <!-- wishlist -->
-                                                <div class="wishlist-container">
-                                                    <img class="wishlist-hide" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                    <img class="wishlist-hover-show" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!--cart-->
-                                                <div class="cart-container">
-                                                    <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                    <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="rating-wishlist">
-                                        @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                    <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
-                                    <div class="price-cart">
-                                        <div class="product-price">$490</div>
-                                        <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-container col product-img">
-                                <div class="product-image position-relative">
-                                    <img class="show" src="{{asset('assets/web/assets/img/homepage/product-2.png')}}">
-                                    <img class="hide" src="{{asset('assets/web/assets/img/homepage/product-2-hover.png')}}">
-                                    <div class="wishlist-cart-container">
-                                        <div class="row text-center">
-                                            <div class="col-md-6">
-                                                <!-- wishlist -->
-                                                <div class="wishlist-container">
-                                                    <img class="wishlist-hide" src="{{asset('assets/web/assets/img/homepage/add-wishlist-1.png')}}">
-                                                    <img class="wishlist-hover-show" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!--cart-->
-                                                <div class="cart-container">
-                                                    <img class="cart-hide" src="{{asset('assets/web/assets/img/homepage/add-cart-1.png')}}">
-                                                    <img class="cart-hover-show" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <div class="rating-wishlist">
-                                        @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
-                                    </div>
-                                    <div class="product-description">[全新升級配方] LOVINAH DRAGON'S BLOOD BRIGHTENING HYDARTING FACE TONIC 龍血樹抗氧亮肌爽膚水 100ML</div>
-                                    <div class="price-cart">
-                                        <div class="product-price">$490</div>
-                                        <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>

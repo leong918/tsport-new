@@ -30,11 +30,15 @@ class WishlistRepository extends BaseRepository
         return Wishlist::class;
     }
 
-    public function addToWishlist($data)
+    public function toggleWishlist($data)
     {
-        $wishlist = new Wishlist();
-        $wishlist->fill($data);
-        $wishlist->save();
+        if($data['is_wishlist'] != 1){
+            $wishlist = new Wishlist();
+            $wishlist->fill($data);
+            $wishlist->save();
+        } else {
+            $this->removeWishlist($data['user_id'], $data['product_id']);
+        }
     }
 
     public function getWishlistByUser(int $id)

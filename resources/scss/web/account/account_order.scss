@@ -1157,17 +1157,13 @@
     }
 }
 
-.top-desktop{
-    @media only screen and (max-width:1199px){
-        display: none !important;
-    }
-}
 .top-mobile{
-    // @media only screen and (min-width:1200px){
-    //     display: none;
-    // }
     .collapse-wrapper{
         border-bottom: 1px solid rgba(107,91,64,0.3);
+
+        @media only screen and (min-width: 766px){
+            width: 35%;
+        }
     }
     .account-nav{
         padding-left: 10px !important;
@@ -1187,10 +1183,11 @@
     
 }
 #collapseExample2{
+    @media only screen and (min-width: 766px) {
+        width: 35%;
+    }
+
     .status{
-        // &:first-child{
-        //     padding-top: 10px;
-        // }
         font-family: "BanglaSangam-Regular";
         color: #6B5B40;
         text-transform: uppercase;
