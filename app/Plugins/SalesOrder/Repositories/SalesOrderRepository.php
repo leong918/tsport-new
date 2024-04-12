@@ -75,8 +75,6 @@ class SalesOrderRepository extends BaseRepository
             $table->integer('point_earned')->default(0);
             $table->integer('point_used')->default(0);
             $table->tinyInteger('status')->default(0);
-            $table->tinyInteger('payment_status')->default(0);
-            $table->tinyInteger('shipping_fee_status')->default(0);
             $table->string('first_name');
             $table->string('last_name');
             $table->string('company_name')->nullable();
@@ -323,8 +321,6 @@ class SalesOrderRepository extends BaseRepository
         $order->point_used = $data['point_used'];
         $order->payment_method = $data['payment_method'];
         $order->status = $cartTotal['total'] <= 0 ? 2 : 0;
-        $order->payment_status = $cartTotal['total'] <= 0 ? 1 : 0;
-        $order->shipping_fee_status = $cartTotal['total'] <= 0 && $cartTotal['is_pay_later'] == 0 ? 1 : 0;
         $order->stripe_payment_intent_id = $data['payment_method'] === 'stripe' ? $data['stripe_payment_intent_id']['clientSecret'] : null;
         $order->is_free_shipping = $cartTotal['is_free_shipping'];
         $order->is_pay_later = $cartTotal['is_pay_later'];
@@ -349,11 +345,8 @@ class SalesOrderRepository extends BaseRepository
         if ($sales_order && $sales_order->status == 0) {
             $description = 'Stripe Payment Update. Status: ' . array_flip(SalesOrder::ORDER_STATUS)[$status];
 
-            $sales_order->payment_status = $status;
             $sales_order->status = $status == 1 ? 2 : $status;
-
             if ($status == 1) {
-                $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
                 $sales_order->payment_succeed_at = Carbon::now();
 
                 if ($sales_order->point_used > 0) {

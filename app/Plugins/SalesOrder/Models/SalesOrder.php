@@ -36,13 +36,6 @@ class SalesOrder extends Model
         'REFUNDED' => -3,
     ];
 
-    public const PAYMENT_STATUS = [
-        'UNPAID' => 0,
-        'PAID' => 1,
-        'FAILED' => -1,
-        'CANCELED' => -2,
-    ];
-
     protected $table = 'sales_order';
 
     /**
@@ -65,8 +58,6 @@ class SalesOrder extends Model
         'point_earned',
         'point_used',
         'status',
-        'payment_status',
-        'shipping_fee_status',
         'first_name',
         'last_name',
         'company_name',
@@ -119,13 +110,13 @@ class SalesOrder extends Model
         return $this->hasMany(SalesOrderLog::class);
     }
 
-    public function salesOrderTotal() : HasMany
+    public function salesOrderTotal(): HasMany
     {
         return $this->hasMany(SalesOrderTotal::class)
-                    ->leftJoin('cart_rule', 'sales_order_total.cart_rule_id', '=', 'cart_rule.id')
-                    ->orderBy('sales_order_total.sort')
-                    ->orderBy('cart_rule.priority','desc')
-                    ->selectRaw('sales_order_total.*');
+            ->leftJoin('cart_rule', 'sales_order_total.cart_rule_id', '=', 'cart_rule.id')
+            ->orderBy('sales_order_total.sort')
+            ->orderBy('cart_rule.priority', 'desc')
+            ->selectRaw('sales_order_total.*');
     }
 
     public function getSalesOrderTotal(string $title)
