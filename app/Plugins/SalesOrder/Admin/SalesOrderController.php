@@ -49,7 +49,7 @@ class SalesOrderController extends Controller
                     return $product_list;
                 })
                 ->addColumn('status', function ($model) {
-                    $route = route('admin.sales_order.status.post', ['id' => $model->id]);
+                    $route = route('admin.sales_order.update.put',["id" => $model->id]);
                     $status = $model->status;
                     return view("sales_order::admin.status", compact('route', 'status'));
                 })
@@ -80,9 +80,9 @@ class SalesOrderController extends Controller
         try {
 
             $admin_id = auth()->guard('admin')->user()->id;
-            $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin_id);
+            $level_change = $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin_id);
             DB::commit();
-            return $this->response();
+            return response()->json(['level_change' => $level_change]);
         } catch (\Exception $exception) {
             DB::rollback();
             return response()->json(['msg' => $exception->getMessage()], 500);
@@ -94,18 +94,12 @@ class SalesOrderController extends Controller
     {
         DB::beginTransaction();
         try {
-            // $total = 0;
-            // $sales_order = $this->salesOrderRepository->find($id);
             if($product_id){
                 $admin_id = auth()->guard('admin')->user()->id;
                 $this->salesOrderProductRepository->updateSalesOrderProduct($request->all(), $id, $product_id, $admin_id);
             }else{
                 $this->salesOrderProductRepository->createSalesOrderProduct($request->all(), $id);
             }
-            // $sales_order->subtotal += $total;
-            // $sales_order->total += $total;
-            // $sales_order->save();
-            
             DB::commit();
             return $this->response();
         } catch (\Exception $exception) {
@@ -152,6 +146,9 @@ class SalesOrderController extends Controller
             $data = explode(",",$form_data['selectedList']);
             $sales_order_list = $this->salesOrderRepository->getListingByID($data);
         }else{
+            $form_data['sales_order.sales_order_id'] = $form_data['sales_order_sales_order_id'];
+            $form_data['sales_order.status'] = $form_data['sales_order_status'];
+            unset($form_data['sales_order_sales_order_id'], $form_data['sales_order_status']);
             $sales_order_list = $this->salesOrderRepository->getExportListing($form_data);
         }
 

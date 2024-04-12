@@ -77,6 +77,8 @@ class SalesOrderProductRepository extends BaseRepository
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
         $salesOrderTotalRepository = new SalesOrderTotalRepository(new Container());
         $productRepository = new ProductRepository(new Container());
+        $productAttributeRepository = new ProductAttributeRepository(new Container());
+        $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
         $sales_order = $salesOrderRepository->find($id);
         $sales_order_subtotal_price = $salesOrderTotalRepository->getOrderTotal($id, null ,'subtotal');
         $sales_order_total_price = $salesOrderTotalRepository->getOrderTotal($id, null ,'total');
@@ -85,16 +87,27 @@ class SalesOrderProductRepository extends BaseRepository
         $product_list = "";
         foreach ($input as $sales_order_product) {
             $product = $productRepository->find($sales_order_product['product_id']);
+            $description = null;
+            if ($sales_order_product['attribute']) {
+                foreach (json_decode($sales_order_product['attribute']) as $key => $product_attribute_term) {
+                    $productAttribute = $productAttributeRepository->find($key);
+                    $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
+                    $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+                }
+            }
+            
             $salesOrderProduct = new SalesOrderProduct();
             $salesOrderProduct->sales_order_id = $id;
             $salesOrderProduct->product_id = $product->id;
+            $salesOrderProduct->product_attribute_term = $sales_order_product['attribute'];
             $salesOrderProduct->product_image = $product->productImage->first()->url;
             $salesOrderProduct->product_name = $product->name;
+            $salesOrderProduct->product_attribute_term_name = $description;
             $salesOrderProduct->price = $sales_order_product['price'];
             $salesOrderProduct->quantity = $sales_order_product['quantity'];
             $salesOrderProduct->total_price = $sales_order_product['total_price'];
             $salesOrderProduct->save();
-
+            
             //return total price
             $total += $salesOrderProduct->total_price;
 

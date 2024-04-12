@@ -27,10 +27,9 @@ class SalesOrder extends Model
     ];
 
     public const ORDER_STATUS = [
-        'PENDING' => 0,
+        'ON HOLD' => 0,
         'COMPLETED' => 1,
         'PROCESSING' => 2,
-        'ONHOLD' => 3,
         'FAILED' => -1,
         'CANCELLED' => -2,
         'REFUNDED' => -3,
@@ -78,6 +77,7 @@ class SalesOrder extends Model
         'city',
         'address',
         'customer_note',
+        'level_change',
         'completed_at',
         'is_free_shipping',
         'is_pay_later',
