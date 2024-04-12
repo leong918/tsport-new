@@ -73,7 +73,9 @@ class CategoryRepository extends BaseRepository
         $this->upload_path = 'category';
         $this->uploadFile($input['image']);
 
-        $this->verifyParentCategory($input);
+        if(isset($input['parent_category_id'])){
+            $this->verifyParentCategory($input);
+        }
 
         $model = new Category();
         $model->fill($input);

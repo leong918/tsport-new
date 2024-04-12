@@ -5,22 +5,14 @@ namespace App\Plugins\SalesOrder\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Product;
 
-class SalesOrderTotal extends Model
+class Wishlist extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'sales_order_total';
-
-    public const TOTAL_SORT = [
-        'SUBTOTAL' => 1,
-        'DISCOUNT' => 2,
-        'COUPON' => 3,
-        'POINT_REDEMPTION' => 4,
-        'SHIPPING_FEE' => 5,
-        'TOTAL' => 6,
-    ];
+    protected $table = 'wishlist';
 
     /**
      * The attributes that are mass assignable.
@@ -28,14 +20,8 @@ class SalesOrderTotal extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'sales_order_id',
         'user_id',
-        'cart_rule_id',
-        'title',
-        'code',
-        'value',
-        'text',
-        'sort',
+        'product_id',
     ];
 
     /**
@@ -59,8 +45,8 @@ class SalesOrderTotal extends Model
         );
     }
 
-    public function cartRule() : HasOne
+    public function product(): BelongsTo
     {
-        return $this->HasOne(CartRule::class,'id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

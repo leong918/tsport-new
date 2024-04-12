@@ -14,6 +14,8 @@ use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\PointLogRepository;
+use App\Repositories\LevelRepository;
+use App\Repositories\LevelChangeLogRepository;
 use Carbon\Carbon;
 
 class SalesOrderRepository extends BaseRepository
@@ -61,7 +63,7 @@ class SalesOrderRepository extends BaseRepository
             $table->bigInteger('user_id');
             $table->bigInteger('country_id');
             $table->string('sales_order_id');
-            $table->string('payment_method');
+            $table->string('payment_method')->nullable();
             $table->string('delivery_partner');
             $table->string('tracking_number')->nullable();
             $table->string('stripe_payment_intent_id')->nullable();
@@ -180,49 +182,98 @@ class SalesOrderRepository extends BaseRepository
 
         Schema::create('wishlist', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->nullable();
+            $table->bigInteger('user_id');
             $table->bigInteger('product_id');
-            $table->string('user_ip');
             $table->timestamps();
             $table->softDeletes();
         });
     }
 
-    public function getSalesOrderByUserId(int $id)
+    public function getListing(array $form_data)
     {
-        return SalesOrder::where('user_id', $id);
+        $models = SalesOrder::query()->orderBy('created_at', 'desc');
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'sales_order.sales_order_id') {
+                $models->where($key, 'like', "%{$value}%");
+            }elseif($key === 'date_range'){
+                if(str_contains($value, ' - '))
+                {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+                    $models->whereBetween('created_at', [$dateFrom, $dateTo]);
+                }else{
+                    $date = Carbon::parse($value);
+                    $models->whereDate('created_at', $date);
+                }
+            } else {
+                $models->where($key, $value);
+            }
+        }
+        return $models;
+    }
+
+    public function getListingByID(array $order_id_list)
+    {
+        return SalesOrder::leftJoin('sales_order_product','sales_order_product.sales_order_id' , '=' , 'sales_order.id')
+                            ->leftJoin('product','product.id', '=', 'sales_order_product.product_id')
+                            ->whereIn('sales_order.id', $order_id_list)
+                            ->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku')
+                            ->get();
+    }
+
+    public function getExportListing(array $form_data)
+    {
+        
+        $models = SalesOrder::leftJoin('sales_order_product','sales_order_product.sales_order_id' , '=' , 'sales_order.id')
+        ->leftJoin('product','product.id', '=', 'sales_order_product.product_id');
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'sales_order.sales_order_id') {
+                $models->where($key, 'like', "%{$value}%");
+            }elseif($key === 'date_range'){
+                if(str_contains($value, ' - '))
+                {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+                    $models->whereBetween('sales_order.created_at', [$dateFrom, $dateTo]);
+                }else{
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order.created_at', $date);
+                }
+            } else {
+                $models->where($key, $value);
+            }
+        }
+
+        return $models->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku')->get();
     }
 
     public function updateSalesOrder(array $input, int $id, int $admin_id)
     {
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
+        $salesOderTotalRepository = new SalesOrderTotalRepository(new Container());
         $sales_order = SalesOrder::find($id);
+        $order_total_id = null;
+        $editedOrderTotal = array();
         foreach ($input as $key => $value) {
             $previousValue = $sales_order->$key;
-            if ($key == 'shipping') {
-                if ($value > $previousValue) {
-                    $sales_order->total += ($value - $previousValue);
-                } else {
-                    $sales_order->total -= ($previousValue - $value);
+
+            if(str_starts_with($key, 'order_total_')){
+                $order_total_id = (int)substr($key, strpos($key, "order_total_") + strlen("order_total_"));
+                $editedOrderTotal = $salesOderTotalRepository->updateOrderTotal($id, null, $order_total_id , $value);
+            }else{
+
+                if ($key == 'country_id') {
+                    $countryRepository = new CountryRepository(new Container());
+                    $country = $countryRepository->find($value);
+                    $sales_order->country = $country->name;
                 }
+    
+                $sales_order->$key = $value;
+                $sales_order->save();
             }
-
-            if ($key == 'discount') {
-                if ($value > $previousValue) {
-                    $sales_order->total -= ($value - $previousValue);
-                } else {
-                    $sales_order->total += ($previousValue - $value);
-                }
-            }
-
-            if ($key == 'country_id') {
-                $countryRepository = new CountryRepository(new Container());
-                $country = $countryRepository->find($value);
-                $sales_order->country = $country->name;
-            }
-
-            $sales_order->$key = $value;
-            $sales_order->save();
 
             //For log purpose
             if ($key == 'status') {
@@ -236,7 +287,9 @@ class SalesOrderRepository extends BaseRepository
             }
 
             //after done create log
-            $description = "Change " . $key . " from " . $previousValue . " to " . $value;
+            $editedColumn  = $order_total_id ? $editedOrderTotal['title'] : $key;
+            $previousValue = $order_total_id ? $editedOrderTotal['previousValue'] : $previousValue;
+            $description = "Change <b>" . $editedColumn . "</b> from " . number_format($previousValue, 2) . " to " . number_format($value, 2);
             $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
             if ($key == 'customer_note') {
                 $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
@@ -271,6 +324,9 @@ class SalesOrderRepository extends BaseRepository
         $order->point_earned = $data['point_earned'];
         $order->point_used = $data['point_used'];
         $order->payment_method = $data['payment_method'];
+        $order->status = $cartTotal['total'] <= 0 ? 2 : 0;
+        $order->payment_status = $cartTotal['total'] <= 0 ? 1 : 0;
+        $order->shipping_fee_status = $cartTotal['total'] <= 0 && $cartTotal['is_pay_later'] == 0 ? 1 : 0;
         $order->stripe_payment_intent_id = $data['payment_method'] === 'stripe' ? $data['stripe_payment_intent_id']['clientSecret'] : null;
         $order->is_free_shipping = $cartTotal['is_free_shipping'];
         $order->is_pay_later = $cartTotal['is_pay_later'];
@@ -292,11 +348,11 @@ class SalesOrderRepository extends BaseRepository
     public function updateStripeSalesOrder($stripe_client_secret, $status)
     {
         $sales_order = SalesOrder::where('stripe_payment_intent_id', $stripe_client_secret)->first();
-        if ($sales_order) {
+        if ($sales_order && $sales_order->status == 0) {
             $description = 'Stripe Payment Update. Status: ' . array_flip(SalesOrder::ORDER_STATUS)[$status];
 
             $sales_order->payment_status = $status;
-            $sales_order->status = $status;
+            $sales_order->status = $status == 1 ? 2 : $status;
 
             if ($status == 1) {
                 $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
@@ -317,6 +373,74 @@ class SalesOrderRepository extends BaseRepository
                     $userRepository = new UserRepository(new Container());
                     $userRepository->addOrderPoint($sales_order);
                 }
+
+                // level validation
+                $userRepository = new UserRepository(new Container());
+                $user = $userRepository->find($sales_order->user_id);
+                $total_accumulate_amount = 0;
+
+                if ($user->level_upgrade_at) {
+                    $total_accumulate_amount = SalesOrder::where('user_id', $user->id)
+                        ->where('status', '>', 0)
+                        ->where('created_at', '>', $user->level_upgrade_at)
+                        ->sum('total');
+
+                    // status havent updated to database
+                    $total_accumulate_amount += $sales_order->total;
+                }
+
+                // check level upgrade
+                $level_upgrade = false;
+                $levelRepository = new LevelRepository(new Container());
+                $levelChangeLogRepository = new LevelChangeLogRepository(new Container());
+
+                if ($user->level_id == 1 || $user->level_id == 2) {
+                    $current_level = $levelRepository->find($user->level_id);
+                    $next_level_target = $levelRepository->getNextLevel($current_level->leveling);
+                    $check_amount = $user->level_id == 1 ? $sales_order->total : $total_accumulate_amount;
+
+                    if ($check_amount >= $next_level_target->target_amount) {
+                        $data['user_id'] = $user->id;
+                        $data['level_id'] = $user->level_id;
+                        $data['new_level_id'] = $next_level_target->id;
+                        $data['sales_order_id'] = $sales_order->id;
+                        $data['remark'] = 'Upgrade from level ' . $user->level->name . ' to ' . $next_level_target->name;
+                        $data['previous_validity'] = $user->level_validity ?? Carbon::now();
+                        $data['current_validity'] = Carbon::now()->addYear();
+                        $levelChangeLogRepository->createLevelLog($data);
+
+                        $user->level_id = $next_level_target->id;
+                        $user->level_upgrade_at = Carbon::now();
+                        $user->level_validity = Carbon::now()->addYear();
+                        $user->save();
+
+                        $level_upgrade = true;
+                    }
+                }
+                // end check level upgrade
+
+                // check level extend
+                if ($level_upgrade == false && ($user->level_id == 2 || $user->level_id == 3)) {
+                    $same_level_target = $levelRepository->find($user->level_id);
+                    if ($total_accumulate_amount >= $same_level_target->extend_amount) {
+                        $previous_validity = $user->level_validity;
+                        $current_validity = Carbon::parse($user->level_validity)->addYear();
+                        $user->level_validity = $current_validity;
+                        $user->save();
+
+                        $data['user_id'] = $user->id;
+                        $data['level_id'] = $user->level_id;
+                        $data['new_level_id'] = $user->level_id;
+                        $data['sales_order_id'] = $sales_order->id;
+                        $data['remark'] = 'Extend level ' . $user->level->name;
+                        $data['previous_validity'] = $previous_validity;
+                        $data['current_validity'] = $current_validity;
+
+                        $levelChangeLogRepository->createLevelLog($data);
+                    }
+                }
+                // end check level extend
+                // end level validation
             } else {
                 $sales_order->payment_failed_at = Carbon::now();
 
@@ -342,5 +466,10 @@ class SalesOrderRepository extends BaseRepository
         $status = array_flip(SalesOrder::ORDER_STATUS);
 
         return $status;
+    }
+
+    public function getSalesOrderByUserId(int $id)
+    {
+        return SalesOrder::where('user_id', $id);
     }
 }

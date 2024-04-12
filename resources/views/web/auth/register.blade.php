@@ -122,6 +122,12 @@
         $('#dobRegisterDatePicker').tempusDominus({
                 localization: {
                     format: 'dd/MM/yyyy'
+                },
+                display:{
+                    components:{
+                        clock: false
+                    },
+                    theme:'light',
                 }
             });
 

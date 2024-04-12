@@ -47,7 +47,6 @@ class SalesOrderProductRepository extends BaseRepository
 
         foreach ($data as $cart) {
             $product = $productRepository->find($cart->product_id);
-            $price = $product->getCurrencyParameters('HKD')->price;
             $description = null;
 
             if ($cart->product_attribute_term) {
@@ -61,13 +60,13 @@ class SalesOrderProductRepository extends BaseRepository
             $orderProduct = new SalesOrderProduct();
             $orderProduct->sales_order_id = $order->id;
             $orderProduct->product_id = $cart->product_id;
-            $orderProduct->product_attribute_term = $cart->productAttributeTerm;
+            $orderProduct->product_attribute_term = $cart->product_attribute_term;
             $orderProduct->product_image = $product->getFirstProductImage()->url;
             $orderProduct->product_name = $product->name;
             $orderProduct->product_attribute_term_name = $description;
-            $orderProduct->price = $price;
+            $orderProduct->price = $cart->price;
             $orderProduct->quantity = $cart->quantity;
-            $orderProduct->total_price = $cart->quantity * $price;
+            $orderProduct->total_price = $cart->total_price;
             $orderProduct->save();
         }
     }
@@ -76,8 +75,11 @@ class SalesOrderProductRepository extends BaseRepository
     {
         $salesOrderRepository = new SalesOrderRepository(new Container());
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
+        $salesOrderTotalRepository = new SalesOrderTotalRepository(new Container());
         $productRepository = new ProductRepository(new Container());
         $sales_order = $salesOrderRepository->find($id);
+        $sales_order_subtotal_price = $salesOrderTotalRepository->getOrderTotal($id, null ,'subtotal');
+        $sales_order_total_price = $salesOrderTotalRepository->getOrderTotal($id, null ,'total');
         $admin_id = auth()->guard('admin')->user()->id;
         $total = 0;
         $product_list = "";
@@ -104,37 +106,38 @@ class SalesOrderProductRepository extends BaseRepository
         // create log
         $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
 
-        return $total;
+        $salesOrderTotalRepository->updateSubtotalAndTotal($id, $total, "add");
     }
 
     public function updateSalesOrderProduct(array $input, int $id, int $product_id, int $admin_id)
     {
         $salesOrderRepository = new SalesOrderRepository(new Container());
+        $salesOrderTotalRepository = new SalesOrderTotalRepository(new Container());
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
         $sales_order_product = SalesOrderProduct::find($product_id);
         $sales_order = $salesOrderRepository->find($id);
         $total = 0;
 
         foreach ($input as $key => $value) {
-            $previousValue = $sales_order_product;
+            $previousValue = $sales_order_product->price;
             $current_total_price = $sales_order_product->total_price;
             $sales_order_product->$key = $value;
             $sales_order_product->total_price = round($sales_order_product->price * $sales_order_product->quantity, 2);
             $sales_order_product->save();
 
-            //return total price
+            //calulate total price
             $total += $sales_order_product->total_price - $current_total_price;
 
             // create log
             if ($key == 'product_id') {
-                $description = "Change product from " . $previousValue->product_name . " to " . $sales_order_product->product_name;
+                $description = "Change product from <b>" . $previousValue->product_name . "</b> to " . $sales_order_product->product_name;
             } else {
-                $description = "Update product " . $sales_order_product->product_name . $key . " from " . $previousValue->$key . " to " . $value;
+                $description = "Update product " . $sales_order_product->product_name . " ". $key . " from " . number_format($previousValue, 2) . " to " . number_format($value, 2);
             }
 
             $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
         }
-        return $total;
+        $salesOrderTotalRepository->updateSubtotalAndTotal($id, $total, "add");
     }
 
     public function deleteProductBySalesOrderId(int $sales_order_id)

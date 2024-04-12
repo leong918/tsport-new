@@ -52,7 +52,10 @@ class UserRepository extends BaseRepository
         if (isset($input['password']) && trim($input['password']) === '') {
             unset($input['password']);
         }
-        $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
+        if(isset($input['dob'])){
+            $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
+        }
+        
         $model = User::findOrFail($id);
         $model->fill($input);
         $model->save();
@@ -135,9 +138,9 @@ class UserRepository extends BaseRepository
         return $data;
     }
 
-    public function deductFullPoint($order)
+    public function deductFullPoint($user_id)
     {
-        $user = User::find($order->user_id);
+        $user = User::find($user_id);
         $user->point = 0;
         $user->save();
     }
