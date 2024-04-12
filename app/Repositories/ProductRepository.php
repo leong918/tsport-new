@@ -201,13 +201,12 @@ class ProductRepository extends BaseRepository
 
     public function getProductAttribute(int $product_id)
     {
-        return Product::leftjoin('product_attribute','product.id', '=', 'product_attribute.product_id')
-                        ->leftjoin('product_attribute_term', 'product_attribute.id', '=', 'product_attribute_term.product_attribute_id')
-                        ->leftjoin('product_price', 'product_attribute_term.id', '=', 'product_price.product_attribute_term_id')
-                        ->where('product.id',$product_id)
-                        ->selectRaw('product_attribute.name as attribute_name, product_attribute.id as product_attribute_id, product_attribute_term.id, product_attribute_term.name,product_price.code,product_price.price')
-                        ->get();
-
+        return Product::leftjoin('product_attribute', 'product.id', '=', 'product_attribute.product_id')
+            ->leftjoin('product_attribute_term', 'product_attribute.id', '=', 'product_attribute_term.product_attribute_id')
+            ->leftjoin('product_price', 'product_attribute_term.id', '=', 'product_price.product_attribute_term_id')
+            ->where('product.id', $product_id)
+            ->selectRaw('product_attribute.name as attribute_name, product_attribute.id as product_attribute_id, product_attribute_term.id, product_attribute_term.name,product_price.code,product_price.price')
+            ->get();
     }
 
     public function createProduct(array $input)
@@ -233,8 +232,9 @@ class ProductRepository extends BaseRepository
             $productAttribute = new ProductAttributeRepository(new Container());
             $productAttribute->createProductAttribute($input, $model->id);
         } else {
+            $remark = 'Create new product';
             $productBalanceLog = new ProductBalanceLogRepository(new Container());
-            $productBalanceLog->createProductBalanceLog($model);
+            $productBalanceLog->createProductBalanceLog($model, null, null, $remark);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());
@@ -296,8 +296,9 @@ class ProductRepository extends BaseRepository
         $model->quantity = $total;
         $model->save();
 
+        $remark = 'Update prduct';
         $productBalanceLog = new ProductBalanceLogRepository(new Container());
-        $productBalanceLog->createProductBalanceLog($model, null, $input);
+        $productBalanceLog->createProductBalanceLog($model, null, $input, $remark);
     }
 
     public function toggleStatus(int $id)

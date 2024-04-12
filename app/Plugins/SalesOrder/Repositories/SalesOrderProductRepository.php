@@ -8,6 +8,7 @@ use Illuminate\Container\Container;
 use App\Repositories\ProductRepository;
 use App\Repositories\ProductAttributeRepository;
 use App\Repositories\ProductAttributeTermRepository;
+use App\Repositories\ProductBalanceLogRepository;
 
 class SalesOrderProductRepository extends BaseRepository
 {
@@ -39,6 +40,7 @@ class SalesOrderProductRepository extends BaseRepository
         $productRepository = new ProductRepository(new Container());
         $productAttributeRepository = new ProductAttributeRepository(new Container());
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+        $productBalanceLogRepository = new ProductBalanceLogRepository(new Container());
 
         foreach ($data as $cart) {
             $product = $productRepository->find($cart->product_id);
@@ -49,7 +51,23 @@ class SalesOrderProductRepository extends BaseRepository
                     $productAttribute = $productAttributeRepository->find($key);
                     $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
                     $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+
+                    $productAttributeTerm->quantity -= $cart->quantity;
+                    $productAttributeTerm->save();
+
+                    $log_data['stock_option'] = 0;
+                    $log_data['stock_amount'] = $cart->quantity;
+                    $remark = 'Deduct product for Order: ' . $order->sales_order_id;
+                    $productBalanceLogRepository->createProductBalanceLog($productAttributeTerm, $log_data, null, $remark);
                 }
+            } else {
+                $product->quantity -= $cart->quantity;
+                $product->save();
+
+                $log_data['type'] = 'DEDUCT';
+                $log_data['quantity'] = $cart->quantity;
+                $remark = 'Deduct product for Order: ' . $order->sales_order_id;
+                $productBalanceLogRepository->createProductBalanceLog($product, null, $log_data, $remark);
             }
 
             $orderProduct = new SalesOrderProduct();
@@ -88,7 +106,7 @@ class SalesOrderProductRepository extends BaseRepository
                     $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
                 }
             }
-            
+
             $salesOrderProduct = new SalesOrderProduct();
             $salesOrderProduct->sales_order_id = $id;
             $salesOrderProduct->product_id = $product->id;
@@ -100,7 +118,7 @@ class SalesOrderProductRepository extends BaseRepository
             $salesOrderProduct->quantity = $sales_order_product['quantity'];
             $salesOrderProduct->total_price = $sales_order_product['total_price'];
             $salesOrderProduct->save();
-            
+
             //return total price
             $total += $salesOrderProduct->total_price;
 
@@ -138,7 +156,7 @@ class SalesOrderProductRepository extends BaseRepository
             if ($key == 'product_id') {
                 $description = "Change product from <b>" . $previousValue->product_name . "</b> to " . $sales_order_product->product_name;
             } else {
-                $description = "Update product " . $sales_order_product->product_name . " ". $key . " from " . number_format($previousValue, 2) . " to " . number_format($value, 2);
+                $description = "Update product " . $sales_order_product->product_name . " " . $key . " from " . number_format($previousValue, 2) . " to " . number_format($value, 2);
             }
 
             $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);

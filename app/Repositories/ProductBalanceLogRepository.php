@@ -35,7 +35,7 @@ class ProductBalanceLogRepository extends BaseRepository
         return ProductBalanceLog::query()->orderBy('created_at', 'desc');
     }
 
-    public function createProductBalanceLog($model, $termArr = null, $stockInput = null)
+    public function createProductBalanceLog($model, $termArr = null, $stockInput = null, $remark)
     {
         $log_model = new ProductBalanceLog();
 
@@ -51,7 +51,6 @@ class ProductBalanceLogRepository extends BaseRepository
                 $log_model->quantity = $model->quantity;
             }
         } else {
-
             $log_model->product_id = $model->product_id;
             $log_model->product_attribute_term_id = $model->id;
 
@@ -64,6 +63,7 @@ class ProductBalanceLogRepository extends BaseRepository
             }
         }
 
+        $log_model->remark = $remark;
         $log_model->save();
     }
 }

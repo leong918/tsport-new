@@ -56,10 +56,6 @@
                 <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->status}}">{!! isset($model) && isset($model->status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status) : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
-                <th>{{ html()->label('Payment Status :') }}</th>
-                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS)) }}' data-column="payment_status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->payment_status}}">{!! isset($model) && isset($model->payment_status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS, $model->payment_status) : '<i>Empty</i>' !!}</span></div></td>
-            </tr>
-            <tr>
                 <th>{{ html()->label('Shipping Method:') }}</th>
                 <td><div><span class="editable" data-input-type="text" data-column="delivery_partner" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->delivery_partner}}">{!! isset($model) && $model->delivery_partner ? $model->delivery_partner : '<i>Empty</i>' !!}</span></div></td>
             </tr>
@@ -298,8 +294,6 @@ $(document).ready(function(){
                 var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status); ?>";
             }else if (originalColumn == 'payment_method'){
                 var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method); ?>";
-            }else if(originalColumn == 'payment_status'){
-                var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS, $model->payment_status); ?>";
             }else if(originalColumn == 'country_id'){
                 var rendering = "<?php if(isset($model)) echo $countryDropdown[$model->country_id] ?>";
             }
