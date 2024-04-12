@@ -79,8 +79,8 @@ class SalesOrderController extends Controller
         DB::beginTransaction();
         try {
 
-            $admin_id = auth()->guard('admin')->user()->id;
-            $level_change = $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin_id);
+            $admin = auth()->guard('admin')->user();
+            $level_change = $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin);
             DB::commit();
             return response()->json(['level_change' => $level_change]);
         } catch (\Exception $exception) {

@@ -5,7 +5,7 @@ namespace App\Plugins\SalesOrder\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SalesOrderTotal extends Model
 {
@@ -59,8 +59,8 @@ class SalesOrderTotal extends Model
         );
     }
 
-    public function cartRule() : HasOne
+    public function cartRule() : BelongsTo
     {
-        return $this->HasOne(CartRule::class,'id');
+        return $this->belongsTo(CartRule::class,'id');
     }
 }

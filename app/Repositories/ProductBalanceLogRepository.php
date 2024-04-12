@@ -41,8 +41,8 @@ class ProductBalanceLogRepository extends BaseRepository
 
         //------------  check is product/ prod attr term model ----------------------
         if ($model instanceof Product) {
+            
             $log_model->product_id = $model->id;
-
             if ($stockInput) {
                 $log_model->type = ($stockInput['type'] != 'ADD') ? 'OUT' : 'IN';
                 $log_model->quantity = $stockInput['quantity'];
