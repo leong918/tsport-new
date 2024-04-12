@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Plugins\ProductReview\Models\ProductReview;
 use App\Plugins\SalesOrder\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -122,6 +123,13 @@ class Product extends Model
     public function getFirstProductImage()
     {
         return $this->productImage->first();
+    }
+
+    public function getAvgRating()
+    {
+        $rating = round(ProductReview::where('product_id', $this->id)->avg('rate'));
+
+        return $rating;
     }
 
     public function checkWishlist($product_id)

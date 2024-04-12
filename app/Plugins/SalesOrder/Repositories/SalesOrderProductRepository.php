@@ -98,8 +98,6 @@ class SalesOrderProductRepository extends BaseRepository
         $productAttributeRepository = new ProductAttributeRepository(new Container());
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
         $sales_order = $salesOrderRepository->find($id);
-        $sales_order_subtotal_price = $salesOrderTotalRepository->getOrderTotal($id, null ,'subtotal');
-        $sales_order_total_price = $salesOrderTotalRepository->getOrderTotal($id, null ,'total');
         $admin_id = auth()->guard('admin')->user()->id;
         $total = 0;
         $product_list = "";

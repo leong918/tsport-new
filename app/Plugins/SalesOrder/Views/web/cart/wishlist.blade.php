@@ -43,9 +43,9 @@
                                 <div class="product-info">
                                     <div class="rating-wishlist">
                                         @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
+                                        {{ reviewRenderView('common_star_rating', $wishlist->product) }}
                                         @endif
-                                        <img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">
+                                        <img class="wishlist-mobile bg-white rounded-circle p-2" src="{{asset('assets/web/assets/img/shopping_cart/remove.png')}}">
                                     </div>
                                     <div class="product-description">{{ $wishlist->product->name }}</div>
                                     <div class="price-cart">

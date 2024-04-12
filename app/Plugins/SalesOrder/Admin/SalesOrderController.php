@@ -56,19 +56,19 @@ class SalesOrderController extends Controller
                 ->addColumn('status', function ($model) {
                     $route = route('admin.sales_order.update.put', ["id" => $model->id]);
                     $status = $model->status;
-                    return view("sales_order::admin.status", compact('route', 'status'));
+                    return view("sales_order::admin.sales_order.status", compact('route', 'status'));
                 })
                 ->addColumn('action', function ($model) {
-                    return view("sales_order::admin.action", compact('model'));
+                    return view("sales_order::admin.sales_order.action", compact('model'));
                 })
                 ->addColumn('checkbox', function ($model) {
-                    return view("sales_order::admin.checkbox", compact('model'));
+                    return view("sales_order::admin.sales_order.checkbox", compact('model'));
                 })
                 ->rawColumns(['product', 'checkbox'])
                 ->make(true);
         }
 
-        return view("sales_order::admin.index");
+        return view("sales_order::admin.sales_order.index");
     }
 
     public function edit(int $id)
@@ -76,7 +76,7 @@ class SalesOrderController extends Controller
         $model = $this->salesOrderRepository->find($id);
         $productListDropdown = $this->productRepository->dropdownForSalesOrder('HKD');
         $countryDropdown = $this->countryRepository->dropdown();
-        return view("sales_order::admin.update", compact('model', 'productListDropdown', 'countryDropdown'));
+        return view("sales_order::admin.sales_order.update", compact('model', 'productListDropdown', 'countryDropdown'));
     }
 
     public function update(Request $request, int $id)
@@ -84,8 +84,8 @@ class SalesOrderController extends Controller
         DB::beginTransaction();
         try {
 
-            $admin_id = auth()->guard('admin')->user()->id;
-            $level_change = $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin_id);
+            $admin = auth()->guard('admin')->user();
+            $level_change = $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin);
             DB::commit();
             return response()->json(['level_change' => $level_change]);
         } catch (\Exception $exception) {
