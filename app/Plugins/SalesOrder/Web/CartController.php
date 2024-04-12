@@ -4,6 +4,7 @@ namespace App\Plugins\SalesOrder\Web;
 
 use App\Plugins\SalesOrder\Repositories\UserCartRepository;
 use App\Plugins\SalesOrder\Repositories\WishlistRepository;
+use App\Plugins\ProductReview\Repositories\ProductReviewRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
@@ -32,6 +33,7 @@ class CartController extends BaseController
     private SalesOrderTotalRepository $salesOrderTotalRepository;
     private CartRuleRepository $cartRuleRepository;
     private WishlistRepository $wishlistRepository;
+    private ProductReviewRepository $productReviewRepository;
 
     public function __construct(
         UserCartRepository $userCartRepository,
@@ -45,6 +47,7 @@ class CartController extends BaseController
         SalesOrderTotalRepository $salesOrderTotalRepository,
         CartRuleRepository $cartRuleRepository,
         WishlistRepository $wishlistRepository,
+        ProductReviewRepository $productReviewRepository,
     ) {
         $this->userCartRepository = $userCartRepository;
         $this->countryRepository = $countryRepository;
@@ -57,6 +60,7 @@ class CartController extends BaseController
         $this->salesOrderTotalRepository = $salesOrderTotalRepository;
         $this->cartRuleRepository = $cartRuleRepository;
         $this->wishlistRepository = $wishlistRepository;
+        $this->productReviewRepository = $productReviewRepository;
     }
 
     public function cart(Request $request)
