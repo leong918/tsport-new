@@ -135,4 +135,13 @@ class ProductController extends BaseController
     {
         $this->productRepository->toggleStatus($id);
     }
+
+    public function getProductAttribute(int $id)
+    {
+
+        $product_attribute = $this->productRepository->getProductAttribute($id);
+        $collection = collect($product_attribute);
+        $regrouped_attribute = ($collection->groupBy('attribute_name'))->toArray();
+        return response()->json(['product_attribute' => $regrouped_attribute]);
+    }
 }
