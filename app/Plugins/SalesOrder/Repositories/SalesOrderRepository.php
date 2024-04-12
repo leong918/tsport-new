@@ -407,13 +407,20 @@ class SalesOrderRepository extends BaseRepository
                 $level_upgrade = false;
                 $levelRepository = new LevelRepository(new Container());
                 $levelChangeLogRepository = new LevelChangeLogRepository(new Container());
+                $cartRuleRepository = new CartRuleRepository(new Container());
 
                 if ($user->level_id == 1 || $user->level_id == 2) {
                     $current_level = $levelRepository->find($user->level_id);
                     $next_level_target = $levelRepository->getNextLevel($current_level->leveling);
-                    $check_amount = $user->level_id == 1 ? $sales_order->total : $total_accumulate_amount;
 
-                    if ($check_amount >= $next_level_target->target_amount) {
+                    if ($user->level_id == 1) {
+                        $insider_discount = $cartRuleRepository->makeModel()->where('type', 'insider_discount')->first();
+                        $check_condition = $sales_order->salesOrderTotal->where('cart_rule_id', $insider_discount->id)->first();
+                    } else {
+                        $check_condition = $$total_accumulate_amount >= $next_level_target->target_amount;
+                    }
+
+                    if ($check_condition) {
                         $data['user_id'] = $user->id;
                         $data['level_id'] = $user->level_id;
                         $data['new_level_id'] = $next_level_target->id;

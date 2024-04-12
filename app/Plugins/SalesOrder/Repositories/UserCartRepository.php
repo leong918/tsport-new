@@ -11,6 +11,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\ProductAttributeRepository;
 use App\Repositories\ProductAttributeTermRepository;
 use App\Repositories\CountryRepository;
+use App\Repositories\LevelRepository;
 
 class UserCartRepository extends BaseRepository
 {
@@ -156,10 +157,12 @@ class UserCartRepository extends BaseRepository
     {
         $data = array();
         $data['subtotal'] = 0;
-        $data['shipping_fee'] = 0;
-        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
-
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+        $userRepository = new UserRepository(new Container());
+        $levelRepository = new LevelRepository(new Container());
+
+        // calculate subtotal
+        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
         foreach ($cart_list as $cart) {
             $subtotal = 0;
             $subtotal += $cart->product->getCurrencyParameters('HKD')->price;
@@ -173,23 +176,47 @@ class UserCartRepository extends BaseRepository
             $data['subtotal'] += $subtotal * $cart->quantity;
         }
 
+        // calculate discount, point redemption, shipping fee and total
+        $other_data = $this->calculateOtherTotal($data['subtotal'], $user_data, $coupon_session, $user_id, $point_session, $address, false);
+
+        // check for just member total to upgrade insider
+        if ($user_id) {
+            $user = $userRepository->find($user_id);
+            $level = $levelRepository->find($user->level_id + 1);
+            if ($user->level_id == 1 && $other_data['total'] >= $level->target_amount) {
+                // calculate discount, point redemption, shipping fee and total
+                $other_data = $this->calculateOtherTotal($data['subtotal'], $user_data, $coupon_session, $user_id, $point_session, $address, true);
+            }
+        }
+
+        $data = array_merge($data, $other_data);
+        return $data;
+    }
+
+    private function calculateOtherTotal($subtotal, $user_data, $coupon_session, $user_id, $point_session, $address, $is_upgrade_insider)
+    {
+        $data = array();
+        $data['shipping_fee'] = 0;
         $cartRuleRepository = new CartRuleRepository(new Container());
-        $cart_rule_data = $cartRuleRepository->calculatePriorityRule($cart_list, $coupon_session);
+        $userRepository = new UserRepository(new Container());
+        $countryRepository = new CountryRepository(new Container());
+
+        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
+        $cart_rule_data = $cartRuleRepository->calculatePriorityRule($cart_list, $coupon_session, $user_id, $is_upgrade_insider);
         $data = array_merge($data, $cart_rule_data);
 
-        $max_point_redemption = round($data['subtotal'] - $data['total_discount_amount'], 2);
-        $userRepository = new UserRepository(new Container());
+        $max_point_redemption = round($subtotal - $data['total_discount_amount'], 2);
         $point_redemption_data = $userRepository->calculateDiscountPoint($user_id, $point_session, $max_point_redemption);
         $data = array_merge($data, $point_redemption_data);
 
-        $total_price = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'];
+        $total_price = $subtotal - $data['total_discount_amount'] - $data['point_redemption'];
         if (isset($address['country_id']) && $address['country_id']) {
-            $countryRepository = new CountryRepository(new Container());
             $shipping_data = $countryRepository->calculateShippingFee($total_price, $address['country_id']);
             $data = array_merge($data, $shipping_data);
         }
 
-        $data['total'] = round($data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'] + $data['shipping_fee'], 2);
+        $data['total'] = round($subtotal - $data['total_discount_amount'] - $data['point_redemption'] + $data['shipping_fee'], 2);
+
         return $data;
     }
 
