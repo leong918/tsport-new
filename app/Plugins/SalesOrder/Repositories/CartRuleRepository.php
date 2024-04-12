@@ -5,6 +5,8 @@ namespace App\Plugins\SalesOrder\Repositories;
 use App\Plugins\SalesOrder\Models\CartRule;
 use App\Repositories\BaseRepository;
 use Carbon\Carbon;
+use Illuminate\Container\Container;
+use App\Repositories\UserRepository;
 
 class CartRuleRepository extends BaseRepository
 {
@@ -68,12 +70,15 @@ class CartRuleRepository extends BaseRepository
         return CartRule::where('coupon_code', $coupon_code)->where('status', 1)->first();
     }
 
-    public function calculatePriorityRule(object $cart, array $couponList)
+    public function calculatePriorityRule($cart, $couponList, $user_id, $is_upgrade_insider)
     {
+        $userRepository = new UserRepository(new Container());
+        $user = $userRepository->find($user_id);
+
         $cart_rule_array = array();
         $cart_rules = CartRule::where('status', 1)
             ->where(function ($query) use ($couponList) {
-                $query->where('type', 'discount')
+                $query->where('type', '<>', 'coupon')
                     ->orWhere(function ($subquery) use ($couponList) {
                         $subquery->where('type', 'coupon')
                             ->whereIn('id', $couponList);
@@ -92,6 +97,13 @@ class CartRuleRepository extends BaseRepository
         $total_discount_amount = 0;
         foreach ($cart_rules as $cart_rule) {
             $discount_amount = 0;
+            $cart_rule_type = $cart_rule->type == 'coupon' ? 'coupon' : 'discount';
+
+            if ($cart_rule->type == 'insider_discount' && ((!$user || $user->level_id != 2) && !$is_upgrade_insider)) {
+                continue;
+            } elseif ($cart_rule->type == 'core_discount' && (!$user || $user->level_id != 3)) {
+                continue;
+            }
 
             if ($cart_rule->target_table !== 'whole') {
                 $cart = $cart->where($cart_rule->target_table . '_id', $cart_rule->table_id);
@@ -109,9 +121,9 @@ class CartRuleRepository extends BaseRepository
             }
 
             if ($discount_amount > 0) {
-                $cart_rule_array[$cart_rule->type][$cart_rule->id]['id'] = $cart_rule->id;
-                $cart_rule_array[$cart_rule->type][$cart_rule->id]['name'] = $cart_rule->type == 'coupon' ? $cart_rule->coupon_code : $cart_rule->name;
-                $cart_rule_array[$cart_rule->type][$cart_rule->id]['discount_amount'] = round($discount_amount, 2);
+                $cart_rule_array[$cart_rule_type][$cart_rule->id]['id'] = $cart_rule->id;
+                $cart_rule_array[$cart_rule_type][$cart_rule->id]['name'] = $cart_rule_type == 'coupon' ? $cart_rule->coupon_code : $cart_rule->name;
+                $cart_rule_array[$cart_rule_type][$cart_rule->id]['discount_amount'] = round($discount_amount, 2);
 
                 $total_discount_amount += $discount_amount;
             }
