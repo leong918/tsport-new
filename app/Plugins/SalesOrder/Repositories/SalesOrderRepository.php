@@ -88,6 +88,7 @@ class SalesOrderRepository extends BaseRepository
             $table->string('city');
             $table->string('address');
             $table->longText('customer_note')->nullable();
+            $table->string('level_change')->nullable();
             $table->tinyInteger('is_free_shipping')->default(0);
             $table->tinyInteger('is_pay_later')->default(0);
             $table->timestamp('payment_succeed_at')->nullable();
@@ -255,6 +256,7 @@ class SalesOrderRepository extends BaseRepository
         $sales_order = SalesOrder::find($id);
         $order_total_id = null;
         $editedOrderTotal = array();
+        $level_change = null;
         foreach ($input as $key => $value) {
             $previousValue = $sales_order->$key;
 
@@ -269,6 +271,13 @@ class SalesOrderRepository extends BaseRepository
                     $sales_order->country = $country->name;
                 }
 
+                if ($key == 'status') {
+                    $this->updateSalesOrderStatus($previousValue, $value, $sales_order);
+                    if ($value < 0) {
+                        $level_change = $sales_order->level_change;
+                    }
+                }
+
                 $sales_order->$key = $value;
                 $sales_order->save();
             }
@@ -279,6 +288,11 @@ class SalesOrderRepository extends BaseRepository
                 $value = renderModelData(SalesOrder::ORDER_STATUS, $value);
             }
 
+            if ($key == 'payment_status') {
+                $previousValue = renderModelData(SalesOrder::PAYMENT_STATUS, $previousValue);
+                $value = renderModelData(SalesOrder::PAYMENT_STATUS, $value);
+            }
+
             if ($key == 'payment_method') {
                 $previousValue = renderModelData(SalesOrder::PAYMENT_METHOD, $previousValue);
                 $value = renderModelData(SalesOrder::PAYMENT_METHOD, $value);
@@ -287,13 +301,15 @@ class SalesOrderRepository extends BaseRepository
             //after done create log
             $editedColumn  = $order_total_id ? $editedOrderTotal['title'] : $key;
             $previousValue = $order_total_id ? $editedOrderTotal['previousValue'] : $previousValue;
-            $description = "Change <b>" . $editedColumn . "</b> from " . number_format($previousValue, 2) . " to " . number_format($value, 2);
+            $description = "Change <b>" . $editedColumn . "</b> from " . ($previousValue ? (is_numeric($previousValue) ? number_format($previousValue, 2)  : $previousValue) : '<i>Empty</i>') . " to " . ($value ? (is_numeric($value) ? number_format($value, 2) : $value) : '<i>Empty</i>');
             $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
             if ($key == 'customer_note') {
                 $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
                 Mail::to($sales_order->user->email)->send(new CustomerNoteMail($description));
             }
         }
+
+        return $level_change;
     }
 
     public function toggleStatus(int $id)
@@ -464,5 +480,126 @@ class SalesOrderRepository extends BaseRepository
             $salesOrderLogRepository = new SalesOrderLogRepository(new Container());
             $salesOrderLogRepository->createLog($sales_order, $sales_order->user_id, 'user', $status, $description);
         }
+    }
+
+    public function updateSalesOrderStatus($previousStatus, $newStatus, $sales_order)
+    {
+        //status change from onhold to processing or completed also released the point
+        if ($previousStatus == 0 && ($newStatus == 1 || $newStatus == 2)) {
+            $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
+
+            if ($sales_order->point_used > 0) {
+                $pointLogRepository = new PointLogRepository(new Container());
+                $pointLogData['user_id'] = $sales_order->user_id;
+                $pointLogData['sales_order_id'] = $sales_order->id;
+                $pointLogData['point'] = $sales_order->point_used;
+                $pointLogData['type'] = 'OUT';
+                $pointLogData['remark'] = 'Create New Order ' . $sales_order->sales_order_id;
+                $pointLogRepository->create($pointLogData);
+            }
+
+            if ($sales_order->point_earned > 0) {
+                //add point
+                $userRepository = new UserRepository(new Container());
+                $userRepository->addOrderPoint($sales_order);
+            }
+
+            // level validation
+            $userRepository = new UserRepository(new Container());
+            $user = $userRepository->find($sales_order->user_id);
+            $total_accumulate_amount = 0;
+
+            if ($user->level_upgrade_at) {
+                $total_accumulate_amount = SalesOrder::where('user_id', $user->id)
+                    ->where('status', '>', 0)
+                    ->where('created_at', '>', $user->level_upgrade_at)
+                    ->sum('total');
+
+                // status havent updated to database
+                $total_accumulate_amount += $sales_order->total;
+            }
+
+            // check level upgrade
+            $level_upgrade = false;
+            $levelRepository = new LevelRepository(new Container());
+            $levelChangeLogRepository = new LevelChangeLogRepository(new Container());
+
+            if ($user->level_id == 1 || $user->level_id == 2) {
+                $current_level = $levelRepository->find($user->level_id);
+                $next_level_target = $levelRepository->getNextLevel($current_level->leveling);
+                $check_amount = $user->level_id == 1 ? $sales_order->total : $total_accumulate_amount;
+                if ($check_amount >= $next_level_target->target_amount) {
+                    $data['user_id'] = $user->id;
+                    $data['level_id'] = $user->level_id;
+                    $data['new_level_id'] = $next_level_target->id;
+                    $data['sales_order_id'] = $sales_order->id;
+                    $data['remark'] = 'Upgrade from level ' . $user->level->name . ' to ' . $next_level_target->name;
+                    $data['previous_validity'] = $user->level_validity ?? Carbon::now();
+                    $data['current_validity'] = Carbon::now()->addYear();
+                    $levelChangeLogRepository->createLevelLog($data);
+
+                    $user->level_id = $next_level_target->id;
+                    $user->level_upgrade_at = Carbon::now();
+                    $user->level_validity = Carbon::now()->addYear();
+                    $user->save();
+
+                    $level_upgrade = true;
+
+                    $sales_order->level_change = "upgrade";
+                }
+            }
+            // end check level upgrade
+            // check level extend
+            if ($level_upgrade == false && ($user->level_id == 2 || $user->level_id == 3)) {
+                $same_level_target = $levelRepository->find($user->level_id);
+                if ($total_accumulate_amount >= $same_level_target->extend_amount) {
+                    $previous_validity = $user->level_validity;
+                    $current_validity = Carbon::parse($user->level_validity)->addYear();
+                    $user->level_validity = $current_validity;
+                    $user->save();
+
+                    $data['user_id'] = $user->id;
+                    $data['level_id'] = $user->level_id;
+                    $data['new_level_id'] = $user->level_id;
+                    $data['sales_order_id'] = $sales_order->id;
+                    $data['remark'] = 'Extend level ' . $user->level->name;
+                    $data['previous_validity'] = $previous_validity;
+                    $data['current_validity'] = $current_validity;
+
+                    $levelChangeLogRepository->createLevelLog($data);
+
+                    //save to sales order
+                    $sales_order->level_change = "extend";
+                }
+            }
+            // end check level extend
+            // end level validation
+        }
+
+        //if order cancelled/failed/refunded 
+        if ($newStatus < 0) {
+            // return point used
+            if ($sales_order->point_used > 0) {
+                // return point
+                $userRepository = new UserRepository(new Container());
+                $userRepository->returnFullPoint($sales_order);
+
+                // return point log
+                $pointLogRepository = new PointLogRepository(new Container());
+                $pointLogRepository->returnPointUsed($sales_order);
+
+                $sales_order->point_used = 0;
+            }
+
+            // deduct point point
+            if ($sales_order->point_earned > 0) {
+                $userRepository = new UserRepository(new Container());
+                $userRepository->deductOrderPoint($sales_order);
+
+                $sales_order->point_earned = 0;
+            }
+        }
+        
+        $sales_order->save();
     }
 }

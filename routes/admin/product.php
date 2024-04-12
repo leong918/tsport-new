@@ -12,4 +12,5 @@ Route::group(['as' => 'product.'], function () {
     Route::put('product/updateStock/{id}', [ProductController::class, 'updateStock'])->name('updateStock.put');
     Route::delete('product/delete/{id}', [ProductController::class, 'destroy'])->name('destroy.delete');
     Route::post('product/status/{id}', [ProductController::class, 'toggleStatus'])->name('status.post');
+    Route::get('product/attribute/{id}', [ProductController::class, 'getProductAttribute'])->name('getProductAttribute');
 });

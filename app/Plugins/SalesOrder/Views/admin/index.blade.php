@@ -4,7 +4,6 @@
     @parent  
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
 @endsection
-
 @section('content') 
     <main class="c-main">
         <div class="container-fluid">
@@ -171,49 +170,119 @@
                     });
                 });
 
-                //status toggle 
-                $('table tbody').on('click', '.btn-status', function() {
-                    var url = $(this).data("url");
-                    swal.fire({
-                        title: 'Are you sure?',
-                        text: 'This action is not able to be reverted.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, change it!',
-                        cancelButtonText: 'Cancel',
-                        customClass: {
-                            confirmButton: "btn btn-success me-2",
-                            cancelButton: "btn btn-danger ms-2"
-                        },
-                        buttonsStyling: false,
-                        showLoaderOnConfirm: true,
-                        preConfirm: (response) => {
-                            if (response) {
-                                return axios.post(url, {})
-                                    .then(() => {
-                                        table.ajax.reload();
-                                    })
-                                    .catch((e) => {
-                                        console.error("error ", e)
-                                        Swal.showValidationMessage(
-                                            `Request failed: ${e}`
-                                        );
-                                    })
-                            }
-                        },
-                        allowOutsideClick: () => !Swal.isLoading()
-                    }).then((result) => {
-                        if (result.value) {
-                            swal.fire({
-                                title: 'Updated!',
-                                text: 'Record updated successfully!',
-                                icon: 'success',
-                            });
-                            // reload datatables
-                            table.ajax.reload();
+                //status changing
+                $(document).on('click', '.editable', function(){
+                    var inputType = $(this).data('input-type'); 
+                    var column = $(this).data('column');
+                    var url = $(this).data('url');
+                    var currentData = $(this).data('original-data');
+                    var inputGroup = $("<div class='input-group' data-input-type='" + inputType + "' data-column='" + column + "' data-url='" + url + "' data-original-data='" + currentData + "'></div>");
+                    var inputField = '';
+                    var dropdownListString = '';
+
+                    if (inputType == 'select')
+                    {
+                        var dropdownList = $(this).data('dropdown-list');
+                        dropdownListString = JSON.stringify(dropdownList);
+                        var inputField = $("<select class='form-control'></select>").attr("data-dropdown-list", dropdownListString);
+
+                        $.each(dropdownList, function(key, value) {
+                            //using jquery data attribute
+                            var option = $("<option></option>").attr("value", key).prop('disabled', currentData == 2 && key == 0 ? true : false).text(value);
+                            inputField.append(option);
+                        });
+                        inputField.val(currentData);
+                    }
+
+                    var editButton = $("<button id='editButton' type='button' class='btn btn-primary'><i class='fa-solid fa-check'></i></button>");
+                    var closeButton = $("<button id='closeEditButton' type='button' class='btn btn-secondary'><i class='fa-solid fa-xmark'></i></button>");
+                    inputGroup.append(inputField);
+                    inputGroup.append(editButton);
+                    inputGroup.append(closeButton);
+                    $(this).replaceWith(inputGroup);
+
+                    $(document).on('click', function(event){
+                        if (!$(event.target).closest('.input-group').length) {
+                            closeEditing(inputType, column, url, inputField, currentData, dropdownListString ?? null);
                         }
                     });
                 });
+
+                // Event handler for the edit button
+                $(document).on('click', '#editButton', function(e){
+                    e.preventDefault();
+                    var inputType = $(this).parent().data('input-type');
+                    var url = $(this).parent().data('url');
+                    var column = $(this).parent().data('column');
+                    var inputData = $(this).siblings(inputType).val();
+
+                    var formData = new FormData();
+                    formData.append(column, inputData);
+                    axios({
+                            method: "post",
+                            url: url,
+                            data: formData,
+                            headers: { "Content-Type": "multipart/form-data" },
+                        })
+                        .then(response => {
+                            swal.fire({
+                                title: '{{__("page.status_updated")}}',
+                                text: response.data.level_change ? 'Sales Order Status Updated Successfully ! (Order ' + response.data.level_change + ' user\'s level previously!)' : '{{__("page.status_updated")}}',
+                                icon: 'success',
+                                confirmButtonClass: 'btn btn-success',
+                                    confirmButtonText: '{{__("page.ok")}}',
+                            }).then((result) => {
+                                window.location.reload();
+                            });
+                        })
+                        .catch(error => {
+                            swal.fire({
+                                title: '{{__("page.status_updated_failed")}}',
+                                text: error.response.data.msg,
+                                icon: 'error',
+                                confirmButtonClass: 'btn btn-danger',
+                                confirmButtonText: '{{__("page.ok")}}',
+                            });
+                        });
+                });
+
+                // Event handler for the close button
+                $(document).on('click', '#closeEditButton', function(){
+                    var originalInputType = $(this).parent().data('input-type');
+                    var originalColumn = $(this).parent().data('column');
+                    var originalUrl = $(this).parent().data('url');
+                    var originalData = $(this).parent().data('original-data');
+                    var originalDropdown =  $(this).siblings('select').data('dropdown-list'); 
+                    var originalElement = $("<span class='editable btn-status badge bg-" +
+                                            (originalData == 1 ? 'success' :
+                                                (originalData == 0 ? 'primary' :
+                                                    (originalData == 2 ? 'info' :
+                                                        (originalData == 3 ? 'dark' :
+                                                            (originalData == -1 ? 'danger' :
+                                                                (originalData == -2 ? 'info' : 'secondary')))))) + 
+                                            "' data-input-type='" + originalInputType + "' data-dropdown-list='" + 
+                                            JSON.stringify(originalDropdown) + "' data-column='" + originalColumn + "' data-url='" + 
+                                            originalUrl + "' data-original-data='" + originalData + "'></span>");
+                    originalElement.html(originalDropdown[originalData] || "<i>Empty</i>");                    
+                    $(this).parent().replaceWith(originalElement);
+                });
+
+                // Function to close editing mode
+                function closeEditing(originalInputType, originalColumn, originalUrl, inputField, originalValue, originalDropdown) {
+                    var jsonData = JSON.parse(originalDropdown);
+                    var originalElement = $("<span class='editable btn-status badge bg-" +
+                                            (originalValue == 1 ? 'success' :
+                                                (originalValue == 0 ? 'primary' :
+                                                    (originalValue == 2 ? 'info' :
+                                                        (originalValue == 3 ? 'dark' :
+                                                            (originalValue == -1 ? 'danger' :
+                                                                (originalValue == -2 ? 'info' : 'secondary')))))) + 
+                                            "' data-input-type='" + originalInputType + "' data-dropdown-list='" + 
+                                            originalDropdown + "' data-column='" + originalColumn + "' data-url='" + 
+                                            originalUrl + "' data-original-data='" + originalValue + "'></span>");
+                    originalElement.html(jsonData[originalValue] || "<i>Empty</i>");
+                    inputField.parent().replaceWith(originalElement);
+                }
 
                 //select all
                 $(document).on('click', '#btn-select-all', function(e) {
