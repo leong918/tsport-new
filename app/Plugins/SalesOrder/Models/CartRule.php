@@ -28,7 +28,7 @@ class CartRule extends Model
         'Insider Discount' => 'insider_discount',
         'Core Discount' => 'core_discount',
         'Referrer Discount' => 'referrer_discount',
-        'Referree Discount' => 'referree_discount',
+        'Referee Discount' => 'referee_discount',
     ];
 
     public const TARGET = [

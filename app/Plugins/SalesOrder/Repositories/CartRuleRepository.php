@@ -4,6 +4,7 @@ namespace App\Plugins\SalesOrder\Repositories;
 
 use App\Plugins\SalesOrder\Models\CartRule;
 use App\Repositories\BaseRepository;
+use App\Repositories\ReferralRepository;
 use Carbon\Carbon;
 use Illuminate\Container\Container;
 use App\Repositories\UserRepository;
@@ -72,6 +73,7 @@ class CartRuleRepository extends BaseRepository
 
     public function calculatePriorityRule($cart, $couponList, $user_id, $is_upgrade_insider)
     {
+        $referralRepository = new ReferralRepository(new Container());
         $userRepository = new UserRepository(new Container());
         $user = $userRepository->find($user_id);
 
@@ -101,8 +103,24 @@ class CartRuleRepository extends BaseRepository
 
             if ($cart_rule->type == 'insider_discount' && ((!$user || $user->level_id != 2) && !$is_upgrade_insider)) {
                 continue;
-            } elseif ($cart_rule->type == 'core_discount' && (!$user || $user->level_id != 3)) {
+            } else if ($cart_rule->type == 'core_discount' && (!$user || $user->level_id != 3)) {
                 continue;
+            } else if ($cart_rule->type == 'referee_discount' && !$user) {
+                continue;
+            } else if ($cart_rule->type == 'referrer_discount' && !$user) {
+                continue;
+            }
+
+            if ($cart_rule->type == 'referee_discount') {
+                $refer_data = $referralRepository->getRefereeDiscount($user_id);
+                if (!$refer_data) {
+                    continue;
+                }
+            } else if ($cart_rule->type == 'referrer_discount') {
+                $refer_data = $referralRepository->getReferrerDiscount($user_id);
+                if (!$refer_data) {
+                    continue;
+                }
             }
 
             if ($cart_rule->target_table !== 'whole') {
