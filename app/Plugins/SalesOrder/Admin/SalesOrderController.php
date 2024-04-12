@@ -80,9 +80,9 @@ class SalesOrderController extends Controller
         try {
 
             $admin_id = auth()->guard('admin')->user()->id;
-            $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin_id);
+            $level_change = $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin_id);
             DB::commit();
-            return $this->response();
+            return response()->json(['level_change' => $level_change]);
         } catch (\Exception $exception) {
             DB::rollback();
             return response()->json(['msg' => $exception->getMessage()], 500);

@@ -187,7 +187,8 @@
                         var inputField = $("<select class='form-control'></select>").attr("data-dropdown-list", dropdownListString);
 
                         $.each(dropdownList, function(key, value) {
-                            var option = $("<option></option>").attr("value", key).text(value);
+                            //using jquery data attribute
+                            var option = $("<option></option>").attr("value", key).prop('disabled', currentData == 2 && key == 0 ? true : false).text(value);
                             inputField.append(option);
                         });
                         inputField.val(currentData);
@@ -226,7 +227,7 @@
                         .then(response => {
                             swal.fire({
                                 title: '{{__("page.status_updated")}}',
-                                text: '{{__("page.status_updated")}}',
+                                text: response.data.level_change ? 'Sales Order Status Updated Successfully ! (Order ' + response.data.level_change + ' user\'s level previously!)' : '{{__("page.status_updated")}}',
                                 icon: 'success',
                                 confirmButtonClass: 'btn btn-success',
                                     confirmButtonText: '{{__("page.ok")}}',

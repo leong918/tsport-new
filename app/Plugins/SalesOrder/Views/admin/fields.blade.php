@@ -69,7 +69,7 @@
             </tr>
             <tr>
                 <th>{{ html()->label('Earned Points :') }}</th>
-                <td><div><span class="editable" data-input-type="number" data-column="point_earned" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->point_earned}}">{!! isset($model) && $model->point_earned ? $model->point_earned : '<i>Empty</i>' !!}</span></div></td>
+                <td><div><span class="editable" data-input-type="number" data-column="point_earned" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->point_earned}}">{!! $model->point_earned ?? '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Created At :') }}</th>
@@ -202,7 +202,9 @@ $(document).ready(function(){
             var inputField = $("<select class='form-control'></select>").attr("data-dropdown-list", dropdownListString);
 
             $.each(dropdownList, function(key, value) {
-                var option = $("<option></option>").attr("value", key).text(value);
+                //using model status
+                var modelStatus = "{{ $model->status }}";
+                var option = $("<option></option>").attr("value", key).prop('disabled', modelStatus == 2 && key == 0 ? true : false).text(value);
                 inputField.append(option);
             });
             inputField.val(currentData);
@@ -245,7 +247,7 @@ $(document).ready(function(){
             .then(response => {
                 swal.fire({
                     title: '{{__("page.sales_order_edited")}}',
-                    text: '{{__("page.sales_order_edited")}}',
+                    text: response.data.level_change ? 'Sales Order Edited Successfully ! (Order ' + response.data.level_change + ' user\'s level previously!)' : '{{__("page.sales_order_edited")}}',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: '{{__("page.ok")}}',

@@ -77,6 +77,7 @@ class SalesOrder extends Model
         'city',
         'address',
         'customer_note',
+        'level_change',
         'completed_at',
         'is_free_shipping',
         'is_pay_later',

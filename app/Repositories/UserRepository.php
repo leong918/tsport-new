@@ -168,6 +168,21 @@ class UserRepository extends BaseRepository
         $pointLogRepository->create($pointLogData);
     }
 
+    public function deductOrderPoint($order)
+    {
+        $user = User::find($order->user_id);
+        $user->point = ($user->point - $order->point_earned < 0 ? 0 : $user->point - $order->point_earned);
+        $user->save();
+
+        $pointLogRepository = new PointLogRepository(new Container());
+        $pointLogData['user_id'] = $user->id;
+        $pointLogData['sales_order_id'] = $order->id;
+        $pointLogData['point'] = $order->point_earned;
+        $pointLogData['type'] = 'OUT';
+        $pointLogData['remark'] = 'Deduct point from order ' . $order->sales_order_id . ' due to cancellation.';
+        $pointLogRepository->create($pointLogData);
+    }
+
     public function addReviewPoint($user_id, $product_id)
     {
         $settingRepository = new SettingRepository(new Container());
