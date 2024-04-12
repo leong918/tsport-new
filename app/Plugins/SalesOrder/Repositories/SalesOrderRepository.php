@@ -195,7 +195,7 @@ class SalesOrderRepository extends BaseRepository
     {
         return SalesOrder::where('user_id', $id);
     }
-    
+
     public function getListing(array $form_data)
     {
         $models = SalesOrder::query()->orderBy('created_at', 'desc');
