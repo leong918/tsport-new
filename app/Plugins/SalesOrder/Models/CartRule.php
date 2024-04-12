@@ -27,7 +27,7 @@ class CartRule extends Model
         'Coupon' => 'coupon',
         'Insider Discount' => 'insider_discount',
         'Core Discount' => 'core_discount',
-        'Referral Discount' => 'referral_discount',
+        'Referrer Discount' => 'referrer_discount',
         'Referree Discount' => 'referree_discount',
     ];
 
