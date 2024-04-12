@@ -25,6 +25,10 @@ class CartRule extends Model
     public const TYPE = [
         'Discount' => 'discount',
         'Coupon' => 'coupon',
+        'Insider Discount' => 'insider_discount',
+        'Core Discount' => 'core_discount',
+        'Referral Discount' => 'referral_discount',
+        'Referree Discount' => 'referree_discount',
     ];
 
     public const TARGET = [

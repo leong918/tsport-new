@@ -195,14 +195,13 @@ class SalesOrderRepository extends BaseRepository
         foreach (array_filter($form_data, 'filter') as $key => $value) {
             if ($key === 'sales_order.sales_order_id') {
                 $models->where($key, 'like', "%{$value}%");
-            }elseif($key === 'date_range'){
-                if(str_contains($value, ' - '))
-                {
+            } elseif ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
                     $dates = explode(' - ', $value);
                     $dateFrom = Carbon::parse($dates[0])->startOfDay();
                     $dateTo = Carbon::parse($dates[1])->endOfDay();
                     $models->whereBetween('created_at', [$dateFrom, $dateTo]);
-                }else{
+                } else {
                     $date = Carbon::parse($value);
                     $models->whereDate('created_at', $date);
                 }
@@ -215,30 +214,29 @@ class SalesOrderRepository extends BaseRepository
 
     public function getListingByID(array $order_id_list)
     {
-        return SalesOrder::leftJoin('sales_order_product','sales_order_product.sales_order_id' , '=' , 'sales_order.id')
-                            ->leftJoin('product','product.id', '=', 'sales_order_product.product_id')
-                            ->whereIn('sales_order.id', $order_id_list)
-                            ->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku')
-                            ->get();
+        return SalesOrder::leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
+            ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
+            ->whereIn('sales_order.id', $order_id_list)
+            ->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku')
+            ->get();
     }
 
     public function getExportListing(array $form_data)
     {
-        
-        $models = SalesOrder::leftJoin('sales_order_product','sales_order_product.sales_order_id' , '=' , 'sales_order.id')
-        ->leftJoin('product','product.id', '=', 'sales_order_product.product_id');
+
+        $models = SalesOrder::leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
+            ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id');
 
         foreach (array_filter($form_data, 'filter') as $key => $value) {
             if ($key === 'sales_order.sales_order_id') {
                 $models->where($key, 'like', "%{$value}%");
-            }elseif($key === 'date_range'){
-                if(str_contains($value, ' - '))
-                {
+            } elseif ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
                     $dates = explode(' - ', $value);
                     $dateFrom = Carbon::parse($dates[0])->startOfDay();
                     $dateTo = Carbon::parse($dates[1])->endOfDay();
                     $models->whereBetween('sales_order.created_at', [$dateFrom, $dateTo]);
-                }else{
+                } else {
                     $date = Carbon::parse($value);
                     $models->whereDate('sales_order.created_at', $date);
                 }
@@ -260,17 +258,17 @@ class SalesOrderRepository extends BaseRepository
         foreach ($input as $key => $value) {
             $previousValue = $sales_order->$key;
 
-            if(str_starts_with($key, 'order_total_')){
+            if (str_starts_with($key, 'order_total_')) {
                 $order_total_id = (int)substr($key, strpos($key, "order_total_") + strlen("order_total_"));
-                $editedOrderTotal = $salesOderTotalRepository->updateOrderTotal($id, null, $order_total_id , $value);
-            }else{
+                $editedOrderTotal = $salesOderTotalRepository->updateOrderTotal($id, null, $order_total_id, $value);
+            } else {
 
                 if ($key == 'country_id') {
                     $countryRepository = new CountryRepository(new Container());
                     $country = $countryRepository->find($value);
                     $sales_order->country = $country->name;
                 }
-    
+
                 $sales_order->$key = $value;
                 $sales_order->save();
             }
@@ -393,13 +391,20 @@ class SalesOrderRepository extends BaseRepository
                 $level_upgrade = false;
                 $levelRepository = new LevelRepository(new Container());
                 $levelChangeLogRepository = new LevelChangeLogRepository(new Container());
+                $cartRuleRepository = new CartRuleRepository(new Container());
 
                 if ($user->level_id == 1 || $user->level_id == 2) {
                     $current_level = $levelRepository->find($user->level_id);
                     $next_level_target = $levelRepository->getNextLevel($current_level->leveling);
-                    $check_amount = $user->level_id == 1 ? $sales_order->total : $total_accumulate_amount;
 
-                    if ($check_amount >= $next_level_target->target_amount) {
+                    if ($user->level_id == 1) {
+                        $insider_discount = $cartRuleRepository->makeModel()->where('type', 'insider_discount')->first();
+                        $check_condition = $sales_order->salesOrderTotal->where('cart_rule_id', $insider_discount->id)->first();
+                    } else {
+                        $check_condition = $$total_accumulate_amount >= $next_level_target->target_amount;
+                    }
+
+                    if ($check_condition) {
                         $data['user_id'] = $user->id;
                         $data['level_id'] = $user->level_id;
                         $data['new_level_id'] = $next_level_target->id;
