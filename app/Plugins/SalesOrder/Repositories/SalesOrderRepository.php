@@ -192,7 +192,7 @@ class SalesOrderRepository extends BaseRepository
     {
         return SalesOrder::where('user_id', $id);
     }
-    
+
     public function getListing(array $form_data)
     {
         $models = SalesOrder::query()->orderBy('created_at', 'desc');
@@ -289,11 +289,6 @@ class SalesOrderRepository extends BaseRepository
             if ($key == 'status') {
                 $previousValue = renderModelData(SalesOrder::ORDER_STATUS, $previousValue);
                 $value = renderModelData(SalesOrder::ORDER_STATUS, $value);
-            }
-
-            if ($key == 'payment_status') {
-                $previousValue = renderModelData(SalesOrder::PAYMENT_STATUS, $previousValue);
-                $value = renderModelData(SalesOrder::PAYMENT_STATUS, $value);
             }
 
             if ($key == 'payment_method') {
@@ -486,7 +481,7 @@ class SalesOrderRepository extends BaseRepository
 
         return $status;
     }
-    
+
     public function updateSalesOrderStatus($previousStatus, $newStatus, $sales_order)
     {
         //status change from onhold to processing or completed also released the point
@@ -604,7 +599,7 @@ class SalesOrderRepository extends BaseRepository
                 $sales_order->point_earned = 0;
             }
         }
-        
+
         $sales_order->save();
     }
 }
