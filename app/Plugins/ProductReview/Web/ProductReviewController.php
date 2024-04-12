@@ -31,8 +31,8 @@ class ProductReviewController extends Controller
         $user = $this->userRepository->find($data['user_id']);
         $data['username'] = $user->username;
 
-        $this->productReviewRepository->createProductReview($data);
-        $this->userRepository->addReviewPoint($user->id, $id);
+        $review_model = $this->productReviewRepository->createProductReview($data);
+        $this->userRepository->addReviewPoint($user->id, $review_model->id);
 
         return $this->response(['data' => $data], 'OK');
     }

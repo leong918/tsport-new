@@ -30,7 +30,7 @@
                 <div class="col-12 col-lg-6 product-wrapper">
                     <div class="row">
                         @if (function_exists('reviewRenderView'))
-                            {{ reviewRenderView('product_detail_top_review') }}
+                            {{ reviewRenderView('product_detail_top_review', null, null, $review_total, $avgRating) }}
                         @endif
                         <div class="col-9">
                             <div class="">

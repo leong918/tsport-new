@@ -158,25 +158,6 @@
                 transition: clip-path 0.5s ease-in-out, opacity 0.4s ease-in-out;
             }
     
-            .product-img img.hide {
-                clip-path: ellipse(100% 50% at 50% 50%);
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                left: 0px;
-                width: 100%;
-                height: auto;
-            }
-    
-            .product-img:hover img.hide {
-                clip-path: none;
-                opacity: 1;
-            }
-    
-            .product-img:hover img.show {
-                opacity: 0;
-            }
-    
             .wishlist-cart-container img.wishlist-hide,
             .wishlist-cart-container img.wishlist-hover-show,
             .wishlist-cart-container img.cart-hide,
@@ -219,7 +200,36 @@
                 }
             }
     
+            .product-image{
+                overflow: hidden;
+                img.show{
+                    clip-path: ellipse(100% 100% at 50% 50%);
+                    transition: clip-path 0.5s, transform 0.3s ease-in-out;
+                    height: 310px;
+                    object-fit: cover;
+                    width: 100%;
+                }
+    
+                @media (min-width: 768px) and (max-width: 1200px){
+                    img.show{
+                        height: 268px;  
+                    }
+                }
+    
+                @media (max-width: 767px){
+                    img.show{
+                        height: 30vh;  
+                    }
+                }
+            }
+    
             .product-image:hover {
+                img.show {
+                    clip-path: ellipse(45% 41% at 50% 50%);
+                    transform: scale(1.2);
+                    transform-origin: center center;
+                }
+    
                 .wishlist-cart-container {
                     position: absolute;
                     opacity: 1;

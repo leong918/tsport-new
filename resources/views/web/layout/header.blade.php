@@ -95,11 +95,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('web.voucher')}}">消費券 Consumption Voucher</a>
                         </li>
+                        @if(auth()->user())
                         <hr/>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('cart.wishlist')}}">Wishlist</a>
                         </li>
-                        @if(auth()->user())
                         <li class="nav-item">
                             <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">My Account</a>
                         </li>

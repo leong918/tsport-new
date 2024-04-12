@@ -188,6 +188,11 @@ class SalesOrderRepository extends BaseRepository
         });
     }
 
+    public function getSalesOrderByUserId(int $id)
+    {
+        return SalesOrder::where('user_id', $id);
+    }
+    
     public function getListing(array $form_data)
     {
         $models = SalesOrder::query()->orderBy('created_at', 'desc');
@@ -475,6 +480,13 @@ class SalesOrderRepository extends BaseRepository
         }
     }
 
+    public function getOrderStatus()
+    {
+        $status = array_flip(SalesOrder::ORDER_STATUS);
+
+        return $status;
+    }
+    
     public function updateSalesOrderStatus($previousStatus, $newStatus, $sales_order)
     {
         //status change from onhold to processing or completed also released the point

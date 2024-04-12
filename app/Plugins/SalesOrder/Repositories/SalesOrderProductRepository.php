@@ -35,6 +35,11 @@ class SalesOrderProductRepository extends BaseRepository
         return SalesOrderProduct::class;
     }
 
+    public function getSalesOrderProductBySalesOrderId(int $id)
+    {
+        return SalesOrderProduct::where('sales_order_id', $id);
+    }
+
     public function createOrderProduct($order, $data)
     {
         $productRepository = new ProductRepository(new Container());
@@ -93,6 +98,8 @@ class SalesOrderProductRepository extends BaseRepository
         $productAttributeRepository = new ProductAttributeRepository(new Container());
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
         $sales_order = $salesOrderRepository->find($id);
+        $sales_order_subtotal_price = $salesOrderTotalRepository->getOrderTotal($id, null ,'subtotal');
+        $sales_order_total_price = $salesOrderTotalRepository->getOrderTotal($id, null ,'total');
         $admin_id = auth()->guard('admin')->user()->id;
         $total = 0;
         $product_list = "";
