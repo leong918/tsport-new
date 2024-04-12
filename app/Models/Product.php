@@ -109,11 +109,6 @@ class Product extends Model
         return $this->hasMany(ProductAttributeTerm::class);
     }
 
-    // public function wishlist(): HasOne
-    // {
-    //     return $this->hasOne(Wishlist::class);
-    // }
-
     public function getCurrencyParameters(string $currency)
     {
         return $this->productPrice->where('code', $currency)->whereNull('product_attribute_term_id')->first();

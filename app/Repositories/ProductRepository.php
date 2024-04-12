@@ -317,7 +317,6 @@ class ProductRepository extends BaseRepository
     }
 
     public function calculatePointEarned($user, $user_cart)
-    public function calculatePointEarned($user, $user_cart)
     {
         $point = 0;
 

@@ -71,14 +71,17 @@ $(document).ready(function () {
         var is_wishlist = $(this).data('is-wishlist');
         var url = $(this).data('url');
 
+        var closestProductInfo = $(this).closest('.product-info');
+        var wishlistButtonHover = closestProductInfo.find('.wishlist-button-hover');
+
         if (is_wishlist == 1) {
             $(this).find('.wishlist-hide, .wishlist-hover-show').removeClass('d-none');
             $(this).find('.wishlist-added').addClass('d-none');
-            $('.product-info').closest('.wishlist-button-hover .wishlist-mobile').attr('src', 'http://ecommerce-boilerplate.localhost/assets/web/assets/img/homepage/add-wishlist-2.png');
+            wishlistButtonHover.find('.wishlist-mobile').attr('src', 'http://ecommerce-boilerplate.localhost/assets/web/assets/img/homepage/added_to_wishlist.png');
         } else {
             $(this).find('.wishlist-hide, .wishlist-hover-show').addClass('d-none');
             $(this).find('.wishlist-added').removeClass('d-none');
-            $('.product-info').closest('.wishlist-button-hover .wishlist-mobile').attr('src', 'http://ecommerce-boilerplate.localhost/assets/web/assets/img/homepage/added_to_wishlist.png');
+            wishlistButtonHover.find('.wishlist-mobile').attr('src', 'http://ecommerce-boilerplate.localhost/assets/web/assets/img/homepage/add-wishlist-2.png');
         }
 
         axios({

@@ -488,9 +488,4 @@ class SalesOrderRepository extends BaseRepository
 
         return $status;
     }
-
-    public function getSalesOrderByUserId(int $id)
-    {
-        return SalesOrder::where('user_id', $id);
-    }
 }
