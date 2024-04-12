@@ -54,15 +54,15 @@
                 <td>HKD</td>
                 <td>{{ $item['quantity'] }}</td>
                 <td>{{ $item['is_pay_later'] }}</td>
-                <td>{{ $senderData['sender_last_name'] }}</td>
-                <td>{{ $senderData['sender_first_name'] }}</td>
-                <td>{{ $senderData['sender_phone_no'] }}</td>
-                <td>{{ $senderData['sender_address'] }}</td>
-                <td>{{ $senderData['sender_city'] }}</td>
-                <td>{{ $senderData['sender_state'] }}</td>
-                <td>{{ $senderData['sender_country'] }}</td>
-                <td>{{ $senderData['sender_postcode'] }}</td>
-                <td>{{ $senderData['sender_email'] }}</td>
+                <td>{{ $senderData['sender_last_name'] ?? ''}}</td>
+                <td>{{ $senderData['sender_first_name'] ?? ''}}</td>
+                <td>{{ $senderData['sender_phone_no'] ?? ''}}</td>
+                <td>{{ $senderData['sender_address'] ?? ''}}</td>
+                <td>{{ $senderData['sender_city'] ?? ''}}</td>
+                <td>{{ $senderData['sender_state'] ?? ''}}</td>
+                <td>{{ $senderData['sender_country'] ?? ''}}</td>
+                <td>{{ $senderData['sender_postcode'] ?? ''}}</td>
+                <td>{{ $senderData['sender_email'] ?? ''}}</td>
             </tr>
         @endforeach
     </tbody>

@@ -31,7 +31,7 @@
                             <div class="card mb-3">
                                 <div class="card-header"><strong>Order Details #{{ $model->sales_order_id }}</strong> </div>
                                 <div class="card-body">
-                                    @include("sales_order::admin.fields")
+                                    @include("sales_order::admin.sales_order.fields")
                                 </div>
                             </div>
                         </div>
