@@ -23,7 +23,7 @@ class SalesOrderExport extends DefaultValueBinder implements FromView, ShouldAut
 
     public function view(): View
     {
-        return view("sales_order::admin.export", [
+        return view("sales_order::admin.sales_order.export", [
             'sales_order_list' => $this->sales_order_list,
             'senderData' => $this->senderData,
         ]);
