@@ -31,9 +31,10 @@ class SettingController extends BaseController
 
     public function globalIndex(Request $request)
     {
+        $productDropdown = $this->productRepository->dropdown();
         $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
 
-        return $this->view('setting.global_index', compact('setting_model'));
+        return $this->view('setting.global_index', compact('setting_model', 'productDropdown'));
     }
 
     public function aboutIndex(Request $request)

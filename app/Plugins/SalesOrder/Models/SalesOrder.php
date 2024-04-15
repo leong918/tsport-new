@@ -123,4 +123,9 @@ class SalesOrder extends Model
     {
         return $this->salesOrderTotal->where('title', $title)->get();
     }
+
+    public function checkVoucherExist(int $cart_rule_id)
+    {
+        return $this->salesOrderTotal->where('cart_rule_id', $cart_rule_id)->first();
+    }
 }

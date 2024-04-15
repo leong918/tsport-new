@@ -28,9 +28,15 @@ class SalesOrderController extends Controller
     private ProductRepository $productRepository;
     private CountryRepository $countryRepository;
     private SettingRepository $settingRepository;
-    
-    public function __construct(SalesOrderRepository $salesOrderRepository, SalesOrderProductRepository $salesOrderProductRepository, SalesOrderTotalRepository $salesOrderTotalRepository, ProductRepository $productRepository, CountryRepository $countryRepository, SettingRepository $settingRepository)
-    {
+
+    public function __construct(
+        SalesOrderRepository $salesOrderRepository,
+        SalesOrderProductRepository $salesOrderProductRepository,
+        SalesOrderTotalRepository $salesOrderTotalRepository,
+        ProductRepository $productRepository,
+        CountryRepository $countryRepository,
+        SettingRepository $settingRepository
+    ) {
         $this->salesOrderRepository = $salesOrderRepository;
         $this->salesOrderProductRepository = $salesOrderProductRepository;
         $this->salesOrderTotalRepository = $salesOrderTotalRepository;
@@ -40,21 +46,20 @@ class SalesOrderController extends Controller
     }
 
     public function index(Request $request)
-    {   
+    {
         if ($request->ajax()) {
             $form_data = $request->form_data;
             $model = $this->salesOrderRepository->getListing($form_data);
             return DataTables::of($model)
                 ->editColumn('product', function ($model) {
                     $product_list = '';
-                    foreach($model->salesOrderProduct as $sales_order_product)
-                    {
-                        $product_list .= $sales_order_product->product_name .' x '.$sales_order_product->quantity. '<br>';
+                    foreach ($model->salesOrderProduct as $sales_order_product) {
+                        $product_list .= $sales_order_product->product_name . ' x ' . $sales_order_product->quantity . '<br>';
                     }
                     return $product_list;
                 })
                 ->addColumn('status', function ($model) {
-                    $route = route('admin.sales_order.update.put',["id" => $model->id]);
+                    $route = route('admin.sales_order.update.put', ["id" => $model->id]);
                     $status = $model->status;
                     return view("sales_order::admin.sales_order.status", compact('route', 'status'));
                 })
@@ -64,7 +69,7 @@ class SalesOrderController extends Controller
                 ->addColumn('checkbox', function ($model) {
                     return view("sales_order::admin.sales_order.checkbox", compact('model'));
                 })
-                ->rawColumns(['product','checkbox'])
+                ->rawColumns(['product', 'checkbox'])
                 ->make(true);
         }
 
@@ -76,7 +81,7 @@ class SalesOrderController extends Controller
         $model = $this->salesOrderRepository->find($id);
         $productListDropdown = $this->productRepository->dropdownForSalesOrder('HKD');
         $countryDropdown = $this->countryRepository->dropdown();
-        return view("sales_order::admin.sales_order.update", compact('model','productListDropdown','countryDropdown'));
+        return view("sales_order::admin.sales_order.update", compact('model', 'productListDropdown', 'countryDropdown'));
     }
 
     public function update(Request $request, int $id)
@@ -99,10 +104,10 @@ class SalesOrderController extends Controller
     {
         DB::beginTransaction();
         try {
-            if($product_id){
+            if ($product_id) {
                 $admin_id = auth()->guard('admin')->user()->id;
                 $this->salesOrderProductRepository->updateSalesOrderProduct($request->all(), $id, $product_id, $admin_id);
-            }else{
+            } else {
                 $this->salesOrderProductRepository->createSalesOrderProduct($request->all(), $id);
             }
             DB::commit();
@@ -134,23 +139,21 @@ class SalesOrderController extends Controller
 
     public function destroyByList(Request $request)
     {
-       $data = $request->all();
-       foreach($data['selectedList'] as $selectedID)
-       {
-        $this->salesOrderRepository->delete($selectedID);
-        $this->salesOrderProductRepository->deleteProductBySalesOrderId($selectedID);
-       }
+        $data = $request->all();
+        foreach ($data['selectedList'] as $selectedID) {
+            $this->salesOrderRepository->delete($selectedID);
+            $this->salesOrderProductRepository->deleteProductBySalesOrderId($selectedID);
+        }
     }
 
     public function exportByList(Request $request)
-    {   
+    {
         $sales_order_list = null;
         $form_data = $request->all();
-        if(isset($form_data['selectedList']) && $form_data['selectedList'] != null)
-        {
-            $data = explode(",",$form_data['selectedList']);
+        if (isset($form_data['selectedList']) && $form_data['selectedList'] != null) {
+            $data = explode(",", $form_data['selectedList']);
             $sales_order_list = $this->salesOrderRepository->getListingByID($data);
-        }else{
+        } else {
             $form_data['sales_order.sales_order_id'] = $form_data['sales_order_sales_order_id'];
             $form_data['sales_order.status'] = $form_data['sales_order_status'];
             unset($form_data['sales_order_sales_order_id'], $form_data['sales_order_status']);
@@ -160,13 +163,12 @@ class SalesOrderController extends Controller
         $senderInfoList = $this->settingRepository->getSenderInfo();
         $senderData = array();
 
-        foreach($senderInfoList as $senderInfo)
-        {
+        foreach ($senderInfoList as $senderInfo) {
             $senderData[$senderInfo->key] = $senderInfo->value;
         }
 
         $filename = "Sales Order Export.xlsx";
-   
+
         return Excel::download(new SalesOrderExport($sales_order_list, $senderData), $filename);
     }
 

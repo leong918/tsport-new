@@ -4,11 +4,12 @@ namespace App\Plugins\SalesOrder\Web;
 
 use App\Plugins\SalesOrder\Repositories\UserCartRepository;
 use App\Plugins\SalesOrder\Repositories\WishlistRepository;
-use App\Plugins\ProductReview\Repositories\ProductReviewRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\PointLogRepository;
+use App\Repositories\SettingRepository;
+use App\Repositories\ReferralRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
@@ -33,7 +34,8 @@ class CartController extends BaseController
     private SalesOrderTotalRepository $salesOrderTotalRepository;
     private CartRuleRepository $cartRuleRepository;
     private WishlistRepository $wishlistRepository;
-    private ProductReviewRepository $productReviewRepository;
+    private SettingRepository $settingRepository;
+    private ReferralRepository $referralRepository;
 
     public function __construct(
         UserCartRepository $userCartRepository,
@@ -47,7 +49,8 @@ class CartController extends BaseController
         SalesOrderTotalRepository $salesOrderTotalRepository,
         CartRuleRepository $cartRuleRepository,
         WishlistRepository $wishlistRepository,
-        ProductReviewRepository $productReviewRepository,
+        SettingRepository $settingRepository,
+        ReferralRepository $referralRepository
     ) {
         $this->userCartRepository = $userCartRepository;
         $this->countryRepository = $countryRepository;
@@ -60,7 +63,8 @@ class CartController extends BaseController
         $this->salesOrderTotalRepository = $salesOrderTotalRepository;
         $this->cartRuleRepository = $cartRuleRepository;
         $this->wishlistRepository = $wishlistRepository;
-        $this->productReviewRepository = $productReviewRepository;
+        $this->settingRepository = $settingRepository;
+        $this->referralRepository = $referralRepository;
     }
 
     public function cart(Request $request)
@@ -70,8 +74,10 @@ class CartController extends BaseController
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
         $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
         $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+        $shopping_cart_banner_product = $this->productRepository->find($setting_model['shopping_cart_banner_product']);
 
-        return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal'));
+        return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal', 'setting_model', 'shopping_cart_banner_product'));
     }
 
     public function addToCart(Request $request)
@@ -150,7 +156,7 @@ class CartController extends BaseController
         if ($data['user_id'] == null) {
             return response()->json(['msg' => 'Please log in before add product to wishlist!'], 500);
         }
-       
+
         $this->wishlistRepository->toggleWishlist($data);
         $wishlist_count = $this->wishlistRepository->getWishlistByUser($data['user_id'])->count();
 
@@ -161,7 +167,7 @@ class CartController extends BaseController
     {
         $data = $request->all();
         $data['user_id'] = auth()->user() ? auth()->user()->id : null;
-        
+
         $this->wishlistRepository->removeWishlist($data['user_id'], $data['product_id']);
 
         return $this->response(['data' => $data], 'OK');
@@ -362,6 +368,18 @@ class CartController extends BaseController
             $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
             $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
             $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
+
+            // update referral voucher
+            $referrer_voucher = $this->cartRuleRepository->getReferrerVoucher();
+            if (in_array($referrer_voucher->id, $cartTotal['discount'])) {
+                $this->referralRepository->updateReferrerVoucher($data['user_id'], $order->id);
+            }
+
+            $referee_voucher = $this->cartRuleRepository->getRefereeVoucher();
+            if (in_array($referee_voucher->id, $cartTotal['discount'])) {
+                $this->referralRepository->updateRefereeVoucher($data['user_id'], $order->id);
+            }
+            // end update
 
             //release point earned if total is 0
             if ($cartTotal['total'] <= 0 && $data['point_earned'] > 0) {

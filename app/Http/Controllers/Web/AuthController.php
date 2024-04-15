@@ -56,6 +56,7 @@ class AuthController extends BaseController
     {
         return $this->view('auth.register');
     }
+
     public function doRegister(UserRegisterRequest $request)
     {
         DB::beginTransaction();

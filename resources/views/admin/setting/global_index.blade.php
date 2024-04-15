@@ -59,6 +59,30 @@
                                         <span>No image</span>
                                     @endif
                                 </div>
+                                <div class="mb-3">
+                                    {{ html()->label('Shopping Cart Banner') }}
+                                    {{ html()->file('shopping_cart_banner')->accept('image/*')->class('form-control') }}
+                                    <br>
+                                    @if(isset($setting_model['shopping_cart_banner']) && $setting_model['shopping_cart_banner'] != null)
+                                        <img class="img-fluid" src="{{ $setting_model['shopping_cart_banner'] }}" />
+                                    @else
+                                        <span>No image</span>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    {{ html()->label('Shopping Cart Banner Product') }}
+                                    <select class="form-select" id="shopping-cart-banner-product-select"
+                                        name="shopping_cart_banner_product" data-placeholder="Choose product" required>
+                                        @foreach ($productDropdown as $product_id => $product_name)
+                                            @php
+                                                $isSelected = isset($setting_model['shopping_cart_banner_product']) && $setting_model['shopping_cart_banner_product'] == $product_id;
+                                            @endphp
+                                            <option value="{{ $product_id }}" {{ $isSelected ? 'selected' : '' }}>
+                                                {{ $product_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="card-footer text-end">
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -118,4 +142,25 @@
             </div>
         </div>
     </main>
+@endsection
+
+@section('script')
+@parent
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#shopping-cart-banner-product-select').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
+                'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: false,
+            allowClear: true,
+        });
+    });
+</script>
 @endsection
