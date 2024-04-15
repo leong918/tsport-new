@@ -9,6 +9,7 @@ use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\PointLogRepository;
 use App\Repositories\SettingRepository;
+use App\Repositories\ReferralRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
@@ -34,6 +35,7 @@ class CartController extends BaseController
     private CartRuleRepository $cartRuleRepository;
     private WishlistRepository $wishlistRepository;
     private SettingRepository $settingRepository;
+    private ReferralRepository $referralRepository;
 
     public function __construct(
         UserCartRepository $userCartRepository,
@@ -48,6 +50,7 @@ class CartController extends BaseController
         CartRuleRepository $cartRuleRepository,
         WishlistRepository $wishlistRepository,
         SettingRepository $settingRepository,
+        ReferralRepository $referralRepository
     ) {
         $this->userCartRepository = $userCartRepository;
         $this->countryRepository = $countryRepository;
@@ -61,6 +64,7 @@ class CartController extends BaseController
         $this->cartRuleRepository = $cartRuleRepository;
         $this->wishlistRepository = $wishlistRepository;
         $this->settingRepository = $settingRepository;
+        $this->referralRepository = $referralRepository;
     }
 
     public function cart(Request $request)
@@ -152,7 +156,7 @@ class CartController extends BaseController
         if ($data['user_id'] == null) {
             return response()->json(['msg' => 'Please log in before add product to wishlist!'], 500);
         }
-       
+
         $this->wishlistRepository->toggleWishlist($data);
         $wishlist_count = $this->wishlistRepository->getWishlistByUser($data['user_id'])->count();
 
@@ -163,7 +167,7 @@ class CartController extends BaseController
     {
         $data = $request->all();
         $data['user_id'] = auth()->user() ? auth()->user()->id : null;
-        
+
         $this->wishlistRepository->removeWishlist($data['user_id'], $data['product_id']);
 
         return $this->response(['data' => $data], 'OK');
@@ -364,6 +368,18 @@ class CartController extends BaseController
             $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
             $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
             $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
+
+            // update referral voucher
+            $referrer_voucher = $this->cartRuleRepository->getReferrerVoucher();
+            if (in_array($referrer_voucher->id, $cartTotal['discount'])) {
+                $this->referralRepository->updateReferrerVoucher($data['user_id'], $order->id);
+            }
+
+            $referee_voucher = $this->cartRuleRepository->getRefereeVoucher();
+            if (in_array($referee_voucher->id, $cartTotal['discount'])) {
+                $this->referralRepository->updateRefereeVoucher($data['user_id'], $order->id);
+            }
+            // end update
 
             //release point earned if total is 0
             if ($cartTotal['total'] <= 0 && $data['point_earned'] > 0) {

@@ -157,4 +157,14 @@ class CartRuleRepository extends BaseRepository
 
         return $cart_rule_array;
     }
+
+    public function getReferrerVoucher()
+    {
+        return CartRule::where('type', 'referrer_discount')->where('status', 1)->first();
+    }
+
+    public function getRefereeVoucher()
+    {
+        return CartRule::where('type', 'referee_discount')->where('status', 1)->first();
+    }
 }
