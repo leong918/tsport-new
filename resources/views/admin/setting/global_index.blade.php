@@ -30,6 +30,16 @@
                                     @endif
                                 </div>
                                 <div class="mb-3">
+                                    {{ html()->label('Order Received Email Image') }}
+                                    {{ html()->file('order_received_email_image')->accept('image/*')->class('form-control') }}
+                                    <br>
+                                    @if(isset($setting_model['order_received_email_image']) && $setting_model['order_received_email_image'] != null)
+                                        <img class="img-fluid" src="{{ $setting_model['order_received_email_image'] }}" />
+                                    @else
+                                        <span>No image</span>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
                                     {{ html()->label('Tracking Number Email Image') }}
                                     {{ html()->file('tracking_number_email_image')->accept('image/*')->class('form-control') }}
                                     <br>

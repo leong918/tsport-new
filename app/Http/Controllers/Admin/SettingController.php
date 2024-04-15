@@ -159,9 +159,7 @@ class SettingController extends BaseController
     {
         unset($data['_token']);
         foreach ($data as $key => $value) {
-            if($key == 'new_order_email_image' || $key == 'tracking_number_email_image' || $key == 'shipping_fee_email_image' 
-                || $key == 'shopping_cart_banner')
-            {
+            if($key == 'new_order_email_image' || $key == 'tracking_number_email_image' || $key == 'shipping_fee_email_image' || $key == 'order_received_email_image'){
                 $value = $this->settingRepository->uploadImage($value);
             }
             $this->settingRepository->updateValueByKey($key, $value);

@@ -14,7 +14,12 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Plugins\SalesOrder\Export\SalesOrderExport;
 use App\Repositories\SettingRepository;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TrackingNumberMail;
+use App\Mail\ShippingFeeMail;
+use App\Mail\NewOrderMail;
+use App\Mail\OrderReceivedMail;
+use Carbon\Carbon;
 class SalesOrderController extends Controller
 {
     private SalesOrderRepository $salesOrderRepository;
@@ -165,5 +170,28 @@ class SalesOrderController extends Controller
         $filename = "Sales Order Export.xlsx";
 
         return Excel::download(new SalesOrderExport($sales_order_list, $senderData), $filename);
+    }
+
+    public function sendMail(Request $request, int $id)
+    {
+        $selectedMail = $request->input('selectedMail');
+        $sales_order = $this->salesOrderRepository->find($id);
+        $date = Carbon::now();
+        $formattedDate = $date->format('F j, Y');
+        if($selectedMail == 'tracking_number'){
+            $image = $this->settingRepository->getValueByKey('tracking_number_email_image');
+            Mail::to($sales_order->user->email)->send(new TrackingNumberMail($sales_order, $image, $formattedDate));
+        }elseif($selectedMail == 'shipping_fee'){
+            $image = $this->settingRepository->getValueByKey('shipping_fee_email_image');
+            Mail::to($sales_order->user->email)->send(new ShippingFeeMail($sales_order, $image, $formattedDate));
+        }elseif($selectedMail == 'new_order'){
+            $image = $this->settingRepository->getValueByKey('new_order_email_image');
+            Mail::to($sales_order->user->email)->send(new NewOrderMail($sales_order, $image, $formattedDate));
+        }elseif($selectedMail == 'order_received'){
+            $image = $this->settingRepository->getValueByKey('order_received_email_image');
+            Mail::to($sales_order->user->email)->send(new OrderReceivedMail($sales_order, $image, $formattedDate));
+        }
+
+        return response()->json();
     }
 }

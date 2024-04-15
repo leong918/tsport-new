@@ -78,9 +78,6 @@
                             });
                             d.form_data = form;
                         },
-                        // complete: function(data) {
-                        //     window.myLazyLoad.update(); // dynamically apply lazy load
-                        // },
                     },
                     columns: [
                         {
@@ -228,7 +225,7 @@
                         .then(response => {
                             swal.fire({
                                 title: '{{__("page.status_updated")}}',
-                                text: response.data.level_change ? 'Sales Order Status Updated Successfully ! (Order ' + response.data.level_change + ' user\'s level previously!)' : '{{__("page.status_updated")}}',
+                                html: response.data.level_change ? `Sales Order Edited Successfully ! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : '{{__("page.sales_order_edited")}}',
                                 icon: 'success',
                                 confirmButtonClass: 'btn btn-success',
                                     confirmButtonText: '{{__("page.ok")}}',

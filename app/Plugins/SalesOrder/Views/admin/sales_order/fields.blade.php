@@ -242,8 +242,9 @@ $(document).ready(function(){
             })
             .then(response => {
                 swal.fire({
+
                     title: '{{__("page.sales_order_edited")}}',
-                    text: response.data.level_change ? 'Sales Order Edited Successfully ! (Order ' + response.data.level_change + ' user\'s level previously!)' : '{{__("page.sales_order_edited")}}',
+                    html: response.data.level_change ? `Sales Order Edited Successfully ! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : '{{__("page.sales_order_edited")}}',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: '{{__("page.ok")}}',
