@@ -31,6 +31,7 @@
                             ADD TO CART
                             </button>
                             @endif
+                        </div>
                         <table class="cart-item-list d-none d-md-block">
                             <tr>
                                 <th style="width:50%">Product</th>
