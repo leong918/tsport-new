@@ -42,6 +42,8 @@ Route::group(['middleware' => ['web']], function () {
         Route::delete('sales_order/delete/{id}', [SalesOrderController::class, 'destroy'])->name('destroy.delete');
         Route::post('sales_order/deleteByList', [SalesOrderController::class, 'destroyByList'])->name('deleteByList');
         Route::get('exportByList', [SalesOrderController::class, 'exportByList'])->name('exportByList');
+        Route::post('sales_order/send_mail/{id}', [SalesOrderController::class, 'sendMail'])->name('sendMail');
+
     });
 
     Route::group(['as' => 'admin.cart_rule.', 'prefix' => 'admin'], function () {
