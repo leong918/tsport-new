@@ -19,6 +19,7 @@ use App\Repositories\ProductAttributeTermRepository;
 use App\Repositories\LevelRepository;
 use App\Repositories\LevelChangeLogRepository;
 use App\Repositories\ProductBalanceLogRepository;
+use App\Repositories\ReferralRepository;
 use Carbon\Carbon;
 
 class SalesOrderRepository extends BaseRepository
@@ -278,14 +279,14 @@ class SalesOrderRepository extends BaseRepository
                 }
 
                 if ($key == 'status') {
-                      //update success order if order processing/completed
-                    if($previousValue == 0 && $value > 0){
+                    //update success order if order processing/completed
+                    if ($previousValue == 0 && $value > 0) {
                         $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
                         $this->updateSuccessOrder($sales_order);
                     }
                     //update failed order if order failed/cancelled/refunded
                     if ($previousValue >= 0 && $value < 0) {
-                        $this->updateFailedOrder($sales_order,$admin, $previousValue, $value);
+                        $this->updateFailedOrder($sales_order, $admin, $previousValue, $value);
 
                         //return if cancel order from onhold/processing/completed
                         $level_change = $sales_order->level_change;
@@ -381,7 +382,6 @@ class SalesOrderRepository extends BaseRepository
             if ($status == 1) {
                 $sales_order->payment_succeed_at = Carbon::now();
                 $this->updateSuccessOrder($sales_order);
-
             } else {
                 $sales_order->payment_failed_at = Carbon::now();
                 $this->updateFailedOrder($sales_order);
@@ -399,7 +399,7 @@ class SalesOrderRepository extends BaseRepository
 
         return $status;
     }
-    
+
     public function updateSuccessOrder($sales_order)
     {
         if ($sales_order->point_used > 0) {
@@ -417,6 +417,21 @@ class SalesOrderRepository extends BaseRepository
             $userRepository = new UserRepository(new Container());
             $userRepository->addOrderPoint($sales_order);
         }
+
+        $referralRepository = new ReferralRepository(new Container());
+        // update referral voucher
+        $referral_voucher = $referralRepository->getReferrerDiscount($sales_order->user_id, $sales_order->id);
+        if ($referral_voucher) {
+            $referral_voucher->referrer_voucher_used_at = Carbon::now();
+            $referral_voucher->save();
+        }
+
+        $referee_voucher = $referralRepository->getRefereeDiscount($sales_order->user_id, $sales_order->id);
+        if ($referee_voucher) {
+            $referee_voucher->referee_voucher_used_at = Carbon::now();
+            $referee_voucher->save();
+        }
+        // end update
 
         // level validation
         $userRepository = new UserRepository(new Container());
@@ -509,58 +524,71 @@ class SalesOrderRepository extends BaseRepository
             // return point
             $userRepository = new UserRepository(new Container());
             $userRepository->returnFullPoint($sales_order);
-    
+
             // return point log
             $pointLogRepository = new PointLogRepository(new Container());
             $pointLogRepository->returnPointUsed($sales_order);
-    
+
             $sales_order->point_used = 0;
         }
-    
+
         // deduct point point
         if ($sales_order->point_earned > 0) {
             $userRepository = new UserRepository(new Container());
             $userRepository->deductOrderPoint($sales_order);
-    
+
             $sales_order->point_earned = 0;
         }
 
+        $referralRepository = new ReferralRepository(new Container());
+        // update referral voucher
+        $referral_voucher = $referralRepository->getReferrerDiscount($sales_order->user_id, $sales_order->id);
+        if ($referral_voucher) {
+            $referral_voucher->referrer_voucher_used_at = null;
+            $referral_voucher->save();
+        }
+
+        $referee_voucher = $referralRepository->getRefereeDiscount($sales_order->user_id, $sales_order->id);
+        if ($referee_voucher) {
+            $referee_voucher->referee_voucher_used_at = null;
+            $referee_voucher->save();
+        }
+        // end update
+
         //deduct product balance
-        $this->updateProductQuantity($sales_order,'ADD', $admin, $previousOrderStatus, $newOrderStatus);
+        $this->updateProductQuantity($sales_order, 'ADD', $admin, $previousOrderStatus, $newOrderStatus);
 
         $sales_order->save();
     }
-    
+
     public function updateProductQuantity($sales_order, $action, $admin, $previousOrderStatus = null, $newOrderStatus = null)
     {
-        foreach ($sales_order->salesOrderProduct as $sales_order_product){
+        foreach ($sales_order->salesOrderProduct as $sales_order_product) {
             $productBalanceLogRepository = new ProductBalanceLogRepository(new Container());
             $description = null;
 
-            if($admin)
-            {
+            if ($admin) {
                 $previousStatus = renderModelData(SalesOrder::ORDER_STATUS, $previousOrderStatus);
                 $newStatus = renderModelData(SalesOrder::ORDER_STATUS, $newOrderStatus);
-                $description = "Product " . ($action == "ADD" ? "added" : "deducted") . " due to status changes of order " . $sales_order->sales_order_id . " from " . $previousStatus . " to " . $newStatus . " by ".$admin->name;
-            }else{
-                $description = "Product " . ($action == "ADD" ? "added" : "deducted") . " due to stripe payment ".($action == "ADD" ? "succeed." : "failed.");
+                $description = "Product " . ($action == "ADD" ? "added" : "deducted") . " due to status changes of order " . $sales_order->sales_order_id . " from " . $previousStatus . " to " . $newStatus . " by " . $admin->name;
+            } else {
+                $description = "Product " . ($action == "ADD" ? "added" : "deducted") . " due to stripe payment " . ($action == "ADD" ? "succeed." : "failed.");
             }
 
-            if($sales_order_product->product_attribute_term){
+            if ($sales_order_product->product_attribute_term) {
                 $productRepository = new ProductAttributeTermRepository(new Container());
                 $product_attribute_term_list = json_decode($sales_order_product->product_attribute_term);
 
-                foreach($product_attribute_term_list as $value)
-                {
+                foreach ($product_attribute_term_list as $value) {
                     $product_attribute_term = $productRepository->find($value);
-                    $product_attribute_term->quantity = $action == "ADD" ? $product_attribute_term->quantity += $sales_order_product->quantity : $product_attribute_term->quantity -= $sales_order_product->quantity ;
+                    $product_attribute_term->quantity = $action == "ADD" ? $product_attribute_term->quantity += $sales_order_product->quantity : $product_attribute_term->quantity -= $sales_order_product->quantity;
                     $product_attribute_term->save();
 
                     $data['stock_option'] = $action == "ADD" ? 0 : 1;
                     $data['stock_amount'] = $sales_order_product->quantity;
                     $productBalanceLogRepository->createProductBalanceLog($product_attribute_term, $data, null, $description);
-                } 
-            }else{
+                }
+            } else {
                 $productRepository = new ProductRepository(new Container());
                 $product = $productRepository->find($sales_order_product->product_id);
 
@@ -574,4 +602,3 @@ class SalesOrderRepository extends BaseRepository
         }
     }
 }
-

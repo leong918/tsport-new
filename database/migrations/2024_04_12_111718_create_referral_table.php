@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('referrer_user_id');
             $table->bigInteger('referee_user_id');
-            $table->timestamp('referrer_voucher_used_at');
-            $table->timestamp('referee_voucher_used_at');
+            $table->bigInteger('referrer_sales_order_id')->nullable();
+            $table->bigInteger('referee_sales_order_id')->nullable();
+            $table->timestamp('referrer_voucher_used_at')->nullable();
+            $table->timestamp('referee_voucher_used_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

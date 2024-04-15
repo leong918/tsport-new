@@ -52,10 +52,10 @@ class UserRepository extends BaseRepository
         if (isset($input['password']) && trim($input['password']) === '') {
             unset($input['password']);
         }
-        if(isset($input['dob'])){
+        if (isset($input['dob'])) {
             $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
         }
-        
+
         $model = User::findOrFail($id);
         $model->fill($input);
         $model->save();
