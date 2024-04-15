@@ -371,12 +371,12 @@ class CartController extends BaseController
 
             // update referral voucher
             $referrer_voucher = $this->cartRuleRepository->getReferrerVoucher();
-            if (in_array($referrer_voucher->id, $cartTotal['discount'])) {
+            if (in_array($referrer_voucher->id, array_column($cartTotal['discount'], 'id'))) {
                 $this->referralRepository->updateReferrerVoucher($data['user_id'], $order->id);
             }
 
             $referee_voucher = $this->cartRuleRepository->getRefereeVoucher();
-            if (in_array($referee_voucher->id, $cartTotal['discount'])) {
+            if (in_array($referee_voucher->id, array_column($cartTotal['discount'], 'id'))) {
                 $this->referralRepository->updateRefereeVoucher($data['user_id'], $order->id);
             }
             // end update
