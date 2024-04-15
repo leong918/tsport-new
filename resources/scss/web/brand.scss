@@ -181,6 +181,7 @@
     
             .wishlist-cart-container img.wishlist-hide,
             .wishlist-cart-container img.wishlist-hover-show,
+            .wishlist-cart-container img.wishlist-added,
             .wishlist-cart-container img.cart-hide,
             .wishlist-cart-container img.cart-hover-show {
                 width: 45%;
@@ -191,6 +192,7 @@
             }
     
             .wishlist-cart-container img.wishlist-hide,
+            .wishlist-cart-container img.wishlist-added,
             .wishlist-cart-container img.wishlist-hover-show {
                 position: absolute;
                 bottom: 0;
