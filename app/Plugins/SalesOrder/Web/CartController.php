@@ -4,11 +4,11 @@ namespace App\Plugins\SalesOrder\Web;
 
 use App\Plugins\SalesOrder\Repositories\UserCartRepository;
 use App\Plugins\SalesOrder\Repositories\WishlistRepository;
-use App\Plugins\ProductReview\Repositories\ProductReviewRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
 use App\Repositories\PointLogRepository;
+use App\Repositories\SettingRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
@@ -33,7 +33,7 @@ class CartController extends BaseController
     private SalesOrderTotalRepository $salesOrderTotalRepository;
     private CartRuleRepository $cartRuleRepository;
     private WishlistRepository $wishlistRepository;
-    private ProductReviewRepository $productReviewRepository;
+    private SettingRepository $settingRepository;
 
     public function __construct(
         UserCartRepository $userCartRepository,
@@ -47,7 +47,7 @@ class CartController extends BaseController
         SalesOrderTotalRepository $salesOrderTotalRepository,
         CartRuleRepository $cartRuleRepository,
         WishlistRepository $wishlistRepository,
-        ProductReviewRepository $productReviewRepository,
+        SettingRepository $settingRepository,
     ) {
         $this->userCartRepository = $userCartRepository;
         $this->countryRepository = $countryRepository;
@@ -60,7 +60,7 @@ class CartController extends BaseController
         $this->salesOrderTotalRepository = $salesOrderTotalRepository;
         $this->cartRuleRepository = $cartRuleRepository;
         $this->wishlistRepository = $wishlistRepository;
-        $this->productReviewRepository = $productReviewRepository;
+        $this->settingRepository = $settingRepository;
     }
 
     public function cart(Request $request)
@@ -70,8 +70,10 @@ class CartController extends BaseController
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
         $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
         $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+        $shopping_cart_banner_product = $this->productRepository->find($setting_model['shopping_cart_banner_product']);
 
-        return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal'));
+        return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal', 'setting_model', 'shopping_cart_banner_product'));
     }
 
     public function addToCart(Request $request)

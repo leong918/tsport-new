@@ -31,9 +31,10 @@ class SettingController extends BaseController
 
     public function globalIndex(Request $request)
     {
+        $productDropdown = $this->productRepository->dropdown();
         $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
 
-        return $this->view('setting.global_index', compact('setting_model'));
+        return $this->view('setting.global_index', compact('setting_model', 'productDropdown'));
     }
 
     public function aboutIndex(Request $request)
@@ -158,7 +159,9 @@ class SettingController extends BaseController
     {
         unset($data['_token']);
         foreach ($data as $key => $value) {
-            if($key == 'new_order_email_image' || $key == 'tracking_number_email_image' || $key == 'shipping_fee_email_image'){
+            if($key == 'new_order_email_image' || $key == 'tracking_number_email_image' || $key == 'shipping_fee_email_image' 
+                || $key == 'shopping_cart_banner')
+            {
                 $value = $this->settingRepository->uploadImage($value);
             }
             $this->settingRepository->updateValueByKey($key, $value);

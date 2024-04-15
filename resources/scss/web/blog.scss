@@ -215,7 +215,8 @@
             .wishlist-cart-container img.wishlist-hide,
             .wishlist-cart-container img.wishlist-hover-show,
             .wishlist-cart-container img.cart-hide,
-            .wishlist-cart-container img.cart-hover-show {
+            .wishlist-cart-container img.cart-hover-show,
+            .wishlist-cart-container img.wishlist-added {
                 width: 62px;
 
                 @media (max-width: 1500px) {
@@ -224,7 +225,8 @@
             }
     
             .wishlist-cart-container img.wishlist-hide,
-            .wishlist-cart-container img.wishlist-hover-show {
+            .wishlist-cart-container img.wishlist-hover-show,
+            .wishlist-cart-container img.wishlist-added {
                 position: absolute;
                 bottom: 0;
                 right: 0;
@@ -723,7 +725,8 @@
             .wishlist-cart-container img.wishlist-hide,
             .wishlist-cart-container img.wishlist-hover-show,
             .wishlist-cart-container img.cart-hide,
-            .wishlist-cart-container img.cart-hover-show {
+            .wishlist-cart-container img.cart-hover-show,
+            .wishlist-cart-container img.wishlist-added {
                 width: 62px;
 
                 @media (max-width: 1500px) {
@@ -732,7 +735,8 @@
             }
     
             .wishlist-cart-container img.wishlist-hide,
-            .wishlist-cart-container img.wishlist-hover-show {
+            .wishlist-cart-container img.wishlist-hover-show,
+            .wishlist-cart-container img.wishlist-added {
                 position: absolute;
                 bottom: 0;
                 right: 0;
@@ -983,6 +987,7 @@
 
         .wishlist-cart-container img.wishlist-hide,
         .wishlist-cart-container img.wishlist-hover-show,
+        .wishlist-cart-container img.wishlist-added,
         .wishlist-cart-container img.cart-hide,
         .wishlist-cart-container img.cart-hover-show {
             width: 62px;
@@ -993,6 +998,7 @@
         }
 
         .wishlist-cart-container img.wishlist-hide,
+        .wishlist-cart-container img.wishlist-added,
         .wishlist-cart-container img.wishlist-hover-show {
             position: absolute;
             bottom: 0;
