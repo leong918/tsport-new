@@ -63,7 +63,7 @@
         </tr>
         <tr>
             <td style="border: 1px solid black; padding:0px 10px" colspan="2"><b>Total:</b></td>
-            <td style="border: 1px solid black; padding:0px 10px">{{ $sales_order->payment_method }}</td>
+            <td style="border: 1px solid black; padding:0px 10px">{{ $sales_order->total }}</td>
         </tr>
     </table>
 </div>

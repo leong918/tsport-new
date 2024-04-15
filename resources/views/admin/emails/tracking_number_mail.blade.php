@@ -6,7 +6,7 @@
 </div>
 <div style="margin: 20px 0px">
     <p>Hi {{ $sales_order->user->first_name }},</p>
-    <p>Your order has been shipped via Hong Kong Post. Here is your tracking number: <span class="bold-color">{{ $sales_order->tracking_number }}</span></p>
+    <p>Your order has been shipped via {{ $sales_order->delivery_partner }}. Here is your tracking number: <span class="bold-color">{{ $sales_order->tracking_number }}</span></p>
     <p style="margin-left:10px">To track your shipment, please visit the following link:<br/><a href="#">Link</a></p>
     <p style="margin-left:10px">If you have any inquiries about the usage of our products, please feel free to reach us via WhatsApp at (+852-54425298).</p>
     <p style="margin-left:10px">Thank you for choosing our services!</p> 
@@ -45,7 +45,7 @@
         </tr>
         <tr>
             <td style="border: 1px solid black; padding:0px 10px" colspan="2"><b>Total:</b></td>
-            <td style="border: 1px solid black; padding:0px 10px">{{ $sales_order->payment_method }}</td>
+            <td style="border: 1px solid black; padding:0px 10px">{{ $sales_order->total }}</td>
         </tr>
     </table>
 </div>
