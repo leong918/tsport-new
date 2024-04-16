@@ -1,3 +1,4 @@
+@if($avgRating > 0)
 <div class="col-12 d-flex reviews-wrapper">
     <div class="star-wrapper d-flex justify-content-start">
         @for ($i = 0; $i < 5; $i++)
@@ -10,3 +11,4 @@
     </div>
     <div class="d-flex flex-column align-center justify-content-center total-reviews-title"><span>{{ $review_total }} customer reviews</span></div>
 </div>
+@endif

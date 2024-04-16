@@ -42,7 +42,7 @@ class UserCartRepository extends BaseRepository
     {
         $cart = UserCart::where('product_id', $data['product_id']);
 
-        if (isset($data['attribute'])) {
+        if (isset($data['attribute']) && count($data['attribute']) > 0) {
             ksort($data['attribute']);
             $data['product_attribute_term'] = json_encode($data['attribute']);
 

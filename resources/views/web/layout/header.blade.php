@@ -42,10 +42,8 @@
                     @endif
 
                     <!--navbar-toggle-->
-                    <a class="navbar-toggler-concept" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                        <span class="narber-toggler-concept">
-                            <img src="{{asset('assets/web/assets/img/navigation/menu_icon.png')}}" alt="Bootstrap" width="25" height="24">
-                        </span>
+                    <a class="navbar-toggler-concept" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <img src="{{asset('assets/web/assets/img/navigation/menu_icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                 </div>
             </div>

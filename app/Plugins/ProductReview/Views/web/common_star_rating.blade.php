@@ -1,3 +1,4 @@
+@if($product->getAvgRating() > 0)
 <div class="d-flex justify-content-between">
     @for ($i = 0; $i < 5; $i++)
     @if ($i < $product->getAvgRating())
@@ -7,3 +8,4 @@
     @endif
     @endfor
 </div>
+@endif
