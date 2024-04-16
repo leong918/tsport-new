@@ -68,22 +68,35 @@ class UserCartRepository extends BaseRepository
         $cart->save();
     }
 
-    public function getUserCartByType($user_data, $type)
+    public function getUserCartByType($user_data, $type, $buyNowData = null)
     {
-        if ($type === 'guest') {
-            $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
-                ->where('user_ip', $user_data)
-                ->whereNull('user_id')
-                ->select('user_cart.*', 'product.category_id', 'product.brand_id')
-                ->get();
-        } else {
-            $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
-                ->where('user_id', $user_data)
-                ->select('user_cart.*', 'product.category_id', 'product.brand_id')
-                ->get();
-        }
+        if (!$buyNowData) {
+            if ($type === 'guest') {
+                $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
+                    ->where('user_ip', $user_data)
+                    ->whereNull('user_id')
+                    ->select('user_cart.*', 'product.category_id', 'product.brand_id')
+                    ->get();
+            } else {
+                $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
+                    ->where('user_id', $user_data)
+                    ->select('user_cart.*', 'product.category_id', 'product.brand_id')
+                    ->get();
+            }
 
-        $this->recalculateCart($cart);
+            $this->recalculateCart($cart, 'normal');
+        } else {
+            // no need save because temporary cart
+            $buy_cart = new UserCart();
+            $buy_cart->user_id = $user_data;
+            $buy_cart->product_id = $buyNowData['product_id'];
+            $buy_cart->product_attribute_term = isset($buyNowData['attribute']) ? json_encode($buyNowData['attribute']) : null;
+            $buy_cart->user_ip = getPublicIP();
+            $buy_cart->quantity = 1;
+
+            $cart = collect([$buy_cart]);
+            $this->recalculateCart($cart, 'buy_now');
+        }
 
         foreach ($cart as &$cart_content) {
             $description = null;
@@ -105,7 +118,7 @@ class UserCartRepository extends BaseRepository
         return $cart;
     }
 
-    private function recalculateCart($carts)
+    private function recalculateCart($carts, $type)
     {
         $productRepository = new ProductRepository(new Container());
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
@@ -124,7 +137,10 @@ class UserCartRepository extends BaseRepository
 
             $cart->price = $subtotal;
             $cart->total_price = $subtotal * $cart->quantity;
-            $cart->save();
+
+            if ($type == 'normal') {
+                $cart->save();
+            }
         }
     }
 
@@ -153,7 +169,7 @@ class UserCartRepository extends BaseRepository
         }
     }
 
-    public function calculateUserCartTotal($user_data, $coupon_session, $point_session, $user_id, $address = null)
+    public function calculateUserCartTotal($user_data, $coupon_session, $point_session, $user_id, $address = null, $buyNowData = null)
     {
         $data = array();
         $data['subtotal'] = 0;
@@ -162,7 +178,7 @@ class UserCartRepository extends BaseRepository
         $levelRepository = new LevelRepository(new Container());
 
         // calculate subtotal
-        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
+        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
         foreach ($cart_list as $cart) {
             $subtotal = 0;
             $subtotal += $cart->product->getCurrencyParameters('HKD')->price;

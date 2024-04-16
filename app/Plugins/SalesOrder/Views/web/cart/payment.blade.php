@@ -62,7 +62,7 @@
                                     <button id="payment-button" data-return-url="{{ route('cart.complete') }}">Complete Payment</button>
                                 </div>
                                 <div class="d-flex justify-content-center mt-4">
-                                    <a href="{{ route('cart.checkout') }}">Back To Checkout</a>
+                                    <a href="{{ $buyNowData ? route('cart.checkout') . '?' . http_build_query($buyNowData) : route('cart.checkout') }}">Back To Checkout</a>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +113,8 @@
                     data: {
                         payment_method: payment_method,
                         stripe_payment_intent_id: $('#payment-element').data('code'),
-                        cart_total: "{{ $cartTotal['total'] }}"
+                        cart_total: "{{ $cartTotal['total'] }}",
+                        buyNowData: "{{ json_encode($buyNowData) }}"
                     }
                 })
                 .then(response => {

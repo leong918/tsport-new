@@ -330,6 +330,13 @@
                 }
             }
 
+            .cart-button-out-stock {
+                background-color: #827D7D;
+                border: none;
+                color: #fff;
+                pointer-events: none;
+            }
+
             .buy-button {
                 background-color: #9A835E;
                 border: 1px solid #9A835E;

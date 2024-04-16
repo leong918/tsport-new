@@ -187,8 +187,10 @@ class CartController extends BaseController
 
     public function checkout(Request $request)
     {
+        $buyNowData = $request->all();
+
         $user_data = $this->getUserDataAndType();
-        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
+        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData)->count();
 
         if ($cart_count <= 0) {
             return redirect()->route('cart.shopping_cart');
@@ -202,41 +204,51 @@ class CartController extends BaseController
         $countryList = $this->countryRepository->getListing();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData);
-        return view('sales_order::web.cart.checkout', compact('countryList', 'addressData', 'cartTotal'));
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);
+        return view('sales_order::web.cart.checkout', compact('countryList', 'addressData', 'cartTotal', 'buyNowData'));
     }
 
     public function applyPoint(Request $request)
     {
         $country_data = $request->all();
+        $buyNowData = json_decode(html_entity_decode(html_entity_decode($country_data['buyNowData'])), true);
+        unset($country_data['buyNowData']);
+
         $user_data = $this->getUserDataAndType();
         session(['point-' . $user_data['user_data'] => true]);
 
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $country_data);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $country_data, $buyNowData);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
     public function removePoint(Request $request)
     {
+        $data = $request->all();
+        $buyNowData = json_decode(html_entity_decode(html_entity_decode($data['buyNowData'])), true);
+        unset($data['buyNowData']);
+
         $user_data = $this->getUserDataAndType();
         session(['point-' . $user_data['user_data'] => false]);
 
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
-        $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? $request->all();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $addressData);
+        $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? $data;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $addressData, $buyNowData);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
     public function getShippingFee(Request $request)
     {
         $data = $request->all();
+        $buyNowData = json_decode(html_entity_decode(html_entity_decode($data['buyNowData'])), true);
+        unset($data['buyNowData']);
+
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $data);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $data, $buyNowData);
 
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
@@ -244,19 +256,21 @@ class CartController extends BaseController
     public function processCheckout(Request $request)
     {
         $data = $request->all();
+        $buyNowData = json_decode($request->buyNowData, true);
+        unset($data['buyNowData']);
         session(['cart-' . auth()->user()->id => $data]);
 
         $user_data = $this->getUserDataAndType();
         $addressData = $request->session()->get('cart-' . auth()->user()->id);
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);
 
         if ($cartTotal['total'] <= 0) {
             DB::beginTransaction();
             try {
                 $data['payment_method'] = null;
-                $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
+                $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
                 $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal);
                 DB::commit();
                 return redirect()->route('cart.complete', ['order_id' => $order->sales_order_id]);
@@ -266,20 +280,31 @@ class CartController extends BaseController
             }
         }
 
-        return redirect()->route('cart.payment');
+        $queryString = route('cart.payment');
+        if ($buyNowData) {
+            $queryString = route('cart.payment') . '?' . http_build_query($buyNowData);
+        }
+
+        return redirect($queryString);
     }
 
     public function payment(Request $request)
     {
+        $buyNowData = $request->all();
         $user_data = $this->getUserDataAndType();
-        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
+        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData)->count();
+
+        $queryString = route('cart.checkout');
+        if ($buyNowData) {
+            $queryString = route('cart.checkout') . '?' . http_build_query($buyNowData);
+        }
 
         if ($cart_count <= 0) {
             return redirect(route('cart.shopping_cart'));
         }
 
         if (!$request->session()->get('cart-' . auth()->user()->id)) {
-            return redirect(route('cart.checkout'))->with('swal_error', 'Session Expired! Please confirm your address again.');
+            return redirect($queryString)->with('swal_error', 'Session Expired! Please confirm your address again.');
         }
 
         try {
@@ -288,12 +313,12 @@ class CartController extends BaseController
             $addressData = $request->session()->get('cart-' . auth()->user()->id);
             $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
             $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
-            $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData);
+            $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);
             $intentSecret = json_encode($this->createPaymentIntent($cartTotal['total']));
 
-            return view('sales_order::web.cart.payment', compact('addressData', 'intentSecret', 'cartTotal'));
+            return view('sales_order::web.cart.payment', compact('addressData', 'intentSecret', 'cartTotal', 'buyNowData'));
         } catch (\Exception $e) {
-            return redirect(route('cart.checkout'))->with('swal_error', $e->getMessage());
+            return redirect($queryString)->with('swal_error', $e->getMessage());
         }
     }
 
@@ -317,12 +342,16 @@ class CartController extends BaseController
 
     public function createOrder(Request $request)
     {
+        $data = $request->all();
+        $buyNowData = $request->buyNowData;
+        unset($data['buyNowData']);
+
         $user_data = $this->getUserDataAndType();
-        $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
+        $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
         $addressData = $request->session()->get('cart-' . auth()->user()->id);
         $coupon_session = $request->session()->get('coupon-' . auth()->user()->id) ?? array();
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);
 
         //do checking check total is same or not, if not same need redirect back
         if ($request->cart_total != $cartTotal['total']) {
@@ -336,7 +365,7 @@ class CartController extends BaseController
 
         DB::beginTransaction();
         try {
-            $order = $this->createEmptySalesOrder($request->all(), $user_cart, $cartTotal);
+            $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal);
             DB::commit();
             return response()->json(['order' => $order], 200);
         } catch (\Exception $e) {
