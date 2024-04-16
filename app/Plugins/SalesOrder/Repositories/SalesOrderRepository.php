@@ -544,12 +544,14 @@ class SalesOrderRepository extends BaseRepository
         // update referral voucher
         $referral_voucher = $referralRepository->getReferrerDiscount($sales_order->user_id, $sales_order->id);
         if ($referral_voucher) {
+            $referral_voucher->referrer_sales_order_id = null;
             $referral_voucher->referrer_voucher_used_at = null;
             $referral_voucher->save();
         }
 
         $referee_voucher = $referralRepository->getRefereeDiscount($sales_order->user_id, $sales_order->id);
         if ($referee_voucher) {
+            $referee_voucher->referee_sales_order_id = null;
             $referee_voucher->referee_voucher_used_at = null;
             $referee_voucher->save();
         }
