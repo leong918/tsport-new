@@ -53,7 +53,6 @@ $(document).ready(function () {
             });
     })
 
-
     //--------- deskstop click wishlist btn -------------------
     $('.wishlist-button-hover').on('click', function (e) {
         e.preventDefault();

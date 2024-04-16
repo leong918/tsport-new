@@ -29,11 +29,13 @@
 </div>
 <div class="row action-button-wrapper">
     <div class="col-12 col-lg-6 ps-0">
-        <button class="cart-button cart-button-hover" data-id="{{ $product->id }}" data-url="{{ route('cart.add_to_cart') }}">
-            ADD TO CART
+        <button class="cart-button {{ $product->quantity > 0 || $product->is_backorder ? 'cart-button-hover' : 'cart-button-out-stock' }}" data-id="{{ $product->id }}" data-url="{{ route('cart.add_to_cart') }}">
+            {{ $product->quantity > 0 || $product->is_backorder ? 'ADD TO CART' : 'OUT OF STOCK' }}
         </button>
     </div>
-    <div class="col-12 col-lg-6 pe-0"><button class="buy-button">BUY IT NOW</button></div>
+    <div class="col-12 col-lg-6 pe-0">
+        <button class="buy-button {{ $product->quantity > 0 || $product->is_backorder ? '' : 'd-none' }}" data-id="{{ $product->id }}" data-url="{{ route('cart.checkout') }}">BUY IT NOW</button>
+    </div>
 </div>
 @push('scripts')
 <script type="text/javascript">
@@ -45,6 +47,33 @@
             $('#' + dropdown).addClass('visible');
         });
 
+        $('.buy-button').on('click', function (e) {
+            e.preventDefault();
+            var product_id = $(this).data('id');
+            var url = $(this).data('url');
+            var attribute = {};
+            console.log('here');
+
+            if ($('.attribute-input').length > 0) {
+                $('.attribute-input').each(function (i, obj) {
+                    if (!$(obj).val()) {
+                        showSwal('Warning!', 'Please choose ' + obj.data('name'));
+                        return false;
+                    }
+                });
+
+                $.each($('#attributeForm').serializeArray(), function () {
+                    attribute[this.name] = this.value;
+                });
+            }
+
+            var params = { 
+                product_id: product_id,
+                attribute: attribute 
+            };
+
+            window.location.href = url + '?' + jQuery.param( params );
+        })
 
         $('.attribute-dropdown li').on('click', function() {
             var default_price = parseFloat($('.product-price').data('default-price'));
