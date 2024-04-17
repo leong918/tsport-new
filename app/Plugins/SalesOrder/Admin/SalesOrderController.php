@@ -178,6 +178,9 @@ class SalesOrderController extends Controller
         $date = Carbon::now();
         $formattedDate = $date->format('F j, Y');
         if($selectedMail == 'tracking_number'){
+            if(!$sales_order->tracking_link || !$sales_order->tracking_number){
+                return response()->json(['error' => 'Please fill in tracking link and tracking number!'], 500);
+            }
             $image = $this->settingRepository->getValueByKey('tracking_number_email_image');
             Mail::to($sales_order->user->email)->send(new TrackingNumberMail($sales_order, $image, $formattedDate));
         }elseif($selectedMail == 'shipping_fee'){

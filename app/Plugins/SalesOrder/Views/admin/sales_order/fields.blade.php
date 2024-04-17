@@ -52,6 +52,10 @@
                 <td><div><span class="editable" data-input-type="text" data-column="tracking_number" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->tracking_number}}">{!! isset($model) && $model->tracking_number ? $model->tracking_number : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
+                <th>{{ html()->label('Tracking Link :') }}</th>
+                <td><div><span class="editable" data-input-type="text" data-column="tracking_link" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->tracking_link}}">{!! isset($model) && $model->tracking_link ? $model->tracking_link : '<i>Empty</i>' !!}</span></div></td>
+            </tr>
+            <tr>
                 <th>{{ html()->label('Order Status :') }}</th>
                 <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->status}}">{!! isset($model) && isset($model->status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status) : '<i>Empty</i>' !!}</span></div></td>
             </tr>
@@ -174,6 +178,15 @@ var template = document.getElementById('addProductContent').innerHTML;
 var productListDropdown = <?php echo json_encode($productListDropdown)?>;
 
 $(document).ready(function(){
+
+    $(document).on("keydown", function(event) {
+        // when enter button down and edit button showed
+        if (event.key === "Enter" && $("#editButton").length == 1) {
+            event.preventDefault();
+            $("#editButton").click();
+        }
+    });
+
     $(document).on('click', '.editable', function(){
         var inputType = $(this).data('input-type'); 
         var column = $(this).data('column');
@@ -242,7 +255,6 @@ $(document).ready(function(){
             })
             .then(response => {
                 swal.fire({
-
                     title: '{{__("page.sales_order_edited")}}',
                     html: response.data.level_change ? `Sales Order Edited Successfully ! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : '{{__("page.sales_order_edited")}}',
                     icon: 'success',

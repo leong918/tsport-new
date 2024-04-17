@@ -78,23 +78,24 @@
                             if (response) {
                                 return axios.post(url, { selectedMail: selectedMail})
                                     .then(() => {
+                                        swal.fire({
+                                            title: 'Success!',
+                                            text: mailTitle + ' email sent successfully!',
+                                            icon: 'success',
+                                        });
                                     })
-                                    .catch((e) => {
-                                        console.error("error ", e)
-                                        Swal.showValidationMessage(
-                                            `Request failed: ${e}`
-                                        );
-                                    })
+                                    .catch(error => {
+                                        console.log(error)
+                                        swal.fire({
+                                            title: 'Failed to send email !',
+                                            text: error.response.data.error,
+                                            icon: 'error',
+                                            confirmButtonClass: 'btn btn-danger',
+                                            confirmButtonText: 'OK',
+                                        });
+                                    });
                             }
                         },
-                    }).then((result) => {
-                        if (result.value) {
-                            swal.fire({
-                                title: 'Success!',
-                                text: mailTitle + ' email sent successfully!',
-                                icon: 'success',
-                            });
-                        }
                     });
                 }else{
                     swal.fire({

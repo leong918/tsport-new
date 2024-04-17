@@ -14,7 +14,7 @@
     <div style="margin: 20px 0px;">
         <p style="font-size:14px;">Hi {{ $sales_order->user->first_name }},</p>
         <p style="font-size:14px;">Your order has been shipped via {{ $sales_order->delivery_partner }}. Here is your tracking number: <span style="color:#aba470">{{ $sales_order->tracking_number }}</span></p>
-        <p style="margin-left:10px; font-size:14px;">To track your shipment, please visit the following link:<br/><a href="#" style="color:#aba470">Link</a></p>
+        <p style="margin-left:10px; font-size:14px;">To track your shipment, please visit the following link:<br/><a href="{{ $sales_order->tracking_link }}" style="color:#aba470">{{ $sales_order->tracking_link }}</a></p>
         <p style="margin-left:10px; font-size:14px;">If you have any inquiries about the usage of our products, please feel free to reach us via WhatsApp at (+852-54425298).</p>
         <p style="margin-left:10px; font-size:14px;">Thank you for choosing our services!</p> 
         <p style="font-size:14px;">As a reminder, here are your order details:</p>
