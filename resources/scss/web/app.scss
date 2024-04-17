@@ -62,6 +62,10 @@ body{
     display: none !important;
 }
 
+.cart-out-stock {
+    pointer-events: none;
+}
+
 .custom-register-swal{
     .swal2-popup{
         border-radius: 0 !important;
