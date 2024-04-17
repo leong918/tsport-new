@@ -15,10 +15,10 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Plugins\SalesOrder\Export\SalesOrderExport;
 use App\Repositories\SettingRepository;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TrackingNumberMail;
-use App\Mail\ShippingFeeMail;
-use App\Mail\NewOrderMail;
-use App\Mail\OrderReceivedMail;
+use App\Plugins\SalesOrder\Mail\TrackingNumberMail;
+use App\Plugins\SalesOrder\Mail\ShippingFeeMail;
+use App\Plugins\SalesOrder\Mail\NewOrderMail;
+use App\Plugins\SalesOrder\Mail\OrderReceivedMail;
 use Carbon\Carbon;
 class SalesOrderController extends Controller
 {
@@ -167,8 +167,7 @@ class SalesOrderController extends Controller
             $senderData[$senderInfo->key] = $senderInfo->value;
         }
 
-        $filename = "Sales Order Export.xlsx";
-
+        $filename = "Sales Order Export". (isset($form_data['date_range']) && $form_data['date_range'] != null ? ' ('.$form_data['date_range'].')' : '').".xlsx";
         return Excel::download(new SalesOrderExport($sales_order_list, $senderData), $filename);
     }
 

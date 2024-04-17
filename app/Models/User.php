@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Notifications\UserVerifyEmailNotification;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -98,5 +99,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function level(): HasOne
     {
         return $this->hasOne(Level::class, 'id', 'level_id');
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new UserVerifyEmailNotification);
     }
 }

@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Mail;
+namespace App\Plugins\SalesOrder\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Content;
-class OrderReceivedMail extends Mailable
+class NewOrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $sales_order;
     public $image;
     public $date;
+
     /**
      * Create a new message instance.
      */
@@ -26,16 +27,9 @@ class OrderReceivedMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'admin.emails.order_received_mail',
-        );
-    }
-
     public function build()
     {
-        $subject = "Order Received: Your Recent Purchase (Order #[" . $this->sales_order->sales_order_id . "]) from Tag Concept";
-        return $this->markdown('admin.emails.order_received_mail')->subject($subject);
+        $subject = "Order Confirmation: Your Recent Purchase (Order #[" . $this->sales_order->sales_order_id . "]) from Tag Concept";
+        return $this->markdown('sales_order::admin.emails.new_order_mail')->subject($subject);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Plugins\SalesOrder\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -27,16 +27,11 @@ class TrackingNumberMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'admin.emails.tracking_number_mail',
-        );
-    }
 
     public function build()
     {
         $subject = "Order Update (Order #[".$this->sales_order->sales_order_id."]):Tracking Details for Your Recent Purchase";
-        return $this->markdown('admin.emails.tracking_number_mail')->subject($subject);
+
+        return $this->markdown('sales_order::admin.emails.tracking_number_mail')->subject($subject);
     }
 }

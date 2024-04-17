@@ -6,23 +6,19 @@
         @endcomponent
     @endslot
 
-    <div>
+    <div style="">
         <p><b>Hello!</b></p>
-        <p>You have requested to reset your password. Please click the following link to proceed:</p>
-        <x-mail::button :url="route('web.reset_password', ['token' => $randomString])">
-            Reset Password
-            </x-mail::button>
+        <p>Please click the button below to verify your email address.</p>
+        <x-mail::button :url="$verificationUrl">
+            Verify Email Address
+        </x-mail::button>
         <p>If you did not create an account, no further action is required.</p>
     </div>
 
     @slot('subcopy')
         @component('mail::subcopy')
-            <p>If you didn't request this, you can safely ignore this email.</p>
-            <p>Please take note that password reset link will be expired in 15 minutes.</p>
-            <p>
-                Thanks,<br>
-                Tag Concept Team
-            </p>
+            <p>If you're having trouble clicking the "Verify Email Address" button, copy and paste the verificationUrl below into your web browser: <span style="word-break: break-all;"><a href="{{ $verificationUrl }}">{{ $verificationUrl }}</a></span></p>
+            <p>Thanks,<br/> Tag Concept</p>
         @endcomponent
     @endslot
 
