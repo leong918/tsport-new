@@ -166,6 +166,47 @@
                         }
                     });
                 });
+
+                $('table tbody').on('click', '.btn-mail', function(e) {
+                    e.preventDefault();
+                    var url = $(this).data('url');
+                    swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This action will send verification email to the user.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, send it!',
+                        cancelButtonText: 'Cancel',
+                        customClass: {
+                            confirmButton: "btn btn-success me-2",
+                            cancelButton: "btn btn-danger ms-2"
+                        },
+                        buttonsStyling: false,
+                        showLoaderOnConfirm: true,
+                        preConfirm: (response) => {
+                            if (response) {
+                                return axios.get(url, {})
+                                    .then(() => {
+                                    })
+                                    .catch((e) => {
+                                        console.error("error ", e)
+                                        Swal.showValidationMessage(
+                                            `Request failed: ${e}`
+                                        );
+                                    })
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.value) {
+                            swal.fire({
+                                title: 'Success!',
+                                text: 'Verification email sent successfully!',
+                                icon: 'success',
+                            });
+                        }
+                    });
+                });
             });
         });
     </script>

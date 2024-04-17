@@ -15,10 +15,10 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Plugins\SalesOrder\Export\SalesOrderExport;
 use App\Repositories\SettingRepository;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TrackingNumberMail;
-use App\Mail\ShippingFeeMail;
-use App\Mail\NewOrderMail;
-use App\Mail\OrderReceivedMail;
+use App\Plugins\SalesOrder\Mail\TrackingNumberMail;
+use App\Plugins\SalesOrder\Mail\ShippingFeeMail;
+use App\Plugins\SalesOrder\Mail\NewOrderMail;
+use App\Plugins\SalesOrder\Mail\OrderReceivedMail;
 use Carbon\Carbon;
 class SalesOrderController extends Controller
 {

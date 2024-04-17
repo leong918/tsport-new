@@ -1,27 +1,25 @@
 
 @component('mail::layout')
+
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            <img src="{{asset('assets/web/assets/img/global/logo.png')}}" style="width:auto" class="logo" alt="Laravel Logo">
+            <img src="{{asset('assets/web/assets/img/global/logo.png')}}" style="width:auto" class="logo" alt="Tag Concept Logo">
         @endcomponent
     @endslot
-    @slot('subcopy')
-        @component('mail::subcopy')
-    <div style="margin-top: -50px">
+
+    <div style="font-size:14px;">
         <img src="{{ $image }}">
         <div style="padding:20px 0px; text-align:center; background-color:#aba470; color:white">A note has been added to your order</div>
     </div>
-    <div style="margin: 20px 0px">
-        <p>Hi {{ $sales_order->user->first_name }},</p>
-        <p>Thank you for placing your order with us! We appreciate your business and would like to inform you about the shipping fee for your order #{{ $sales_order->sales_order_id }}.</p>
-        <p style="margin-left:10px">The shipping fee for your order is HK${{ $sales_order->shipping }}. To proceed with the payment, please click on the following link: <a href="https://tag-concept.com/product/shipping-fee/">https://tag-concept.com/product/shipping-fee/</a></p>
-        <p style="margin-left:10px">Once on the page, please add a quantity of {{ $sales_order->shipping }} to your shopping cart and proceed to pay the total amount of HK${{ $sales_order->shipping }}.</p>
-        <p style="margin-left:10px">We aim to process and ship your order within 7-10 working days. Should there be any delays or changes in the shipping time frame, we will notify you promptly.</p>
-        <p style="margin-left:10px">If you have any questions or require further assistance, please feel free to reach out to our customer service team. We are here to help.</p>
-        <p style="margin-left:10px">Thank you once again for your order. We look forward to delivering your products to you soon.</p>    
-        <p>As a reminder, here are your order details:</p>
+    <div style="margin: 20px 0px;">
+        <p style="font-size:14px;">Hi {{ $sales_order->user->first_name }},</p>
+        <p style="font-size:14px;">Your order has been shipped via {{ $sales_order->delivery_partner }}. Here is your tracking number: <span style="color:#aba470">{{ $sales_order->tracking_number }}</span></p>
+        <p style="margin-left:10px; font-size:14px;">To track your shipment, please visit the following link:<br/><a href="#" style="color:#aba470">Link</a></p>
+        <p style="margin-left:10px; font-size:14px;">If you have any inquiries about the usage of our products, please feel free to reach us via WhatsApp at (+852-54425298).</p>
+        <p style="margin-left:10px; font-size:14px;">Thank you for choosing our services!</p> 
+        <p style="font-size:14px;">As a reminder, here are your order details:</p>
     </div>
-    <div>
+    <div style="font-size:14px;">
         <h1 style="color:#aba470">[Order #{{ $sales_order->sales_order_id  }}] ({{ $date }})</h1>
         <table style="border: 1px solid black; border-collapse: collapse; width:100%; font-size:14px;">
             <tr>
@@ -58,8 +56,8 @@
             </tr>
         </table>
     </div>
-    <div style="margin:20px 0px;">
-        <table style="width:50%; font-size:14px;">
+    <div style="margin:20px 0px; font-size:14px;">
+        <table style="width:50%;">
             <tr>
                 <th style="text-align:left;"><h1 style="color:#aba470">Shipping Address</h1></th>
             </tr>
@@ -83,9 +81,8 @@
             </tr>
         </table>
     </div>
-    <p>Thanks for reading.</p>
-    @endcomponent
-    @endslot
+    <p style="font-size:14px;">Thanks for reading.</p>
+
     @slot('footer')
         @component('mail::footer')
         <div style="background-color:black; margin:-32px !important; padding: 15px 0px;">
@@ -103,4 +100,5 @@
         </div>
         @endcomponent
     @endslot
+
 @endcomponent

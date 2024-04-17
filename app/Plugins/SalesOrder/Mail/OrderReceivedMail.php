@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Mail;
+namespace App\Plugins\SalesOrder\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Content;
-class ShippingFeeMail extends Mailable
+class OrderReceivedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -26,16 +26,10 @@ class ShippingFeeMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'admin.emails.shipping_fee_mail',
-        );
-    }
 
     public function build()
-    {       
-        $subject = "Important Information About Your Order (Order #[".$this->sales_order->sales_order_id."]): Shipping Fee Update";
-        return $this->markdown('admin.emails.shipping_fee_mail')->subject($subject);
+    {
+        $subject = "Order Received: Your Recent Purchase (Order #[" . $this->sales_order->sales_order_id . "]) from Tag Concept";
+        return $this->markdown('sales_order::admin.emails.order_received_mail')->subject($subject);
     }
 }
