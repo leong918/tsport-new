@@ -193,7 +193,7 @@ class UserCartRepository extends BaseRepository
         }
 
         // calculate discount, point redemption, shipping fee and total
-        $other_data = $this->calculateOtherTotal($data['subtotal'], $user_data, $coupon_session, $user_id, $point_session, $address, false);
+        $other_data = $this->calculateOtherTotal($data['subtotal'], $user_data, $coupon_session, $user_id, $point_session, $address, false, $buyNowData);
 
         // check for just member total to upgrade insider
         if ($user_id) {
@@ -201,7 +201,7 @@ class UserCartRepository extends BaseRepository
             $level = $levelRepository->find($user->level_id + 1);
             if ($user->level_id == 1 && $other_data['total'] >= $level->target_amount) {
                 // calculate discount, point redemption, shipping fee and total
-                $other_data = $this->calculateOtherTotal($data['subtotal'], $user_data, $coupon_session, $user_id, $point_session, $address, true);
+                $other_data = $this->calculateOtherTotal($data['subtotal'], $user_data, $coupon_session, $user_id, $point_session, $address, true, $buyNowData);
             }
         }
 
@@ -209,7 +209,7 @@ class UserCartRepository extends BaseRepository
         return $data;
     }
 
-    private function calculateOtherTotal($subtotal, $user_data, $coupon_session, $user_id, $point_session, $address, $is_upgrade_insider)
+    private function calculateOtherTotal($subtotal, $user_data, $coupon_session, $user_id, $point_session, $address, $is_upgrade_insider, $buyNowData)
     {
         $data = array();
         $data['shipping_fee'] = 0;
@@ -217,7 +217,7 @@ class UserCartRepository extends BaseRepository
         $userRepository = new UserRepository(new Container());
         $countryRepository = new CountryRepository(new Container());
 
-        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
+        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
         $cart_rule_data = $cartRuleRepository->calculatePriorityRule($cart_list, $coupon_session, $user_id, $is_upgrade_insider);
         $data = array_merge($data, $cart_rule_data);
 

@@ -271,7 +271,7 @@ class CartController extends BaseController
             try {
                 $data['payment_method'] = null;
                 $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
-                $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal);
+                $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal, $buyNowData);
                 DB::commit();
                 return redirect()->route('cart.complete', ['order_id' => $order->sales_order_id]);
             } catch (\Exception $e) {
@@ -343,7 +343,7 @@ class CartController extends BaseController
     public function createOrder(Request $request)
     {
         $data = $request->all();
-        $buyNowData = $request->buyNowData;
+        $buyNowData = json_decode(html_entity_decode(html_entity_decode($data['buyNowData'])), true);
         unset($data['buyNowData']);
 
         $user_data = $this->getUserDataAndType();
@@ -365,7 +365,7 @@ class CartController extends BaseController
 
         DB::beginTransaction();
         try {
-            $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal);
+            $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal, $buyNowData);
             DB::commit();
             return response()->json(['order' => $order], 200);
         } catch (\Exception $e) {
@@ -374,7 +374,7 @@ class CartController extends BaseController
         }
     }
 
-    private function createEmptySalesOrder($data, $user_cart, $cartTotal)
+    private function createEmptySalesOrder($data, $user_cart, $cartTotal, $buyNowData)
     {
         $order = null;
         $data['user_id'] = auth()->user()->id;
@@ -394,7 +394,7 @@ class CartController extends BaseController
                 $this->userRepository->deductFullPoint($user->id);
             }
 
-            $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
+            $order = $this->salesOrderRepository->createOrder($data, $cartTotal, $buyNowData);
             $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
             $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
 
@@ -420,7 +420,9 @@ class CartController extends BaseController
             }
 
             if ($data['payment_method'] !== 'stripe') {
-                $this->userCartRepository->clearCart($order->user_id);
+                if (!$order->is_buy_now_order) {
+                    $this->userCartRepository->clearCart($order->user_id);
+                }
                 session()->flush('cart-' . $order->user_id);
                 session()->flush('coupon-' . $order->user_id);
                 session()->flush('point-' . $order->user_id);
@@ -455,7 +457,10 @@ class CartController extends BaseController
                 return redirect()->route('web.home')->with('swal_error', 'Your order currently in status - ' . $paymentIntent->status . '. Please contact admin for more enquiry.');
             }
 
-            $this->userCartRepository->clearCart($sales_order->user_id);
+            if (!$sales_order->is_buy_now_order) {
+                $this->userCartRepository->clearCart($sales_order->user_id);
+            }
+
             session()->flush('cart-' . $sales_order->user_id);
             session()->flush('coupon-' . $sales_order->user_id);
             session()->flush('point-' . $sales_order->user_id);
