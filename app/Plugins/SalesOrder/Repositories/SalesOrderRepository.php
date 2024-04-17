@@ -93,6 +93,7 @@ class SalesOrderRepository extends BaseRepository
             $table->string('level_change')->nullable();
             $table->tinyInteger('is_free_shipping')->default(0);
             $table->tinyInteger('is_pay_later')->default(0);
+            $table->tinyInteger('is_buy_now_order')->default(0);
             $table->timestamp('payment_succeed_at')->nullable();
             $table->timestamp('payment_failed_at')->nullable();
             $table->timestamp('completed_at')->nullable();
@@ -334,7 +335,7 @@ class SalesOrderRepository extends BaseRepository
         $model->save();
     }
 
-    public function createOrder($data, $cartTotal)
+    public function createOrder($data, $cartTotal, $buyNowData)
     {
         $id_generator = new IDGenerator('App\\Plugins\\SalesOrder\\Models\\SalesOrder', 'sales_order_id', 'TC');
         $id_generator->length(6);
@@ -357,6 +358,7 @@ class SalesOrderRepository extends BaseRepository
         $order->stripe_payment_intent_id = $data['payment_method'] === 'stripe' ? $data['stripe_payment_intent_id']['clientSecret'] : null;
         $order->is_free_shipping = $cartTotal['is_free_shipping'];
         $order->is_pay_later = $cartTotal['is_pay_later'];
+        $order->is_buy_now_order = $buyNowData ? true : false;
         $order->save();
 
         return $order;
