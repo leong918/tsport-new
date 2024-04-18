@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Schema;
 use App\Utils\IDGenerator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CustomerNoteMail;
+use App\Plugins\SalesOrder\Mail\AdminOrderStatusMail;
+use App\Plugins\SalesOrder\Mail\OrderStatusMail;
 use Illuminate\Container\Container;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Repositories\CountryRepository;
@@ -20,6 +22,7 @@ use App\Repositories\LevelRepository;
 use App\Repositories\LevelChangeLogRepository;
 use App\Repositories\ProductBalanceLogRepository;
 use App\Repositories\ReferralRepository;
+use App\Repositories\SettingRepository;
 use Carbon\Carbon;
 
 class SalesOrderRepository extends BaseRepository
@@ -392,6 +395,14 @@ class SalesOrderRepository extends BaseRepository
 
             $salesOrderLogRepository = new SalesOrderLogRepository(new Container());
             $salesOrderLogRepository->createLog($sales_order, $sales_order->user_id, 'user', $status, $description);
+
+            // send mail to admin
+            $settingRepository = new SettingRepository(new Container());
+            $receiver = $settingRepository->getValueByKey('notification_email');
+            $date = Carbon::parse($sales_order->created_at);
+            $formattedDate = $date->format('F j, Y');
+            $status = renderModelData(SalesOrder::ORDER_STATUS, $sales_order->status);
+            Mail::to($receiver)->send(new AdminOrderStatusMail($sales_order,$formattedDate,$status));
         }
     }
 

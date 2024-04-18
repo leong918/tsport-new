@@ -44,6 +44,13 @@ class ProductAttributeTermRepository extends BaseRepository
         return formalizeDropdown(ProductAttributeTerm::all(), $key, 'name');
     }
 
+    public function getLowStockProductAttributeTerm(){
+        return ProductAttributeTerm::leftjoin('product', 'product_attribute_term.product_id', '=', 'product.id')
+                                    ->where('product_attribute_term.quantity','<=', 2)
+                                    ->selectRaw('product.name as product_name, product_attribute_term.*')
+                                    ->get();
+    }
+
     public function createProductAttributeTerm(array $input, $model)
     {
         $productAttributeRepository = new ProductAttributeRepository(new Container());

@@ -60,6 +60,16 @@
                                     @endif
                                 </div>
                                 <div class="mb-3">
+                                    {{ html()->label('Sales Order Status Image') }}
+                                    {{ html()->file('sales_order_status_image')->accept('image/*')->class('form-control') }}
+                                    <br>
+                                    @if(isset($setting_model['sales_order_status_image']) && $setting_model['sales_order_status_image'] != null)
+                                        <img class="img-fluid" src="{{ $setting_model['sales_order_status_image'] }}" />
+                                    @else
+                                        <span>No image</span>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
                                     {{ html()->label('Shopping Cart Banner') }}
                                     {{ html()->file('shopping_cart_banner')->accept('image/*')->class('form-control') }}
                                     <br>
