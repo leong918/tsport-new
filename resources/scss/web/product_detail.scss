@@ -738,20 +738,6 @@
 
                 height: auto;
             }
-
-            img.wishlist-mobile, img.wishlist-mobile-added {
-                display: none;
-
-                @media (max-width: 1024px) {
-                    width: 40px;
-                    display: block;
-                }
-
-                @media (max-width: 767px) {
-                    width: 40px;
-                    display: block;
-                }
-            }
         }
 
         //price-cart
@@ -774,9 +760,21 @@
                     display: block;
                 }
             }
+
+            img.wishlist-mobile, img.wishlist-mobile-added {
+                display: none;
+
+                @media (max-width: 1024px) {
+                    width: 40px;
+                    display: block;
+                }
+
+                @media (max-width: 767px) {
+                    width: 40px;
+                    display: block;
+                }
+            }
         }
-
-
     }
 
     //carousel

@@ -379,8 +379,16 @@
 
                 height: auto;
             }
+        }
 
-            img.wishlist-mobile, img.wishlist-mobile-added {
+        //price-cart
+        .product-info .price-cart {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+
+            img.cart-mobile {
                 display: none;
 
                 @media (max-width: 1024px) {
@@ -393,16 +401,8 @@
                     display: block;
                 }
             }
-        }
 
-        //price-cart
-        .product-info .price-cart {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 10px;
-
-            img.cart-mobile {
+            img.wishlist-mobile, img.wishlist-mobile-added {
                 display: none;
 
                 @media (max-width: 1024px) {
@@ -645,8 +645,16 @@
 
                 height: auto;
             }
+        }
 
-            img.wishlist-mobile, img.wishlist-mobile-added {
+        //price-cart
+        .product-info .price-cart {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+
+            img.cart-mobile {
                 display: none;
 
                 @media (max-width: 1024px) {
@@ -659,16 +667,8 @@
                     display: block;
                 }
             }
-        }
 
-        //price-cart
-        .product-info .price-cart {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 10px;
-
-            img.cart-mobile {
+            img.wishlist-mobile, img.wishlist-mobile-added {
                 display: none;
 
                 @media (max-width: 1024px) {
@@ -1082,8 +1082,16 @@
 
                 height: auto;
             }
+        }
 
-            img.wishlist-mobile, img.wishlist-mobile-added {
+        //price-cart
+        .product-info .price-cart {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 10px;
+
+            img.cart-mobile {
                 display: none;
 
                 @media (max-width: 1024px) {
@@ -1096,16 +1104,8 @@
                     display: block;
                 }
             }
-        }
 
-        //price-cart
-        .product-info .price-cart {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 10px;
-
-            img.cart-mobile {
+            img.wishlist-mobile, img.wishlist-mobile-added {
                 display: none;
 
                 @media (max-width: 1024px) {
@@ -1455,20 +1455,6 @@
             
             height: auto;
         }
-
-        img.wishlist-mobile, img.wishlist-mobile-added {
-            display: none;
-
-            @media (max-width: 1024px) {
-                width: 40px;
-                display: block;
-            }
-
-            @media (max-width: 767px) {
-                width: 40px;
-                display: block;
-            }
-        }
     }
 
     //price-cart
@@ -1480,6 +1466,20 @@
 
         img.cart-mobile {
             display: none;
+
+            @media (max-width: 767px) {
+                width: 40px;
+                display: block;
+            }
+        }
+
+        img.wishlist-mobile, img.wishlist-mobile-added {
+            display: none;
+
+            @media (max-width: 1024px) {
+                width: 40px;
+                display: block;
+            }
 
             @media (max-width: 767px) {
                 width: 40px;
