@@ -293,12 +293,6 @@
                     &:not(:first-child){
                         margin-left: 0.5rem;
                     }
-
-                    @media only screen and (max-width: 1024px) {
-                        &:not(:first-child){
-                            margin-left: 0;
-                        }
-                    }
                     
                     @media only screen and (max-width:320px){
                         width: 17px;
