@@ -6,15 +6,11 @@
             <img src="{{asset('assets/web/assets/img/global/logo.png')}}" style="width:auto" class="logo" alt="Tag Concept Logo">
         @endcomponent
     @endslot
-
-    <div style="font-size:14px;">
-        <img src="{{ $image }}">
-        <div style="padding:20px 0px; text-align:center; background-color:#aba470; color:white">A note has been added to your order</div>
-    </div>
+    
     <div style="margin: 20px 0px">
-        <p style="font-size:14px;">Hi {{ $sales_order->user->first_name }},</p>
-        <p style="font-size:14px;">Thank you for choosing our services! You can check your order by clicking <br/> <a href="{{route('account.order_detail', ['id' => $sales_order->id])}}" style="color:#aba470">Check Your Order</a></p>
-        <p style="font-size:14px;">Receipt is attached in the email.</p>
+        <p style="font-size:14px;"><b>This is a notification email to admin.</b></p>
+        <p style="font-size:14px;">Order status for <span style="color:#aba470;"><b>#{{ $sales_order->sales_order_id  }}</b></span>has been updated to <span style="color:#aba470;"><b>{{ $status }}</b></span>.</p>
+        <p style="font-size:14px;">As a reminder, here are the order details:</p>
     </div>
     <div>
         <h1 style="color:#aba470">[Order #{{ $sales_order->sales_order_id  }}] ({{ $date }})</h1>

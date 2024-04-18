@@ -13,8 +13,8 @@
     </div>
     <div style="margin: 20px 0px">
         <p style="font-size:14px;">Hi {{ $sales_order->user->first_name }},</p>
-        <p style="font-size:14px;">Thank you for choosing our services! You can check your order by clicking <br/> <a href="{{route('account.order_detail', ['id' => $sales_order->id])}}" style="color:#aba470">Check Your Order</a></p>
-        <p style="font-size:14px;">Receipt is attached in the email.</p>
+        <p style="font-size:14px;">Your oder status has been updated to <span style="color:#aba470;"><b>{{ $status }}</b></span>.</p>
+        <p style="font-size:14px;">As a reminder, here are your order details:</p>
     </div>
     <div>
         <h1 style="color:#aba470">[Order #{{ $sales_order->sales_order_id  }}] ({{ $date }})</h1>

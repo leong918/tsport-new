@@ -171,6 +171,10 @@ class ProductRepository extends BaseRepository
             ->get();
     }
 
+    public function getLowStockProduct(){
+        return Product::where('is_attribute',0)->where('quantity','<=',2)->get();
+    }
+
     public function regroupProductListByCategory($product_list)
     {
         $regroup_product_list = array();

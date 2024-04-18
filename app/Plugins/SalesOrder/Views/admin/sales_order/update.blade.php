@@ -37,6 +37,7 @@
                                             <option value="tracking_number">Tracking Number</option>
                                             <option value="new_order">New Order</option>
                                             <option value="order_received">Order Received</option>
+                                            <option value="order_status">Order Status</option>
                                         </select>
                                         <button type="button" id="btn-mail" data-url="{{ route("admin.sales_order.sendMail", ["id" => $model->id]) }}" class="btn btn-primary">Send</button>
                                     </div>
@@ -64,7 +65,7 @@
             $("#btn-mail").click(function(e) {
                 e.preventDefault();
                 var selectedMail = $("#mail_list").val();
-                var mailTitle = selectedMail == 'tracking_number' ? "Tracking Number" : selectedMail == 'shipping_fee' ? "Shipping Fee" : selectedMail == 'new_order' ? "New Order" : "Order Received";
+                var mailTitle = selectedMail == 'tracking_number' ? "Tracking Number" : selectedMail == 'shipping_fee' ? "Shipping Fee" : selectedMail == 'new_order' ? "New Order" : selectedMail == 'order_status' ? "Order Status":"Order Received";
                 var url = $(this).data("url");
                 if(selectedMail){
                     swal.fire({

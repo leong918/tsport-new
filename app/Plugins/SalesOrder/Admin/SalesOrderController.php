@@ -19,6 +19,8 @@ use App\Plugins\SalesOrder\Mail\TrackingNumberMail;
 use App\Plugins\SalesOrder\Mail\ShippingFeeMail;
 use App\Plugins\SalesOrder\Mail\NewOrderMail;
 use App\Plugins\SalesOrder\Mail\OrderReceivedMail;
+use App\Plugins\SalesOrder\Mail\OrderStatusMail;
+use App\Plugins\SalesOrder\Models\SalesOrder;
 use Carbon\Carbon;
 class SalesOrderController extends Controller
 {
@@ -175,7 +177,7 @@ class SalesOrderController extends Controller
     {
         $selectedMail = $request->input('selectedMail');
         $sales_order = $this->salesOrderRepository->find($id);
-        $date = Carbon::now();
+        $date = Carbon::parse($sales_order->created_at);
         $formattedDate = $date->format('F j, Y');
         if($selectedMail == 'tracking_number'){
             if(!$sales_order->tracking_link || !$sales_order->tracking_number){
@@ -192,8 +194,12 @@ class SalesOrderController extends Controller
         }elseif($selectedMail == 'order_received'){
             $image = $this->settingRepository->getValueByKey('order_received_email_image');
             Mail::to($sales_order->user->email)->send(new OrderReceivedMail($sales_order, $image, $formattedDate));
+        }elseif($selectedMail == 'order_status'){
+            $image = $this->settingRepository->getValueByKey('sales_order_status_image');
+            $status = renderModelData(SalesOrder::ORDER_STATUS, $sales_order->status);
+            Mail::to($sales_order->user->email)->send(new OrderStatusMail($sales_order, $image, $formattedDate, $status));
         }
 
         return response()->json();
-    }
+    }   
 }
