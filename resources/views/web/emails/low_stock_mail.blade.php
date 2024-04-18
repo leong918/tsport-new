@@ -7,8 +7,8 @@
     @endslot
 
     <div style="">
-        <p><b>Hello!</b></p>
-        <p>Please alert that below products have low quantities. </p>
+        <p><b>This is a notification email to admin.</b></p>
+        <p style="font-size:14px;">Please alert that below products have low quantities. </p>
         <div style="margin:20px 0px;">
             <h2>Reported at <span style="color: #aba470;">({{ $date }})</span></h2>
             <table style="border: 1px solid black; border-collapse: collapse; width:100%; font-size:14px;">

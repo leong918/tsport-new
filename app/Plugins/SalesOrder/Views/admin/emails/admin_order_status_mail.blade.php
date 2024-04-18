@@ -8,7 +8,7 @@
     @endslot
     
     <div style="margin: 20px 0px">
-        <p style="font-size:14px;"><b>This is a notification email to admin.</b></p>
+        <p><b>This is a notification email to admin.</b></p>
         <p style="font-size:14px;">Order status for <span style="color:#aba470;"><b>#{{ $sales_order->sales_order_id  }}</b></span>has been updated to <span style="color:#aba470;"><b>{{ $status }}</b></span>.</p>
         <p style="font-size:14px;">As a reminder, here are the order details:</p>
     </div>
