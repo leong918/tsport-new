@@ -8,10 +8,30 @@
                 <div class="row justify-content-center shopping-cart-content">
                     <div class="col-md-12 col-lg-8 shopping-cart-content">
                         <div class="shopping-cart-banner">
-                            <div><img src="{{asset('assets/web/assets/img/shopping_cart/shopping_cart_banner_2.png')}}" /></div>
-                            <div><button class="add-to-cart d-none d-lg-block">ADD TO CART</button></div>
+                            <div><img src="{{$setting_model['shopping_cart_banner']}}" /></div>
+                            <div>
+                                @if (count($shopping_cart_banner_product->productAttribute) > 0)
+                                <button class="add-to-cart d-none d-lg-block cart-button-redirect" data-href="{{ route('web.product_detail', ['alias' => $shopping_cart_banner_product->alias]) }}">
+                                ADD TO CART
+                                </button>
+                                @else
+                                <button class="add-to-cart d-none d-lg-block cart-button-hover" data-id="{{ $shopping_cart_banner_product->id }}" data-url="{{ route('cart.add_to_cart') }}">
+                                ADD TO CART
+                                </button>
+                                @endif
+                            </div>
                         </div>
-                        <div><button class="add-to-cart d-block d-lg-none">ADD TO CART</button></div>
+                        <div>
+                            @if (count($shopping_cart_banner_product->productAttribute) > 0)
+                            <button class="add-to-cart d-block d-lg-none cart-button-redirect" data-href="{{ route('web.product_detail', ['alias' => $shopping_cart_banner_product->alias]) }}">
+                            ADD TO CART
+                            </button>
+                            @else
+                            <button class="add-to-cart d-block d-lg-none cart-button-hover" data-id="{{ $shopping_cart_banner_product->id }}" data-url="{{ route('cart.add_to_cart') }}">
+                            ADD TO CART
+                            </button>
+                            @endif
+                        </div>
                         <table class="cart-item-list d-none d-md-block">
                             <tr>
                                 <th style="width:50%">Product</th>

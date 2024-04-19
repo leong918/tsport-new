@@ -52,10 +52,10 @@ class UserRepository extends BaseRepository
         if (isset($input['password']) && trim($input['password']) === '') {
             unset($input['password']);
         }
-        if(isset($input['dob'])){
+        if (isset($input['dob'])) {
             $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
         }
-        
+
         $model = User::findOrFail($id);
         $model->fill($input);
         $model->save();
@@ -165,6 +165,21 @@ class UserRepository extends BaseRepository
         $pointLogData['type'] = 'IN';
         $pointLogData['remark'] = 'Add point from order ' . $order->sales_order_id;
         $pointLogData['expired_at'] = Carbon::now()->addMonths(6);
+        $pointLogRepository->create($pointLogData);
+    }
+
+    public function deductOrderPoint($order)
+    {
+        $user = User::find($order->user_id);
+        $user->point = ($user->point - $order->point_earned < 0 ? 0 : $user->point - $order->point_earned);
+        $user->save();
+
+        $pointLogRepository = new PointLogRepository(new Container());
+        $pointLogData['user_id'] = $user->id;
+        $pointLogData['sales_order_id'] = $order->id;
+        $pointLogData['point'] = $order->point_earned;
+        $pointLogData['type'] = 'OUT';
+        $pointLogData['remark'] = 'Deduct point from order ' . $order->sales_order_id . ' due to cancellation.';
         $pointLogRepository->create($pointLogData);
     }
 

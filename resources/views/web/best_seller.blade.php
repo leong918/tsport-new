@@ -27,10 +27,7 @@
                                     <div class="product-info">
                                         <div class="rating-wishlist">
                                             @if(function_exists('reviewRenderView'))
-                                            {{ reviewRenderView('common_star_rating') }}
-                                            @endif
-                                            @if(function_exists('salesOrderRenderView'))
-                                            {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                            {{ reviewRenderView('common_star_rating', $product) }}
                                             @endif
                                         </div>
                                         <div class="product-description">{{ $product->name }}</div>

@@ -7,6 +7,9 @@
             <div class="checkout-wrapper">
                 <div class="checkout-title">Checkout</div>
                 {{ html()->form('POST', route("cart.process_checkout"))->id('checkoutForm')->open()}}
+                @if($buyNowData)
+                <input type="hidden" name="buyNowData" value="{{ json_encode($buyNowData) }}"/>
+                @endif
                 <div class="row justify-content-center checkout-content">
                     <div class="col-md-12 col-lg-8 checkout-details">
                         <div class="apply-point-section {{ $cartTotal['point_redemption'] <= 0 && auth()->user()->point > 0 ? '' : 'd-none' }}">
@@ -155,7 +158,8 @@ $(document).ready(function() {
                 method: "post",
                 url: "{{ route('cart.get_shipping_fee') }}",
                 data: {
-                    country_id: $('#country_id').val()
+                    country_id: $('#country_id').val(),
+                    buyNowData: "{{ json_encode($buyNowData) }}"
                 },
             })
             .then(response => {
@@ -179,7 +183,8 @@ $(document).ready(function() {
             method: "post",
             url: "{{ route('cart.apply_point') }}",
             data: {
-                country_id: $('#country_id').val()
+                country_id: $('#country_id').val(),
+                buyNowData: "{{ json_encode($buyNowData) }}"
             },
         })
         .then(response => {

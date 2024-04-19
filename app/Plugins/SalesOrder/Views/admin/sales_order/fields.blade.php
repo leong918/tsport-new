@@ -52,12 +52,12 @@
                 <td><div><span class="editable" data-input-type="text" data-column="tracking_number" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->tracking_number}}">{!! isset($model) && $model->tracking_number ? $model->tracking_number : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
-                <th>{{ html()->label('Order Status :') }}</th>
-                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->status}}">{!! isset($model) && isset($model->status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status) : '<i>Empty</i>' !!}</span></div></td>
+                <th>{{ html()->label('Tracking Link :') }}</th>
+                <td><div><span class="editable" data-input-type="text" data-column="tracking_link" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->tracking_link}}">{!! isset($model) && $model->tracking_link ? $model->tracking_link : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
-                <th>{{ html()->label('Payment Status :') }}</th>
-                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS)) }}' data-column="payment_status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->payment_status}}">{!! isset($model) && isset($model->payment_status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS, $model->payment_status) : '<i>Empty</i>' !!}</span></div></td>
+                <th>{{ html()->label('Order Status :') }}</th>
+                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->status}}">{!! isset($model) && isset($model->status) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status) : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Shipping Method:') }}</th>
@@ -69,7 +69,7 @@
             </tr>
             <tr>
                 <th>{{ html()->label('Earned Points :') }}</th>
-                <td><div><span class="editable" data-input-type="number" data-column="point_earned" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->point_earned}}">{!! isset($model) && $model->point_earned ? $model->point_earned : '<i>Empty</i>' !!}</span></div></td>
+                <td><div><span class="editable" data-input-type="number" data-column="point_earned" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->point_earned}}">{!! $model->point_earned ?? '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Created At :') }}</th>
@@ -88,7 +88,13 @@
             </tr>
             @foreach($model->salesOrderProduct as $sales_order_product)
                 <tr>
-                    <td>{{ $sales_order_product->product_name }}</td>
+                    <td>
+                        {{ $sales_order_product->product_name }}
+                        @if ($sales_order_product->product_attribute_term_name)
+                            <br>
+                            {!! $sales_order_product->product_attribute_term_name !!}
+                        @endif
+                    </td>
                     <td><div><span class="editable" data-input-type="number" data-column="price" data-url="{{ route('admin.sales_order.updateProduct.put',["id" => $model->id, "product_id" => $sales_order_product->id]) }}" data-original-data="{{ $sales_order_product->price }}">{{ $sales_order_product->price }}</span></div></td>
                     <td>{{ $sales_order_product->quantity }}</td>
                     <td>{{ $sales_order_product->total_price }}</td>
@@ -159,9 +165,8 @@
                     <option value="@{{ id }}" data-product-price="@{{ price }}">@{{ name }}</option>
                 @{{/dropdownOptions}}
             </select>
+            <div class="product_attribute_list"></div>
         </td>
-        <td></td>
-        <td></td>
         <td><input type="number" name="price" class="form-control priceInput" step="0.01" min="0.00" required></td>
         <td><input type="number" name="quantity" class="form-control quantityInput" required></td>
         <td><input type="number" name="total_price" class="form-control totalPriceInput" disabled readonly required></td>
@@ -173,6 +178,15 @@ var template = document.getElementById('addProductContent').innerHTML;
 var productListDropdown = <?php echo json_encode($productListDropdown)?>;
 
 $(document).ready(function(){
+
+    $(document).on("keydown", function(event) {
+        // when enter button down and edit button showed
+        if (event.key === "Enter" && $("#editButton").length == 1) {
+            event.preventDefault();
+            $("#editButton").click();
+        }
+    });
+
     $(document).on('click', '.editable', function(){
         var inputType = $(this).data('input-type'); 
         var column = $(this).data('column');
@@ -197,7 +211,9 @@ $(document).ready(function(){
             var inputField = $("<select class='form-control'></select>").attr("data-dropdown-list", dropdownListString);
 
             $.each(dropdownList, function(key, value) {
-                var option = $("<option></option>").attr("value", key).text(value);
+                //using model status
+                var modelStatus = "{{ $model->status }}";
+                var option = $("<option></option>").attr("value", key).prop('disabled', modelStatus == 2 && key == 0 ? true : false).text(value);
                 inputField.append(option);
             });
             inputField.val(currentData);
@@ -240,7 +256,7 @@ $(document).ready(function(){
             .then(response => {
                 swal.fire({
                     title: '{{__("page.sales_order_edited")}}',
-                    text: '{{__("page.sales_order_edited")}}',
+                    html: response.data.level_change ? `Sales Order Edited Successfully ! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : '{{__("page.sales_order_edited")}}',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: '{{__("page.ok")}}',
@@ -291,8 +307,6 @@ $(document).ready(function(){
                 var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status); ?>";
             }else if (originalColumn == 'payment_method'){
                 var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method); ?>";
-            }else if(originalColumn == 'payment_status'){
-                var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_STATUS, $model->payment_status); ?>";
             }else if(originalColumn == 'country_id'){
                 var rendering = "<?php if(isset($model)) echo $countryDropdown[$model->country_id] ?>";
             }
@@ -332,12 +346,17 @@ $(document).ready(function(){
 
             if(emptyInputs.length <= 0)
             {
+                var selected_product_attribute = {};
+                $(this).find('.attribute_ul_list').each(function(){
+                    var selectedRadioBtn = $(this).find('input[type="radio"]:checked');
+                    selected_product_attribute[selectedRadioBtn.data('attribute_id')] = selectedRadioBtn.val();
+                })
+
                 product.product_id = $(this).find('select').val();
                 product.price = $(this).find('input[name="price"]').val();
                 product.quantity = $(this).find('input[name="quantity"]').val();
                 product.total_price = $(this).find('input[name="total_price"]').val();
-                product.tax = $(this).find('input[name="tax"]').val();
-
+                product.attribute = JSON.stringify(selected_product_attribute);
                 productList.push(product);
             }else{
                 swal.fire({
@@ -391,15 +410,87 @@ $(document).ready(function(){
         }else{
             $('#saveButton').hide();
         }
+
+        $(".addProductRow").each(function(index) {
+            var ulList = $(this).find('.attribute_ul_list');
+            ulList.each(function(){
+                var radioBtns = $(this).find('input[type="radio"]');
+                var parts = radioBtns.attr('name').split('-');
+                parts[2] = index + 1;
+                var modifiedRadioBtnNaming = parts.join('-');
+                radioBtns.attr('name', modifiedRadioBtnNaming);
+            })
+        });
     });
 
     // Function for product list dropdown
     $(document).on('change', '.productListDropdown', function(){
         var selectedOption = $(this).find('option:selected');
         var productPrice = selectedOption.attr('data-product-price');
-        
-        // Update the value of the priceInput field
-        $(this).closest('.addProductRow').find('.priceInput').val(productPrice);
+        var routeUrl = "{{ route('admin.product.getProductAttribute', ['id' => ':id']) }}";
+        var apiUrl = routeUrl.replace(':id', selectedOption.val());
+        var listContainer = $(this).closest('td').find('.product_attribute_list');
+        listContainer.empty();
+        axios.get(apiUrl)
+            .then((response) => {
+                    var attribute_list = response.data.product_attribute;
+                    if(!attribute_list.hasOwnProperty("")){
+                        var attributeIndex = 1;
+                        var currentRowIndex = $('.addProductRow').index($(this).closest('.addProductRow')) + 1;
+                        for (let key in attribute_list) {
+                            if (attribute_list.hasOwnProperty(key)) {
+                                listContainer.addClass('mt-2');
+                                    var list = $('<ul>').attr('class','ps-3 pb-0 pt-2 list-unstyled attribute_ul_list').text(key);
+                                        attribute_list[key].forEach(function(item){
+                                            var  li = $("<li>");
+                                            var radioButton = $("<input>").attr({"type": "radio","name": 'attribute-' + attributeIndex + '-'+currentRowIndex,"class": "m-2", "required":"required"}).val(item.id).data('attribute-price', item.price).data('attribute_id', item.product_attribute_id);
+                                            li.append(radioButton, item.name + "(+" + item.code + " " + item.price + ") ");
+                                            list.append(li);
+                                        });
+                                //checked the first attribute
+                                list.find('li input[type="radio"]').first().prop('checked', true);
+                            }
+                            attributeIndex++ ;
+                            listContainer.append(list);
+                        }
+
+                        // Update the value of the priceInput field
+                        var ulList = $(this).closest('.addProductRow').find('.attribute_ul_list');
+                        var selectedProductPrice = parseFloat($(this).closest('.addProductRow').find('.productListDropdown option:selected').data('product-price'));
+                        ulList.each(function(){
+                            var selectedAttribute = $(this).find('input[type="radio"]:checked');
+                            if(selectedAttribute.length > 0){
+                                selectedProductPrice += parseFloat(selectedAttribute.data('attribute-price'));
+                            }
+                        });
+                        selectedProductPrice = selectedProductPrice.toFixed(2);
+                        $(this).closest('.addProductRow').find('.priceInput').val(selectedProductPrice);
+                        $(this).closest('.addProductRow').find('.quantityInput').val(1);
+                        $(this).closest('.addProductRow').find('.totalPriceInput').val(selectedProductPrice);
+                    }
+                });
+    });
+
+    $(document).on('change', '.product_attribute_list input[type="radio"]', function() {
+        var ulList = $(this).closest('.addProductRow').find('.attribute_ul_list');
+        var selectedProductPrice = parseFloat($(this).closest('.addProductRow').find('.productListDropdown option:selected').data('product-price'));
+        ulList.each(function(){
+            var selectedAttribute = $(this).find('input[type="radio"]:checked');
+            if(selectedAttribute.length > 0){
+                selectedProductPrice += parseFloat(selectedAttribute.data('attribute-price'));
+            }
+        });
+        selectedProductPrice = selectedProductPrice.toFixed(2);
+        var qty = parseInt($(this).closest('.addProductRow').find('.quantityInput').val());
+        var finalProductPrice = (selectedProductPrice * qty).toFixed(2);
+        $(this).closest('.addProductRow').find('.priceInput').val(selectedProductPrice);
+        $(this).closest('.addProductRow').find('.totalPriceInput').val(finalProductPrice);
+    });
+
+    $(document).on('change', '.priceInput', function(){
+        var quantity =  parseInt($(this).closest('.addProductRow').find('.quantityInput').val());
+        var totalPrice = parseFloat($(this).val()) * quantity;
+        $(this).closest('.addProductRow').find('.totalPriceInput').val(totalPrice.toFixed(2));
     });
 
     $(document).on('change', '.quantityInput', function(){

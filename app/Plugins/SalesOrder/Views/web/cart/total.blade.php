@@ -164,7 +164,8 @@
                 method: "post",
                 url: "{{ route('cart.remove_point') }}",
                 data: {
-                    country_id: country_id
+                    country_id: country_id,
+                    buyNowData: "{{ isset($buyNowData) ? json_encode($buyNowData) : null }}"
                 }
             })
             .then(response => {

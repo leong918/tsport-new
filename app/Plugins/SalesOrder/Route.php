@@ -16,6 +16,8 @@ Route::group(['middleware' => ['web']], function () {
         Route::post('update_cart_qty', [CartController::class, 'updateCartQty'])->name('cart.update_cart_qty');
         Route::post('apply_coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
         Route::post('remove_coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
+        Route::post('toggle_wishlist', [CartController::class, 'toggleWishlist'])->name('cart.toggle_wishlist');
+        Route::post('remove_wishlist', [CartController::class, 'removeWishlist'])->name('cart.remove_wishlist');
         Route::get('wishlist', [CartController::class, 'wishlist'])->name('cart.wishlist');
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
         Route::post('apply_point', [CartController::class, 'applyPoint'])->name('cart.apply_point');
@@ -39,8 +41,9 @@ Route::group(['middleware' => ['web']], function () {
         Route::delete('sales_order/delete_product/{id}/{product_id}', [SalesOrderController::class, 'destroySalesOrderProduct'])->name('destroy.deleteProduct');
         Route::delete('sales_order/delete/{id}', [SalesOrderController::class, 'destroy'])->name('destroy.delete');
         Route::post('sales_order/deleteByList', [SalesOrderController::class, 'destroyByList'])->name('deleteByList');
-        Route::post('sales_order/status/{id}', [SalesOrderController::class, 'toggleStatus'])->name('status.post');
         Route::get('exportByList', [SalesOrderController::class, 'exportByList'])->name('exportByList');
+        Route::post('sales_order/send_mail/{id}', [SalesOrderController::class, 'sendMail'])->name('sendMail');
+
     });
 
     Route::group(['as' => 'admin.cart_rule.', 'prefix' => 'admin'], function () {

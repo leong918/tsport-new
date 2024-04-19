@@ -1,6 +1,6 @@
 <div id="header">
     <!--floating-button-->
-    <a class="floating-img-button" href="https://wa.me/85254422598" target="_blank">
+    <a class="floating-img-button" href="https://wa.me/85254425298" target="_blank">
         <img class="show" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-1.png')}}" alt="Bootstrap">
         <img class="hide" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-2.png')}}" alt="Bootstrap">
     </a>
@@ -42,10 +42,8 @@
                     @endif
 
                     <!--navbar-toggle-->
-                    <a class="navbar-toggler-concept" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                        <span class="narber-toggler-concept">
-                            <img src="{{asset('assets/web/assets/img/navigation/menu_icon.png')}}" alt="Bootstrap" width="25" height="24">
-                        </span>
+                    <a class="navbar-toggler-concept" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <img src="{{asset('assets/web/assets/img/navigation/menu_icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                 </div>
             </div>
@@ -95,11 +93,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('web.voucher')}}">消費券 Consumption Voucher</a>
                         </li>
+                        @if(auth()->user())
                         <hr/>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('cart.wishlist')}}">Wishlist</a>
                         </li>
-                        @if(auth()->user())
                         <li class="nav-item">
                             <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">My Account</a>
                         </li>

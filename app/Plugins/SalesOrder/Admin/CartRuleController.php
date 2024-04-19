@@ -40,7 +40,7 @@ class CartRuleController extends Controller
                 ->addColumn('status', function ($model) {
                     $route = route('admin.cart_rule.status.post', ['id' => $model->id]);
                     $status = $model->status;
-                    return view('sales_order::admin.status', compact('route', 'status', 'model'));
+                    return view('shared.status', compact('route', 'status', 'model'));
                 })
                 ->addColumn('action', function ($model) {
                     return view('sales_order::admin.cart_rule.action', compact('model'));

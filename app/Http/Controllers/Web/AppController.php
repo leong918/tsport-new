@@ -100,10 +100,11 @@ class AppController extends BaseController
         $product_category = $this->categoryRepository->find($product->category_id);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
         $review_record = $this->productReviewRepository->getReviewByProductId($product->id);
+        $avgRating = $this->productReviewRepository->getAvgProductRating($product->id);
         $review_total = $review_record->count();
         $review_list = $review_record->paginate(6);
 
-        return $this->view('product_detail', compact('product', 'product_parent_category', 'review_total', 'review_list'));
+        return $this->view('product_detail', compact('product', 'product_parent_category', 'review_total', 'review_list', 'avgRating'));
     }
 
     public function productNew()

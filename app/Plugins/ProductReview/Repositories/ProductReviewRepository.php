@@ -70,11 +70,18 @@ class ProductReviewRepository extends BaseRepository
             ->select('product_review.*', 'user.last_name');
     }
 
+    public function  getAvgProductRating(int $id)
+    {
+        return ProductReview::where('product_id', $id)->avg('rate');
+    }
+
     public function createProductReview(array $data)
     {
         $model = new ProductReview();
         $model->fill($data);
         $model->save();
+
+        return $model;
     }
 
     public function toggleStatus(int $id)

@@ -239,32 +239,44 @@
         }
         .pagination {
             display: inline-block;
-            .left-right{
-                border: 1px solid #6B5B40;
+            .left, .right{
+                &:hover{
+                    background-color: #6B5B40;
+                }
+            }
+            .page-item {
+                margin: 0 5px;
+            }
+
+            .page-item.active{
+                background-color: #6B5B40;
                 border-radius: 50%;
-                padding: 0px 6px;
-            }
-            .left{
-                &:hover{
-                    background-color: #6B5B40;
+
+                .page-link{
+                    color: white;
+                    font-family: "BanglaSangam-Regular";
                 }
             }
-            .right{
-                &:hover{
-                    background-color: #6B5B40;
-                }
+
+            .page-link {
+                box-shadow: none;
+            }
+
+            .page-link:first-child, .page-link:last-child{
+                border: 1px solid #6B5B40;
             }
           }
           
-          .pagination a {
+          .pagination .page-link {
             color: #6B5B40;
-            padding: 4px 8px;
+            padding: 3px 10px;
             text-decoration: none;
             font-family: "BanglaSangam-Regular";
             img{
                 width: 5px;
             }
-          }
+        }
+          
         .paginate-wrap{
             text-align: center;
             margin-top: 35px;

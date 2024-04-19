@@ -69,8 +69,9 @@ class ProductAttributeTermRepository extends BaseRepository
             $productPrice = new ProductPriceRepository(new Container());
             $productPrice->createAttributeTermPrice($term, $term_model);
 
+            $remark = 'Add new product attribute term';
             $productBalanceLog = new ProductBalanceLogRepository(new Container());
-            $productBalanceLog->createProductBalanceLog($term_model, $term);
+            $productBalanceLog->createProductBalanceLog($term_model, $term, null, $remark);
         }
     }
 
@@ -80,9 +81,15 @@ class ProductAttributeTermRepository extends BaseRepository
         $productAttribute = $productAttributeRepository->find($model->id);
 
         foreach ($input['variation'] as $key => $term) {
+            $is_change_qty = false;
+
             if (str_contains($key, 'old')) {
                 $attribute_term_id = str_replace('old-', '', $key);
                 $term_model = ProductAttributeTerm::find($attribute_term_id);
+
+                if ($term_model->quantity != $term['term_qty']) {
+                    $is_change_qty = true;
+                }
             } else {
                 $term_model = new ProductAttributeTerm();
             }
@@ -105,8 +112,11 @@ class ProductAttributeTermRepository extends BaseRepository
             $productPrice = new ProductPriceRepository(new Container());
             $productPrice->createAttributeTermPrice($term, $term_model);
 
-            $productBalanceLog = new ProductBalanceLogRepository(new Container());
-            $productBalanceLog->createProductBalanceLog($term_model, $term);
+            if ($is_change_qty) {
+                $remark = 'Update product attribute term';
+                $productBalanceLog = new ProductBalanceLogRepository(new Container());
+                $productBalanceLog->createProductBalanceLog($term_model, $term, null, $remark);
+            }
         }
     }
 

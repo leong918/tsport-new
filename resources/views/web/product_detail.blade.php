@@ -30,7 +30,7 @@
                 <div class="col-12 col-lg-6 product-wrapper">
                     <div class="row">
                         @if (function_exists('reviewRenderView'))
-                            {{ reviewRenderView('product_detail_top_review') }}
+                            {{ reviewRenderView('product_detail_top_review', null, null, $review_total, $avgRating) }}
                         @endif
                         <div class="col-9">
                             <div class="">
@@ -152,10 +152,7 @@
                                     <div class="product-info">
                                         <div class="rating-wishlist">
                                             @if (function_exists('reviewRenderView'))
-                                                {{ reviewRenderView('common_star_rating') }}
-                                            @endif
-                                            @if (function_exists('salesOrderRenderView'))
-                                                {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                                {{ reviewRenderView('common_star_rating', $productRelated->product) }}
                                             @endif
                                         </div>
                                         <div class="product-description">{{ $productRelated->product->name }}</div>

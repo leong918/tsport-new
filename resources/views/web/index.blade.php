@@ -11,14 +11,14 @@
 <div id="home" class="overflow-x-hidden">
     <!-- Banner container -->
     <div class="banner">
-        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel"  data-bs-interval="3000">
             <div class="carousel-indicators">
                 @php
                     $count = 0;
                     $slideCount = 1;
                 @endphp
                 @foreach ($slider_list->where('type', 'main') as $slider)
-                <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="{{ $count }}" class="active" aria-current="true" aria-label="Slide {{ $slideCount }}"></button>
+                <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="{{ $count }}" class="{{ $slideCount == 1 ? 'active' : ''}}" aria-current="true" aria-label="Slide {{ $slideCount }}"></button>
                 @php
                     $count++;
                     $slideCount++;
@@ -26,8 +26,11 @@
                 @endforeach
             </div>
             <div class="carousel-inner">
+                @php
+                    $imageCount = 1;
+                @endphp
                 @foreach ($slider_list->where('type', 'main') as $slider)
-                <div class="carousel-item active"  data-bs-interval="2000">
+                <div class="carousel-item {{ $imageCount == 1 ? 'active' : '' }}">
                     <a href="{{ $slider->url }}" target="_blank">
                         <img src="{{ $slider->image }}" class="img-fluid carousel-image" />
                         {{-- <div class="container carousel-caption">
@@ -45,6 +48,9 @@
                         </div> --}}
                     </a>
                 </div>
+                @php
+                    $imageCount++;
+                @endphp
                 @endforeach
             </div>
         </div>
@@ -86,10 +92,7 @@
                                 <div class="product-info">
                                     <div class="rating-wishlist">
                                         @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        @if(function_exists('salesOrderRenderView'))
-                                        {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                        {{ reviewRenderView('common_star_rating', $product) }}
                                         @endif
                                     </div>
                                     <div class="product-description">{{ $product->name }}</div>
@@ -140,10 +143,7 @@
                                 <div class="product-info">
                                     <div class="rating-wishlist">
                                         @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        @if(function_exists('salesOrderRenderView'))
-                                        {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                        {{ reviewRenderView('common_star_rating', $product) }}
                                         @endif
                                     </div>
                                     <div class="product-description">{{ $product->name }}</div>
@@ -187,10 +187,7 @@
                         <div class="product-info">
                             <div class="rating-wishlist">
                                 @if(function_exists('reviewRenderView'))
-                                {{ reviewRenderView('common_star_rating') }}
-                                @endif
-                                @if(function_exists('salesOrderRenderView'))
-                                {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                {{ reviewRenderView('common_star_rating', $product) }}
                                 @endif
                             </div>
                             <div class="product-description">{{ $product->name }}</div>
@@ -270,10 +267,7 @@
                             <div class="product-info">
                                 <div class="rating-wishlist">
                                     @if(function_exists('reviewRenderView'))
-                                    {{ reviewRenderView('common_star_rating') }}
-                                    @endif
-                                    @if(function_exists('salesOrderRenderView'))
-                                    {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                    {{ reviewRenderView('common_star_rating', $product) }}
                                     @endif
                                 </div>
                                 <div class="product-description">{{ $product->name }}</div>

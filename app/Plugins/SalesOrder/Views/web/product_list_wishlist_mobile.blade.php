@@ -1,1 +1,0 @@
-<img class="wishlist-mobile" src="{{asset('assets/web/assets/img/homepage/add-wishlist-2.png')}}">

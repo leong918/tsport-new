@@ -11,6 +11,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\ProductAttributeRepository;
 use App\Repositories\ProductAttributeTermRepository;
 use App\Repositories\CountryRepository;
+use App\Repositories\LevelRepository;
 
 class UserCartRepository extends BaseRepository
 {
@@ -41,7 +42,7 @@ class UserCartRepository extends BaseRepository
     {
         $cart = UserCart::where('product_id', $data['product_id']);
 
-        if (isset($data['attribute'])) {
+        if (isset($data['attribute']) && count($data['attribute']) > 0) {
             ksort($data['attribute']);
             $data['product_attribute_term'] = json_encode($data['attribute']);
 
@@ -67,22 +68,35 @@ class UserCartRepository extends BaseRepository
         $cart->save();
     }
 
-    public function getUserCartByType($user_data, $type)
+    public function getUserCartByType($user_data, $type, $buyNowData = null)
     {
-        if ($type === 'guest') {
-            $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
-                ->where('user_ip', $user_data)
-                ->whereNull('user_id')
-                ->select('user_cart.*', 'product.category_id', 'product.brand_id')
-                ->get();
-        } else {
-            $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
-                ->where('user_id', $user_data)
-                ->select('user_cart.*', 'product.category_id', 'product.brand_id')
-                ->get();
-        }
+        if (!$buyNowData) {
+            if ($type === 'guest') {
+                $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
+                    ->where('user_ip', $user_data)
+                    ->whereNull('user_id')
+                    ->select('user_cart.*', 'product.category_id', 'product.brand_id')
+                    ->get();
+            } else {
+                $cart = UserCart::leftJoin('product', 'product.id', '=', 'user_cart.product_id')
+                    ->where('user_id', $user_data)
+                    ->select('user_cart.*', 'product.category_id', 'product.brand_id')
+                    ->get();
+            }
 
-        $this->recalculateCart($cart);
+            $this->recalculateCart($cart, 'normal');
+        } else {
+            // no need save because temporary cart
+            $buy_cart = new UserCart();
+            $buy_cart->user_id = $user_data;
+            $buy_cart->product_id = $buyNowData['product_id'];
+            $buy_cart->product_attribute_term = isset($buyNowData['attribute']) ? json_encode($buyNowData['attribute']) : null;
+            $buy_cart->user_ip = getPublicIP();
+            $buy_cart->quantity = 1;
+
+            $cart = collect([$buy_cart]);
+            $this->recalculateCart($cart, 'buy_now');
+        }
 
         foreach ($cart as &$cart_content) {
             $description = null;
@@ -104,7 +118,7 @@ class UserCartRepository extends BaseRepository
         return $cart;
     }
 
-    private function recalculateCart($carts)
+    private function recalculateCart($carts, $type)
     {
         $productRepository = new ProductRepository(new Container());
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
@@ -123,7 +137,10 @@ class UserCartRepository extends BaseRepository
 
             $cart->price = $subtotal;
             $cart->total_price = $subtotal * $cart->quantity;
-            $cart->save();
+
+            if ($type == 'normal') {
+                $cart->save();
+            }
         }
     }
 
@@ -152,14 +169,16 @@ class UserCartRepository extends BaseRepository
         }
     }
 
-    public function calculateUserCartTotal($user_data, $coupon_session, $point_session, $user_id, $address = null)
+    public function calculateUserCartTotal($user_data, $coupon_session, $point_session, $user_id, $address = null, $buyNowData = null)
     {
         $data = array();
         $data['subtotal'] = 0;
-        $data['shipping_fee'] = 0;
-        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type']);
-
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+        $userRepository = new UserRepository(new Container());
+        $levelRepository = new LevelRepository(new Container());
+
+        // calculate subtotal
+        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
         foreach ($cart_list as $cart) {
             $subtotal = 0;
             $subtotal += $cart->product->getCurrencyParameters('HKD')->price;
@@ -173,23 +192,47 @@ class UserCartRepository extends BaseRepository
             $data['subtotal'] += $subtotal * $cart->quantity;
         }
 
+        // calculate discount, point redemption, shipping fee and total
+        $other_data = $this->calculateOtherTotal($data['subtotal'], $user_data, $coupon_session, $user_id, $point_session, $address, false, $buyNowData);
+
+        // check for just member total to upgrade insider
+        if ($user_id) {
+            $user = $userRepository->find($user_id);
+            $level = $levelRepository->find($user->level_id + 1);
+            if ($user->level_id == 1 && $other_data['total'] >= $level->target_amount) {
+                // calculate discount, point redemption, shipping fee and total
+                $other_data = $this->calculateOtherTotal($data['subtotal'], $user_data, $coupon_session, $user_id, $point_session, $address, true, $buyNowData);
+            }
+        }
+
+        $data = array_merge($data, $other_data);
+        return $data;
+    }
+
+    private function calculateOtherTotal($subtotal, $user_data, $coupon_session, $user_id, $point_session, $address, $is_upgrade_insider, $buyNowData)
+    {
+        $data = array();
+        $data['shipping_fee'] = 0;
         $cartRuleRepository = new CartRuleRepository(new Container());
-        $cart_rule_data = $cartRuleRepository->calculatePriorityRule($cart_list, $coupon_session);
+        $userRepository = new UserRepository(new Container());
+        $countryRepository = new CountryRepository(new Container());
+
+        $cart_list = $this->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
+        $cart_rule_data = $cartRuleRepository->calculatePriorityRule($cart_list, $coupon_session, $user_id, $is_upgrade_insider);
         $data = array_merge($data, $cart_rule_data);
 
-        $max_point_redemption = round($data['subtotal'] - $data['total_discount_amount'], 2);
-        $userRepository = new UserRepository(new Container());
+        $max_point_redemption = round($subtotal - $data['total_discount_amount'], 2);
         $point_redemption_data = $userRepository->calculateDiscountPoint($user_id, $point_session, $max_point_redemption);
         $data = array_merge($data, $point_redemption_data);
 
-        $total_price = $data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'];
+        $total_price = $subtotal - $data['total_discount_amount'] - $data['point_redemption'];
         if (isset($address['country_id']) && $address['country_id']) {
-            $countryRepository = new CountryRepository(new Container());
             $shipping_data = $countryRepository->calculateShippingFee($total_price, $address['country_id']);
             $data = array_merge($data, $shipping_data);
         }
 
-        $data['total'] = round($data['subtotal'] - $data['total_discount_amount'] - $data['point_redemption'] + $data['shipping_fee'], 2);
+        $data['total'] = round($subtotal - $data['total_discount_amount'] - $data['point_redemption'] + $data['shipping_fee'], 2);
+
         return $data;
     }
 

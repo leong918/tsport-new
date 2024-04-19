@@ -183,7 +183,8 @@
             .wishlist-cart-container img.wishlist-hide,
             .wishlist-cart-container img.wishlist-hover-show,
             .wishlist-cart-container img.cart-hide,
-            .wishlist-cart-container img.cart-hover-show {
+            .wishlist-cart-container img.cart-hover-show,
+            .wishlist-cart-container img.wishlist-added {
                 width: 45%;
     
                 @media (max-width: 1500px) {
@@ -192,7 +193,8 @@
             }
     
             .wishlist-cart-container img.wishlist-hide,
-            .wishlist-cart-container img.wishlist-hover-show {
+            .wishlist-cart-container img.wishlist-hover-show,
+            .wishlist-cart-container img.wishlist-added {
                 position: absolute;
                 bottom: 0;
                 right: 0;
@@ -305,19 +307,37 @@
             //rating-wishlist
             .product-info .rating-wishlist {
                 display: flex;
-                justify-content: space-between;
+                justify-content: left;
                 align-items: center;
                 padding-top: 10px;
     
+                @media (max-width: 1024px) {
+                    justify-content: space-between;
+                }
+
                 img.star-rating {
-                    width: 115px;
-                    @media only screen and (max-width:280px){
-                        width: 80px;
+                    width: 20px;
+
+                    &:not(:first-child){
+                        margin-left: 0.5rem;
                     }
+
+                    @media only screen and (max-width:320px){
+                        width: 17px;
+                    }
+                    
                     height: auto;
                 }
+            }
     
-                img.wishlist-mobile {
+            //price-cart
+            .product-info .price-cart {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 10px;
+    
+                img.cart-mobile {
                     display: none;
     
                     @media (max-width: 1024px) {
@@ -330,16 +350,8 @@
                         display: block;
                     }
                 }
-            }
-    
-            //price-cart
-            .product-info .price-cart {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding-top: 10px;
-    
-                img.cart-mobile {
+
+                img.wishlist-mobile, img.wishlist-mobile-added {
                     display: none;
     
                     @media (max-width: 1024px) {

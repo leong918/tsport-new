@@ -75,7 +75,7 @@
                             </div>
                             <div class="tnc">
                                 <label class="container">*Please accept our Terms & Conditions
-                                    {{ html()->checkbox('accept_tnc')->placeholder('')->class('')->required() }}
+                                    {{ html()->checkbox('accept_tnc')->placeholder('')->class('') }}
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
@@ -99,26 +99,7 @@
 @endsection
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        // birth month
-        // $('.input-container input.birth-input').focus(function() {
-        //     $('#month-dropdown').addClass('visible');
-        // });
-    
-        // $("#month-dropdown li").click(function() {
-        //     $('#birth-month').val($(this).text());
-        //     $('.birth-input').val($(this).text());
-        //    $('#month-dropdown').removeClass('visible');
-        // });
-        
-        // $('.input-container input.birth-input').on('blur', function() {
-        //     setTimeout(function() {
-        //         if (!$('.input-container input.birth-input').is(':focus') && !$('#month-dropdown').is(':focus')) {
-        //             $('#month-dropdown').removeClass('visible');
-        //         }
-        //     }, 100);
-        // });
-        
+    $(document).ready(function() {        
         $('#dobRegisterDatePicker').tempusDominus({
                 localization: {
                     format: 'dd/MM/yyyy'
@@ -133,75 +114,99 @@
 
         var parentElement = document.getElementsByClassName('register-container')[0];
         $("#register_form").submit(function(e) {
-            $(this).find('button[type="submit"]').attr('disabled','disabled');
-
             e.preventDefault();
-
-            var url = $(this).attr('action');
-            let formData = new FormData(this);
-
-
-            axios({
-                method: "post",
-                url: url,
-                data: formData,
-            })
-            .then(response => {
+            if($(this).find('input[type="checkbox"][name="accept_tnc"]').is(":checked") == false)
+            {
                 swal.fire({
-                    title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Thank you for <br>your registration</p>',
-                    html: '<p class="swal-register-content-1">We have sent email to ' + response.data.email + ' to confirm the validity of our email address. After receiving the email follow the link provided to complete you registration.</p><p class="swal-register-content-2">If you not got any mail <b>RESEND</b> confirmation mail</p>',
-                    showConfirmButton: false,
-                    backdrop: false,
-                    customClass: {
-                        container: 'custom-register-swal'
-                    },
-                    didOpen: () => {
-                        // Set the width of the SweetAlert dialog to match its parent container
-                        var parentWidth = parentElement.offsetWidth;
-                        var swalDialog = document.querySelector('.swal2-popup');
-                        swalDialog.style.width = parentWidth + 'px';
+                        title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Alert</p>',
+                        html: '<p class="swal-register-content-1">Please ensure that you accept the Terms & Conditions !</p>',
+                        showConfirmButton: false,
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-register-swal'
+                        },
+                        didOpen: () => {
+                            // Set the width of the SweetAlert dialog to match its parent container
+                            var parentWidth = parentElement.offsetWidth;
+                            var swalDialog = document.querySelector('.swal2-popup');
+                            swalDialog.style.width = parentWidth + 'px';
 
-                        $('#custom-close-button').click(function() {
-                            swal.close();
-                        });
-                    }
-                }).then((result) => {
-                    window.location.href = "{{ route('web.login') }}";
-                });
-            })
-            .catch(error => {
-                let errorMessage = '';
-                if (typeof error.response.data.msg === 'object') {
-                    Object.keys(error.response.data.msg).forEach(key => {
-                            errorMessage += `${error.response.data.msg[key]}<br>`;
+                            $('#custom-close-button').click(function() {
+                                swal.close();
+                            });
+                        }
                     });
-                } else if (error.response.data.msg){
-                    errorMessage = error.response.data.msg;
-                } else if(error.response.data.error){
-                    errorMessage = error.response.data.error;
-                }
-                swal.fire({
-                    title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Failed to Register</p>',
-                    html: '<p class="swal-register-content-1">' + errorMessage + '</p>',
-                    showConfirmButton: false,
-                    backdrop: false,
-                    customClass: {
-                        container: 'custom-register-swal'
-                    },
-                    didOpen: () => {
-                        // Set the width of the SweetAlert dialog to match its parent container
-                        var parentWidth = parentElement.offsetWidth;
-                        var swalDialog = document.querySelector('.swal2-popup');
-                        swalDialog.style.width = parentWidth + 'px';
+            }else{
 
-                        $('#custom-close-button').click(function() {
-                            swal.close();
-                        });
-                    }
+                $(this).find('button[type="submit"]').attr('disabled','disabled');
+                
+                var url = $(this).attr('action');
+                let formData = new FormData(this);
+
+
+                axios({
+                    method: "post",
+                    url: url,
+                    data: formData,
                 })
+                .then(response => {
+                    swal.fire({
+                        title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Thank you for <br>your registration</p>',
+                        html: '<p class="swal-register-content-1">We have sent email to ' + response.data.email + ' to confirm the validity of our email address. After receiving the email follow the link provided to complete you registration.</p><p class="swal-register-content-2">If you not got any mail <b>RESEND</b> confirmation mail</p>',
+                        showConfirmButton: false,
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-register-swal'
+                        },
+                        didOpen: () => {
+                            // Set the width of the SweetAlert dialog to match its parent container
+                            var parentWidth = parentElement.offsetWidth;
+                            var swalDialog = document.querySelector('.swal2-popup');
+                            swalDialog.style.width = parentWidth + 'px';
 
-                $(this).find('button[type="submit"]').removeAttr('disabled')
-            });
+                            $('#custom-close-button').click(function() {
+                                swal.close();
+                            });
+                        }
+                    }).then((result) => {
+                        window.location.href = "{{ route('web.login') }}";
+                    });
+                })
+                .catch(error => {
+                    let errorMessage = '';
+                    if (typeof error.response.data.msg === 'object') {
+                        Object.keys(error.response.data.msg).forEach(key => {
+                                errorMessage += `${error.response.data.msg[key]}<br>`;
+                        });
+                    } else if (error.response.data.msg){
+                        errorMessage = error.response.data.msg;
+                    } else if(error.response.data.error){
+                        errorMessage = error.response.data.error;
+                    }
+                    swal.fire({
+                        title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">Failed to Register</p>',
+                        html: '<p class="swal-register-content-1">' + errorMessage + '</p>',
+                        showConfirmButton: false,
+                        backdrop: false,
+                        customClass: {
+                            container: 'custom-register-swal'
+                        },
+                        didOpen: () => {
+                            // Set the width of the SweetAlert dialog to match its parent container
+                            var parentWidth = parentElement.offsetWidth;
+                            var swalDialog = document.querySelector('.swal2-popup');
+                            swalDialog.style.width = parentWidth + 'px';
+
+                            $('#custom-close-button').click(function() {
+                                swal.close();
+                            });
+                        }
+                    })
+
+                    $(this).find('button[type="submit"]').removeAttr('disabled')
+                });
+            }
+
         });
     }); 
     </script>
