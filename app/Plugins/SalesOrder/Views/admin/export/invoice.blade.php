@@ -53,7 +53,7 @@
         <td style= "width:30%">
             <table style="font-family:DejaVu Sans !important;">
                 <tr>
-                    <th style="text-align:left;">Order No.:&nbsp;</th>
+                    <th style="text-align:left; color:red;">Order No.:&nbsp;</th>
                     <th>{{ $sales_order->sales_order_id  }}</th>
                 </tr>
                 <tr>
@@ -109,7 +109,7 @@
             <td style="width:15%; padding:10px;"><b>${{ $sales_order->total }}</b></td>
         </tr>
     </table>
-    <div style="margin-bottom:40px">Payment method: 支付寶HK(Alipay HK) or Direct bank transfer (FPS)</div>
+    <div style="margin-bottom:60px">Payment method: 支付寶HK(Alipay HK) or Direct bank transfer (FPS)</div>
     <div>www.tag-concept.com│WhatsApp: +852-54425298│Thank you for your purchase!</div>
 </body>
 </html>
