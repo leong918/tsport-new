@@ -131,7 +131,11 @@
                                 </div>
                                 <div class="mb-3">
                                     {{ html()->label('Country') }}
-                                    {{ html()->text('sender_country')->placeholder('Enter Sender Country')->class('form-control') }}
+                                    <select name="sender_country" class="form-control">                         
+                                        @foreach($countryDropdown as $key => $country)
+                                            <option value="{{ $key }}" {{ $key == $setting_model['sender_country'] ? 'selected' : '' }}>{{ $country}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     {{ html()->label('Postcode') }}

@@ -168,7 +168,12 @@ class SalesOrderController extends Controller
         $senderData = array();
 
         foreach ($senderInfoList as $senderInfo) {
-            $senderData[$senderInfo->key] = $senderInfo->value;
+            if($senderInfo->key == 'sender_country'){
+                $country = $this->countryRepository->find($senderInfo->value);
+                $senderData[$senderInfo->key] = $country->code;
+            }else{
+                $senderData[$senderInfo->key] = $senderInfo->value;
+            }
         }
 
         $filename = "Sales Order Export". (isset($form_data['date_range']) && $form_data['date_range'] != null ? ' ('.$form_data['date_range'].')' : '').".xlsx";

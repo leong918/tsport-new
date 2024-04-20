@@ -9,6 +9,12 @@
     </div>
     <div class="col-md-6">
         <div class="mb-3">
+            {{ html()->label('Code') }}
+            {{ html()->text('code')->placeholder('Enter country code')->class('form-control')->required()->attributes(['maxlength' => 3]) }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
             {{ html()->label('Delivery Partner') }}
             {{ html()->text('delivery_partner')->placeholder('Enter delivery partner')->class('form-control')->required() }}
         </div>

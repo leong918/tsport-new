@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Repositories\ProductRepository;
 use App\Repositories\SettingRepository;
 use App\Repositories\SliderRepository;
+use App\Repositories\CountryRepository;
 use Illuminate\Http\Request;
 
 class SettingController extends BaseController
@@ -12,12 +13,14 @@ class SettingController extends BaseController
     private ProductRepository $productRepository;
     private SettingRepository $settingRepository;
     private SliderRepository $sliderRepository;
+    private CountryRepository $countryRepository;
 
-    public function __construct(ProductRepository $productRepository, SettingRepository $settingRepository, SliderRepository $sliderRepository)
+    public function __construct(ProductRepository $productRepository, SettingRepository $settingRepository, SliderRepository $sliderRepository, CountryRepository $countryRepository)
     {
         $this->productRepository = $productRepository;
         $this->settingRepository = $settingRepository;
         $this->sliderRepository = $sliderRepository;
+        $this->countryRepository = $countryRepository;
     }
 
     public function homepageIndex(Request $request)
@@ -32,9 +35,10 @@ class SettingController extends BaseController
     public function globalIndex(Request $request)
     {
         $productDropdown = $this->productRepository->dropdown();
+        $countryDropdown = $this->countryRepository->dropdown();
         $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
 
-        return $this->view('setting.global_index', compact('setting_model', 'productDropdown'));
+        return $this->view('setting.global_index', compact('setting_model', 'productDropdown', 'countryDropdown'));
     }
 
     public function aboutIndex(Request $request)

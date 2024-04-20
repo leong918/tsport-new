@@ -12,6 +12,10 @@
                 <td><div><span>{!! isset($model) && $model->email ? $model->email : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
+                <th>{{ html()->label('Phone No :') }}</th>
+                <td><div><span class="editable" data-input-type="text" data-column="phone_no" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->phone_no}}">{!! isset($model) && $model->phone_no ? $model->phone_no : '<i>Empty</i>' !!}</span></div></td>
+            </tr>
+            <tr>
                 <th>{{ html()->label('First Name :') }}</th>
                 <td><div><span class="editable" data-input-type="text" data-column="first_name" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->first_name}}">{!! isset($model) && $model->first_name ? $model->first_name : '<i>Empty</i>' !!}</span></div></td>
             </tr>
