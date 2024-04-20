@@ -54,7 +54,7 @@
             <table style="font-family:DejaVu Sans !important;">
                 <tr>
                     <th style="text-align:left; color:red;">Order No.:&nbsp;</th>
-                    <th>{{ $sales_order->sales_order_id  }}</th>
+                    <th style="color:red;">{{ $sales_order->sales_order_id  }}</th>
                 </tr>
                 <tr>
                     <td><b>Order Date:&nbsp;</b></td>
@@ -77,7 +77,7 @@
         @foreach($sales_order->salesOrderProduct as $index => $sales_order_product)
         <tr style="">
             <td style="border-bottom: 1px solid grey; padding:10px; width:10%;">{{ $index + 1 }}</td>
-            <td style="border-bottom: 1px solid grey; padding:10px; width:15%;">{{ !empty(json_decode($sales_order_product->product_attribute_term)) ? $sales_order_product->getProductAttributeTermSKU() : $sales_order_product->product->sku }}</td>
+            <td style="border-bottom: 1px solid grey; padding:10px; width:15%;">{{ $sales_order_product->product_attribute_term != '{}' ? $sales_order_product->getProductAttributeTermSKU() : $sales_order_product->product->sku }}</td>
             <td style="border-bottom: 1px solid grey; padding:10px; width:30%; word-wrap: break-word;">{{ $sales_order_product->product_name }}</td>
             <td style="border-bottom: 1px solid grey; padding:10px; width:10%;">{{ $sales_order_product->quantity }}</td>
             <td style="border-bottom: 1px solid grey; padding:10px; width:10%;">${{ $sales_order_product->price }}</td>

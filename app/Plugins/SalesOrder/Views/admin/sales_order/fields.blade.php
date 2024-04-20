@@ -463,11 +463,11 @@ $(document).ready(function(){
                                 selectedProductPrice += parseFloat(selectedAttribute.data('attribute-price'));
                             }
                         });
-                        selectedProductPrice = selectedProductPrice.toFixed(2);
-                        $(this).closest('.addProductRow').find('.priceInput').val(selectedProductPrice);
-                        $(this).closest('.addProductRow').find('.quantityInput').val(1);
-                        $(this).closest('.addProductRow').find('.totalPriceInput').val(selectedProductPrice);
+                        productPrice = selectedProductPrice.toFixed(2);
                     }
+                    $(this).closest('.addProductRow').find('.priceInput').val(productPrice);
+                    $(this).closest('.addProductRow').find('.quantityInput').val(1);
+                    $(this).closest('.addProductRow').find('.totalPriceInput').val(productPrice);
                 });
     });
 
