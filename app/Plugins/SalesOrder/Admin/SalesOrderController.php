@@ -90,7 +90,6 @@ class SalesOrderController extends Controller
     {
         DB::beginTransaction();
         try {
-
             $admin = auth()->guard('admin')->user();
             $level_change = $this->salesOrderRepository->updateSalesOrder($request->all(), $id, $admin);
             DB::commit();
