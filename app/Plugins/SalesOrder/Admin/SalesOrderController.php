@@ -22,6 +22,8 @@ use App\Plugins\SalesOrder\Mail\OrderReceivedMail;
 use App\Plugins\SalesOrder\Mail\OrderStatusMail;
 use App\Plugins\SalesOrder\Models\SalesOrder;
 use Carbon\Carbon;
+use PDF;
+
 class SalesOrderController extends Controller
 {
     private SalesOrderRepository $salesOrderRepository;
@@ -190,7 +192,13 @@ class SalesOrderController extends Controller
             Mail::to($sales_order->user->email)->send(new ShippingFeeMail($sales_order, $image, $formattedDate));
         }elseif($selectedMail == 'new_order'){
             $image = $this->settingRepository->getValueByKey('new_order_email_image');
-            Mail::to($sales_order->user->email)->send(new NewOrderMail($sales_order, $image, $formattedDate));
+            $pdf = PDF::loadView("sales_order::admin.export.invoice", compact('sales_order'));
+            $pdf->getDomPDF()->getOptions()->set('isFontSubsettingEnabled', true);
+            $pdf->getDomPDF()->getOptions()->set('isPhpEnabled', true); 
+            $pdf->getDomPDF()->getOptions()->set('fontDir', public_path('assets/web/assets/fonts/fireflysung'));
+            $pdf->getDomPDF()->getOptions()->set('defaultFont', 'fireflysung');
+            $pdf->getDomPDF()->getOptions()->set('logOutputFile', null);
+            Mail::to($sales_order->user->email)->send(new NewOrderMail($sales_order, $image, $formattedDate,$pdf));
         }elseif($selectedMail == 'order_received'){
             $image = $this->settingRepository->getValueByKey('order_received_email_image');
             Mail::to($sales_order->user->email)->send(new OrderReceivedMail($sales_order, $image, $formattedDate));
