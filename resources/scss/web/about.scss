@@ -5,8 +5,12 @@
         .top-banner{
             img{
                 width: 100%;
-                min-height: 30vh;
+                height: 500px;
                 object-fit: cover;
+
+                @media only screen and (max-width: 767px){
+                    height: 300px;
+                }
             }
         }
         .title-and-nav{
@@ -129,8 +133,12 @@
         .top-banner{
             img{
                 width: 100%;
-                min-height: 30vh;
+                height: 500px;
                 object-fit: cover;
+
+                @media only screen and (max-width: 767px){
+                    height: 300px;
+                }
             }
         }
         .title-and-nav{
@@ -366,8 +374,12 @@
         .top-banner{
             img{
                 width: 100%;
-                min-height: 30vh;
+                height: 500px;
                 object-fit: cover;
+
+                @media only screen and (max-width: 767px){
+                    height: 300px;
+                }
             }
         }
         .title-and-nav{
@@ -408,8 +420,12 @@
         .top-banner{
             img{
                 width: 100%;
-                min-height: 30vh;
+                height: 500px;
                 object-fit: cover;
+
+                @media only screen and (max-width: 767px){
+                    height: 300px;
+                }
             }
         }
         .title-and-nav{
@@ -546,8 +562,12 @@
         .top-banner{
             img{
                 width: 100%;
-                min-height: 30vh;
+                height: 500px;
                 object-fit: cover;
+
+                @media only screen and (max-width: 767px){
+                    height: 300px;
+                }
             }
         }
         .title-and-nav{
@@ -623,8 +643,12 @@
         .top-banner{
             img{
                 width: 100%;
-                min-height: 30vh;
+                height: 500px;
                 object-fit: cover;
+
+                @media only screen and (max-width: 767px){
+                    height: 300px;
+                }
             }
         }
         .title-and-nav{
