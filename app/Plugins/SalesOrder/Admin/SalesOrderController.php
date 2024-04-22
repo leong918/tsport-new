@@ -158,8 +158,9 @@ class SalesOrderController extends Controller
             $sales_order_list = $this->salesOrderRepository->getListingByID($data);
         } else {
             $form_data['sales_order.sales_order_id'] = $form_data['sales_order_sales_order_id'];
+            $form_data['sales_order.delivery_partner'] = $form_data['sales_order_delivery_partner'];
             $form_data['sales_order.status'] = $form_data['sales_order_status'];
-            unset($form_data['sales_order_sales_order_id'], $form_data['sales_order_status']);
+            unset($form_data['sales_order_sales_order_id'], $form_data['sales_order_delivery_partner'], $form_data['sales_order_status']);
             $sales_order_list = $this->salesOrderRepository->getExportListing($form_data);
         }
 
