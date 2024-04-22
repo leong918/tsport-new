@@ -228,8 +228,9 @@ class SalesOrderRepository extends BaseRepository
     {
         return SalesOrder::leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
             ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
+            ->leftJoin('country','country.id', '=', 'sales_order.country_id')
             ->whereIn('sales_order.id', $order_id_list)
-            ->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku')
+            ->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku, country.code as country_code')
             ->get();
     }
 
@@ -237,8 +238,10 @@ class SalesOrderRepository extends BaseRepository
     {
 
         $models = SalesOrder::leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
-            ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id');
-
+            ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
+            ->leftJoin('country','country.id', '=', 'sales_order.country_id')
+            ->whereNull('sales_order_product.deleted_at')
+            ->orderBy('sales_order.id','desc');
         foreach (array_filter($form_data, 'filter') as $key => $value) {
             if ($key === 'sales_order.sales_order_id') {
                 $models->where($key, 'like', "%{$value}%");
@@ -257,7 +260,7 @@ class SalesOrderRepository extends BaseRepository
             }
         }
 
-        return $models->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku')->get();
+        return $models->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku,country.code as country_code')->get();
     }
 
     public function updateSalesOrder(array $input, int $id, $admin)

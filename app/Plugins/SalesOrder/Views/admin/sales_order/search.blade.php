@@ -12,6 +12,10 @@
                     <input type="text" name="sales_order.sales_order_id" class="form-control" />
                 </div>
                 <div class="col-md-3 search-filter">
+                    <label>Delivery Partner</label>
+                    {{ html()->select('sales_order.delivery_partner')->options(['' => '', 'SF Express' => 'SF Express', 'Hong Kong Post' => 'Hong Kong Post'])->class('form-control')}}
+                </div>
+                <div class="col-md-3 search-filter">
                     <label>Status</label>
                     {{ html()->select('sales_order.status')->options([null => ''] + renderSelect(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS))->class('form-control')}}
                 </div>
