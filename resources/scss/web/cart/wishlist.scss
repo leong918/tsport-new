@@ -316,6 +316,26 @@
                     height: auto;
                 }
             }
+
+            .product-description {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                img.wishlist-mobile {
+                    display: none;
+    
+                    @media (max-width: 1024px) {
+                        width: 40px;
+                        display: block;
+                    }
+    
+                    @media (max-width: 767px) {
+                        width: 40px;
+                        display: block;
+                    }
+                }
+            }
     
             //price-cart
             .product-info .price-cart {
