@@ -725,32 +725,12 @@
                 &:not(:first-child){
                     margin-left: 0.5rem;
                 }
-
-                @media only screen and (max-width: 1024px) {
-                    &:not(:first-child){
-                        margin-left: 0;
-                    }
-                }
                 
                 @media only screen and (max-width:320px){
                     width: 17px;
                 }
 
                 height: auto;
-            }
-
-            img.wishlist-mobile, img.wishlist-mobile-added {
-                display: none;
-
-                @media (max-width: 1024px) {
-                    width: 40px;
-                    display: block;
-                }
-
-                @media (max-width: 767px) {
-                    width: 40px;
-                    display: block;
-                }
             }
         }
 
@@ -774,9 +754,21 @@
                     display: block;
                 }
             }
+
+            img.wishlist-mobile, img.wishlist-mobile-added {
+                display: none;
+
+                @media (max-width: 1024px) {
+                    width: 40px;
+                    display: block;
+                }
+
+                @media (max-width: 767px) {
+                    width: 40px;
+                    display: block;
+                }
+            }
         }
-
-
     }
 
     //carousel
