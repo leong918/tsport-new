@@ -22,7 +22,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Background Colour') }}
-            <input type="color" name="background_colour" class="form-control form-control-color background_colour" value="{{ isset($model) ? $model->background_colour : '#FFFFFF' }}">
+            <input type="color" name="background_color" class="form-control form-control-color background_color" value="{{ isset($model) ? $model->background_color : '#FFFFFF' }}">
         </div>
     </div>
 </div>
@@ -102,10 +102,10 @@
         tinymce.init(editor_config);
 
         @if(isset($model))
-            $('.output').css('background-color', '{{ $model->background_colour }}');
+            $('.output').css('background-color', '{{ $model->background_color }}');
         @endif
 
-        $('.background_colour').on('change, input', function () {
+        $('.background_color').on('change, input', function () {
             $('.output').css('background-color', $(this).val());
         });
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("image")->nullable();
             $table->tinyInteger("status")->default(0);
             $table->integer("sort")->default(0);
-            $table->tinyInteger("is_show_sidebar")->default(0);
+            $table->tinyInteger("is_show_sidebar")->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
