@@ -25,7 +25,7 @@ class CreateTopBarRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'background_colour' => 'required',
+            'background_color' => 'required',
             'status' => 'required',
             'content' => 'required',
         ];

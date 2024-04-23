@@ -25,7 +25,7 @@ class UpdateTopBarRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'background_colour' => 'required',
+            'background_color' => 'required',
             'status' => 'required',
         ];
     }
