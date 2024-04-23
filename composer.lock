@@ -438,6 +438,59 @@
             "time": "2023-08-31T09:50:34+00:00"
         },
         {
+            "name": "coreui/coreui",
+            "version": "v5.0.0-rc.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/coreui/coreui.git",
+                "reference": "affac9e0a0c120804ff04c1533bab32ac57502f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/coreui/coreui/zipball/affac9e0a0c120804ff04c1533bab32ac57502f5",
+                "reference": "affac9e0a0c120804ff04c1533bab32ac57502f5",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "The CoreUI Team",
+                    "homepage": "https://github.com/orgs/coreui/people"
+                }
+            ],
+            "description": "The most popular front-end framework for developing responsive, mobile-first projects on the web rewritten and maintain by the CoreUI Team",
+            "homepage": "https://coreui.io/",
+            "keywords": [
+                "JS",
+                "css",
+                "framework",
+                "front-end",
+                "mobile-first",
+                "responsive",
+                "sass",
+                "web"
+            ],
+            "support": {
+                "issues": "https://github.com/coreui/coreui/issues",
+                "source": "https://github.com/coreui/coreui/tree/v5.0.0-rc.1"
+            },
+            "funding": [
+                {
+                    "url": "https://coreui.io/pricing/?support=true",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://opencollective.com/coreui",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2023-11-25T14:49:19+00:00"
+        },
+        {
             "name": "dflydev/dot-access-data",
             "version": "v3.0.2",
             "source": {
@@ -10583,7 +10636,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "coreui/coreui": 5
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

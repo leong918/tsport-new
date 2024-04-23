@@ -27,6 +27,7 @@ class CreateCategoryRequest extends FormRequest
             'name' => 'required',
             'image' => 'required',
             'sort' => 'required',
+            'is_show_sidebar' => 'required',
         ];
     }
 }
