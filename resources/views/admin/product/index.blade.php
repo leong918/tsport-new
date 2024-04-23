@@ -23,7 +23,6 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>SKU</th>
                                             <th>Name</th>
                                             <th>Status</th>
                                             <th>Sort</th>
@@ -57,10 +56,6 @@
                         url: '{!! route('admin.product.index') !!}'
                     },
                     columns: [{
-                            data: 'sku',
-                            name: 'sku'
-                        },
-                        {
                             data: 'name',
                             name: 'name'
                         },
