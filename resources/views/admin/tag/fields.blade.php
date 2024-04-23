@@ -42,11 +42,11 @@
             })
             .then(response => {
                 swal.fire({
-                    title: '{{__("page.tag_added")}}',
-                    text: '{{__("page.txt_tag_added")}}',
+                    title: 'Tag added!',
+                    text: 'Tag added successfully!',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                        confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/tag/index');
@@ -54,11 +54,11 @@
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.tag_fail_add")}}',
+                    title: 'Tag failed to add!',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

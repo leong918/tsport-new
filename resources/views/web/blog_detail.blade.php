@@ -156,21 +156,21 @@
             })
             .then(response => {
                 swal.fire({
-                    title: '{{__("page.blog_comment_added")}}',
-                    text: '{{__("page.txt_blog_added")}}',
+                    title: 'Blog comment added!',
+                    text: 'Blog comment added successfully!',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                        confirmButtonText: 'OK',
                 });
                 window.location.reload();
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.blog_comment_fail_add")}}',
+                    title: 'Blog comment failed to add!',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });
