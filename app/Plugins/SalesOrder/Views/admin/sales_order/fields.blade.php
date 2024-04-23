@@ -259,22 +259,22 @@ $(document).ready(function(){
             })
             .then(response => {
                 swal.fire({
-                    title: '{{__("page.sales_order_edited")}}',
-                    html: response.data.level_change ? `Sales Order Edited Successfully ! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : '{{__("page.sales_order_edited")}}',
+                    title: 'Success',
+                    html: response.data.level_change ? `Sales Order Edited Successfully! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : 'Sales Order Edited Successfully!',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 }).then((result) => {
                     window.location.reload();
                 });
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.sales_order_failed")}}',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
     });
@@ -364,11 +364,11 @@ $(document).ready(function(){
                 productList.push(product);
             }else{
                 swal.fire({
-                    title: '{{__("page.sales_order_failed")}}',
-                    text: '{{__("page.some input fields are empty")}}',
+                    title: 'Failed',
+                    text: 'Please make sure all the fields are filled',
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
 
                 productList = [];
@@ -383,22 +383,22 @@ $(document).ready(function(){
             })
             .then(response => {
                 swal.fire({
-                    title: '{{__("page.sales_order_edited")}}',
-                    text: '{{__("page.sales_order_edited")}}',
+                    title: 'Success',
+                    text: 'Sales order edited successfully',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                        confirmButtonText: 'OK',
                 }).then((result) => {
                         window.location.reload();
                 });
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.sales_order_failed")}}',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         }
