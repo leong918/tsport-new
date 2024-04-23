@@ -38,6 +38,11 @@ class CategoryRepository extends BaseRepository
         return Category::query()->orderBy('created_at', 'desc');
     }
 
+    public function getMoreToDiscoverListing()
+    {
+        return Category::where('status', 1)->whereNotNull('image')->orderBy('sort', 'asc')->get();
+    }
+
     public function getListingForNav()
     {
         return Category::where(['status' => 1, 'is_show_sidebar' => 1])->whereNull('parent_category_id')->orderBy('sort', 'asc')->get();
@@ -70,16 +75,20 @@ class CategoryRepository extends BaseRepository
 
     public function createCategory(array $input)
     {
-        $this->upload_path = 'category';
-        $this->uploadFile($input['image']);
-
         if(isset($input['parent_category_id'])){
             $this->verifyParentCategory($input);
         }
 
         $model = new Category();
         $model->fill($input);
-        $model->image = $this->uploaded_filename;
+
+        if (isset($input['image'])) {
+            //image
+            $this->upload_path = 'brand';
+            $this->uploadFile($input['image']);
+            $model->image = $this->uploaded_filename;
+        }
+
         $model->save();
 
         $categoryDescriptionRepository = new CategoryDescriptionRepository(new Container());

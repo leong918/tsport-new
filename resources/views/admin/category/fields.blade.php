@@ -34,7 +34,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Image') }}
-            {{ html()->file('image')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
+            {{ html()->file('image')->accept('image/*')->class('form-control')}}
             <br />
             <img class="img-fluid" {{isset($model) && $model->image ? 'src='.$model->image : ''}} />
         </div>
