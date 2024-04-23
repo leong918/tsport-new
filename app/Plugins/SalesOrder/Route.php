@@ -3,6 +3,7 @@
 use App\Plugins\SalesOrder\Web\CartController;
 use App\Plugins\SalesOrder\Admin\SalesOrderController;
 use App\Plugins\SalesOrder\Admin\CartRuleController;
+use App\Plugins\SalesOrder\Admin\AnalyticController;
 use App\Plugins\SalesOrder\API\StripeController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,13 +11,14 @@ Route::group(['middleware' => ['web']], function () {
     /**
      * Route web
      */
-    Route::group(['middleware' => ['auth.user', 'auth.user.inactive.logout']], function () {
-        Route::group(['namespace' => 'cart'], function () {
-            Route::get('cart', [CartController::class, 'cart'])->name('cart.shopping_cart');
-            Route::post('add_to_cart', [CartController::class, 'addToCart'])->name('cart.add_to_cart');
-            Route::post('update_cart_qty', [CartController::class, 'updateCartQty'])->name('cart.update_cart_qty');
-            Route::post('apply_coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
-            Route::post('remove_coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
+    Route::group(['namespace' => 'cart'], function () {
+        Route::get('cart', [CartController::class, 'cart'])->name('cart.shopping_cart');
+        Route::post('add_to_cart', [CartController::class, 'addToCart'])->name('cart.add_to_cart');
+        Route::post('update_cart_qty', [CartController::class, 'updateCartQty'])->name('cart.update_cart_qty');
+        Route::post('apply_coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
+        Route::post('remove_coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
+        
+        Route::group(['middleware' => ['auth.user', 'auth.user.inactive.logout']], function () {  
             Route::post('toggle_wishlist', [CartController::class, 'toggleWishlist'])->name('cart.toggle_wishlist');
             Route::post('remove_wishlist', [CartController::class, 'removeWishlist'])->name('cart.remove_wishlist');
             Route::get('wishlist', [CartController::class, 'wishlist'])->name('cart.wishlist');
@@ -57,6 +59,15 @@ Route::group(['middleware' => ['web']], function () {
             Route::put('cart_rule/update/{id}', [CartRuleController::class, 'update'])->name('update.put');
             Route::delete('cart_rule/delete/{id}', [CartRuleController::class, 'destroy'])->name('destroy.delete');
             Route::post('cart_rule/status/{id}', [CartRuleController::class, 'toggleStatus'])->name('status.post');
+        });
+
+        Route::group(['as' => 'admin.analytic.', 'prefix' => 'admin'], function () {
+            Route::get('analytic/product/index', [AnalyticController::class, 'product'])->name('product');
+            Route::get('analytic/order/index', [AnalyticController::class, 'order'])->name('order');
+            Route::get('analytic/category/index', [AnalyticController::class, 'category'])->name('category');
+            Route::post('analytic/product/getProductDataByDateRange', [AnalyticController::class, 'getProductDataByDateRange'])->name('getProductDataByDateRange');
+            Route::post('analytic/product/getCategoryDataByDateRange', [AnalyticController::class, 'getCategoryDataByDateRange'])->name('getCategoryDataByDateRange');
+            Route::post('analytic/product/getOrderDataByDateRange', [AnalyticController::class, 'getOrderDataByDateRange'])->name('getOrderDataByDateRange');
         });
     });
 });

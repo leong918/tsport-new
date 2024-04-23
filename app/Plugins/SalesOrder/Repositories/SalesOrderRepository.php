@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CustomerNoteMail;
 use App\Plugins\SalesOrder\Mail\AdminOrderStatusMail;
 use App\Plugins\SalesOrder\Mail\OrderStatusMail;
+use App\Plugins\SalesOrder\Models\SalesOrderTotal;
 use Illuminate\Container\Container;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Repositories\CountryRepository;
@@ -24,6 +25,7 @@ use App\Repositories\ProductBalanceLogRepository;
 use App\Repositories\ReferralRepository;
 use App\Repositories\SettingRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class SalesOrderRepository extends BaseRepository
 {
@@ -263,6 +265,84 @@ class SalesOrderRepository extends BaseRepository
         return $models->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku,country.code as country_code')->get();
     }
 
+    public function getOrderListing(array $form_data)
+    {
+        $models = SalesOrder::query()->leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id');
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay()->format('Y-m-d H:i:s');
+                    $dateTo = Carbon::parse($dates[1])->endOfDay()->format('Y-m-d H:i:s');
+                    $models->whereBetween('sales_order.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+                $models->where($key, $value);
+            }
+        }
+
+        $models->with('salesOrderTotal', function($query) {
+                $query->where('code', 'coupon');
+            })
+            ->select(
+                'sales_order.id',
+                'sales_order.sales_order_id as order_id',
+                'sales_order.status as status',
+                DB::raw("CONCAT(sales_order.last_name, ' ', sales_order.first_name) as customer"),
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('sales_order.total as net_sales')
+            )
+            ->groupBy('sales_order.id')->get();
+        
+        return $models;
+    }
+
+    public function getSalesOrderByMonth($form_data, $is_previous)
+    {
+        $models = SalesOrder::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+
+                    if ($is_previous != true) {
+                        $dateFrom = $dateFrom->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->format('Y-m-d H:i:s');
+                    } else {
+                        $dateFrom = $dateFrom->subYear()->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->subYear()->format('Y-m-d H:i:s');
+                    }
+
+                    $models->whereBetween('sales_order.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+
+                $models->leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
+                    ->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
+                    ->where($key, $value);
+            }
+        }
+
+        return $models->select(
+            DB::raw('DATE_FORMAT(sales_order.created_at, "%m/%d/%Y") as date'),
+            DB::raw('(SELECT COUNT(sales_order_product.product_id) FROM sales_order_product WHERE sales_order_product.sales_order_id = sales_order.id) / COUNT(sales_order.id) as avg_item'),
+            DB::raw('SUM(sales_order.total) as net_sales'),
+            DB::raw('COUNT(sales_order.id) as orders'),
+            DB::raw('SUM(sales_order.total) / COUNT(sales_order.id) as avg_order_value'),
+        )->groupBy('sales_order.id')->get()->groupBy('date');
+    }
+
+
     public function updateSalesOrder(array $input, int $id, $admin)
     {
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
@@ -405,7 +485,7 @@ class SalesOrderRepository extends BaseRepository
             $date = Carbon::parse($sales_order->created_at);
             $formattedDate = $date->format('F j, Y');
             $status = renderModelData(SalesOrder::ORDER_STATUS, $sales_order->status);
-            Mail::to($receiver)->send(new AdminOrderStatusMail($sales_order,$formattedDate,$status));
+            Mail::to($receiver)->send(new AdminOrderStatusMail($sales_order, $formattedDate, $status));
         }
     }
 

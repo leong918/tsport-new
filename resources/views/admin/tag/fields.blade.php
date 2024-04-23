@@ -42,11 +42,11 @@
             })
             .then(response => {
                 swal.fire({
-                    title: 'Tag added!',
-                    text: 'Tag added successfully!',
+                    title: 'Success',
+                    text: 'Tag Added Successfully',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: 'OK',
+                    confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/tag/index');
@@ -54,7 +54,7 @@
             })
             .catch(error => {
                 swal.fire({
-                    title: 'Tag failed to add!',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',

@@ -224,8 +224,8 @@
                         })
                         .then(response => {
                             swal.fire({
-                                title: 'Status updated!',
-                                html: response.data.level_change ? `Sales Order Edited Successfully ! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : 'Sales order edited successfully!',
+                                title: 'Success',
+                                html: response.data.level_change ? `Sales Order Edited Successfully ! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : 'Sales Order Edited Successfully',
                                 icon: 'success',
                                 confirmButtonClass: 'btn btn-success',
                                     confirmButtonText: 'OK',
@@ -235,7 +235,7 @@
                         })
                         .catch(error => {
                             swal.fire({
-                                title: 'Status failed to update!',
+                                title: 'Failed',
                                 text: error.response.data.msg,
                                 icon: 'error',
                                 confirmButtonClass: 'btn btn-danger',

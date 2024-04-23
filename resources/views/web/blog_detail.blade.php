@@ -155,18 +155,11 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
-                    title: 'Blog comment added!',
-                    text: 'Blog comment added successfully!',
-                    icon: 'success',
-                    confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: 'OK',
-                });
                 window.location.reload();
             })
             .catch(error => {
                 swal.fire({
-                    title: 'Blog comment failed to add!',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',

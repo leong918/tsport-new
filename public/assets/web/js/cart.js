@@ -61,11 +61,11 @@ $(document).ready(function () {
         var url = $(this).data('url');
 
         if (is_wishlist == 1) {
-            $(this).find('.wishlist-hide, .wishlist-hover-show').removeClass('d-none');
+            $(this).find('.wishlist-hide').removeClass('d-none');
             $(this).find('.wishlist-added').addClass('d-none');
             $(this).data('is-wishlist', 0);
         } else {
-            $(this).find('.wishlist-hide, .wishlist-hover-show').addClass('d-none');
+            $(this).find('.wishlist-hide').addClass('d-none');
             $(this).find('.wishlist-added').removeClass('d-none');
             $(this).data('is-wishlist', 1);
         }

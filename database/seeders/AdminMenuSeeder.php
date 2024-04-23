@@ -239,7 +239,6 @@ class AdminMenuSeeder extends Seeder
                 'sort' => 1,
                 'status' => 1
             ],
-            
         ];
 
         foreach ($adminMenus as $adminMenu) {

@@ -259,18 +259,18 @@ $(document).ready(function(){
             })
             .then(response => {
                 swal.fire({
-                    title: 'Sales order edited!',
-                    html: response.data.level_change ? `Sales Order Edited Successfully ! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : 'Sales order edited successfully!',
+                    title: 'Success',
+                    html: response.data.level_change ? `Sales Order Edited Successfully! <br/> (Order ${response.data.level_change} user\'s level previously. Please <b>UPDATE</b> user\'s level based on needs !)` : 'Sales Order Edited Successfully!',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: 'OK',
+                    confirmButtonText: 'OK',
                 }).then((result) => {
                     window.location.reload();
                 });
             })
             .catch(error => {
                 swal.fire({
-                    title: 'Failed to edit sales order!',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
@@ -364,8 +364,8 @@ $(document).ready(function(){
                 productList.push(product);
             }else{
                 swal.fire({
-                    title: 'Failed to edit sales order!',
-                    text: 'Some input fields are empty!',
+                    title: 'Failed',
+                    text: 'Please make sure all the fields are filled',
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: 'OK',
@@ -383,8 +383,8 @@ $(document).ready(function(){
             })
             .then(response => {
                 swal.fire({
-                    title: 'Sales order edited!',
-                    text: 'Sales order edited successfully!',
+                    title: 'Success',
+                    text: 'Sales order edited successfully',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
                         confirmButtonText: 'OK',
@@ -394,7 +394,7 @@ $(document).ready(function(){
             })
             .catch(error => {
                 swal.fire({
-                    title: 'Failed to edit sales order!',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',

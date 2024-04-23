@@ -48,8 +48,12 @@
         position: relative;
         img{
             width: 100%;
-            min-height: 30vh;
+            height: 500px;
             object-fit: cover;
+
+            @media only screen and (max-width: 767px){
+                height: 300px;
+            }
         }
 
         .product-title-wrapper{
@@ -314,6 +318,26 @@
                     }
                     
                     height: auto;
+                }
+            }
+
+            .product-description {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                img.wishlist-mobile {
+                    display: none;
+    
+                    @media (max-width: 1024px) {
+                        width: 40px;
+                        display: block;
+                    }
+    
+                    @media (max-width: 767px) {
+                        width: 40px;
+                        display: block;
+                    }
                 }
             }
     

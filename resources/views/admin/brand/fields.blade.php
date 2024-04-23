@@ -129,11 +129,11 @@
             })
             .then(response => {
                 swal.fire({
-                    title: 'Brand added!',
-                    text: 'Brand added successfully!',
+                    title: 'Success',
+                    text: 'Brand Added Successfully',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: 'OK',
+                    confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/brand/index');
@@ -141,7 +141,7 @@
             })
             .catch(error => {
                 swal.fire({
-                    title: 'Brand failed to add!',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
