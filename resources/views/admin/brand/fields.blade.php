@@ -142,7 +142,7 @@
             .catch(error => {
                 swal.fire({
                     title: 'Brand failed to add!',
-                    text: '123',
+                    text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: 'OK',
