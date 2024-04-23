@@ -60,15 +60,15 @@ Route::group(['middleware' => ['web']], function () {
             Route::delete('cart_rule/delete/{id}', [CartRuleController::class, 'destroy'])->name('destroy.delete');
             Route::post('cart_rule/status/{id}', [CartRuleController::class, 'toggleStatus'])->name('status.post');
         });
-    });
 
-    Route::group(['as' => 'admin.analytic.', 'prefix' => 'admin'], function () {
-        Route::get('analytic/product/index', [AnalyticController::class, 'product'])->name('product');
-        Route::get('analytic/order/index', [AnalyticController::class, 'order'])->name('order');
-        Route::get('analytic/category/index', [AnalyticController::class, 'category'])->name('category');
-        Route::post('analytic/product/getProductDataByDateRange', [AnalyticController::class, 'getProductDataByDateRange'])->name('getProductDataByDateRange');
-        Route::post('analytic/product/getCategoryDataByDateRange', [AnalyticController::class, 'getCategoryDataByDateRange'])->name('getCategoryDataByDateRange');
-        Route::post('analytic/product/getOrderDataByDateRange', [AnalyticController::class, 'getOrderDataByDateRange'])->name('getOrderDataByDateRange');
+        Route::group(['as' => 'admin.analytic.', 'prefix' => 'admin'], function () {
+            Route::get('analytic/product/index', [AnalyticController::class, 'product'])->name('product');
+            Route::get('analytic/order/index', [AnalyticController::class, 'order'])->name('order');
+            Route::get('analytic/category/index', [AnalyticController::class, 'category'])->name('category');
+            Route::post('analytic/product/getProductDataByDateRange', [AnalyticController::class, 'getProductDataByDateRange'])->name('getProductDataByDateRange');
+            Route::post('analytic/product/getCategoryDataByDateRange', [AnalyticController::class, 'getCategoryDataByDateRange'])->name('getCategoryDataByDateRange');
+            Route::post('analytic/product/getOrderDataByDateRange', [AnalyticController::class, 'getOrderDataByDateRange'])->name('getOrderDataByDateRange');
+        });
     });
 });
 
