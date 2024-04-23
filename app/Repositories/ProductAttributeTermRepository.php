@@ -44,11 +44,12 @@ class ProductAttributeTermRepository extends BaseRepository
         return formalizeDropdown(ProductAttributeTerm::all(), $key, 'name');
     }
 
-    public function getLowStockProductAttributeTerm(){
+    public function getLowStockProductAttributeTerm()
+    {
         return ProductAttributeTerm::leftjoin('product', 'product_attribute_term.product_id', '=', 'product.id')
-                                    ->where('product_attribute_term.quantity','<=', 2)
-                                    ->selectRaw('product.name as product_name, product_attribute_term.*')
-                                    ->get();
+            ->where('product_attribute_term.quantity', '<=', 2)
+            ->selectRaw('product.name as product_name, product_attribute_term.*')
+            ->get();
     }
 
     public function createProductAttributeTerm(array $input, $model)
@@ -61,24 +62,11 @@ class ProductAttributeTermRepository extends BaseRepository
             $term_model->product_attribute_id = $productAttribute->id;
             $term_model->product_id = $productAttribute->product_id;
             $term_model->name = $term['term_name'];
-            $term_model->sku = $term['term_sku'];
             $term_model->point_value = $term['term_add_on_point'];
-
-            //----------- check create/ update stock  ------------
-            if (!isset($term['stock_amount'])) {
-                $term_model->quantity = $term['term_qty'];
-            } else {
-                $this->calStockAmount($term_model, $term);
-            }
-
             $term_model->save();
 
             $productPrice = new ProductPriceRepository(new Container());
             $productPrice->createAttributeTermPrice($term, $term_model);
-
-            $remark = 'Add new product attribute term';
-            $productBalanceLog = new ProductBalanceLogRepository(new Container());
-            $productBalanceLog->createProductBalanceLog($term_model, $term, null, $remark);
         }
     }
 
@@ -88,15 +76,9 @@ class ProductAttributeTermRepository extends BaseRepository
         $productAttribute = $productAttributeRepository->find($model->id);
 
         foreach ($input['variation'] as $key => $term) {
-            $is_change_qty = false;
-
             if (str_contains($key, 'old')) {
                 $attribute_term_id = str_replace('old-', '', $key);
                 $term_model = ProductAttributeTerm::find($attribute_term_id);
-
-                if ($term_model->quantity != $term['term_qty']) {
-                    $is_change_qty = true;
-                }
             } else {
                 $term_model = new ProductAttributeTerm();
             }
@@ -104,40 +86,12 @@ class ProductAttributeTermRepository extends BaseRepository
             $term_model->product_attribute_id = $productAttribute->id;
             $term_model->product_id = $productAttribute->product_id;
             $term_model->name = $term['term_name'];
-            $term_model->sku = $term['term_sku'];
             $term_model->point_value = $term['term_add_on_point'];
-
-            //----------- check create/ update stock  ------------
-            if (!isset($term['stock_amount'])) {
-                $term_model->quantity = $term['term_qty'];
-            } else {
-                $this->calStockAmount($term_model, $term);
-            }
-
             $term_model->save();
 
             $productPrice = new ProductPriceRepository(new Container());
             $productPrice->createAttributeTermPrice($term, $term_model);
-
-            if ($is_change_qty) {
-                $remark = 'Update product attribute term';
-                $productBalanceLog = new ProductBalanceLogRepository(new Container());
-                $productBalanceLog->createProductBalanceLog($term_model, $term, null, $remark);
-            }
         }
-    }
-
-    private function calStockAmount($term_model, $term)
-    {
-        if ($term['stock_option'] != 0) {
-            $total = $term['term_qty'] - $term['stock_amount'];
-            $term_model->quantity = $total;
-        } else {
-            $total = $term['stock_amount'] + $term['term_qty'];
-            $term_model->quantity = $total;
-        }
-
-        return $term_model->quantity;
     }
 
     public function deleteByProductId(int $product_id)
