@@ -78,6 +78,15 @@ class AdminMenuSeeder extends Seeder
                 'status' => 1
             ],
             [
+                'parent_id' => null,
+                'title' => 'Analytic',
+                'icon' => 'fa-solid fa-chart-simple',
+                'url' => null,
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
                 'parent_id' => 1,
                 'title' => 'Admin List',
                 'icon' => null,
@@ -239,7 +248,33 @@ class AdminMenuSeeder extends Seeder
                 'sort' => 1,
                 'status' => 1
             ],
-            
+            [
+                'parent_id' => 8,
+                'title' => 'Products',
+                'icon' => null,
+                'url' => 'admin.analytic.product',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 8,
+                'title' => 'Orders',
+                'icon' => null,
+                'url' => 'admin.analytic.order',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 8,
+                'title' => 'Categories',
+                'icon' => null,
+                'url' => 'admin.analytic.category',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
         ];
 
         foreach ($adminMenus as $adminMenu) {

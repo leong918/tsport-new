@@ -45,9 +45,11 @@
                                         @if(function_exists('reviewRenderView'))
                                         {{ reviewRenderView('common_star_rating', $wishlist->product) }}
                                         @endif
-                                        <img class="wishlist-mobile bg-white rounded-circle p-2" src="{{asset('assets/web/assets/img/shopping_cart/remove.png')}}">
                                     </div>
-                                    <div class="product-description">{{ $wishlist->product->name }}</div>
+                                    <div class="product-description">
+                                        <div>{{ $wishlist->product->name }}</div>
+                                        <a href="#"><img class="wishlist-mobile bg-white rounded-circle p-2 wishlist-remove-button-hover" data-id="{{ $wishlist->product->id }}" data-url="{{ route('cart.remove_wishlist') }}" src="{{asset('assets/web/assets/img/shopping_cart/remove.png')}}"></a>
+                                    </div>
                                     <div class="price-cart">
                                         <div class="product-price">${{ $wishlist->product->getCurrencyParameters('HKD')->price }}</div>
                                         <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">

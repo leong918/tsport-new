@@ -36,6 +36,7 @@ class Category extends Model
         'image',
         'status',
         'sort',
+        'is_show_sidebar',
     ];
 
     /**

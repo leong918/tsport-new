@@ -25,8 +25,8 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'required',
             'sort' => 'required',
+            'is_show_sidebar' => 'required',
         ];
     }
 }

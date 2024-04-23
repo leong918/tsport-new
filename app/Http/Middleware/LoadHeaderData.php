@@ -29,12 +29,14 @@ class LoadHeaderData
         // Fetch navigation data from the database
         $sidebar_brand_list = $this->brandRepository->getListingForNav();
         $sidebar_category_list = $this->categoryRepository->getListingForNav();
+        $more_discover_category_list = $this->categoryRepository->getMoreToDiscoverListing();
         $top_bar = $this->topBarRepository->getListing()->where('status', 1)->first();
 
         // Share navigation data with all views
         View::share('sidebar_brand_list', $sidebar_brand_list);
         View::share('top_bar', $top_bar);
         View::share('sidebar_category_list', $sidebar_category_list);
+        View::share('more_discover_category_list', $more_discover_category_list);
 
         return $next($request);
     }
