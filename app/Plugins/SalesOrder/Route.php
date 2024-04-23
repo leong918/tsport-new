@@ -11,13 +11,14 @@ Route::group(['middleware' => ['web']], function () {
     /**
      * Route web
      */
-    Route::group(['middleware' => ['auth.user', 'auth.user.inactive.logout']], function () {
-        Route::group(['namespace' => 'cart'], function () {
-            Route::get('cart', [CartController::class, 'cart'])->name('cart.shopping_cart');
-            Route::post('add_to_cart', [CartController::class, 'addToCart'])->name('cart.add_to_cart');
-            Route::post('update_cart_qty', [CartController::class, 'updateCartQty'])->name('cart.update_cart_qty');
-            Route::post('apply_coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
-            Route::post('remove_coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
+    Route::group(['namespace' => 'cart'], function () {
+        Route::get('cart', [CartController::class, 'cart'])->name('cart.shopping_cart');
+        Route::post('add_to_cart', [CartController::class, 'addToCart'])->name('cart.add_to_cart');
+        Route::post('update_cart_qty', [CartController::class, 'updateCartQty'])->name('cart.update_cart_qty');
+        Route::post('apply_coupon', [CartController::class, 'applyCoupon'])->name('cart.apply_coupon');
+        Route::post('remove_coupon', [CartController::class, 'removeCoupon'])->name('cart.remove_coupon');
+        
+        Route::group(['middleware' => ['auth.user', 'auth.user.inactive.logout']], function () {  
             Route::post('toggle_wishlist', [CartController::class, 'toggleWishlist'])->name('cart.toggle_wishlist');
             Route::post('remove_wishlist', [CartController::class, 'removeWishlist'])->name('cart.remove_wishlist');
             Route::get('wishlist', [CartController::class, 'wishlist'])->name('cart.wishlist');

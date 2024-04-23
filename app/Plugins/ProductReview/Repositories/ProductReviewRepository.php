@@ -44,7 +44,7 @@ class ProductReviewRepository extends BaseRepository
 
         Schema::create($table_name, function (Blueprint $table) {
             $table->id();
-            $table->bigInteger("user_id");
+            $table->bigInteger("user_id")->nullable();
             $table->bigInteger("product_id");
             $table->integer("rate")->default(5);
             $table->string("username");

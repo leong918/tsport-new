@@ -43,17 +43,17 @@
                 <td>{{ $item['address'] }}</td>
                 <td>{{ $item['city'] }}</td>
                 <td>{{ $item['state'] }}</td>
-                <td>{{ $item['country'] }}</td>
+                <td>{{ $item['country_code'] }}</td>
                 <td>{{ $item['postcode'] }}</td>
                 <td>{{ $item['email'] }}</td>
                 <td>{{ $item['sku'] }}</td>
-                <td>{{ $item['product_name'] }}</td>
                 <td>{{ $item['product_name'] }}</td>
                 <td>1x1x1cm 0kg</td>
                 <td>{{ $item['price'] }}</td>
                 <td>HKD</td>
                 <td>{{ $item['quantity'] }}</td>
-                <td>{{ $item['is_pay_later'] }}</td>
+                <td>Normal</td>
+                <td></td>
                 <td>{{ $senderData['sender_last_name'] ?? ''}}</td>
                 <td>{{ $senderData['sender_first_name'] ?? ''}}</td>
                 <td>{{ $senderData['sender_phone_no'] ?? ''}}</td>

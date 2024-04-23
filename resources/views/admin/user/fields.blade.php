@@ -1,5 +1,4 @@
 <x-alert />
-
 <div class="row">
     <div class="col-md-6">
         <div class="mb-3">
@@ -62,8 +61,68 @@
     </div>
     <div class="col-md-6">
         <div class="mb-3">
+            {{ html()->label('Address First Name') }}
+            {{ html()->text('address_first_name')->placeholder('Enter address first name')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Address Last Name') }}
+            {{ html()->text('address_last_name')->placeholder('Enter address last name')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Company Name (Optional)') }}
+            {{ html()->text('company_name')->placeholder('Enter company name (optional)')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Address Phone no') }}
+            {{ html()->text('address_phone_no')->placeholder('Enter address phone no')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Address Email') }}
+            {{ html()->text('address_email')->placeholder('Enter address email')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Postcode') }}
+            {{ html()->text('postcode')->placeholder('Enter city')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('City') }}
+            {{ html()->text('city')->placeholder('Enter city')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('State') }}
+            {{ html()->text('state')->placeholder('Enter state')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Country') }}
+            {{ html()->select('country_id')->options([null => ''] + $countryDropdown)->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Address') }}
+            {{ html()->text('address')->placeholder('Enter address')->class('form-control') }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
             {{ html()->label('Status') }}
-            {{ html()->select('status')->options(renderSelect(Admin::STATUS))->class('form-control')->required() }}
+            {{ html()->select('status')->options(renderSelect(Admin::STATUS))->class('form-control') }}
         </div>
     </div>
 </div>
