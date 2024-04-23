@@ -45,7 +45,8 @@ class BlogRepository extends BaseRepository
     {
         $this->verifyDescription($input);
 
-        $input['published_at'] = $input['published_at'] ? Carbon::parse($input['published_at'])->format('Y-m-d H:i:s') : null;
+        $input['published_at'] = $input['published_at'] ? Carbon::createFromFormat('Y-m-d g:i A', $input['published_at'])->format('Y-m-d H:i:s') : null;
+        
         $model = new Blog();
         $model->fill($input);
         $model->save();
@@ -57,8 +58,8 @@ class BlogRepository extends BaseRepository
     public function updateBlog(array $input, int $id)
     {
         $this->verifyDescription($input, true);
-
-        $input['published_at'] = $input['published_at'] ? Carbon::parse($input['published_at'])->format('Y-m-d H:i:s') : null;
+        
+        $input['published_at'] = $input['published_at'] ? Carbon::createFromFormat('Y-m-d g:i A', $input['published_at'])->format('Y-m-d H:i:s') : null;
 
         $model = Blog::findOrFail($id);
         $model->fill($input);
