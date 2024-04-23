@@ -129,11 +129,11 @@
             })
             .then(response => {
                 swal.fire({
-                    title: '{{__("page.brand_added")}}',
-                    text: '{{__("page.txt_brand_added")}}',
+                    title: 'Success',
+                    text: 'Brand Added Successfully',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/brand/index');
@@ -141,11 +141,11 @@
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.brand_fail_add")}}',
-                    text: '123',
+                    title: 'Failed',
+                    text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });
