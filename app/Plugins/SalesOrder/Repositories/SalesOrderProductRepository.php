@@ -103,12 +103,12 @@ class SalesOrderProductRepository extends BaseRepository
         }
 
         return $models->select(
-                DB::raw('DATE_FORMAT(created_at, "%m/%d/%Y") as date'), 
-                DB::raw('SUM(quantity) as product_sold'),
-                DB::raw('SUM(sales_order_product.total_price) as net_sales'),
-                DB::raw('COUNT(sales_order_product.product_id) as orders')
-                )
-                ->groupBy('date')->get();
+            DB::raw('DATE_FORMAT(created_at, "%m/%d/%Y") as date'),
+            DB::raw('SUM(quantity) as product_sold'),
+            DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+            DB::raw('COUNT(sales_order_product.product_id) as orders')
+        )
+            ->groupBy('date')->get();
     }
 
     public function getCategoryListing(array $form_data)
@@ -133,15 +133,15 @@ class SalesOrderProductRepository extends BaseRepository
         }
 
         $models->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
-                ->leftJoin('category', 'product.category_id', '=', 'category.id')
-                ->select(
-                    'category.name as category',
-                    DB::raw('SUM(sales_order_product.quantity) as product_sold'),
-                    DB::raw('SUM(sales_order_product.total_price) as net_sales'),
-                    DB::raw('COUNT(sales_order_product.product_id) as orders'),
-                    DB::raw('COUNT(DISTINCT product.id) as products'),
-                )
-                ->groupBy('category')->get();
+            ->leftJoin('category', 'product.category_id', '=', 'category.id')
+            ->select(
+                'category.name as category',
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+                DB::raw('COUNT(sales_order_product.product_id) as orders'),
+                DB::raw('COUNT(DISTINCT product.id) as products'),
+            )
+            ->groupBy('category')->get();
 
         return $models;
     }
@@ -176,14 +176,14 @@ class SalesOrderProductRepository extends BaseRepository
         }
 
         return $models->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
-                ->select(
-                DB::raw('DATE_FORMAT(sales_order_product.created_at, "%m/%d/%Y") as date'), 
+            ->select(
+                DB::raw('DATE_FORMAT(sales_order_product.created_at, "%m/%d/%Y") as date'),
                 DB::raw('SUM(sales_order_product.quantity) as product_sold'),
                 DB::raw('SUM(sales_order_product.total_price) as net_sales'),
                 DB::raw('COUNT(sales_order_product.product_id) as orders'),
                 DB::raw('COUNT(DISTINCT product.id) as products'),
-                )
-                ->groupBy('date')->get();
+            )
+            ->groupBy('date')->get();
     }
 
     public function getSalesOrderProductBySalesOrderId(int $id)
@@ -207,24 +207,16 @@ class SalesOrderProductRepository extends BaseRepository
                     $productAttribute = $productAttributeRepository->find($key);
                     $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
                     $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
-
-                    $productAttributeTerm->quantity -= $cart->quantity;
-                    $productAttributeTerm->save();
-
-                    $log_data['stock_option'] = 0;
-                    $log_data['stock_amount'] = $cart->quantity;
-                    $remark = 'Deduct product for Order: ' . $order->sales_order_id;
-                    $productBalanceLogRepository->createProductBalanceLog($productAttributeTerm, $log_data, null, $remark);
                 }
-            } else {
-                $product->quantity -= $cart->quantity;
-                $product->save();
-
-                $log_data['type'] = 'DEDUCT';
-                $log_data['quantity'] = $cart->quantity;
-                $remark = 'Deduct product for Order: ' . $order->sales_order_id;
-                $productBalanceLogRepository->createProductBalanceLog($product, null, $log_data, $remark);
             }
+
+            $product->quantity -= $cart->quantity;
+            $product->save();
+
+            $log_data['type'] = 'DEDUCT';
+            $log_data['quantity'] = $cart->quantity;
+            $remark = 'Deduct product for Order: ' . $order->sales_order_id;
+            $productBalanceLogRepository->createProductBalanceLog($product, $log_data, $remark);
 
             $orderProduct = new SalesOrderProduct();
             $orderProduct->sales_order_id = $order->id;

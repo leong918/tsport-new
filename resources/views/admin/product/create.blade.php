@@ -48,21 +48,8 @@
                                                                         <div class="inputBoxes d-flex flex-wrap">
                                                                             <div class="col-md-6 col-6 border-end">
                                                                                 <div class="m-2 ms-0">
-                                                                                    <textarea type="text" class="form-control" required placeholder="{{ __('Attribute Term') }}" rows="2"
+                                                                                    <textarea type="text" class="form-control" required placeholder="{{ __('Attribute Term') }}" rows="3"
                                                                                         name="option[0][variation][0][term_name]"></textarea>
-                                                                                </div>
-                                                                                <div class="m-2 ms-0">
-                                                                                    <input type="text"
-                                                                                        class="form-control" required
-                                                                                        placeholder="{{ __('SKU') }}"
-                                                                                        name="option[0][variation][0][term_sku]">
-                                                                                </div>
-                                                                                <div class="m-2 ms-0">
-                                                                                    <input type="number"
-                                                                                        class="form-control" required
-                                                                                        min="1"
-                                                                                        placeholder="{{ __('Quantity') }}"
-                                                                                        name="option[0][variation][0][term_qty]">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-5 col-5">
@@ -150,14 +137,7 @@
                             <div class="inputBoxes d-flex flex-wrap">
                                 <div class="col-md-6 col-6 border-end">
                                     <div class="m-2 ms-0">
-                                        <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="2"></textarea>
-                                    </div>
-                                    <div class="m-2 ms-0">
-                                        <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
-                                    </div>
-                
-                                    <div class="m-2 ms-0">
-                                        <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
+                                        <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-5 col-5">
@@ -201,14 +181,7 @@
                 <div class="inputBoxes d-flex flex-wrap">
                     <div class="col-md-6 col-6 border-end">
                         <div class="m-2 ms-0">
-                            <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="2"></textarea>
-                        </div>
-                        <div class="m-2 ms-0">
-                            <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
-                        </div>
-    
-                        <div class="m-2 ms-0">
-                            <input type="number" class="form-control" required min="1" placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
+                            <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="col-md-5 col-5">

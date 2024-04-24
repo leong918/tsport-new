@@ -171,8 +171,9 @@ class ProductRepository extends BaseRepository
             ->get();
     }
 
-    public function getLowStockProduct(){
-        return Product::where('is_attribute',0)->where('quantity','<=',2)->get();
+    public function getLowStockProduct()
+    {
+        return Product::where('is_attribute', 0)->where('quantity', '<=', 2)->get();
     }
 
     public function regroupProductListByCategory($product_list)
@@ -232,13 +233,9 @@ class ProductRepository extends BaseRepository
             $productTag->createProductTag($input, $model->id);
         }
 
-        if (isset($input['option'])) {
+        if ($model->is_attribute && isset($input['option'])) {
             $productAttribute = new ProductAttributeRepository(new Container());
             $productAttribute->createProductAttribute($input, $model->id);
-        } else {
-            $remark = 'Create new product';
-            $productBalanceLog = new ProductBalanceLogRepository(new Container());
-            $productBalanceLog->createProductBalanceLog($model, null, null, $remark);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());
@@ -249,6 +246,15 @@ class ProductRepository extends BaseRepository
 
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
+
+        if ($model->quantity > 0) {
+            $remark = 'Create new product';
+            $stockInput['quantity'] = $model->quantity;
+            $stockInput['type'] = 'ADD';
+
+            $productBalanceLog = new ProductBalanceLogRepository(new Container());
+            $productBalanceLog->createProductBalanceLog($model, $stockInput, $remark);
+        }
     }
 
     public function updateProduct(array $input, int $id)
@@ -257,6 +263,8 @@ class ProductRepository extends BaseRepository
 
         $input['alias'] = strtolower($input['alias']);
         $model = Product::findOrFail($id);
+        $original_quantity = $model->quantity;
+
         $model->fill($input);
         $model->save();
 
@@ -275,9 +283,12 @@ class ProductRepository extends BaseRepository
             $productTag->createProductTag($input, $model->id);
         }
 
-        if (isset($input['option'])) {
+        if ($model->is_attribute && isset($input['option'])) {
             $productAttribute = new ProductAttributeRepository(new Container());
             $productAttribute->updateProductAttribute($input, $model->id);
+        } else {
+            $productAttribute = new ProductAttributeRepository(new Container());
+            $productAttribute->deleteAllAttribute($model->id);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());
@@ -285,24 +296,16 @@ class ProductRepository extends BaseRepository
 
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
-    }
 
-    public function updateStock(array $input, int $id)
-    {
-        $model = Product::findOrFail($id);
+        if ($model->quantity != $original_quantity) {
+            $remark = 'Update product';
+            $quantity_diff = $model->quantity - $original_quantity;
+            $stockInput['quantity'] = abs($quantity_diff);
+            $stockInput['type'] = $quantity_diff < 0 ? 'MINUS' : 'ADD';
 
-        if ($input['type'] == 'ADD') {
-            $total = $model->quantity + $input['quantity'];
-        } else {
-            $total = $model->quantity - $input['quantity'];
+            $productBalanceLog = new ProductBalanceLogRepository(new Container());
+            $productBalanceLog->createProductBalanceLog($model, $stockInput, $remark);
         }
-
-        $model->quantity = $total;
-        $model->save();
-
-        $remark = 'Update prduct';
-        $productBalanceLog = new ProductBalanceLogRepository(new Container());
-        $productBalanceLog->createProductBalanceLog($model, null, $input, $remark);
     }
 
     public function toggleStatus(int $id)

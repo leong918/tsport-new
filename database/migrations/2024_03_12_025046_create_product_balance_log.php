@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('product_balance_log', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id');
-            $table->bigInteger('product_attribute_term_id')->nullable();
             $table->string('type');
             $table->integer('quantity')->default(0);
             $table->string('remark')->nullable();

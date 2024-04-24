@@ -15,13 +15,6 @@
     <div class="card mb-3">
         <div class="card-header">
             <strong>Product</strong>
-            @if (isset($model) && $model->is_attribute == 0)
-                <button type="button" id="add_product_price" data-bs-toggle="modal" data-bs-target="#stockModal"
-                    class="btn btn-success permission float-end">
-                    Stock Adjustment
-                </button>
-            @endif
-
         </div>
         <div class="card-body">
             <div class="row product-field-wrapper">
@@ -45,26 +38,62 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
+                        {{ html()->label('Status') }}
+                        {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Category') }}
+                        {{ html()->select('category_id')->options($categoryDropdown)->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Brand') }}
+                        {{ html()->select('brand_id')->options($brandDropdown)->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
                         {{ html()->label('Price') }}    
                         {{ html()->number('product_price')->placeholder('Enter price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->where('product_attribute_term_id', null)->first()->price : null )->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Category ID') }}
-                        {{ html()->select('category_id')->options($categoryDropdown)->class('form-control')->required() }}
+                        {{ html()->label('Point') }}
+                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Brand ID') }}
-                        {{ html()->select('brand_id')->options($brandDropdown)->class('form-control')->required() }}
+                        {{ html()->label('Quantity') }}
+                        {{ html()->number('quantity')->placeholder('Enter quantity')->attribute('min', 1)->class('form-control')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Status') }}
-                        {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
+                        {{ html()->label('Has Attribute') }}
+                        {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Is New') }}
+                        {{ html()->select('is_new')->options(['No', 'Yes'])->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Is Best Seller') }}
+                        {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Is Backorder') }}
+                        {{ html()->select('is_backorder')->options(['No', 'Yes'])->class('form-control is_backorder')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -78,46 +107,6 @@
                                     {{ $tag_name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('Point') }}
-                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control')->required() }}
-                    </div>
-                </div>
-                @if (!isset($model))
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            {{ html()->label('Has Attribute') }}
-                            {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
-                        </div>
-                    </div>
-                @endif
-                @if (!isset($model))
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            {{ html()->label('Quantity') }}
-                            {{ html()->number('quantity')->placeholder('Enter quantity')->attribute('min', 1)->class('form-control')->required() }}
-                        </div>
-                    </div>
-                @endif
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('New') }}
-                        {{ html()->select('is_new')->options(['No', 'Yes'])->class('form-control')->required() }}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('Best Seller') }}
-                        {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control')->required() }}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('Has Backorder') }}
-                        {{ html()->select('is_backorder')->options(['No', 'Yes'])->class('form-control is_backorder')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -264,14 +253,11 @@
 
         //-------- display product attribute field by on change (create product) -----------
         $('select[name="is_attribute"]').on('change', function() {
-
             if ($(this).val() == 1) {
-                $('input[name="quantity"]').prop('disabled', true).val('');
                 $('.product-attribute-input').show();
                 $('.optionContent .form-control').prop('disabled', false);
 
             } else {
-                $('input[name="quantity"]').prop('disabled', false);
                 $('.product-attribute-input').hide();
                 $('.optionContent .form-control').prop('disabled', true);
             }
