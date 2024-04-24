@@ -41,24 +41,24 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
-                    title: '{{__("page.tag_added")}}',
-                    text: '{{__("page.txt_tag_added")}}',
+                swal.fire({
+                    title: 'Success',
+                    text: 'Tag Added Successfully',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/tag/index');
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
-                    title: '{{__("page.tag_fail_add")}}',
+                swal.fire({
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

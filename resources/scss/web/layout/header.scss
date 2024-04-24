@@ -79,6 +79,7 @@
 
     .offcanvas.offcanvas-end {
         background-color: #F7F3EE;
+        z-index: 9999 !important;
     }
 
     .offcanvas-backdrop.show {

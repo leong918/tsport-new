@@ -11,8 +11,7 @@ class BlogRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -46,27 +45,28 @@ class BlogRepository extends BaseRepository
     {
         $this->verifyDescription($input);
 
-        $input['published_at'] = Carbon::createFromFormat('d/m/Y', $input['published_at'])->startOfDay();
+        $input['published_at'] = $input['published_at'] ? Carbon::createFromFormat('Y-m-d g:i A', $input['published_at'])->format('Y-m-d H:i:s') : null;
+        
         $model = new Blog();
         $model->fill($input);
         $model->save();
 
-        $productPriceRepository = new BlogDetailRepository(new Container());
-        $productPriceRepository->createBlogDetail($input, $model->id);
+        $blogDescriptionRepository = new BlogDescriptionRepository(new Container());
+        $blogDescriptionRepository->createBlogDescription($input, $model->id);
     }
 
     public function updateBlog(array $input, int $id)
     {
         $this->verifyDescription($input, true);
         
-        $input['published_at'] = Carbon::createFromFormat('d/m/Y', $input['published_at'])->startOfDay();
+        $input['published_at'] = $input['published_at'] ? Carbon::createFromFormat('Y-m-d g:i A', $input['published_at'])->format('Y-m-d H:i:s') : null;
 
         $model = Blog::findOrFail($id);
         $model->fill($input);
         $model->save();
-        
-        $productPriceRepository = new BlogDetailRepository(new Container());
-        $productPriceRepository->createBlogDetail($input, $model->id);
+
+        $blogDescriptionRepository = new BlogDescriptionRepository(new Container());
+        $blogDescriptionRepository->createBlogDescription($input, $model->id);
     }
 
     public function toggleStatus(int $id)
@@ -79,18 +79,14 @@ class BlogRepository extends BaseRepository
     public function verifyDescription($input, $update = false)
     {
         foreach ($input['language'] as $key => $language) {
-            $lang = ($key == 'cn' ? 'Chinese' : 'English');
+            $lang = ($key == 'zh-CN' ? 'Chinese' : 'English');
 
-            if (isset($language['name']) == false) {
-                throw new \Exception(__('Name for '.$lang.' cannot be empty!'));
-            }
             if (isset($language['image']) == false && $update == false) {
-                throw new \Exception(__('Image for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Image for ' . $lang . ' cannot be empty!'));
             }
             if (isset($language['content']) == false) {
-                throw new \Exception(__('Content for '.$lang.' cannot be empty!'));
+                throw new \Exception(__('Content for ' . $lang . ' cannot be empty!'));
             }
         }
     }
-
 }

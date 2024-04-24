@@ -17,10 +17,10 @@
                 <div class="col-lg-9">
                     <div class="blog-left">
                         <div>
-                            <img src="{{ $blog->getParameters('cn')->image }}" alt="">
+                            <img src="{{ $blog->getParameters('zh-CN')->image }}" alt="">
                         </div>
                         <div class="left-desc">
-                            {!! $blog->getParameters('cn')->content !!}
+                            {!! $blog->getParameters('zh-CN')->content !!}
                         </div>
                     </div>
                 </div>
@@ -41,15 +41,12 @@
                                 <div class="product-info">
                                     <div class="rating-wishlist">
                                         @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        @if(function_exists('salesOrderRenderView'))
-                                        {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                        {{ reviewRenderView('common_star_rating', $product) }}
                                         @endif
                                     </div>
                                     <div class="product-description">{{ $product->name }}</div>
                                     <div class="price-cart">
-                                        <div class="product-price">{{$product->code .' '.$product->price }}</div>
+                                        <div class="product-price">{{'$'.$product->price }}</div>
                                         @if(function_exists('salesOrderRenderView'))
                                         {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
                                         @endif
@@ -119,18 +116,20 @@
                 <div class="row row-cols-1 row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
                     @foreach($blog_list as $blog)
                     <div class="blog-container col blog-img">
-                        <div class="blog-block">
-                            <div class="img-block">
-                                <img src="{{ $blog->getParameters('cn')->image }}">
+                        <a href="{{route('web.blog_detail', ['blog_id' => $blog->id])}}" class="text-decoration-none">
+                            <div class="blog-block">
+                                <div class="img-block">
+                                    <img src="{{ $blog->getParameters('zh-CN')->image }}">
+                                </div>
+                                <div class="blog-description">
+                                    <div class="blog-date">{{ $blog->publishedDate() }}</div>
+                                    <div class="blog-main">{{ $blog->name }}</div>
+                                </div>
+                                <div class="blog-button-wrapper">
+                                    <div class="blog-button">READ MORE</div>
+                                </div>                        
                             </div>
-                            <div class="blog-description">
-                                <div class="blog-date">{{ $blog->publishedDate() }}</div>
-                                <div class="blog-main">{{ $blog->name }}</div>
-                            </div>
-                            <div class="blog-button-wrapper">
-                                <a href="{{route('web.blog_detail', ['blog_id' => $blog->id])}}" class="blog-button">READ MORE</a>
-                            </div>                        
-                        </div>
+                        </a>
                     </div>
                     @endforeach
                 </div>
@@ -156,22 +155,15 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
-                    title: '{{__("page.blog_comment_added")}}',
-                    text: '{{__("page.txt_blog_added")}}',
-                    icon: 'success',
-                    confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
-                });
                 window.location.reload();
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.blog_comment_fail_add")}}',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

@@ -9,6 +9,7 @@ use App\Repositories\BlogRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class BlogController extends BaseController
 {
@@ -52,16 +53,18 @@ class BlogController extends BaseController
         try {
             $this->blogRepository->createBlog($request->all());
             DB::commit();
-            return redirect(route('admin.blog.index'))->with('success', "Successfully create blog {$request->name}");
+            return $this->response();
         } catch (\Exception $exception) {
             DB::rollback();
             return response()->json(['msg' => $exception->getMessage()], 500);
         }
+        return redirect(route('admin.blog.index'))->with('success', "Successfully create blog {$request->name}");
     }
 
     public function edit(int $id)
     {
         $model = $this->blogRepository->find($id);
+        $model->published_at = $model->published_at ? Carbon::parse($model->published_at)->format('Y-m-d g:i A') : null;
         return $this->view('blog.update', compact('model'));
     }
 
@@ -93,7 +96,6 @@ class BlogController extends BaseController
     {
         if ($request->ajax()) {
             $id = $request->id;
-            // dd($id);
             if ($id) {
                 $model = $this->blogCommentRepository->getBlogComment($id);
 

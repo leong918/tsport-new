@@ -19,6 +19,7 @@
             {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
         </div>
     </div>
+    
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Image') }}
@@ -33,6 +34,12 @@
             {{ html()->file('logo')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
             <br />
             <img class="img-fluid" {{isset($model) && $model->logo ? 'src='.$model->logo : ''}} />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Description') }}
+            {{ html()->textarea('language[zh-CN][description]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->description : "")->class('form-control wysiwyg') }}
         </div>
     </div>
 </div>
@@ -121,24 +128,24 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                Swal.fire({
-                    title: '{{__("page.brand_added")}}',
-                    text: '{{__("page.txt_brand_added")}}',
+                swal.fire({
+                    title: 'Success',
+                    text: 'Brand Added Successfully',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/brand/index');
                 }, 1000);
             })
             .catch(error => {
-                Swal.fire({
-                    title: '{{__("page.brand_fail_add")}}',
+                swal.fire({
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

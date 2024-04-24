@@ -27,8 +27,14 @@
     </div>
     <div class="col-md-6">
         <div class="mb-3">
+            {{ html()->label('Show at Sidebar') }}
+            {{ html()->select('is_show_sidebar')->options(['No', 'Yes'])->class('form-control')->required() }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
             {{ html()->label('Image') }}
-            {{ html()->file('image')->accept('image/*')->class('form-control')->required( isset($model) && $model->image ? false : true)}}
+            {{ html()->file('image')->accept('image/*')->class('form-control')}}
             <br />
             <img class="img-fluid" {{isset($model) && $model->image ? 'src='.$model->image : ''}} />
         </div>
@@ -124,11 +130,11 @@
             })
             .then(response => {
                 Swal.fire({
-                    title: '{{__("page.category_added")}}',
-                    text: '{{__("page.txt_category_added")}}',
+                    title: 'Success',
+                    text: 'Category Added',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                        confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/category/index');
@@ -136,11 +142,11 @@
             })
             .catch(error => {
                 Swal.fire({
-                    title: '{{__("page.category_fail_add")}}',
+                    title: 'Fail',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

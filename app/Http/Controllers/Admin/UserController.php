@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Form\User\CreateUserRequest;
 use App\Http\Requests\Form\User\UpdateUserRequest;
+use App\Repositories\CountryRepository;
 use App\Repositories\LevelRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -14,11 +15,13 @@ class UserController extends BaseController
 {
     private UserRepository $userRepository;
     private LevelRepository $levelRepository;
+    private CountryRepository $countryRepository;
 
-    public function __construct(UserRepository $userRepository, LevelRepository $levelRepository)
+    public function __construct(UserRepository $userRepository, LevelRepository $levelRepository, CountryRepository $countryRepository)
     {
         $this->userRepository = $userRepository;
         $this->levelRepository = $levelRepository;
+        $this->countryRepository = $countryRepository;
     }
 
     public function index(Request $request)
@@ -43,7 +46,8 @@ class UserController extends BaseController
 
     public function create()
     {
-        return $this->view('user.create');
+        $countryDropdown = $this->countryRepository->dropdown();
+        return $this->view('user.create', compact('countryDropdown'));
     }
 
     public function store(CreateUserRequest $request)
@@ -60,6 +64,11 @@ class UserController extends BaseController
             }
         }
 
+        if($data['country_id']){
+            $country = $this->countryRepository->find($data['country_id']);
+            $data['country'] = $country->name;
+        }
+
         $this->userRepository->createUser($data);
         return redirect(route('admin.user.index'))->with('success', "Successfully create user {$request->name}");
     }
@@ -67,7 +76,8 @@ class UserController extends BaseController
     public function edit(int $id)
     {
         $model = $this->userRepository->find($id);
-        return $this->view('user.update', compact('model'));
+        $countryDropdown = $this->countryRepository->dropdown();
+        return $this->view('user.update', compact('model', 'countryDropdown'));
     }
 
     public function update(UpdateUserRequest $request, int $id)
@@ -82,6 +92,11 @@ class UserController extends BaseController
             }
         }
 
+        if($data['country_id']){
+            $country = $this->countryRepository->find($data['country_id']);
+            $data['country'] = $country->name;
+        }
+        
         $this->userRepository->updateUser($data, $id);
         return redirect(route('admin.user.index'))->with('success', "Successfully update user {$request->name}");
     }

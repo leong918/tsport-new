@@ -56,6 +56,7 @@ class AuthController extends BaseController
     {
         return $this->view('auth.register');
     }
+
     public function doRegister(UserRegisterRequest $request)
     {
         DB::beginTransaction();
@@ -95,7 +96,7 @@ class AuthController extends BaseController
         DB::beginTransaction();
         try {
             $data = $request->all();
-            $user = $this->userRepository->makeModel()->where(["email" => $request->email])->first();
+            $user = $this->userRepository->makeModel()->where(["email" => $request->email, 'status' => 1])->first();
 
             if (!$user) {
                 throw new \Exception('User Not Found!');

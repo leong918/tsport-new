@@ -22,12 +22,28 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Published Date') }}
-            <div class="input-group" id="datetimepicker1" data-td-target-input="nearest" data-td-target-toggle="nearest">
-                <input id="datetimepicker1Input" type="text" name="published_at" class="form-control" data-td-target="#datetimepicker1" required/>
-                <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
-                    <span class="fas fa-calendar"></span>
-                </span>
+            <div class="input-group datePicker" data-td-target-input="nearest"
+                data-td-target-toggle="nearest">
+                <input type="datetime" class="form-control" name="published_at"
+                    data-td-toggle="datetimepicker" 
+                    value="{{ isset($model) ? $model->published_at : null }}"/> 
             </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Image') }}
+            {{ html()->file('language[zh-CN][image]')->accept('image/*')->class('form-control')->required( isset($model) && $model->getParameters('zh-CN') ? false : true)}}
+            {{ html()->hidden('language[zh-CN][original_image]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->image : '') }}
+            <div class="text-center my-2">
+                <img class="img-fluid" {{isset($model) && $model->getParameters('zh-CN') ? 'src='.$model->getParameters('zh-CN')->image : ''}} />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Description') }}
+            {{ html()->textarea('language[zh-CN][content]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->content : "")->class('form-control wysiwyg') }}
         </div>
     </div>
 </div>
@@ -37,32 +53,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/tempus-dominus.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/jQuery-provider.js"></script>
 <script>
-    var dateString = '{{ isset($model) && $model->published_at ? $model->published_at : '' }}'; 
-    if(dateString){
-        var date = new Date(dateString);
-    }else{
-        var date = new Date();
-    }
-    var day = date.getDate();
-    var month = date.getMonth() + 1; 
-    var year = date.getFullYear();
-    var published_at = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month + '/' + year;
-
     $(document).ready(function() { 
-        $('#datetimepicker1').tempusDominus({
-            defaultDate: published_at,
+        $('.datePicker').tempusDominus({
             localization: {
-                format: 'dd/MM/yyyy',
-            },
-            display:{
-                theme: 'light',
-                components: {
-                    clock: false,
-                },
-            },
+                format: 'yyyy-MM-dd h:mm T'
+            }
         });
 
         var editor_config = {
@@ -143,11 +139,11 @@
             })
             .then(response => {
                 Swal.fire({
-                    title: '{{__("page.blog_added")}}',
-                    text: '{{__("page.txt_blog_added")}}',
+                    title: 'Success',
+                    text: 'Blog Added',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                        confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/blog/index');
@@ -155,11 +151,11 @@
             })
             .catch(error => {
                 Swal.fire({
-                    title: '{{__("page.blog_fail_add")}}',
+                    title: 'Fail',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

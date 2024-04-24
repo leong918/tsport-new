@@ -3,9 +3,13 @@
 namespace App\Plugins\SalesOrder\Web;
 
 use App\Plugins\SalesOrder\Repositories\UserCartRepository;
+use App\Plugins\SalesOrder\Repositories\WishlistRepository;
 use App\Repositories\CountryRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\ProductRepository;
+use App\Repositories\PointLogRepository;
+use App\Repositories\SettingRepository;
+use App\Repositories\ReferralRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderProductRepository;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
@@ -15,6 +19,7 @@ use App\Http\Controllers\Web\BaseController;
 use Illuminate\Http\Request;
 use Stripe\StripeClient;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CartController extends BaseController
 {
@@ -22,42 +27,57 @@ class CartController extends BaseController
     private CountryRepository $countryRepository;
     private UserRepository $userRepository;
     private ProductRepository $productRepository;
+    private PointLogRepository $pointLogRepository;
     private SalesOrderRepository $salesOrderRepository;
     private SalesOrderProductRepository $salesOrderProductRepository;
     private SalesOrderLogRepository $salesOrderLogRepository;
     private SalesOrderTotalRepository $salesOrderTotalRepository;
     private CartRuleRepository $cartRuleRepository;
+    private WishlistRepository $wishlistRepository;
+    private SettingRepository $settingRepository;
+    private ReferralRepository $referralRepository;
 
     public function __construct(
         UserCartRepository $userCartRepository,
         CountryRepository $countryRepository,
         UserRepository $userRepository,
         ProductRepository $productRepository,
+        PointLogRepository $pointLogRepository,
         SalesOrderRepository $salesOrderRepository,
         SalesOrderProductRepository $salesOrderProductRepository,
         SalesOrderLogRepository $salesOrderLogRepository,
         SalesOrderTotalRepository $salesOrderTotalRepository,
-        CartRuleRepository $cartRuleRepository
+        CartRuleRepository $cartRuleRepository,
+        WishlistRepository $wishlistRepository,
+        SettingRepository $settingRepository,
+        ReferralRepository $referralRepository
     ) {
         $this->userCartRepository = $userCartRepository;
         $this->countryRepository = $countryRepository;
         $this->userRepository = $userRepository;
         $this->productRepository = $productRepository;
+        $this->pointLogRepository = $pointLogRepository;
         $this->salesOrderRepository = $salesOrderRepository;
         $this->salesOrderProductRepository = $salesOrderProductRepository;
         $this->salesOrderLogRepository = $salesOrderLogRepository;
         $this->salesOrderTotalRepository = $salesOrderTotalRepository;
         $this->cartRuleRepository = $cartRuleRepository;
+        $this->wishlistRepository = $wishlistRepository;
+        $this->settingRepository = $settingRepository;
+        $this->referralRepository = $referralRepository;
     }
 
     public function cart(Request $request)
     {
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
         $cartList = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user() ? auth()->user()->id : null);
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
+        $setting_model = $this->settingRepository->getListing()->get()->pluck('value', 'key')->toArray();
+        $shopping_cart_banner_product = $this->productRepository->find($setting_model['shopping_cart_banner_product']);
 
-        return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal'));
+        return view('sales_order::web.cart.cart', compact('cartList', 'cartTotal', 'setting_model', 'shopping_cart_banner_product'));
     }
 
     public function addToCart(Request $request)
@@ -82,9 +102,11 @@ class CartController extends BaseController
         // refetch user cart total
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
+        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
 
-        return $this->response(['subtotal' => number_format($subtotal, 2), 'cartTotal' => $cartTotal], 'OK');
+        return $this->response(['subtotal' => number_format($subtotal, 2), 'cartTotal' => $cartTotal, 'cartCount' => $cart_count], 'OK');
     }
 
     public function applyCoupon(Request $request)
@@ -100,13 +122,16 @@ class CartController extends BaseController
         session(['coupon-' . $user_data['user_data'] => $coupon_session]);
 
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
     public function removeCoupon(Request $request)
     {
         $coupon_id = $request->coupon_id;
+        $country_data['country_id'] = $request->country_id;
+
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
 
@@ -115,20 +140,57 @@ class CartController extends BaseController
         }
         session(['coupon-' . $user_data['user_data'] => $coupon_session]);
 
-        $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? null;
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? $country_data;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $addressData);
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
-    public function wishlist()
+    public function toggleWishlist(Request $request)
     {
-        return view('sales_order::web.cart.wishlist');
+        $data = $request->all();
+
+        $data['user_ip'] = getPublicIP();
+        $data['user_id'] = auth()->user() ? auth()->user()->id : null;
+
+        if ($data['user_id'] == null) {
+            return response()->json(['msg' => 'Please log in before add product to wishlist!'], 500);
+        }
+
+        $this->wishlistRepository->toggleWishlist($data);
+        $wishlist_count = $this->wishlistRepository->getWishlistByUser($data['user_id'])->count();
+
+        return $this->response(['wishlist_count' => $wishlist_count], 'OK');
+    }
+
+    public function removeWishlist(Request $request)
+    {
+        $data = $request->all();
+        $data['user_id'] = auth()->user() ? auth()->user()->id : null;
+
+        $this->wishlistRepository->removeWishlist($data['user_id'], $data['product_id']);
+
+        return $this->response(['data' => $data], 'OK');
+    }
+
+    public function wishlist(Request $request)
+    {
+        $data = $request->all();
+        $data['user_ip'] = getPublicIP();
+        $data['user_id'] = auth()->user() ? auth()->user()->id : null;
+
+        $wishlist_record = $this->wishlistRepository->getWishlistByUser($data['user_id']);
+        $wishlist_count = $wishlist_record->count();
+
+        return view('sales_order::web.cart.wishlist', compact('wishlist_record', 'wishlist_count'));
     }
 
     public function checkout(Request $request)
     {
+        $buyNowData = $request->all();
+
         $user_data = $this->getUserDataAndType();
-        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
+        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData)->count();
 
         if ($cart_count <= 0) {
             return redirect()->route('cart.shopping_cart');
@@ -141,40 +203,108 @@ class CartController extends BaseController
 
         $countryList = $this->countryRepository->getListing();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
-        return view('sales_order::web.cart.checkout', compact('countryList', 'addressData', 'cartTotal'));
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);
+        return view('sales_order::web.cart.checkout', compact('countryList', 'addressData', 'cartTotal', 'buyNowData'));
     }
 
-    public function updateAddress(Request $request)
+    public function applyPoint(Request $request)
+    {
+        $country_data = $request->all();
+        $buyNowData = json_decode(html_entity_decode(html_entity_decode($country_data['buyNowData'])), true);
+        unset($country_data['buyNowData']);
+
+        $user_data = $this->getUserDataAndType();
+        session(['point-' . $user_data['user_data'] => true]);
+
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $country_data, $buyNowData);
+        return $this->response(['cartTotal' => $cartTotal], 'OK');
+    }
+
+    public function removePoint(Request $request)
     {
         $data = $request->all();
-        session(['cart-' . auth()->user()->id => $data['data']]);
+        $buyNowData = json_decode(html_entity_decode(html_entity_decode($data['buyNowData'])), true);
+        unset($data['buyNowData']);
+
+        $user_data = $this->getUserDataAndType();
+        session(['point-' . $user_data['user_data'] => false]);
+
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $addressData = $request->session()->get('cart-' . $user_data['user_data']) ?? $data;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user() ? auth()->user()->id : null, $addressData, $buyNowData);
+        return $this->response(['cartTotal' => $cartTotal], 'OK');
+    }
+
+    public function getShippingFee(Request $request)
+    {
+        $data = $request->all();
+        $buyNowData = json_decode(html_entity_decode(html_entity_decode($data['buyNowData'])), true);
+        unset($data['buyNowData']);
 
         $user_data = $this->getUserDataAndType();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $data['data']);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $data, $buyNowData);
+
         return $this->response(['cartTotal' => $cartTotal], 'OK');
     }
 
     public function processCheckout(Request $request)
     {
         $data = $request->all();
+        $buyNowData = json_decode($request->buyNowData, true);
+        unset($data['buyNowData']);
         session(['cart-' . auth()->user()->id => $data]);
 
-        return redirect()->route('cart.payment');
+        $user_data = $this->getUserDataAndType();
+        $addressData = $request->session()->get('cart-' . auth()->user()->id);
+        $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);
+
+        if ($cartTotal['total'] <= 0) {
+            DB::beginTransaction();
+            try {
+                $data['payment_method'] = null;
+                $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
+                $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal, $buyNowData);
+                DB::commit();
+                return redirect()->route('cart.complete', ['order_id' => $order->sales_order_id]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return redirect()->back()->with('swal_error', $e->getMessage());
+            }
+        }
+
+        $queryString = route('cart.payment');
+        if ($buyNowData) {
+            $queryString = route('cart.payment') . '?' . http_build_query($buyNowData);
+        }
+
+        return redirect($queryString);
     }
 
     public function payment(Request $request)
     {
+        $buyNowData = $request->all();
         $user_data = $this->getUserDataAndType();
-        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'])->count();
+        $cart_count = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData)->count();
+
+        $queryString = route('cart.checkout');
+        if ($buyNowData) {
+            $queryString = route('cart.checkout') . '?' . http_build_query($buyNowData);
+        }
 
         if ($cart_count <= 0) {
             return redirect(route('cart.shopping_cart'));
         }
 
         if (!$request->session()->get('cart-' . auth()->user()->id)) {
-            return redirect(route('cart.checkout'))->with('swal_error', 'Session Expired! Please confirm your address again.');
+            return redirect($queryString)->with('swal_error', 'Session Expired! Please confirm your address again.');
         }
 
         try {
@@ -182,18 +312,20 @@ class CartController extends BaseController
             $user_data = $this->getUserDataAndType();
             $addressData = $request->session()->get('cart-' . auth()->user()->id);
             $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
-            $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+            $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+            $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);
             $intentSecret = json_encode($this->createPaymentIntent($cartTotal['total']));
 
-            return view('sales_order::web.cart.payment', compact('addressData', 'intentSecret', 'cartTotal'));
+            return view('sales_order::web.cart.payment', compact('addressData', 'intentSecret', 'cartTotal', 'buyNowData'));
         } catch (\Exception $e) {
-            return redirect(route('cart.checkout'))->with('swal_error', $e->getMessage());
+            return redirect($queryString)->with('swal_error', $e->getMessage());
         }
     }
 
     private function createPaymentIntent($cartTotal)
     {
         $total_amount = str_replace('.', '', number_format($cartTotal, 2));
+        $total_amount = str_replace(',', '', $total_amount);
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
 
         $paymentIntent = $stripe->paymentIntents->create([
@@ -210,16 +342,20 @@ class CartController extends BaseController
 
     public function createOrder(Request $request)
     {
+        $data = $request->all();
+        $buyNowData = json_decode(html_entity_decode(html_entity_decode($data['buyNowData'])), true);
+        unset($data['buyNowData']);
+
         $user_data = $this->getUserDataAndType();
-        $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type']);
+        $user_cart = $this->userCartRepository->getUserCartByType($user_data['user_data'], $user_data['type'], $buyNowData);
         $addressData = $request->session()->get('cart-' . auth()->user()->id);
         $coupon_session = $request->session()->get('coupon-' . auth()->user()->id) ?? array();
-        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, auth()->user()->id, $addressData);
+        $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
+        $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);
 
         //do checking check total is same or not, if not same need redirect back
         if ($request->cart_total != $cartTotal['total']) {
-            session()->flash('swal_error', 'Cart total is different, please refer latest price');
-            return response()->json(['msg' => null, 'redirect' => true], 500);
+            return response()->json(['msg' => 'Cart total is different, please refer latest price', 'redirect' => true], 500);
         }
 
         // refresh the page again to trigger error or generate new payment intent id
@@ -229,22 +365,7 @@ class CartController extends BaseController
 
         DB::beginTransaction();
         try {
-            $data = $request->all();
-            $data['user_id'] = auth()->user()->id;
-            $data['address'] = $request->session()->get('cart-' . auth()->user()->id);
-            $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
-            
-            if (!$order) {
-                $data['point_earned'] = $this->productRepository->calculatePointEarned($user_cart);
-                $order = $this->salesOrderRepository->createOrder($data, $cartTotal);
-                $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
-                $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
-                $this->userRepository->deductFullPoint($order);
-
-                $description = 'New Order';
-                $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
-            }
-
+            $order = $this->createEmptySalesOrder($data, $user_cart, $cartTotal, $buyNowData);
             DB::commit();
             return response()->json(['order' => $order], 200);
         } catch (\Exception $e) {
@@ -253,11 +374,80 @@ class CartController extends BaseController
         }
     }
 
+    private function createEmptySalesOrder($data, $user_cart, $cartTotal, $buyNowData)
+    {
+        $order = null;
+        $data['user_id'] = auth()->user()->id;
+        $data['address'] = session()->get('cart-' . auth()->user()->id);
+
+        if (isset($data['stripe_payment_intent_id'])) {
+            $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
+        }
+
+        if (!$order || $data['payment_method'] !== 'stripe') {
+            $user = $this->userRepository->find($data['user_id']);
+            $data['point_earned'] = $this->productRepository->calculatePointEarned($user, $user_cart);
+            $data['point_used'] = 0;
+
+            if ($cartTotal['point_redemption'] > 0 && $user->point > 0) {
+                $data['point_used'] = $user->point;
+                $this->userRepository->deductFullPoint($user->id);
+            }
+
+            $order = $this->salesOrderRepository->createOrder($data, $cartTotal, $buyNowData);
+            $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
+            $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
+
+            // update referral voucher
+            $referrer_voucher = $this->cartRuleRepository->getReferrerVoucher();
+            if (in_array($referrer_voucher->id, array_column($cartTotal['discount'], 'id'))) {
+                $this->referralRepository->updateReferrerVoucher($data['user_id'], $order->id);
+            }
+
+            $referee_voucher = $this->cartRuleRepository->getRefereeVoucher();
+            if (in_array($referee_voucher->id, array_column($cartTotal['discount'], 'id'))) {
+                $this->referralRepository->updateRefereeVoucher($data['user_id'], $order->id);
+            }
+            // end update
+
+            //release point earned if total is 0
+            if ($cartTotal['total'] <= 0 && $data['point_earned'] > 0) {
+                $this->userRepository->addOrderPoint($order);
+            }
+
+            if ($order && $order->point_used > 0) {
+                $this->pointLogRepository->markPointUsed($order);
+            }
+
+            if ($data['payment_method'] !== 'stripe') {
+                if (!$order->is_buy_now_order) {
+                    $this->userCartRepository->clearCart($order->user_id);
+                }
+                session()->flush('cart-' . $order->user_id);
+                session()->flush('coupon-' . $order->user_id);
+                session()->flush('point-' . $order->user_id);
+            }
+
+            $description = 'New Order';
+            $this->salesOrderLogRepository->createLog($order, $data['user_id'], 'user', 0, $description);
+        }
+
+        return $order;
+    }
+
     public function complete(Request $request)
     {
         $product_list = $this->productRepository->getListing()->take(8)->get();
         $order_id = $request->order_id;
         $sales_order = $this->salesOrderRepository->getSalesOrderId($order_id);
+
+        if (!auth()->user() || !$sales_order || $sales_order->user_id != auth()->user()->id) {
+            return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
+        }
+
+        if (Carbon::parse($sales_order->created_at)->addMinutes(30) < Carbon::now()) {
+            return redirect()->route('web.home')->with('swal_error', 'Session Expired! Please view order at order detail!');
+        }
 
         if ($request->payment_intent_client_secret) {
             $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
@@ -266,10 +456,14 @@ class CartController extends BaseController
             if ($paymentIntent->status !== 'succeeded') {
                 return redirect()->route('web.home')->with('swal_error', 'Your order currently in status - ' . $paymentIntent->status . '. Please contact admin for more enquiry.');
             }
-        }
 
-        if (!$sales_order || $sales_order->user_id != auth()->user()->id) {
-            return redirect()->route('web.home')->with('swal_error', 'Order Not Found!');
+            if (!$sales_order->is_buy_now_order) {
+                $this->userCartRepository->clearCart($sales_order->user_id);
+            }
+
+            session()->flush('cart-' . $sales_order->user_id);
+            session()->flush('coupon-' . $sales_order->user_id);
+            session()->flush('point-' . $sales_order->user_id);
         }
 
         return view('sales_order::web.cart.complete', compact('sales_order', 'product_list'));

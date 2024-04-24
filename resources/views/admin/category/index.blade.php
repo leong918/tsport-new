@@ -23,7 +23,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Image</th>
+                                            <th style="width: 20%">Image</th>
                                             <th>Parent Category</th>
                                             <th>Name</th>
                                             <th>Status</th>
@@ -96,7 +96,7 @@
                 $('table tbody').on('click', '.btn-delete', function(e) {
                     e.preventDefault();
                     var url = $(this).data('url');
-                    Swal.fire({
+                    swal.fire({
                         title: 'Are you sure?',
                         text: 'This action is not able to be reverted.',
                         icon: 'warning',
@@ -126,7 +126,7 @@
                         allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
                         if (result.value) {
-                            Swal.fire({
+                            swal.fire({
                                 title: 'Deleted!',
                                 text: 'Record deleted successfully!',
                                 icon: 'success',
@@ -139,7 +139,7 @@
 
                 $('table tbody').on('click', '.btn-status', function() {
                     var url = $(this).data("url");
-                    Swal.fire({
+                    swal.fire({
                         title: 'Are you sure?',
                         text: 'This action is not able to be reverted.',
                         icon: 'warning',
@@ -169,7 +169,7 @@
                         allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
                         if (result.value) {
-                            Swal.fire({
+                            swal.fire({
                                 title: 'Updated!',
                                 text: 'Record updated successfully!',
                                 icon: 'success',

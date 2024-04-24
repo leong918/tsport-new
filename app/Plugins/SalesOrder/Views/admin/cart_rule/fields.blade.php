@@ -214,7 +214,7 @@
                 var end_date = $('#end_date_input').val();
 
                 if (new Date(end_date) < new Date(start_date)) {
-                    Swal.fire({
+                    swal.fire({
                         title: 'Error',
                         text: 'End date cannot be earlier than start date!',
                         icon: 'warning',
@@ -234,7 +234,7 @@
                 $('#product-select, #category-select, #brand-select').prop("disabled", true);
                 $('.brandCol, .categoryCol, .productCol').addClass('d-none');
             @else
-                $('.type').val() != 'coupon' ? $('.coupon_code').prop('disabled', true) : $('.coupon_code').prop(
+                $('.type').val() != 'coupon' ? $('.coupon_code').prop('disabled', true).val('') : $('.coupon_code').prop(
                     'disabled', false);
                 checkTargetTable();
             @endif
@@ -242,8 +242,8 @@
 
             //--------------- type field on change --------------------
             $('.type').on('change', function() {
-                $(this).val() != 0 ? $('.coupon_code').prop('disabled', false) : $('.coupon_code').prop(
-                    'disabled', true).val('');
+                $(this).val() != 'coupon' ? $('.coupon_code').prop('disabled', true).val('') : $('.coupon_code').prop(
+                    'disabled', false);
             });
 
             //---------------- target table field on change ------------------------
@@ -276,7 +276,7 @@
                     },
                 })
                 .then(response => {
-                    Swal.fire({
+                    swal.fire({
                         title: 'Success',
                         text: 'Cart Rule Added!',
                         icon: 'success',
@@ -288,7 +288,7 @@
                     }, 1000);
                 })
                 .catch(error => {
-                    Swal.fire({
+                    swal.fire({
                         title: 'Fail',
                         text: error.response.data.msg,
                         icon: 'error',

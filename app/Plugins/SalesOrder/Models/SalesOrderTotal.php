@@ -5,6 +5,7 @@ namespace App\Plugins\SalesOrder\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SalesOrderTotal extends Model
 {
@@ -56,5 +57,10 @@ class SalesOrderTotal extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
+    }
+
+    public function cartRule() : BelongsTo
+    {
+        return $this->belongsTo(CartRule::class,'id');
     }
 }

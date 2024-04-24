@@ -23,8 +23,8 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            <th style="width: 20%">Logo</th>
                                             <th>Name</th>
-                                            <th>Logo</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
@@ -56,13 +56,12 @@
                         url: '{!! route('admin.brand.index') !!}'
                     },
                     columns: [{
-                            data: 'name',
-                            name: 'name'
-                        },
-                        {
                             data: 'logo',
                             name: 'logo'
                         },
+                        {
+                            data: 'name',
+                            name: 'name'},
                         {
                             data: 'status',
                             name: 'status'
@@ -83,7 +82,7 @@
                 $('table tbody').on('click', '.btn-delete', function(e) {
                     e.preventDefault();
                     var url = $(this).data('url');
-                    Swal.fire({
+                    swal.fire({
                         title: 'Are you sure?',
                         text: 'This action is not able to be reverted.',
                         icon: 'warning',
@@ -113,7 +112,7 @@
                         allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
                         if (result.value) {
-                            Swal.fire({
+                            swal.fire({
                                 title: 'Deleted!',
                                 text: 'Record deleted successfully!',
                                 icon: 'success',
@@ -126,7 +125,7 @@
 
                 $('table tbody').on('click', '.btn-status', function() {
                     var url = $(this).data("url");
-                    Swal.fire({
+                    swal.fire({
                         title: 'Are you sure?',
                         text: 'This action is not able to be reverted.',
                         icon: 'warning',
@@ -156,7 +155,7 @@
                         allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
                         if (result.value) {
-                            Swal.fire({
+                            swal.fire({
                                 title: 'Updated!',
                                 text: 'Record updated successfully!',
                                 icon: 'success',

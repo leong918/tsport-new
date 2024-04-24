@@ -77,6 +77,53 @@ class AppConfig extends ConfigDefault
                 'key' => $this->configKey,
             ];
             $this->adminMenuRepository->create($child_data);
+
+            $parent_data = [
+                'parent_id' => null,
+                'title' => 'Analytic',
+                'icon' => 'fa-solid fa-chart-simple',
+                'url' => null,
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ];
+            $parent_sidebar = $this->adminMenuRepository->create($parent_data);
+            
+            $child_data = [
+                'parent_id' => $parent_sidebar->id,
+                'title' => 'Products',
+                'icon' => null,
+                'url' => 'admin.analytic.product',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1,
+                'key' => $this->configKey,
+            ];
+            $this->adminMenuRepository->create($child_data);
+
+            $child_data = [
+                'parent_id' => $parent_sidebar->id,
+                'title' => 'Orders',
+                'icon' => null,
+                'url' => 'admin.analytic.order',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1,
+                'key' => $this->configKey,
+            ];
+            $this->adminMenuRepository->create($child_data);
+
+            $child_data = [
+                'parent_id' => $parent_sidebar->id,
+                'title' => 'Categories',
+                'icon' => null,
+                'url' => 'admin.analytic.category',
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1,
+                'key' => $this->configKey,
+            ];
+            $this->adminMenuRepository->create($child_data);
         }
 
         $pluginData = [

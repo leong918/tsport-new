@@ -26,6 +26,7 @@ class UpdateCategoryRequest extends FormRequest
         return [
             'name' => 'required',
             'sort' => 'required',
+            'is_show_sidebar' => 'required',
         ];
     }
 }

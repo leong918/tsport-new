@@ -28,7 +28,8 @@ class Level extends Model
         'name',
         'leveling',
         'target_amount',
-        'extend_amount'
+        'extend_amount',
+        'can_earn_point'
     ];
 
     /**
@@ -36,17 +37,14 @@ class Level extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 
     protected function createdAt(): Attribute
     {

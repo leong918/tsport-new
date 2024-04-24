@@ -3,11 +3,11 @@
 <section id="about-contact" class="margin-header">
     <div class="top-section-wrapper">
         <div class="top-banner">
-            <img src="{{asset('assets/web/assets/img/about_contact/bg.png')}}" alt="">
+            <img src="{{$setting_model['contact_banner']}}" alt="">
         </div>
         <div class="title-and-nav text-center">
             <div class="forgot-password-title">Contact</div>
-            <div class="nav-acc"><a href="#">Home</a> > <a href="#"> About</a> > <a href="#"> Contact</a></div>
+            <div class="nav-acc"><a href="{{route('web.home')}}">Home</a> > <a href="{{route('about.index')}}"> About</a> > <a href="{{route('about.contact')}}"> Contact</a></div>
         </div>
     </div>
     <div class="contact-us">
@@ -18,7 +18,7 @@
                         <img src="{{asset('assets/web/assets/img/about_contact/phone.png')}}" alt="">
                         <div class="details">
                             <p>Tel</p>
-                            3907 0151
+                            {{ $setting_model['tel_no'] }}
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                         <img src="{{asset('assets/web/assets/img/about_contact/whatsapp.png')}}" alt="">
                         <div class="details">
                             <p>WhatsApp</p>
-                            (+852) 5442 5298
+                            {{ $setting_model['whatsapp_no'] }}
                         </div>
                     </div>
                     <div class="bottom-note">
@@ -39,7 +39,7 @@
                         <img src="{{asset('assets/web/assets/img/about_contact/email.png')}}" alt="">
                         <div class="details">
                             <p>Email</p>
-                            tcdistributorship@gmail.com
+                            {{ $setting_model['contact_email'] }}
                         </div>
                     </div>
                     <div class="bottom-note">
@@ -62,9 +62,7 @@
                             Address
                         </div>
                         <div class="addr-addr">
-                            Workshop D 1 11/F, Hop Hing Industrial
-                            Building, 704 Castle Peak ROad, Lai Chi Kok,
-                            Kowloon
+                            {!! $setting_model['contact_address'] !!}
                         </div>
                     </div>
                     <div class="hrs">
@@ -72,13 +70,13 @@
                             Open Hour
                         </div>
                         <div class="hrs-hrs">
-                            13:00 -20:00
+                            {{ $setting_model['open_hour'] }}
                         </div>
                     </div>
                 </div>
             </div>
             <div class="right-content col-12 col-lg-9">
-                <img src="{{asset('assets/web/assets/img/about_contact/map.png')}}" alt="">
+                {!! $setting_model['map_url'] !!}
             </div>
         </div>
     </div>

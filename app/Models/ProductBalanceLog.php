@@ -26,7 +26,6 @@ class ProductBalanceLog extends Model
      */
     protected $fillable = [
         'product_id',
-        'product_attribute_term_id',
         'type',
         'quantity',
         'remark',

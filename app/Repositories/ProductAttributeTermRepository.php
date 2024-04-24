@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ProductAttributeTerm;
-use App\Models\ProductPrice;
+use App\Plugins\SalesOrder\Repositories\UserCartRepository;
 use App\Traits\FileUpload;
 use Illuminate\Container\Container;
 
@@ -44,6 +44,13 @@ class ProductAttributeTermRepository extends BaseRepository
         return formalizeDropdown(ProductAttributeTerm::all(), $key, 'name');
     }
 
+    public function getLowStockProductAttributeTerm()
+    {
+        return ProductAttributeTerm::leftjoin('product', 'product_attribute_term.product_id', '=', 'product.id')
+            ->where('product_attribute_term.quantity', '<=', 2)
+            ->selectRaw('product.name as product_name, product_attribute_term.*')
+            ->get();
+    }
 
     public function createProductAttributeTerm(array $input, $model)
     {
@@ -51,41 +58,40 @@ class ProductAttributeTermRepository extends BaseRepository
         $productAttribute = $productAttributeRepository->find($model->id);
 
         foreach ($input['variation'] as $term) {
-
             $term_model = new ProductAttributeTerm();
             $term_model->product_attribute_id = $productAttribute->id;
             $term_model->product_id = $productAttribute->product_id;
             $term_model->name = $term['term_name'];
-            $term_model->sku = $term['term_sku'];
-
-            //----------- check create/ update stock  ------------
-            if (!isset($term['stock_amount'])) {
-                $term_model->quantity = $term['term_qty'];
-            } else {
-                $this->calStockAmount($term_model, $term);
-            }
-
+            $term_model->point_value = $term['term_add_on_point'];
             $term_model->save();
 
             $productPrice = new ProductPriceRepository(new Container());
             $productPrice->createAttributeTermPrice($term, $term_model);
-
-            $productBalanceLog = new ProductBalanceLogRepository(new Container());
-            $productBalanceLog->createProductBalanceLog($term_model, $term);
         }
     }
 
-    private function calStockAmount($term_model, $term)
+    public function updateProductAttributeTerm(array $input, $model, $product_id)
     {
-        if ($term['stock_option'] != 0) {
-            $total = $term['term_qty'] - $term['stock_amount'];
-            $term_model->quantity = $total;
-        } else {
-            $total = $term['stock_amount'] + $term['term_qty'];
-            $term_model->quantity = $total;
-        }
+        $productAttributeRepository = new ProductAttributeRepository(new Container());
+        $productAttribute = $productAttributeRepository->find($model->id);
 
-        return $term_model->quantity;
+        foreach ($input['variation'] as $key => $term) {
+            if (str_contains($key, 'old')) {
+                $attribute_term_id = str_replace('old-', '', $key);
+                $term_model = ProductAttributeTerm::find($attribute_term_id);
+            } else {
+                $term_model = new ProductAttributeTerm();
+            }
+
+            $term_model->product_attribute_id = $productAttribute->id;
+            $term_model->product_id = $productAttribute->product_id;
+            $term_model->name = $term['term_name'];
+            $term_model->point_value = $term['term_add_on_point'];
+            $term_model->save();
+
+            $productPrice = new ProductPriceRepository(new Container());
+            $productPrice->createAttributeTermPrice($term, $term_model);
+        }
     }
 
     public function deleteByProductId(int $product_id)

@@ -25,14 +25,19 @@
             .checkout-content{
                 
                 .checkout-details{
+                    .point-title {
+                        color:#6D5E44;
+                        font-size: 15px;
+                        margin-bottom: 15px;
+                    }
                     .point-wrapper{
                         width: 100%;
-                        margin-top: 20px;
                         .point-text{
                             width: 100%;
                             border:none;
                             background-color: #F6F4F4;
                             padding: 10px 30px;
+                            color: #6D5E44;
     
                             &:focus{
                                 outline: none;
@@ -132,6 +137,7 @@
                                 li{
                                     font-size: 15px;
                                     padding: 10px 10px;
+                                    cursor: pointer;
                                     &:hover{
                                         background-color: #C4B9A6;
                                     }

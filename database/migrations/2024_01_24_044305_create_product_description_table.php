@@ -20,7 +20,6 @@ return new class extends Migration
             $table->longText("description");
             $table->longText("ingredient");
             $table->longText("usage");
-            $table->longText("additional_information");
             $table->timestamps();
             $table->softDeletes();
         });

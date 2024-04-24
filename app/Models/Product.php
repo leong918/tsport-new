@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Plugins\ProductReview\Models\ProductReview;
+use App\Plugins\SalesOrder\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -35,7 +38,6 @@ class Product extends Model
         'quantity',
         'point_value',
         'status',
-        'sort',
         'is_best_seller',
         'is_new',
         'is_attribute',
@@ -110,7 +112,7 @@ class Product extends Model
 
     public function getCurrencyParameters(string $currency)
     {
-        return $this->productPrice->where('code', $currency)->first();
+        return $this->productPrice->where('code', $currency)->whereNull('product_attribute_term_id')->first();
     }
 
     public function getParameters(string $params)
@@ -121,6 +123,18 @@ class Product extends Model
     public function getFirstProductImage()
     {
         return $this->productImage->first();
+    }
+
+    public function getAvgRating()
+    {
+        $rating = round(ProductReview::where('product_id', $this->id)->avg('rate'));
+
+        return $rating;
+    }
+
+    public function checkWishlist($product_id)
+    {
+        return Wishlist::where('product_id', $product_id)->exists();
     }
 
     public function checkProductRelated($product_id, $related_product_id)

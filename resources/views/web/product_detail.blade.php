@@ -6,7 +6,7 @@
                 <div class="col-12 row nav-wrapper">
                     <div class="d-flex nav-title-wrapper">
                         <div>Home</div>
-                        @if (!empty($product_parent_category))
+                        @if ($product_parent_category)
                             <div>></div>
                             <div class="text-capitalize">{{ $product_parent_category->name }}</div>
                         @endif
@@ -30,54 +30,23 @@
                 <div class="col-12 col-lg-6 product-wrapper">
                     <div class="row">
                         @if (function_exists('reviewRenderView'))
-                            {{ reviewRenderView('product_detail_top_review') }}
+                            {{ reviewRenderView('product_detail_top_review', null, null, $review_total, $avgRating) }}
                         @endif
                         <div class="col-9">
                             <div class="">
                                 <div class="col-10 product-title">{{ $product->name }}</div>
                             </div>
                         </div>
-                        <div class="col-2 d-flex justify-content-end wishlist-wrapper">
-                            <img src="{{ asset('assets/web/assets/img/product_details/wishlist_icon.png') }}">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between product-action-wrapper">
-                        <div class="product-price d-flex flex-column justify-content-center"
-                            data-default-price="{{ $product->price }}">
-                            ${{ $product->price }}
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-6">
-                        @if (isset($product_attribute_list))
-                            @foreach ($product_attribute_list->where('is_variation', 1) as $product_attribute)
-                                <div class="input-container mt-4 me-3">
-                                    <input type="text" id="{{ $product_attribute->name }}"
-                                        name="{{ $product_attribute->name }}" class="attribute-input text-start"
-                                        data-selected-price="0" value="" required readonly>
-                                    <ul id="{{ $product_attribute->name }}-dropdown" class="attribute-dropdown">
-                                        @foreach ($product_attribute->productAttributeTerm()->get() as $term)
-                                            <li data-value="{{ $term->id }}"
-                                                data-add-on-price="{{ $term->getCurrencyParameters('HKD')->price }}">{{ $term->name }}</li>
-                                        @endforeach
-                                    </ul>
-                                    <label class="placeholder-label">
-                                        Choose {{ $product_attribute->name }}
-                                        <div class="d-flex float-end mt-1">
-                                            <i class='fas fa-angle-down'></i>
-                                        </div>
-                                    </label>
-                                </div>
-                            @endforeach
+                        @if (function_exists('salesOrderRenderView'))
+                            {{ salesOrderRenderView('product_detail_wishlist', $product) }}
                         @endif
                     </div>
-                    <div class="row action-button-wrapper">
-                        <div class="col-12 col-lg-6 ps-0"><button class="cart-button">ADD TO CART</button></div>
-                        <div class="col-12 col-lg-6 pe-0"><button class="buy-button">BUY IT NOW</button></div>
-                    </div>
-
+                    @if (function_exists('salesOrderRenderView'))
+                        {{ salesOrderRenderView('product_detail_cart', $product) }}
+                    @endif
                     <div class="row">
                         <div class="col-12 product-details-wrapper mx-auto">
-                            <div class="product-details-list">{!! $product->getParameters('en')->information !!}</div>
+                            <div class="product-details-list">{!! $product->getParameters('zh-CN')->information !!}</div>
                         </div>
                     </div>
                     <div>
@@ -89,8 +58,9 @@
             <div class="col-12 col-md-10 col-lg-7">
                 <ul class="nav nav-tabs info-action-button" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#desciption" type="button"
-                            role="tab" aria-controls="desciption" aria-selected="true">Description</button>
+                        <button class="nav-link {{ isset($_GET['page']) ? '' : 'active' }}" data-bs-toggle="tab"
+                            data-bs-target="#desciption" type="button" role="tab" aria-controls="desciption"
+                            aria-selected="true">Description</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ingredients" type="button"
@@ -109,36 +79,37 @@
                     @endif
                 </ul>
                 <div class="tab-content description" id="myTabContent">
-                    <div class="tab-pane fade show active" id="desciption" role="tabpanel" aria-labelledby="desciption-tab">
+                    <div class="tab-pane fade {{ isset($_GET['page']) ? '' : 'show active' }}" id="desciption"
+                        role="tabpanel" aria-labelledby="desciption-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('en')->description !!}
+                            {!! $product->getParameters('zh-CN')->description !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('en')->ingredient !!}
+                            {!! $product->getParameters('zh-CN')->ingredient !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="usage" role="tabpanel" aria-labelledby="usage-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('en')->usage !!}
+                            {!! $product->getParameters('zh-CN')->usage !!}
                         </div>
                     </div>
                     <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                         <div class="content-wrapper">
-                            {!! $product->getParameters('en')->additional_information !!}
+                            {!! $product->getParameters('zh-CN')->additional_information !!}
 
-                            @if ($product_attribute_list->where('is_variation', 0))
+                            @if ($product->productAttribute->where('status', 1)->where('is_variation', 1)->count() > 0)
                                 <div class="row mt-5">
                                     <div class="col-md-4">
                                         <div>Product Attribute</div>
-                                        @foreach ($product_attribute_list->where('is_variation', 0) as $product_attribute)
+                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 1) as $product_attribute)
                                             <div class="mt-2">{{ $product_attribute->name }}</div>
                                         @endforeach
                                     </div>
                                     <div class="col-md-8">
                                         <div>Variation</div>
-                                        @foreach ($product_attribute_list->where('is_variation', 0) as $product_attribute)
+                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 1) as $product_attribute)
                                             <div class="mt-2">
                                                 @php
                                                     $termNames = '';
@@ -157,7 +128,7 @@
                         </div>
                     </div>
                     @if (function_exists('reviewRenderView'))
-                        {{ reviewRenderView('product_detail_nav_content') }}
+                        {{ reviewRenderView('product_detail_nav_content', $product, $review_list, $review_total) }}
                     @endif
                 </div>
             </div>
@@ -183,10 +154,7 @@
                                     <div class="product-info">
                                         <div class="rating-wishlist">
                                             @if (function_exists('reviewRenderView'))
-                                                {{ reviewRenderView('common_star_rating') }}
-                                            @endif
-                                            @if (function_exists('salesOrderRenderView'))
-                                                {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                                {{ reviewRenderView('common_star_rating', $productRelated->product) }}
                                             @endif
                                         </div>
                                         <div class="product-description">{{ $productRelated->product->name }}</div>
@@ -238,51 +206,18 @@
 
         $(document).ready(function() {
 
-            //-------- product attribute -----------------------
-            $('.attribute-input').focus(function() {
-                var attribute = $(this).attr('id');
-                var dropdown = attribute + '-dropdown';
-                $('#' + dropdown).addClass('visible');
-            });
-
-
-            $('.attribute-dropdown li').on('click', function() {
-                var default_price = parseFloat($('.product-price').data('default-price'));
-                var attribute = $(this).closest('.input-container').find('.attribute-input').attr('id');
-                var dropdown = attribute + '-dropdown';
-                var add_on_price = $(this).data('add-on-price')
-
-                $('#' + attribute).val($(this).text()).data('selected-price', add_on_price);
-                $('#' + dropdown).removeClass('visible');
-                $('#' + attribute).trigger('paste');
-
-                $('.attribute-input').each(function() {
-                    var selected_price = parseFloat($(this).data('selected-price'));
-                    default_price += selected_price;
-                });
-
-                $('.product-price').text('$' + default_price.toFixed(2));
-            });
-
-            $('.attribute-input').on('blur', function() {
-                var attribute = $(this).attr('id');
-                var dropdown = attribute + '-dropdown';
-                setTimeout(function() {
-                    if (!$('.input-container input#' + attribute).is(':focus') && !$('#' + dropdown)
-                        .is(':focus')) {
-                        $('#' + dropdown).removeClass('visible');
-                    }
-                }, 100);
-            });
-
             //------------------ review star -----------------------
             var selectReviewStar = 0;
+            var comment_length = 0;
 
             $('body').on('click', '.review-star-control', function() {
                     var selectedStar = $(this).data("number");
                     selectReviewStar = selectedStar;
+                    var rating = 0;
+
                     $('.review-star-control').each(function() {
                         if ($(this).data("number") <= selectedStar) {
+                            rating++;
                             $(this).children('img').attr("src",
                                 "{{ asset('assets/web/assets/img/product_details/star_1.png') }}");
                         } else {
@@ -290,6 +225,8 @@
                                 "{{ asset('assets/web/assets/img/product_details/star_2.png') }}");
                         }
                     });
+
+                    $('#rate').val(rating);
                 }),
 
                 $('.leave-review-wrapper .star-wrapper').hover(
@@ -337,6 +274,82 @@
                 var input_quantity = $(this).parent().parent().find('.quantity-text');
                 input_quantity.val(parseInt(input_quantity.val()) + 1);
             });
+
+            function validateRating() {
+                var rating = $('#rate').val();
+
+                if (rating == 0) {
+                    showSwal('Error', 'Please leave a rating before submit!');
+
+                    return false;
+                }
+                return true;
+            }
+
+            //-------- post review submit ---------------
+            $("#postReviewForm").submit(function(e) {
+                e.preventDefault();
+
+                if (!validateRating()) {
+                    return;
+                }
+
+                var url = $(this).attr('action');
+
+                let formData = new FormData(this);
+
+                $(".form-control-file").each(function() {
+                    formData.append($(this).attr("name"), $(this)[0].files[0]);
+                })
+
+                axios({
+                    method: "post",
+                    url: url,
+                    data: formData,
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                })
+                .then(response => {
+                    showSwal('Success', 'Review submitted!');
+
+                    selectReviewStar = 0;
+                    $('#comment').val('');
+                    $('.review-star-control').each(function() {
+                        $(this).children('img').attr("src",
+                            "{{ asset('assets/web/assets/img/product_details/star_2.png') }}"
+                        );
+                    });
+                })
+                .catch(error => {
+                    showSwal('Fail!', error.response.data.msg);
+                });
+            });
+
+
+            //-------- review pagination -------------------
+            $('.product_review_pagination nav').addClass('d-flex justify-content-center');
+            $('.product_review_pagination .page-item:first-child .page-link').text('<').addClass('reviewPagination')
+                .css('box-shadow', 'none');
+            $('.product_review_pagination .page-item:nth-child(2)').after(
+                    '<li class="page-item"><span class="page-link reviewPagination">of</span></li>')
+                .empty().append('<span class="page-link currentPage reviewPagination"></span>');
+
+            $('.product_review_pagination .page-item:last-child').prev('.page-item').remove();
+            $('.product_review_pagination .page-item:last-child').before(
+                '<li class="page-item"><span class="page-link avgPageCount reviewPagination">{{ ceil($review_total / 6) }}</span></li>'
+            );
+            $('.product_review_pagination .page-item:last-child .page-link').text('>').addClass('reviewPagination')
+                .css('box-shadow', 'none');
+
+            var searchParams = new URLSearchParams(window.location.search);
+            var hasPage = searchParams.has('page');
+            var currentPage = searchParams.get('page');
+
+            hasPage == true ? $('.currentPage').text(currentPage) : $('.currentPage').text('1');
+
+            $('.page-item .page-link:not(.reviewPagination)').addClass('d-none');
+
 
             $('.slider-for').slick({
                 slidesToShow: 1,

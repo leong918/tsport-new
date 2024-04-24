@@ -2,17 +2,36 @@
 @section('content')
 <div id="shopping_cart" class="overflow-x-hidden margin-header">
     <div class="container">
-        @if(count($cartList) > 0)
-        <div class="row justify-content-center">
+        <div class="row justify-content-center {{ count($cartList) > 0 ? '' : 'd-none' }}" id="fullCartSection">
             <div class="shopping-cart-wrapper">
                 <div class="shopping-cart-title">Shopping Cart</div>
                 <div class="row justify-content-center shopping-cart-content">
                     <div class="col-md-12 col-lg-8 shopping-cart-content">
                         <div class="shopping-cart-banner">
-                            <div><img src="{{asset('assets/web/assets/img/shopping_cart/shopping_cart_banner_2.png')}}" /></div>
-                            <div><button class="add-to-cart d-none d-lg-block">ADD TO CART</button></div>
+                            <div><img src="{{$setting_model['shopping_cart_banner']}}" /></div>
+                            <div>
+                                @if (count($shopping_cart_banner_product->productAttribute) > 0)
+                                <button class="add-to-cart d-none d-lg-block cart-button-redirect" data-href="{{ route('web.product_detail', ['alias' => $shopping_cart_banner_product->alias]) }}">
+                                ADD TO CART
+                                </button>
+                                @else
+                                <button class="add-to-cart d-none d-lg-block cart-button-hover" data-id="{{ $shopping_cart_banner_product->id }}" data-url="{{ route('cart.add_to_cart') }}">
+                                ADD TO CART
+                                </button>
+                                @endif
+                            </div>
                         </div>
-                        <div><button class="add-to-cart d-block d-lg-none">ADD TO CART</button></div>
+                        <div>
+                            @if (count($shopping_cart_banner_product->productAttribute) > 0)
+                            <button class="add-to-cart d-block d-lg-none cart-button-redirect" data-href="{{ route('web.product_detail', ['alias' => $shopping_cart_banner_product->alias]) }}">
+                            ADD TO CART
+                            </button>
+                            @else
+                            <button class="add-to-cart d-block d-lg-none cart-button-hover" data-id="{{ $shopping_cart_banner_product->id }}" data-url="{{ route('cart.add_to_cart') }}">
+                            ADD TO CART
+                            </button>
+                            @endif
+                        </div>
                         <table class="cart-item-list d-none d-md-block">
                             <tr>
                                 <th style="width:50%">Product</th>
@@ -26,7 +45,14 @@
                                 <td>
                                     <div class="d-flex">
                                         <img src="{{ $cart->product->getFirstProductImage()->url }}">
-                                        <div class="product-desc">{{ $cart->product->getParameters('cn')->name }}</div>
+                                        <div class="product-desc">
+                                            {{ $cart->product->getParameters('zh-CN')->name }}
+                                            @if($cart->product_attribute_term)
+                                            <div class="attribute-desc ms-2">
+                                                {!! $cart->description !!}
+                                            </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="unit-price">${{ number_format($cart->price, 2) }}</td>
@@ -79,7 +105,16 @@
                                     <img src="{{ $cart->product->getFirstProductImage()->url }}">
                                     <div class="cart-item-details d-flex flex-column justify-content-between items-center w-100">
                                         <div class="d-flex justify-content-between">
-                                            <div class="product-desc">{{ $cart->product->getParameters('cn')->name }}</div>
+                                            <div class="product-desc-wrapper">
+                                                <div class="product-desc">
+                                                    {{ $cart->product->getParameters('zh-CN')->name }}
+                                                </div>
+                                                @if($cart->product_attribute_term)
+                                                <div class="attribute-desc ms-2">
+                                                    {!! $cart->description !!}
+                                                </div>
+                                                @endif
+                                            </div>
                                             <div>
                                                 <button class="remove-button" data-cart-id="{{ $cart->id }}">
                                                     <img src="{{asset('assets/web/assets/img/shopping_cart/remove.png')}}" />
@@ -188,8 +223,7 @@
                 </div>
             </div>
         </div>
-        @else
-        <div class="row justify-content-center">
+        <div class="row justify-content-center {{ count($cartList) > 0 ? 'd-none' : '' }}" id="emptyCartSection">
             <div class="shopping-cart-wrapper">
                 <div class="shopping-cart-title">Shopping Cart</div>
                 <div class="empty-cart-content">
@@ -197,7 +231,6 @@
                 </div>
             </div>
         </div>
-        @endif
     </div>
 </div>
 @endsection
@@ -256,6 +289,16 @@ $(document).ready(function() {
             $('#apply-coupon-btn').prop('disabled', false);
             $(this).parents('.cart-main-list').find('.total-price').html('$' + response.data.subtotal);
             updateColumnValue(response.data.cartTotal);
+
+            if (response.data.cartCount > 0) {
+                $('#fullCartSection').removeClass('d-none');
+                $('#emptyCartSection').addClass('d-none');
+                $('#cart-count').removeClass('d-none').text(response.data.cart_count);
+            } else {
+                $('#fullCartSection').addClass('d-none');
+                $('#emptyCartSection').removeClass('d-none');
+                $('#cart-count').addClass('d-none').text(response.data.cart_count);
+            }
         })
         .catch(error => {
             $('.action-button').prop('disabled', false);
@@ -285,6 +328,16 @@ $(document).ready(function() {
             $('#apply-coupon-btn').prop('disabled', false);
             $(this).parents('.cart-main-list').find('.total-price').html('$' + response.data.subtotal);
             updateColumnValue(response.data.cartTotal);
+
+            if (response.data.cartCount > 0) {
+                $('#fullCartSection').removeClass('d-none');
+                $('#emptyCartSection').addClass('d-none');
+                $('#cart-count').removeClass('d-none').text(response.data.cart_count);
+            } else {
+                $('#fullCartSection').addClass('d-none');
+                $('#emptyCartSection').removeClass('d-none');
+                $('#cart-count').addClass('d-none').text(response.data.cart_count);
+            }
         })
         .catch(error => {
             $('.action-button').prop('disabled', false);

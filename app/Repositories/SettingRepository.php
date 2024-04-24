@@ -61,4 +61,17 @@ class SettingRepository extends BaseRepository
         }
         return '';
     }
+
+    public function getSenderInfo()
+    {
+        return Setting::where('key','LIKE','sender_%')->get();
+    }
+
+    public function uploadImage($data)
+    {
+        $this->upload_path = 'setting';
+        $this->uploadFile($data);
+
+        return $this->uploaded_filename;
+    }
 }

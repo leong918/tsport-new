@@ -3,8 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ProductAttribute;
-use App\Models\ProductAttributeTerm;
-use App\Models\ProductPrice;
+use App\Plugins\SalesOrder\Repositories\UserCartRepository;
 use App\Traits\FileUpload;
 use Illuminate\Container\Container;
 
@@ -47,14 +46,6 @@ class ProductAttributeRepository extends BaseRepository
 
     public function createProductAttribute(array $input, int $product_id)
     {
-        $productAttribute = ProductAttribute::where('product_id', $product_id);
-        $productAttributeId = $productAttribute->get()->pluck('id')->toArray();
-
-        //------ delete attribute term  ------------
-        ProductAttributeTerm::where('product_id', $product_id)->whereIn('product_attribute_id', $productAttributeId)->delete();
-        ProductPrice::where('product_id', $product_id)->whereNotNull('product_attribute_term_id')->delete();
-        $productAttribute->delete();
-
         foreach ($input['option'] as $data) {
 
             $model = new ProductAttribute();
@@ -67,7 +58,90 @@ class ProductAttributeRepository extends BaseRepository
             $productAttributeTerm = new ProductAttributeTermRepository(new Container());
             $productAttributeTerm->createProductAttributeTerm($data, $model);
         }
+    }
 
+    public function updateProductAttribute(array $input, int $product_id)
+    {
+        $this->deleteUnusedAttribute($input, $product_id);
+
+        foreach ($input['option'] as $key => $data) {
+            if (str_contains($key, 'old')) {
+                $attribute_id = str_replace('old-', '', $key);
+                $model = ProductAttribute::find($attribute_id);
+            } else {
+                $model = new ProductAttribute();
+            }
+
+            $model->product_id = $product_id;
+            $model->name = $data['attribute_name'];
+            $model->status = isset($data['attribute_status']) ? 1 : 0;
+            $model->is_variation = isset($data['is_variation']) ? 1 : 0;
+            $model->save();
+
+            $productAttributeTerm = new ProductAttributeTermRepository(new Container());
+            $productAttributeTerm->updateProductAttributeTerm($data, $model, $product_id);
+        }
+    }
+
+    public function deleteAllAttribute($product_id)
+    {
+        // Delete unused product attribute
+        $productAttributeDelete = ProductAttribute::where('product_id', $product_id);
+
+        if ($productAttributeDelete->count() > 0) {
+            $userCartRepository = new UserCartRepository(new Container());
+            $userCartRepository->removeDeletedProductCart($productAttributeDelete, $product_id, 'attribute');
+            $productAttributeDelete->delete();
+        }
+
+        // Delete unused product attribute term
+        $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+        $productAttributeTermDelete = $productAttributeTermRepository->makeModel()->where('product_id', $product_id);
+
+        if ($productAttributeTermDelete->count() > 0) {
+            $userCartRepository = new UserCartRepository(new Container());
+            $userCartRepository->removeDeletedProductCart($productAttributeTermDelete, $product_id, 'term');
+            $productAttributeTermDelete->delete();
+        }
+    }
+
+    public function deleteUnusedAttribute($input, $product_id)
+    {
+        // Delete unused product attribute
+        $resultKeys = array_map(function ($key) {
+            return str_replace('old-', '', $key);
+        }, array_keys(array_filter($input['option'], function ($key) {
+            return strpos($key, 'old') !== false;
+        }, ARRAY_FILTER_USE_KEY)));
+
+        $productAttributeDelete = ProductAttribute::where('product_id', $product_id)->whereNotIn('id', $resultKeys);
+
+        if ($productAttributeDelete->count() > 0) {
+            $userCartRepository = new UserCartRepository(new Container());
+            $userCartRepository->removeDeletedProductCart($productAttributeDelete, $product_id, 'attribute');
+            $productAttributeDelete->delete();
+        }
+
+        // Delete unused product attribute term
+        $variationKeys = array();
+        foreach ($input['option'] as $item) {
+            if (isset($item['variation']) && is_array($item['variation'])) {
+                $variationKeys = array_merge($variationKeys, array_keys($item['variation']));
+            }
+        }
+
+        $resultKeys = array_map(function ($key) {
+            return str_replace('old-', '', $key);
+        }, $variationKeys);
+
+        $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+        $productAttributeTermDelete = $productAttributeTermRepository->makeModel()->where('product_id', $product_id)->whereNotIn('id', $resultKeys);
+
+        if ($productAttributeTermDelete->count() > 0) {
+            $userCartRepository = new UserCartRepository(new Container());
+            $userCartRepository->removeDeletedProductCart($productAttributeTermDelete, $product_id, 'term');
+            $productAttributeTermDelete->delete();
+        }
     }
 
     public function deleteByProductId(int $product_id)

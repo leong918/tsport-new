@@ -24,11 +24,10 @@ class CreateTopBarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'font_size' => 'required',
-            'background_colour' => 'required',
-            'font_colour' => 'required',
+            'name' => 'required',
+            'background_color' => 'required',
             'status' => 'required',
+            'content' => 'required',
         ];
     }
 }
