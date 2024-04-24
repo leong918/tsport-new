@@ -62,7 +62,7 @@
                                     <button id="payment-button" data-return-url="{{ route('cart.complete') }}">Complete Payment</button>
                                 </div>
                                 <div class="d-flex justify-content-center mt-4">
-                                    <a href="{{ route('cart.checkout') }}">Back To Checkout</a>
+                                    <a href="{{ $buyNowData ? route('cart.checkout') . '?' . http_build_query($buyNowData) : route('cart.checkout') }}">Back To Checkout</a>
                                 </div>
                             </div>
                         </div>
@@ -113,32 +113,48 @@
                     data: {
                         payment_method: payment_method,
                         stripe_payment_intent_id: $('#payment-element').data('code'),
-                        cart_total: "{{ $cartTotal['total'] }}"
+                        cart_total: "{{ $cartTotal['total'] }}",
+                        buyNowData: "{{ json_encode($buyNowData) }}"
                     }
                 })
                 .then(response => {
                     if (response.data.order.payment_method === 'stripe') {
-                        const { error } = stripe.confirmPayment({
+                        var error = stripe.confirmPayment({
                             elements,
                             confirmParams: {
                                 return_url: $(this).data('return-url') + '?order_id=' + response.data.order.sales_order_id,
                             },
                         });
 
-                        if (error.type === "card_error" || error.type === "validation_error") {
-                            showSwal('Fail!', error.message);
-                        } else {
-                            showSwal('Fail!', 'An unexpected error occurred.');
-                        }
+                        error.then(function(result) {
+                            var errorType = result.error.type;
+
+                            if (errorType === "card_error" || errorType === "validation_error") {
+                                showSwal('Fail!', errorType.message);
+                            } else {
+                                showSwal('Fail!', 'An unexpected error occurred.');
+                            }
+
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                        });
                     } else {
                         window.location.replace("{{ route('cart.complete') }}" + "?order_id=" + response.data.order.sales_order_id);
                     }
                 })
                 .catch(error => {
                     if (error && error.response && error.response.data) {
-                        const responseData = error.response.data;
+                        var responseData = error.response.data;
                         if (responseData.redirect) {
-                            window.location.reload();
+                            if (responseData.msg) {
+                                showSwal('Fail!', responseData.msg);
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                window.location.reload();
+                            }
                         } else {
                             $(this).attr('disabled', false);
                             showSwal('Fail!', responseData.msg);

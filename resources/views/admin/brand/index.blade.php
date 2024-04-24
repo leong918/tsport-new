@@ -23,8 +23,8 @@
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            <th style="width: 20%">Logo</th>
                                             <th>Name</th>
-                                            <th>Logo</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th class="text-center">Action</th>
@@ -56,13 +56,12 @@
                         url: '{!! route('admin.brand.index') !!}'
                     },
                     columns: [{
-                            data: 'name',
-                            name: 'name'
-                        },
-                        {
                             data: 'logo',
                             name: 'logo'
                         },
+                        {
+                            data: 'name',
+                            name: 'name'},
                         {
                             data: 'status',
                             name: 'status'

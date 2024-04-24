@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\CategoryRepository;
 use App\Repositories\ProductRepository;
-use App\Repositories\ProductAttributeRepository;
 use App\Repositories\SettingRepository;
 use App\Repositories\BrandRepository;
 use App\Repositories\BlogRepository;
 use App\Repositories\BlogCommentRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\SliderRepository;
+use App\Plugins\ProductReview\Repositories\ProductReviewRepository;
 use App\Http\Requests\Form\BlogComment\CreateBlogCommentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,19 +25,19 @@ class AppController extends BaseController
     private UserRepository $userRepository;
     private SettingRepository $settingRepository;
     private SliderRepository $sliderRepository;
-    private ProductAttributeRepository $productAttributeRepository;
+    private ProductReviewRepository $productReviewRepository;
 
     public function __construct(
-        ProductRepository $productRepository, 
-        CategoryRepository $categoryRepository, 
-        BrandRepository $brandRepository, 
-        BlogRepository $blogRepository, 
-        BlogCommentRepository $blogCommentRepository, 
-        UserRepository $userRepository, 
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        BrandRepository $brandRepository,
+        BlogRepository $blogRepository,
+        BlogCommentRepository $blogCommentRepository,
+        UserRepository $userRepository,
         SettingRepository $settingRepository,
         SliderRepository $sliderRepository,
-        ProductAttributeRepository $productAttributeRepository,
-    ){
+        ProductReviewRepository $productReviewRepository,
+    ) {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->brandRepository = $brandRepository;
@@ -46,7 +46,7 @@ class AppController extends BaseController
         $this->userRepository = $userRepository;
         $this->settingRepository = $settingRepository;
         $this->sliderRepository = $sliderRepository;
-        $this->productAttributeRepository = $productAttributeRepository;
+        $this->productReviewRepository = $productReviewRepository;
     }
 
     public function index()
@@ -55,30 +55,34 @@ class AppController extends BaseController
         $setting_list = $this->settingRepository->getListing()->get();
         $blog_list = $this->blogRepository->getListing()->get();
         $brand_list = $this->brandRepository->getListing()->where('status', 1)->get();
+        $more_discover_category_list = $this->categoryRepository->getMoreToDiscoverListing();
 
-        return $this->view('index', compact('slider_list', 'setting_list', 'blog_list', 'brand_list'));
+        return $this->view('index', compact('slider_list', 'setting_list', 'blog_list', 'brand_list', 'more_discover_category_list'));
     }
 
     public function product(Request $request, string $category_id = null)
     {
+        $product_list = $this->productRepository->getProductByCurrencyCode('HKD')->get();
+        $category_list = $this->categoryRepository->getListingForNav();
+        $brand_list = $this->brandRepository->getListingForNav();
+        $current_category = null;
+        $search_keyword = null;
+        $parent_category = null;
+
         //product page with filtering
         if ($request->ajax()) {
             if ($category_id) {
                 $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
-                return $this->view('product_list', compact('product_list'));
             }
         }
 
         //product page without filtering 
         if ($category_id) {
             $current_category = $this->categoryRepository->find($category_id);
-            $sub_category = $this->categoryRepository->getSubCategoryByCategoryId($current_category->id);
+            $category_list = $this->categoryRepository->getSubCategoryByCategoryId($current_category->id);
             $parent_category = $this->categoryRepository->find($current_category->parent_category_id);
 
-            $brand_list = $this->brandRepository->getListing()->where('status', 1)->orderBy('sort', 'asc')->get();
             $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
-
-            return $this->view('product', compact('sub_category', 'current_category', 'brand_list', 'product_list', 'parent_category'));
         }
 
         //search page
@@ -86,36 +90,36 @@ class AppController extends BaseController
             $search_keyword = $request->input('search_keyword');
 
             $product_list = $this->productRepository->getProductByTagOrKeywords($search_keyword, 'HKD');
-
-            return $this->view('product', compact('product_list', 'search_keyword'));
         }
-    }
 
+        return $this->view('product', compact('product_list', 'category_list', 'brand_list', 'search_keyword', 'current_category', 'parent_category'));
+    }
 
     public function productDetail(string $alias)
     {
         $product = $this->productRepository->getProductByAlias($alias, 'HKD');
         $product_category = $this->categoryRepository->find($product->category_id);
         $product_parent_category = $this->categoryRepository->find($product_category->parent_category_id);
-        $product_attribute_list = $this->productAttributeRepository->getListing()
-                                ->where(['product_id' => $product->id, 'status' => 1])->get();
+        $review_record = $this->productReviewRepository->getReviewByProductId($product->id);
+        $avgRating = $this->productReviewRepository->getAvgProductRating($product->id);
+        $review_total = $review_record->count();
+        $review_list = $review_record->paginate(6);
 
-        if ($product_parent_category) {
-            return $this->view('product_detail', compact('product', 'product_parent_category', 'product_attribute_list'));
-        } else {
-            return $this->view('product_detail', compact('product', 'product_attribute_list'));
-        }
+        return $this->view('product_detail', compact('product', 'product_parent_category', 'review_total', 'review_list', 'avgRating'));
     }
+
     public function productNew()
     {
         $product_list = $this->productRepository->getNewProduct('HKD');
         return $this->view('product_new', compact('product_list'));
     }
+
     public function bestSeller()
     {
         $product_list = $this->productRepository->getBestSellingProduct('HKD');
         return $this->view('best_seller', compact('product_list'));
     }
+
     public function brand(int $brand_id)
     {
         $brand = $this->brandRepository->find($brand_id);
@@ -125,11 +129,13 @@ class AppController extends BaseController
 
         return $this->view('brand', compact('brand', 'category_list', 'product_list'));
     }
+
     public function blog()
     {
         $blog_list = $this->blogRepository->getListing()->get();
         return $this->view('blog', compact('blog_list'));
     }
+
     public function blogDetail(int $blog_id)
     {
         $blog = $this->blogRepository->find($blog_id);
@@ -159,10 +165,12 @@ class AppController extends BaseController
     {
         return $this->view('voucher');
     }
+
     public function howTo()
     {
         return $this->view('how_to');
     }
+
     public function search()
     {
         return $this->view('search_result');

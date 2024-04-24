@@ -20,19 +20,19 @@
                         <div class="all-form-wrap">
                             {{ html()->model($user)->form('PUT', route("account.updateUser", ["id" => $user->id]))->id('update_user_form')->open() }}
                             <div class="row">
-                                <div class="col-6">
+                                 <div class="col-6">
                                     <div class="form-wrapper">
                                         <div class="input-container">
-                                            {{ html()->text('first_name')->placeholder('Enter first name')->class('disabled-txt')->required() }}
-                                            {{ html()->label('First Name *')->class('placeholder-label') }}
+                                            {{ html()->text('last_name')->placeholder('Enter last name')->class('disabled-txt')->required() }}
+                                            {{ html()->label('Last Name *')->class('placeholder-label') }}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-wrapper">
                                         <div class="input-container">
-                                            {{ html()->text('last_name')->placeholder('Enter last name')->class('disabled-txt')->required() }}
-                                            {{ html()->label('Last Name *')->class('placeholder-label') }}
+                                            {{ html()->text('first_name')->placeholder('Enter first name')->class('disabled-txt')->required() }}
+                                            {{ html()->label('First Name *')->class('placeholder-label') }}
                                         </div>
                                     </div>
                                 </div>

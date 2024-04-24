@@ -42,7 +42,7 @@
             <div class="col-md-9 product-wrapper" id="targetElement">
                 <div class="tnc">
                     <div class="tnc-para">
-                        {!! $brand->getParameters('cn')->description !!}
+                        {!! $brand->getParameters('zh-CN')->description !!}
                     </div>
                 </div>
                 @foreach($product_list as $category => $category_product_list)
@@ -63,15 +63,12 @@
                                 <div class="product-info">
                                     <div class="rating-wishlist">
                                         @if(function_exists('reviewRenderView'))
-                                        {{ reviewRenderView('common_star_rating') }}
-                                        @endif
-                                        @if(function_exists('salesOrderRenderView'))
-                                        {{ salesOrderRenderView('product_list_wishlist_mobile', $product) }}
+                                        {{ reviewRenderView('common_star_rating', $product) }}
                                         @endif
                                     </div>
                                     <div class="product-description">{{ $product->name }}</div>
                                     <div class="price-cart">
-                                        <div class="product-price">{{$product->code .' '.$product->price }}</div>
+                                        <div class="product-price">{{'$'.$product->price }}</div>
                                         @if(function_exists('salesOrderRenderView'))
                                         {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
                                         @endif

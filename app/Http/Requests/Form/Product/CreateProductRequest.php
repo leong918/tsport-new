@@ -5,6 +5,7 @@ namespace App\Http\Requests\Form\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+
 class CreateProductRequest extends FormRequest
 {
     /**
@@ -28,10 +29,9 @@ class CreateProductRequest extends FormRequest
             'brand_id' => 'required',
             'category_id' => 'required',
             'name' => 'required',
-            'alias' => 'required|unique:product|regex:/^[\w\p{Han}\-]+$/u',
-            'sku' => 'required',
+            'alias' => 'required|unique:product,alias,NULL,id,deleted_at,NULL|regex:/^[\w\p{Han}\-]+$/u',
+            'sku' => 'required|unique:product,sku,NULL,id,deleted_at,NULL',
             'status' => 'required',
-            'sort' => 'required',
             'is_best_seller' => 'required',
             'is_new' => 'required',
             'is_attribute' => 'required',

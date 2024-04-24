@@ -81,13 +81,13 @@
                 </ul>
             </div>
             <div class="col-12 col-xl-2 col-lg-3 col-md-4 col-sm-6">
-                <a class="text-body-secondary" href="#" type="button">
+                <a class="text-body-secondary" href="#">
                     <img src="{{asset('assets/web/assets/img/footer/visa.png')}}" alt="Bootstrap">
                 </a>
-                <a class="text-body-secondary" href="#" type="button">
+                <a class="text-body-secondary" href="#">
                     <img src="{{asset('assets/web/assets/img/footer/master-card.png')}}" alt="Bootstrap">
                 </a>
-                <a class="text-body-secondary" href="#" type="button">
+                <a class="text-body-secondary" href="#">
                     <img src="{{asset('assets/web/assets/img/footer/american-express.png')}}" alt="Bootstrap">
                 </a>
             </div>

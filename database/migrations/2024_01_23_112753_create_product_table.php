@@ -15,13 +15,12 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('brand_id');
             $table->bigInteger('category_id');
-            $table->string("name");
+            $table->text("name");
             $table->string("sku")->unique();
-            $table->string("alias")->unique();
+            $table->text("alias");
             $table->integer("quantity")->default(0);
             $table->integer("point_value")->default(0);
             $table->tinyInteger("status")->default(0);
-            $table->integer("sort")->default(0);
             $table->tinyInteger("is_best_seller")->default(0);
             $table->tinyInteger("is_new")->default(0);
             $table->tinyInteger("is_backorder")->default(0);

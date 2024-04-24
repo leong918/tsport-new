@@ -6,9 +6,6 @@
             <div class="col-12">
                 <div class="forgot-password-title">My Account</div>
                 <div class="nav-acc"><a href="#">Home</a> > <a href="#"> My Account </a> > <a href="#"> Addresses </a></div>
-                <div>
-
-                </div>
             </div>
             @include('web.account.account_nav')
             <div class="col-xl-9 col-12">
@@ -43,7 +40,7 @@
                             <div class="form-wrapper">
                                 <div class="input-container">
                                     <div class="input-container">
-                                        {{ html()->text('company_name')->class('disabled-txt')->required() }}
+                                        {{ html()->text('company_name')->class('disabled-txt') }}
                                         {{ html()->label('Company Name (optional)')->class('placeholder-label') }}
                                     </div>
                                 </div>
@@ -110,7 +107,7 @@
         </div>
     </div>
 </div>
-
+@endsection
 @push('scripts')
 <script>
     $(document).ready(function() {

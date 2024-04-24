@@ -30,8 +30,6 @@ class ProductAttributeTerm extends Model
         'product_id',
         'product_attribute_id',
         'name',
-        'sku',
-        'quantity',
         'point_value',
     ];
 
@@ -73,6 +71,6 @@ class ProductAttributeTerm extends Model
 
     public function getCurrencyParameters(string $currency)
     {
-        return $this->productPrice->where('code', $currency)->first();
+        return $this->productPrice->where('code', $currency)->whereNotNull('product_attribute_term_id')->first();
     }
 }

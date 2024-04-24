@@ -108,20 +108,6 @@ class ProductController extends BaseController
         return redirect(route('admin.product.index'))->with('success', "Successfully update product {$request->name}");
     }
 
-    public function updateStock(UpdateProductStockRequest $request, int $id)
-    {
-        DB::beginTransaction();
-        try {
-            $this->productRepository->updateStock($request->all(), $id);
-            DB::commit();
-            return $this->response();
-        } catch (\Exception $exception) {
-            DB::rollback();
-            return response()->json(['msg' => $exception->getMessage()], 500);
-        }
-        return redirect(route('admin.product.index'))->with('success', "Successfully update request->name product stock");
-    }
-
     public function destroy(int $id)
     {
         $this->productRepository->delete($id);
@@ -134,5 +120,14 @@ class ProductController extends BaseController
     public function toggleStatus(int $id)
     {
         $this->productRepository->toggleStatus($id);
+    }
+
+    public function getProductAttribute(int $id)
+    {
+
+        $product_attribute = $this->productRepository->getProductAttribute($id);
+        $collection = collect($product_attribute);
+        $regrouped_attribute = ($collection->groupBy('attribute_name'))->toArray();
+        return response()->json(['product_attribute' => $regrouped_attribute]);
     }
 }

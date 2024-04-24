@@ -6,7 +6,11 @@ use App\Plugins\SalesOrder\Models\SalesOrderProduct;
 use App\Repositories\BaseRepository;
 use Illuminate\Container\Container;
 use App\Repositories\ProductRepository;
+use App\Repositories\ProductAttributeRepository;
 use App\Repositories\ProductAttributeTermRepository;
+use App\Repositories\ProductBalanceLogRepository;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SalesOrderProductRepository extends BaseRepository
 {
@@ -33,27 +37,197 @@ class SalesOrderProductRepository extends BaseRepository
         return SalesOrderProduct::class;
     }
 
+    public function getListing(array $form_data)
+    {
+        $models = SalesOrderProduct::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay()->format('Y-m-d H:i:s');
+                    $dateTo = Carbon::parse($dates[1])->endOfDay()->format('Y-m-d H:i:s');
+                    $models->whereBetween('sales_order_product.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order_product.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+
+                $models->where($key, $value);
+            }
+        }
+
+        $models->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
+            ->leftJoin('category', 'product.category_id', '=', 'category.id')
+            ->select(
+                'product.name as product_name',
+                'product.sku',
+                'category.name as category',
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+                DB::raw('COUNT(sales_order_product.product_id) as orders')
+            )
+            ->groupBy('product_id')->get();
+
+        return $models;
+    }
+
+    public function getSalesOrderProductByMonth($form_data, $is_previous)
+    {
+        $models = SalesOrderProduct::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+
+                    if ($is_previous != true) {
+                        $dateFrom = $dateFrom->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->format('Y-m-d H:i:s');
+                    } else {
+                        $dateFrom = $dateFrom->subYear()->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->subYear()->format('Y-m-d H:i:s');
+                    }
+
+                    $models->whereBetween('created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+                $models->where($key, $value);
+            }
+        }
+
+        return $models->select(
+            DB::raw('DATE_FORMAT(created_at, "%m/%d/%Y") as date'),
+            DB::raw('SUM(quantity) as product_sold'),
+            DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+            DB::raw('COUNT(sales_order_product.product_id) as orders')
+        )
+            ->groupBy('date')->get();
+    }
+
+    public function getCategoryListing(array $form_data)
+    {
+        $models = SalesOrderProduct::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay()->format('Y-m-d H:i:s');
+                    $dateTo = Carbon::parse($dates[1])->endOfDay()->format('Y-m-d H:i:s');
+                    $models->whereBetween('sales_order_product.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order_product.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+
+                $models->where($key, $value);
+            }
+        }
+
+        $models->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
+            ->leftJoin('category', 'product.category_id', '=', 'category.id')
+            ->select(
+                'category.name as category',
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+                DB::raw('COUNT(sales_order_product.product_id) as orders'),
+                DB::raw('COUNT(DISTINCT product.id) as products'),
+            )
+            ->groupBy('category')->get();
+
+        return $models;
+    }
+
+    public function getSalesOrderCategoryByMonth($form_data, $is_previous)
+    {
+        $models = SalesOrderProduct::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+
+                    if ($is_previous != true) {
+                        $dateFrom = $dateFrom->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->format('Y-m-d H:i:s');
+                    } else {
+                        $dateFrom = $dateFrom->subYear()->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->subYear()->format('Y-m-d H:i:s');
+                    }
+
+                    $models->whereBetween('sales_order_product.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order_product.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+                $models->where($key, $value);
+            }
+        }
+
+        return $models->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
+            ->select(
+                DB::raw('DATE_FORMAT(sales_order_product.created_at, "%m/%d/%Y") as date'),
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+                DB::raw('COUNT(sales_order_product.product_id) as orders'),
+                DB::raw('COUNT(DISTINCT product.id) as products'),
+            )
+            ->groupBy('date')->get();
+    }
+
+    public function getSalesOrderProductBySalesOrderId(int $id)
+    {
+        return SalesOrderProduct::where('sales_order_id', $id);
+    }
+
     public function createOrderProduct($order, $data)
     {
         $productRepository = new ProductRepository(new Container());
+        $productAttributeRepository = new ProductAttributeRepository(new Container());
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+        $productBalanceLogRepository = new ProductBalanceLogRepository(new Container());
 
         foreach ($data as $cart) {
             $product = $productRepository->find($cart->product_id);
-            $productAttributeTerm = $productAttributeTermRepository->find($cart->product_attribute_term_id);
+            $description = null;
 
-            $price = $product->getCurrencyParameters('HKD')->price;
+            if ($cart->product_attribute_term) {
+                foreach (json_decode($cart->product_attribute_term) as $key => $product_attribute_term) {
+                    $productAttribute = $productAttributeRepository->find($key);
+                    $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
+                    $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+                }
+            }
+
+            $product->quantity -= $cart->quantity;
+            $product->save();
+
+            $log_data['type'] = 'DEDUCT';
+            $log_data['quantity'] = $cart->quantity;
+            $remark = 'Deduct product for Order: ' . $order->sales_order_id;
+            $productBalanceLogRepository->createProductBalanceLog($product, $log_data, $remark);
 
             $orderProduct = new SalesOrderProduct();
             $orderProduct->sales_order_id = $order->id;
             $orderProduct->product_id = $cart->product_id;
-            $orderProduct->product_attribute_term_id = $cart->product_attribute_term_id;
+            $orderProduct->product_attribute_term = $cart->product_attribute_term;
             $orderProduct->product_image = $product->getFirstProductImage()->url;
             $orderProduct->product_name = $product->name;
-            $orderProduct->product_attribute_term_name = $productAttributeTerm ? $productAttributeTerm->name : null;
-            $orderProduct->price = $price;
+            $orderProduct->product_attribute_term_name = $description;
+            $orderProduct->price = $cart->price;
             $orderProduct->quantity = $cart->quantity;
-            $orderProduct->total_price = $cart->quantity * $price;
+            $orderProduct->total_price = $cart->total_price;
             $orderProduct->save();
         }
     }
@@ -62,18 +236,32 @@ class SalesOrderProductRepository extends BaseRepository
     {
         $salesOrderRepository = new SalesOrderRepository(new Container());
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
+        $salesOrderTotalRepository = new SalesOrderTotalRepository(new Container());
         $productRepository = new ProductRepository(new Container());
+        $productAttributeRepository = new ProductAttributeRepository(new Container());
+        $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
         $sales_order = $salesOrderRepository->find($id);
         $admin_id = auth()->guard('admin')->user()->id;
         $total = 0;
         $product_list = "";
         foreach ($input as $sales_order_product) {
             $product = $productRepository->find($sales_order_product['product_id']);
+            $description = null;
+            if ($sales_order_product['attribute']) {
+                foreach (json_decode($sales_order_product['attribute']) as $key => $product_attribute_term) {
+                    $productAttribute = $productAttributeRepository->find($key);
+                    $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
+                    $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+                }
+            }
+
             $salesOrderProduct = new SalesOrderProduct();
             $salesOrderProduct->sales_order_id = $id;
             $salesOrderProduct->product_id = $product->id;
+            $salesOrderProduct->product_attribute_term = $sales_order_product['attribute'];
             $salesOrderProduct->product_image = $product->productImage->first()->url;
             $salesOrderProduct->product_name = $product->name;
+            $salesOrderProduct->product_attribute_term_name = $description;
             $salesOrderProduct->price = $sales_order_product['price'];
             $salesOrderProduct->quantity = $sales_order_product['quantity'];
             $salesOrderProduct->total_price = $sales_order_product['total_price'];
@@ -86,45 +274,46 @@ class SalesOrderProductRepository extends BaseRepository
             $product_list .= $salesOrderProduct->product_name . " <br> ";
         }
 
-        $description = "Add Product <br>".$product_list;
+        $description = "Add Product <br>" . $product_list;
         // create log
-        $salesOrderlogRepository->createLog($sales_order, $admin_id,'admin', 1, $description);
+        $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
 
-        return $total;
+        $salesOrderTotalRepository->updateSubtotalAndTotal($id, $total, "add");
     }
 
     public function updateSalesOrderProduct(array $input, int $id, int $product_id, int $admin_id)
     {
         $salesOrderRepository = new SalesOrderRepository(new Container());
+        $salesOrderTotalRepository = new SalesOrderTotalRepository(new Container());
         $salesOrderlogRepository = new SalesOrderLogRepository(new Container());
         $sales_order_product = SalesOrderProduct::find($product_id);
         $sales_order = $salesOrderRepository->find($id);
         $total = 0;
 
         foreach ($input as $key => $value) {
-            $previousValue = $sales_order_product;
+            $previousValue = $sales_order_product->price;
             $current_total_price = $sales_order_product->total_price;
             $sales_order_product->$key = $value;
             $sales_order_product->total_price = round($sales_order_product->price * $sales_order_product->quantity, 2);
             $sales_order_product->save();
 
-            //return total price
+            //calulate total price
             $total += $sales_order_product->total_price - $current_total_price;
 
             // create log
             if ($key == 'product_id') {
-                $description = "Change product from " . $previousValue->product_name . " to " . $sales_order_product->product_name;
+                $description = "Change product from <b>" . $previousValue->product_name . "</b> to " . $sales_order_product->product_name;
             } else {
-                $description = "Update product " . $sales_order_product->product_name . $key . " from " . $previousValue->$key . " to " . $value;
+                $description = "Update product " . $sales_order_product->product_name . " " . $key . " from " . number_format($previousValue, 2) . " to " . number_format($value, 2);
             }
 
-            $salesOrderlogRepository->createLog($sales_order, $admin_id,'admin', 1, $description);
+            $salesOrderlogRepository->createLog($sales_order, $admin_id, 'admin', 1, $description);
         }
-        return $total;
+        $salesOrderTotalRepository->updateSubtotalAndTotal($id, $total, "add");
     }
 
     public function deleteProductBySalesOrderId(int $sales_order_id)
     {
-        return SalesOrderProduct::where('sales_order_id',$sales_order_id)->delete();
+        return SalesOrderProduct::where('sales_order_id', $sales_order_id)->delete();
     }
 }

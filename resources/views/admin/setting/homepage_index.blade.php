@@ -35,8 +35,12 @@
                                                         {{ html()->file('main_slider_image')->accept('image/*')->class('form-control')->required() }}
                                                     </div>
                                                     <div class="mb-3">
+                                                        {{ html()->label('Mobile Image') }}
+                                                        {{ html()->file('mobile_image')->accept('image/*')->class('form-control')->required() }}
+                                                    </div>
+                                                    <div class="mb-3">
                                                         {{ html()->label('URL') }}
-                                                        {{ html()->text('main_url')->id('main_url')->placeholder('Enter URL')->class('form-control') }}
+                                                        {{ html()->text('main_url')->id('main_url')->placeholder('Enter URL')->class('form-control')->required() }}
                                                         <input type="text" name="type" value="main" hidden>
                                                     </div>
                                                 </div>
@@ -105,7 +109,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         {{ html()->label('URL') }}
-                                                        {{ html()->text('sub_url')->id('sub_url')->placeholder('Enter URL')->class('form-control') }}
+                                                        {{ html()->text('sub_url')->id('sub_url')->placeholder('Enter URL')->class('form-control')->required() }}
                                                         <input type="text" name="type" value="sub" hidden>
                                                     </div>
                                                 </div>

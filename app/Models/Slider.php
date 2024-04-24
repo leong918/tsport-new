@@ -29,6 +29,7 @@ class Slider extends Model
     protected $fillable = [
         'url',
         'image',
+        'mobile_image',
         'type',
     ];
 

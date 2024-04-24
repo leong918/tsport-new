@@ -24,10 +24,26 @@
             {{ html()->label('Published Date') }}
             <div class="input-group datePicker" data-td-target-input="nearest"
                 data-td-target-toggle="nearest">
-                <input id="publishedDatePicker" type="datetime" class="form-control" name="published_at"
-                    data-td-target="#published_at" data-td-toggle="datetimepicker" 
-                    value="{{ isset($model) ? \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $model->published_at)->format('d/m/Y') : null }}"/>
+                <input type="datetime" class="form-control" name="published_at"
+                    data-td-toggle="datetimepicker" 
+                    value="{{ isset($model) ? $model->published_at : null }}"/> 
             </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Image') }}
+            {{ html()->file('language[zh-CN][image]')->accept('image/*')->class('form-control')->required( isset($model) && $model->getParameters('zh-CN') ? false : true)}}
+            {{ html()->hidden('language[zh-CN][original_image]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->image : '') }}
+            <div class="text-center my-2">
+                <img class="img-fluid" {{isset($model) && $model->getParameters('zh-CN') ? 'src='.$model->getParameters('zh-CN')->image : ''}} />
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Description') }}
+            {{ html()->textarea('language[zh-CN][content]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->content : "")->class('form-control wysiwyg') }}
         </div>
     </div>
 </div>
@@ -36,13 +52,14 @@
 @parent
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 <script>
     $(document).ready(function() { 
-        $('#publishedDatePicker').tempusDominus({
-                localization: {
-                    format: 'dd/MM/yyyy'
-                }
-            });
+        $('.datePicker').tempusDominus({
+            localization: {
+                format: 'yyyy-MM-dd h:mm T'
+            }
+        });
 
         var editor_config = {
             path_absolute : "{{ config('app.url') .'/' }}",
@@ -121,24 +138,24 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
-                    title: '{{__("page.blog_added")}}',
-                    text: '{{__("page.txt_blog_added")}}',
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Blog Added',
                     icon: 'success',
                     confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
+                        confirmButtonText: 'OK',
                 });
                 setTimeout(function(){
                     window.location.replace('/admin/blog/index');
                 }, 1000);
             })
             .catch(error => {
-                swal.fire({
-                    title: '{{__("page.blog_fail_add")}}',
+                Swal.fire({
+                    title: 'Fail',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

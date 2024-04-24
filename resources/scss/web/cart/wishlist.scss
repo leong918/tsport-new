@@ -48,8 +48,12 @@
         position: relative;
         img{
             width: 100%;
-            min-height: 30vh;
+            height: 500px;
             object-fit: cover;
+
+            @media only screen and (max-width: 767px){
+                height: 300px;
+            }
         }
 
         .product-title-wrapper{
@@ -158,30 +162,9 @@
                 transition: clip-path 0.5s ease-in-out, opacity 0.4s ease-in-out;
             }
     
-            .product-img img.hide {
-                clip-path: ellipse(100% 50% at 50% 50%);
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                left: 0px;
-                width: 100%;
-                height: auto;
-            }
-    
-            .product-img:hover img.hide {
-                clip-path: none;
-                opacity: 1;
-            }
-    
-            .product-img:hover img.show {
-                opacity: 0;
-            }
-    
-    
-    
-    
             .wishlist-cart-container img.wishlist-hide,
             .wishlist-cart-container img.wishlist-hover-show,
+            .wishlist-cart-container img.wishlist-added,
             .wishlist-cart-container img.cart-hide,
             .wishlist-cart-container img.cart-hover-show {
                 width: 62px;
@@ -192,7 +175,8 @@
             }
     
             .wishlist-cart-container img.wishlist-hide,
-            .wishlist-cart-container img.wishlist-hover-show {
+            .wishlist-cart-container img.wishlist-hover-show,
+            .wishlist-cart-container img.wishlist-added {
                 position: absolute;
                 bottom: 0;
                 right: 0;
@@ -222,7 +206,36 @@
                 }
             }
     
+            .product-image{
+                overflow: hidden;
+                img.show{
+                    clip-path: ellipse(100% 100% at 50% 50%);
+                    transition: clip-path 0.5s, transform 0.3s ease-in-out;
+                    height: 310px;
+                    object-fit: cover;
+                    width: 100%;
+                }
+    
+                @media (min-width: 768px) and (max-width: 1200px){
+                    img.show{
+                        height: 268px;  
+                    }
+                }
+    
+                @media (max-width: 767px){
+                    img.show{
+                        height: 30vh;  
+                    }
+                }
+            }
+    
             .product-image:hover {
+                img.show {
+                    clip-path: ellipse(45% 41% at 50% 50%);
+                    transform: scale(1.2);
+                    transform-origin: center center;
+                }
+    
                 .wishlist-cart-container {
                     position: absolute;
                     opacity: 1;
@@ -285,18 +298,34 @@
             //rating-wishlist
             .product-info .rating-wishlist {
                 display: flex;
-                justify-content: space-between;
+                justify-content: left;
                 align-items: center;
                 padding-top: 10px;
     
+                @media (max-width: 1024px) {
+                    justify-content: space-between;
+                }
+
                 img.star-rating {
-                    width: 115px;
-                    @media only screen and (max-width:280px){
-                        width: 80px;
+                    width: 20px;
+
+                    &:not(:first-child){
+                        margin-left: 0.5rem;
                     }
+
+                    @media only screen and (max-width:320px){
+                        width: 17px;
+                    }
+                    
                     height: auto;
                 }
-    
+            }
+
+            .product-description {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
                 img.wishlist-mobile {
                     display: none;
     
@@ -320,6 +349,20 @@
                 padding-top: 10px;
     
                 img.cart-mobile {
+                    display: none;
+    
+                    @media (max-width: 1024px) {
+                        width: 40px;
+                        display: block;
+                    }
+    
+                    @media (max-width: 767px) {
+                        width: 40px;
+                        display: block;
+                    }
+                }
+
+                img.wishlist-mobile, img.wishlist-mobile-added {
                     display: none;
     
                     @media (max-width: 1024px) {
@@ -361,7 +404,6 @@
                 @media (max-width: 1024px) {}
     
                 @media (max-width: 767px) {
-                    font-size: 21px;
                     padding-top: 0px;
                 }
             }

@@ -1,13 +1,15 @@
 <div id="header">
     <!--floating-button-->
-    <a class="floating-img-button" href="https://wa.me/85254422598" target="_blank">
+    <a class="floating-img-button" href="https://wa.me/85254425298" target="_blank">
         <img class="show" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-1.png')}}" alt="Bootstrap">
         <img class="hide" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-2.png')}}" alt="Bootstrap">
     </a>
 
-    <div class="container-fluid fixed-top">
-        <div class="text-top">Free Shipping on Orders of $800 Within Hong Kong</div>
+    @if (isset($top_bar))
+    <div class="container-fluid fixed-top" style="background-color: {{ $top_bar->background_colour }}">
+        <div class="text-top">{!! $top_bar->content !!}</div>
     </div>
+    @endif
     
     <nav class="navbar bg-body-tertiary fixed-top">
         <div class="container">
@@ -40,16 +42,14 @@
                     @endif
 
                     <!--navbar-toggle-->
-                    <a class="navbar-toggler-concept" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                        <span class="narber-toggler-concept">
-                            <img src="{{asset('assets/web/assets/img/navigation/menu_icon.png')}}" alt="Bootstrap" width="25" height="24">
-                        </span>
+                    <a class="navbar-toggler-concept" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <img src="{{asset('assets/web/assets/img/navigation/menu_icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
                 </div>
             </div>
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header align-self-end">
-                    <a type="button" class="" data-bs-dismiss="offcanvas" aria-label="Close">
+                    <a data-bs-dismiss="offcanvas" aria-label="Close">
                         <img src="{{asset('assets/web/assets/img/navigation/cross.png')}}" alt="Bootstrap" width="30" height="30">
                     </a>
                 </div>
@@ -93,11 +93,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('web.voucher')}}">消費券 Consumption Voucher</a>
                         </li>
+                        @if(auth()->user())
                         <hr/>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('cart.wishlist')}}">Wishlist</a>
                         </li>
-                        @if(auth()->user())
                         <li class="nav-item">
                             <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">My Account</a>
                         </li>

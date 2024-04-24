@@ -31,6 +31,7 @@ class Country extends Model
      */
     protected $fillable = [
         'name',
+        'code',
         'delivery_partner',
         'min_spend_free_delivery',
         'delivery_flat_rate',

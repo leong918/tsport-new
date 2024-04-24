@@ -15,13 +15,6 @@
     <div class="card mb-3">
         <div class="card-header">
             <strong>Product</strong>
-            @if (isset($model) && $model->is_attribute == 0)
-                <button type="button" id="add_product_price" data-bs-toggle="modal" data-bs-target="#stockModal"
-                    class="btn btn-success permission float-end">
-                    Stock Adjustment
-                </button>
-            @endif
-
         </div>
         <div class="card-body">
             <div class="row product-field-wrapper">
@@ -45,26 +38,62 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Price') }}    
-                        {{ html()->number('product_price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->where('product_attribute_term_id', null)->first()->price : null )->required() }}
+                        {{ html()->label('Status') }}
+                        {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Category ID') }}
+                        {{ html()->label('Category') }}
                         {{ html()->select('category_id')->options($categoryDropdown)->class('form-control')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Brand ID') }}
+                        {{ html()->label('Brand') }}
                         {{ html()->select('brand_id')->options($brandDropdown)->class('form-control')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Status') }}
-                        {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
+                        {{ html()->label('Price') }}    
+                        {{ html()->number('product_price')->placeholder('Enter price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->where('product_attribute_term_id', null)->first()->price : null )->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Point') }}
+                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Quantity') }}
+                        {{ html()->number('quantity')->placeholder('Enter quantity')->attribute('min', 1)->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Has Attribute') }}
+                        {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Is New') }}
+                        {{ html()->select('is_new')->options(['No', 'Yes'])->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Is Best Seller') }}
+                        {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control')->required() }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Is Backorder') }}
+                        {{ html()->select('is_backorder')->options(['No', 'Yes'])->class('form-control is_backorder')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -82,52 +111,6 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Point') }}
-                        {{ html()->number('point')->placeholder('Enter point')->attribute('min', 0)->class('form-control') }}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('Sort') }}
-                        {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)->class('form-control')->required() }}
-                    </div>
-                </div>
-                @if (!isset($model))
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            {{ html()->label('Quantity') }}
-                            {{ html()->number('quantity')->placeholder('Enter quantity')->attribute('min', 1)->class('form-control')->required() }}
-                        </div>
-                    </div>
-                @endif
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('New') }}
-                        {{ html()->select('is_new')->options(['No', 'Yes'])->class('form-control')->required() }}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('Best Seller') }}
-                        {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control')->required() }}
-                    </div>
-                </div>
-                @if (!isset($model))
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            {{ html()->label('Has Attribute') }}
-                            {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
-                        </div>
-                    </div>
-                @endif
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        {{ html()->label('Has Backorder') }}
-                        {{ html()->select('is_backorder')->options(['No', 'Yes'])->class('form-control is_backorder')->required() }}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mb-3">
                         {{ html()->label('Related Product') }}
                         <select class="form-select" id="product-related-select" name="product_related[]"
                             data-placeholder="Choose related product" multiple>
@@ -140,6 +123,30 @@
                     </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Information') }}
+                        {{ html()->textarea('language[zh-CN][information]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->information : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Description') }}
+                        {{ html()->textarea('language[zh-CN][description]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->description : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Ingredient') }}
+                        {{ html()->textarea('language[zh-CN][ingredient]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->ingredient : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Usage') }}
+                        {{ html()->textarea('language[zh-CN][usage]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->usage : "")->class('form-control wysiwyg') }}
+                    </div>
+                </div>
+                <div class="col-md-12">
                     <div class="mb-3">
                         {{ html()->label('Image') }}
                         {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control')->required(isset($model) && $model->productImage->count() > 0 ? false : true) }}
@@ -246,14 +253,11 @@
 
         //-------- display product attribute field by on change (create product) -----------
         $('select[name="is_attribute"]').on('change', function() {
-
             if ($(this).val() == 1) {
-                $('input[name="quantity"]').prop('disabled', true).val('');
                 $('.product-attribute-input').show();
                 $('.optionContent .form-control').prop('disabled', false);
 
             } else {
-                $('input[name="quantity"]').prop('disabled', false);
                 $('.product-attribute-input').hide();
                 $('.optionContent .form-control').prop('disabled', true);
             }
@@ -347,23 +351,8 @@
         }
 
         //------------------------------------------------------------------------------------------
-        var additionalTermOption = 0;
-        var attributeCount = 1;
-        var attributeCountOnRender = $('.optionContent').length;
-
-        var optionContent = $('.optionContent').data('option-id');
-        var termWrappers = $('.optionContent[data-option-id="' + optionContent + '"]').find('.termWrapper');
-        var termCountOnRender = termWrappers.length;
-
-        if (attributeCountOnRender > 1) {
-            $('.optionContent:not(:first-child)').addClass('mt-3');
-            $('.optionContent:not(:first-child) .back').append(
-                '<button class="btn btn-danger btn-remove-option" type="button"><i class="fas fa-trash-alt"></i></button>'
-                );
-            $('.termWrapper:not(:first-child) .termBtnControl').append(
-                '<button class="btn btn-danger btn-remove-variation ms-2" type="button"><i class="fas fa-trash-alt"></i></button>'
-                )
-        }
+        var additionalTermOption = $('.optionContent .termWrapper').length;
+        var attributeCount = $('.optionContent').length;
 
         $('body').on('click', '.btn-remove-option', function() {
             $(this).parents('.optionContent').remove();
@@ -373,45 +362,22 @@
             $(this).parents('.termWrapper').remove();
         })
 
+        //----------------- add attribute term -------------------
         $('body').on('click', '.btn-addOption', function() {
+            var option_id = $(this).parents('.optionContent').data('option-id');
             var template = document.getElementById('optionVariationLayout').innerHTML;
-
-            var optionContent = $(this).closest('.optionContent');
-            var option_id = optionContent.data('option-id');
-            var termWrappers = optionContent.find('.termWrapper');
-            var termCountOnRender = termWrappers.length;
-
-            @if (isset($model))
-            var rendered = Mustache.render(template, {
-                id: option_id,
-                variation_id: termCountOnRender,
-            });
-            $(this).parents('.optionContent').find('.list-group').append(rendered);
-            termCountOnRender++;
-            
-            @else
             var rendered = Mustache.render(template, {
                 id: option_id,
                 variation_id: additionalTermOption,
             });
             $(this).parents('.optionContent').find('.list-group').append(rendered);
             additionalTermOption++;
-            @endif
         })
 
+
+        //------------ add attribute ------------------
         $('#addOptionBtn').on('click', function() {
             var template = document.getElementById('moreOptionLayout').innerHTML;
-            @if (isset($model))
-            var rendered = Mustache.render(template, {
-                id: attributeCountOnRender,
-                variation_id: additionalTermOption,
-            });
-            
-            $('#optionContent').append(rendered);
-            attributeCountOnRender++;
-            additionalTermOption++;
-
-            @else
             var rendered = Mustache.render(template, {
                 id: attributeCount,
                 variation_id: additionalTermOption,
@@ -420,12 +386,7 @@
             $('#optionContent').append(rendered);
             attributeCount++;
             additionalTermOption++;
-            @endif
-
-            // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender);
         })
-
-        // console.log(attributeCount, additionalTermOption, '?',  attributeCountOnRender, termCountOnRender);
 
 
         $("#product").submit(function(e) {

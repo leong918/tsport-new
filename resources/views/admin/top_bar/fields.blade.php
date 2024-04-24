@@ -1,16 +1,16 @@
 <x-alert />
 
 <div class="row mb-5">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="mb-3">
-            {{ html()->label('Title') }}
-            {{ html()->text('title')->placeholder('Enter title')->class('form-control title')->required() }}
+            {{ html()->label('Content') }}
+            {{ html()->textarea('content')->value(isset($model) ? $model->content : "")->class('form-control wysiwyg') }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
-            {{ html()->label('Font Size') }}
-            {{ html()->number('font_size')->attribute('min', 1)->class('form-control font_size')->required() }}
+            {{ html()->label('Name') }}
+            {{ html()->text('name')->placeholder('Enter name')->class('form-control name')->required() }}
         </div>
     </div>
     <div class="col-md-6">
@@ -22,13 +22,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Background Colour') }}
-            <input type="color" name="background_colour" class="form-control form-control-color background_colour" value="{{ isset($model) ? $model->background_colour : '#FFFFFF' }}">
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="mb-3">
-            {{ html()->label('Font Colour') }}
-            <input type="color" name="font_colour" class="form-control form-control-color font_colour" value="{{ isset($model) ? $model->font_colour : '#000000' }}">
+            <input type="color" name="background_color" class="form-control form-control-color background_color" value="{{ isset($model) ? $model->background_color : '#FFFFFF' }}">
         </div>
     </div>
 </div>
@@ -37,6 +31,7 @@
 @parent
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
+
 <script>
     $(document).ready(function() { 
         var editor_config = {
@@ -96,31 +91,23 @@
                     };
                 };
                 input.click();
+            },
+            setup: function(editor) {
+                editor.on('input', function(e) {
+                    $('#output').html(tinymce.activeEditor.getContent());
+                });
             }
         };
 
+        tinymce.init(editor_config);
+
         @if(isset($model))
-            $('.output').css('font-size', '{{ $model->font_size }}' + 'px');
-            $('.output').css('background-color', '{{ $model->background_colour }}');
-            $('.output').css('color', '{{ $model->font_colour }}');
+            $('.output').css('background-color', '{{ $model->background_color }}');
         @endif
 
-        $('.title').on('input', function() {
-            $('.output').val($(this).val());
-        });
-
-        $('.font_size').on('change, input', function (e) {
-            $('.output').css('font-size', $(this).val() + 'px');
-        });
-
-        $('.background_colour').on('change, input', function () {
+        $('.background_color').on('change, input', function () {
             $('.output').css('background-color', $(this).val());
         });
-
-        $('.font_colour').on('change, input', function () {
-            $('.output').css('color', $(this).val());
-        });
-        
 
         $("#top_bar").submit(function(e) {
             e.preventDefault();

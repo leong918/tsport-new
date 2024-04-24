@@ -27,23 +27,16 @@ class SalesOrder extends Model
     ];
 
     public const ORDER_STATUS = [
-        'PENDING' => 0,
+        'ON HOLD' => 0,
         'COMPLETED' => 1,
         'PROCESSING' => 2,
-        'ONHOLD' => 3,
-        'CANCELLED' => -1,
-        'FAILED' => -2,
+        'FAILED' => -1,
+        'CANCELLED' => -2,
         'REFUNDED' => -3,
     ];
 
-    public const PAYMENT_STATUS = [
-        'UNPAID' => 0,
-        'PAID' => 1,
-        'FAILED' => -1,
-    ];
-
     protected $table = 'sales_order';
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -64,8 +57,6 @@ class SalesOrder extends Model
         'point_earned',
         'point_used',
         'status',
-        'payment_status',
-        'shipping_fee_status',
         'first_name',
         'last_name',
         'company_name',
@@ -77,6 +68,7 @@ class SalesOrder extends Model
         'city',
         'address',
         'customer_note',
+        'level_change',
         'completed_at',
         'is_free_shipping',
         'is_pay_later',
@@ -103,18 +95,37 @@ class SalesOrder extends Model
         );
     }
 
-    public function salesOrderProduct() : HasMany
+    public function salesOrderProduct(): HasMany
     {
         return $this->hasMany(SalesOrderProduct::class);
     }
 
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function salesOrderLog() : HasMany
+    public function salesOrderLog(): HasMany
     {
         return $this->hasMany(SalesOrderLog::class);
+    }
+
+    public function salesOrderTotal(): HasMany
+    {
+        return $this->hasMany(SalesOrderTotal::class)
+            ->leftJoin('cart_rule', 'sales_order_total.cart_rule_id', '=', 'cart_rule.id')
+            ->orderBy('sales_order_total.sort')
+            ->orderBy('cart_rule.priority', 'desc')
+            ->selectRaw('sales_order_total.*');
+    }
+
+    public function getSalesOrderTotal(string $title)
+    {
+        return $this->salesOrderTotal->where('title', $title)->get();
+    }
+
+    public function checkVoucherExist(int $cart_rule_id)
+    {
+        return $this->salesOrderTotal->where('cart_rule_id', $cart_rule_id)->first();
     }
 }

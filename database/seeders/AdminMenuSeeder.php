@@ -151,7 +151,7 @@ class AdminMenuSeeder extends Seeder
             ],
             [
                 'parent_id' => 6,
-                'title' => 'Homepage Setting',
+                'title' => 'Homepage',
                 'icon' => null,
                 'url' => 'admin.setting.homepage_index',
                 'type' => 'system_config',
@@ -160,7 +160,61 @@ class AdminMenuSeeder extends Seeder
             ],
             [
                 'parent_id' => 6,
-                'title' => 'Top Bar Setting',
+                'title' => 'About',
+                'icon' => null,
+                'url' => 'admin.setting.about_index',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 6,
+                'title' => 'About-Membership',
+                'icon' => null,
+                'url' => 'admin.setting.about_membership',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 6,
+                'title' => 'About-PTC',
+                'icon' => null,
+                'url' => 'admin.faq.index',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 6,
+                'title' => 'About-Contact',
+                'icon' => null,
+                'url' => 'admin.setting.about_contact',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 6,
+                'title' => 'About-TNC',
+                'icon' => null,
+                'url' => 'admin.setting.about_tnc',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 6,
+                'title' => 'About-Shipping',
+                'icon' => null,
+                'url' => 'admin.setting.about_shipping',
+                'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 6,
+                'title' => 'Top Bar',
                 'icon' => null,
                 'url' => 'admin.top_bar.index',
                 'type' => 'system_config',

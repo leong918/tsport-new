@@ -20,6 +20,7 @@ class LevelChangeLog extends Model
         'user_id',
         'level_id',
         'new_level_id',
+        'sales_order_id',
         'remark',
         'previous_validity',
         'current_validity',

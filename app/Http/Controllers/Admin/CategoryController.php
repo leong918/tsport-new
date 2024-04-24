@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\Form\Category\UpdateCategoryRequest;
 use App\Http\Requests\Form\Category\CreateCategoryRequest;
 use App\Repositories\CategoryRepository;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
@@ -12,10 +13,14 @@ use Illuminate\Support\Facades\DB;
 class CategoryController extends BaseController
 {
     private CategoryRepository $categoryRepository;
+    private ProductRepository $productRepository;
 
-    public function __construct(CategoryRepository $categoryRepository)
-    {
+    public function __construct(
+        CategoryRepository $categoryRepository,
+        ProductRepository $productRepository
+    ) {
         $this->categoryRepository = $categoryRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function index(Request $request)
@@ -30,14 +35,13 @@ class CategoryController extends BaseController
                 })
                 ->addColumn('parent_category_name', function ($model) {
 
-                    if($model->parent_category_id){
+                    if ($model->parent_category_id) {
                         $parentCategory = $this->categoryRepository->find($model->parent_category_id);
 
-                        return $parentCategory->name ;
+                        return $parentCategory->name;
                     } else {
                         return '-';
                     }
-
                 })
                 ->addColumn('status', function ($model) {
                     $route = route('admin.category.status.post', ['id' => $model->id]);
@@ -105,6 +109,7 @@ class CategoryController extends BaseController
     {
         $this->categoryRepository->delete($id);
         $this->categoryRepository->deleteChildCategory($id);
+        $this->productRepository->deleteByCategoryId($id);
 
         return $this->response();
     }

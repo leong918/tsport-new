@@ -1,0 +1,3 @@
+<div>
+    <span class="editable btn-status badge bg-{{ $status == 1 ? 'success' : ($status == 0 ? 'primary' : ($status == 2 ? 'info' : ($status == 3 ? 'dark' : ($status == -1 ? 'danger' : ($status == -2 ? 'info' : 'secondary'))))) }}" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS)) }}' data-column="status" data-url="{{ $route }}" data-original-data="{{$status}}">{{ renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $status) }}</span>
+</div>
