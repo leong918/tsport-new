@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="mb-40 d-flex justify-content-between">
                                         <div class="input-container col-12">
-                                            {{ html()->text('phone_no')->placeholder('')->value(old('phone_no', $addressData['phone_no']))->required() }}
+                                            {{ html()->number('phone_no')->placeholder('')->value(old('phone_no', $addressData['phone_no']))->required() }}
                                             <label class="placeholder-label">Phone no.</label>
                                         </div>
                                     </div>

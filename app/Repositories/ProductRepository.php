@@ -110,7 +110,7 @@ class ProductRepository extends BaseRepository
         return Product::leftjoin('product_tag', 'product.id', '=', 'product_tag.product_id')
             ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->leftjoin('tag', 'tag.id', '=', 'product_tag.tag_id')
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
+            ->where(['product.status' => 1, 'tag.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->where(['product_price.code' => $currency_code])
             ->where(function ($query) use ($keyword) {
                 $query->where('tag.name', 'LIKE', '%' . $keyword . '%')
