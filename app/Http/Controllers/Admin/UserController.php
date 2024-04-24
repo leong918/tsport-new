@@ -85,6 +85,7 @@ class UserController extends BaseController
     public function update(UpdateUserRequest $request, int $id)
     {
         $data = $request->all();
+        $admin_id = auth()->guard('admin')->user()->id;
         if ($data['referral_email'] && $data['referral_phone_no']) {
             $user = $this->userRepository->getUserByEmail($data['referral_email'], $data['referral_phone_no']);
             if (!$user || $user->level_id <= 1) {
@@ -99,7 +100,7 @@ class UserController extends BaseController
             $data['country'] = $country->name;
         }
         
-        $this->userRepository->updateUser($data, $id);
+        $this->userRepository->updateUser($data, $id,$admin_id);
         return redirect(route('admin.user.index'))->with('success', "Successfully update user {$request->name}");
     }
 
