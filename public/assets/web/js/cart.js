@@ -8,12 +8,13 @@ $(document).ready(function () {
         var product_id = $(this).data('id');
         var url = $(this).data('url');
         var attribute = {};
+        var validation = true;
 
         if ($('.attribute-input').length > 0) {
             $('.attribute-input').each(function (i, obj) {
-                if (!$(obj).val()) {
-                    showSwal('Warning!', 'Please choose ' + obj.data('name'));
-                    return false;
+                if (!$(obj).val() && validation == true) {
+                    showSwal('Warning!', 'Please choose ' + $(obj).attr('data-name'));
+                    validation = false;
                 }
             });
 
@@ -22,15 +23,15 @@ $(document).ready(function () {
             });
         }
 
-        axios({
-            method: "post",
-            url: url,
-            data: {
-                product_id: product_id,
-                attribute: attribute
-            }
-        })
-            .then(response => {
+        if (validation == true) {
+            axios({
+                method: "post",
+                url: url,
+                data: {
+                    product_id: product_id,
+                    attribute: attribute
+                }
+            }).then(response => {
                 $('#cart-count').removeClass('d-none').text(response.data.cart_count);
 
                 swal.fire({
@@ -51,6 +52,7 @@ $(document).ready(function () {
             .catch(error => {
                 showSwal('Fail!', error.response.data.msg);
             });
+        }
     })
 
     //--------- deskstop click wishlist btn -------------------
