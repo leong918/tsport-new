@@ -29,7 +29,7 @@ class SubscriberMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'admin.emails.customer_note_mail',
+            view: 'admin.emails.subscriber_mail',
         );
     }
 
