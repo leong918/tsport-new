@@ -37,6 +37,10 @@ class UserRepository extends BaseRepository
         return User::query()->orderBy('created_at', 'desc');
     }
 
+    public function getActiveUser(){
+        return User::where('status',1)->get();
+    }
+    
     public function createUser(array $input)
     {
         $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
