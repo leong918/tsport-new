@@ -243,6 +243,7 @@ class SalesOrderRepository extends BaseRepository
             ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
             ->leftJoin('country', 'country.id', '=', 'sales_order.country_id')
             ->whereNull('sales_order_product.deleted_at')
+            ->where(['country.is_export_shipany' => 1, 'country.status' => 1])
             ->orderBy('sales_order.id', 'desc');
         foreach (array_filter($form_data, 'filter') as $key => $value) {
             if ($key === 'sales_order.sales_order_id') {

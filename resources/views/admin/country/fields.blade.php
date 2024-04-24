@@ -37,6 +37,12 @@
             {{ html()->select('status')->options(renderSelect(Country::STATUS))->class('form-control')->required() }}
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="mb-3">
+            {{ html()->label('Shipany Export') }}
+            {{ html()->select('is_export_shipany')->options(renderSelect(Country::SHIPANYEXPORT))->class('form-control')->required() }}
+        </div>
+    </div>
 </div>
 
 <div class="mb-3 float-end">
