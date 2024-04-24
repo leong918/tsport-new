@@ -40,6 +40,10 @@ class UserRepository extends BaseRepository
     public function createUser(array $input)
     {
         $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
+        
+        if(isset($input['level_validity'])){
+            $input['level_validity'] = Carbon::createFromFormat('d/m/Y', $input['level_validity'])->startOfDay();
+        }
         $model = new User();
         $model->fill($input);
         $model->save();
@@ -55,7 +59,9 @@ class UserRepository extends BaseRepository
         if (isset($input['dob'])) {
             $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
         }
-
+        if(isset($input['level_validity'])){
+            $input['level_validity'] = Carbon::createFromFormat('d/m/Y', $input['level_validity'])->startOfDay();
+        }
         $model = User::findOrFail($id);
         $model->fill($input);
         $model->save();

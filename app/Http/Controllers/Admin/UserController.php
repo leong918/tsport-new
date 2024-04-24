@@ -47,7 +47,8 @@ class UserController extends BaseController
     public function create()
     {
         $countryDropdown = $this->countryRepository->dropdown();
-        return $this->view('user.create', compact('countryDropdown'));
+        $levelDropdown = $this->levelRepository->dropdown();
+        return $this->view('user.create', compact('countryDropdown',  'levelDropdown'));
     }
 
     public function store(CreateUserRequest $request)
@@ -77,7 +78,8 @@ class UserController extends BaseController
     {
         $model = $this->userRepository->find($id);
         $countryDropdown = $this->countryRepository->dropdown();
-        return $this->view('user.update', compact('model', 'countryDropdown'));
+        $levelDropdown = $this->levelRepository->dropdown();
+        return $this->view('user.update', compact('model', 'countryDropdown', 'levelDropdown'));
     }
 
     public function update(UpdateUserRequest $request, int $id)

@@ -127,11 +127,6 @@
     </div>
 </div>
 
-<div class="mb-3 float-end">
-    <a href="{{ route("admin.user.index") }}" class="btn btn-warning">Cancel</a>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</div>
-
 @section('script')
 @parent
 <script>
