@@ -321,7 +321,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#product-left-select, #product-center-select, #product-recommended-select').select2({
+            $('#product-center-select, #product-recommended-select').select2({
                 theme: "bootstrap-5",
                 width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
                     'style',
@@ -330,7 +330,7 @@
                 allowClear: true,
             });
 
-            $("#product-right-select").select2({
+            $("#product-right-select, #product-left-select").select2({
                 theme: "bootstrap-5",
                 width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
                     'style',
