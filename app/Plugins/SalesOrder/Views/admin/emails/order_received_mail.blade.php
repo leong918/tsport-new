@@ -6,7 +6,7 @@
     @endslot
 
     <div style="font-size:14px;">
-        <img src="{{ $image }}">
+        <img src="{{ $image }}" style="width:100%; object-fit:cover">
         <div style="padding:20px 0px; text-align:center; background-color:#aba470; color:white">Thank you for your order</div>
     </div>
     <div style="margin: 20px 0px; font-size:14px;">
