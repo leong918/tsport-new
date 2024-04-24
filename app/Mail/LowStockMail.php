@@ -32,6 +32,6 @@ class LowStockMail extends Mailable
     {
         $subject = "Low Stock Notification";
 
-        return $this->markdown('web.emails.low_stock_mail')->subject($subject);
+        return $this->markdown('admin.emails.low_stock_mail')->subject($subject);
     }
 }

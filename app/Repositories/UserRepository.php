@@ -37,9 +37,17 @@ class UserRepository extends BaseRepository
         return User::query()->orderBy('created_at', 'desc');
     }
 
+    public function getActiveUser(){
+        return User::where('status',1)->get();
+    }
+    
     public function createUser(array $input)
     {
         $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
+        
+        if(isset($input['level_validity'])){
+            $input['level_validity'] = Carbon::createFromFormat('d/m/Y', $input['level_validity'])->startOfDay();
+        }
         $model = new User();
         $model->fill($input);
         $model->save();
@@ -47,18 +55,42 @@ class UserRepository extends BaseRepository
         return $model;
     }
 
-    public function updateUser(array $input, int $id)
+    public function updateUser(array $input, int $id, int $admin_id)
     {
+        $model = User::findOrFail($id);
         if (isset($input['password']) && trim($input['password']) === '') {
             unset($input['password']);
         }
         if (isset($input['dob'])) {
             $input['dob'] = Carbon::createFromFormat('d/m/Y', $input['dob'])->startOfDay();
         }
+        if(isset($input['level_validity'])){
+            $input['level_validity'] = Carbon::createFromFormat('d/m/Y', $input['level_validity'])->startOfDay();
+        }
+        
+        //create level change log
+        if($input['level_id'] != $model->level_id){
 
-        $model = User::findOrFail($id);
+            $levelChangeLogRepository = new LevelChangeLogRepository(new Container());
+            $adminRepository = new AdminRepository(new Container());
+            $admin = $adminRepository->find($admin_id);
+
+            //level log data
+            $data['user_id'] = $model->id;
+            $data['level_id'] = $model->level_id;
+            $data['new_level_id'] = $input['level_id'];
+            $data['remark'] = 'Level updated due to changes from admin site by '.$admin->name;
+            $data['previous_validity'] = $model->level_validity;
+            $data['current_validity'] = $input['level_validity'];
+
+            //create level change log
+            $levelChangeLogRepository->createLevelLog($data);
+        }
+
         $model->fill($input);
         $model->save();
+        
+
     }
 
     public function updateSession($user_id)

@@ -13,8 +13,8 @@
     </div>
     <div style="margin: 20px 0px">
         <p style="font-size:14px;">Hi {{ $sales_order->user->first_name }},</p>
-        <p style="font-size:14px;">Your oder status has been updated to <span style="color:#aba470;"><b>{{ $status }}</b></span>.</p>
-        <p style="font-size:14px;">As a reminder, here are your order details:</p>
+        <p style="font-size:14px;">Your Order ({{ $sales_order->sales_order_id }}) has updated a note. <br> <b> {{ $sales_order->customer_note }} </b></p>
+        <p style="font-size:14px;">As a reminder, here are your order details: </p>
     </div>
     <div>
         <h1 style="color:#aba470">[Order #{{ $sales_order->sales_order_id  }}] ({{ $date }})</h1>

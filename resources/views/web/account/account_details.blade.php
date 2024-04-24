@@ -136,7 +136,7 @@
                     window.location.href = "{{ route('web.home') }}";
                 });
             })
-            .catch(error => {s
+            .catch(error => {
                 let errorMessage = '';
                 if (typeof error.response.data.msg === 'object') {
                     Object.keys(error.response.data.msg).forEach(key => {
