@@ -35,6 +35,10 @@
                                                         {{ html()->file('main_slider_image')->accept('image/*')->class('form-control')->required() }}
                                                     </div>
                                                     <div class="mb-3">
+                                                        {{ html()->label('Mobile Image') }}
+                                                        {{ html()->file('mobile_image')->accept('image/*')->class('form-control')->required() }}
+                                                    </div>
+                                                    <div class="mb-3">
                                                         {{ html()->label('URL') }}
                                                         {{ html()->text('main_url')->id('main_url')->placeholder('Enter URL')->class('form-control')->required() }}
                                                         <input type="text" name="type" value="main" hidden>

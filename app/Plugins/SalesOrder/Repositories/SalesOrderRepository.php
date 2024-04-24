@@ -230,7 +230,7 @@ class SalesOrderRepository extends BaseRepository
     {
         return SalesOrder::leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
             ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
-            ->leftJoin('country','country.id', '=', 'sales_order.country_id')
+            ->leftJoin('country', 'country.id', '=', 'sales_order.country_id')
             ->whereIn('sales_order.id', $order_id_list)
             ->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku, country.code as country_code')
             ->get();
@@ -241,9 +241,9 @@ class SalesOrderRepository extends BaseRepository
 
         $models = SalesOrder::leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
             ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
-            ->leftJoin('country','country.id', '=', 'sales_order.country_id')
+            ->leftJoin('country', 'country.id', '=', 'sales_order.country_id')
             ->whereNull('sales_order_product.deleted_at')
-            ->orderBy('sales_order.id','desc');
+            ->orderBy('sales_order.id', 'desc');
         foreach (array_filter($form_data, 'filter') as $key => $value) {
             if ($key === 'sales_order.sales_order_id') {
                 $models->where($key, 'like', "%{$value}%");
@@ -285,9 +285,9 @@ class SalesOrderRepository extends BaseRepository
             }
         }
 
-        $models->with('salesOrderTotal', function($query) {
-                $query->where('code', 'coupon');
-            })
+        $models->with('salesOrderTotal', function ($query) {
+            $query->where('code', 'coupon');
+        })
             ->select(
                 'sales_order.id',
                 'sales_order.sales_order_id as order_id',
@@ -297,7 +297,7 @@ class SalesOrderRepository extends BaseRepository
                 DB::raw('sales_order.total as net_sales')
             )
             ->groupBy('sales_order.id')->get();
-        
+
         return $models;
     }
 
@@ -673,30 +673,15 @@ class SalesOrderRepository extends BaseRepository
                 $description = "Product " . ($action == "ADD" ? "added" : "deducted") . " due to stripe payment " . ($action == "ADD" ? "succeed." : "failed.");
             }
 
-            if ($sales_order_product->product_attribute_term) {
-                $productRepository = new ProductAttributeTermRepository(new Container());
-                $product_attribute_term_list = json_decode($sales_order_product->product_attribute_term);
+            $productRepository = new ProductRepository(new Container());
+            $product = $productRepository->find($sales_order_product->product_id);
 
-                foreach ($product_attribute_term_list as $value) {
-                    $product_attribute_term = $productRepository->find($value);
-                    $product_attribute_term->quantity = $action == "ADD" ? $product_attribute_term->quantity += $sales_order_product->quantity : $product_attribute_term->quantity -= $sales_order_product->quantity;
-                    $product_attribute_term->save();
+            $product->quantity = $action == "ADD" ? $product->quantity += $sales_order_product->quantity : $product->quantity -= $sales_order_product->quantity;
+            $product->save();
 
-                    $data['stock_option'] = $action == "ADD" ? 0 : 1;
-                    $data['stock_amount'] = $sales_order_product->quantity;
-                    $productBalanceLogRepository->createProductBalanceLog($product_attribute_term, $data, null, $description);
-                }
-            } else {
-                $productRepository = new ProductRepository(new Container());
-                $product = $productRepository->find($sales_order_product->product_id);
-
-                $product->quantity = $action == "ADD" ? $product->quantity += $sales_order_product->quantity : $product->quantity -= $sales_order_product->quantity;
-                $product->save();
-
-                $data['type'] = $action;
-                $data['quantity'] = $sales_order_product->quantity;
-                $productBalanceLogRepository->createProductBalanceLog($product, null, $data, $description);
-            }
+            $data['type'] = $action;
+            $data['quantity'] = $sales_order_product->quantity;
+            $productBalanceLogRepository->createProductBalanceLog($product, $data, $description);
         }
     }
 }
