@@ -68,7 +68,7 @@
                             <label class="placeholder-label">Referrer email</label>
                         </div>
                         <div class="mb-40 input-container">
-                            {{ html()->text('referral_phone_no')->placeholder('')->class('') }}
+                            {{ html()->number('referral_phone_no')->placeholder('')->class('') }}
                             <label class="placeholder-label">Referrer phone no.</label>
                         </div>
                         <div class="tnc-wrapper">

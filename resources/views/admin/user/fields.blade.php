@@ -44,13 +44,13 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Referral Email') }}
-            {{ html()->text('referral_email')->placeholder('Enter referral email')->class('form-control') }}
+            {{ html()->email('referral_email')->placeholder('Enter referral email')->class('form-control') }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Referral Phone no') }}
-            {{ html()->text('referral_phone_no')->placeholder('Enter referral phone no')->class('form-control') }}
+            {{ html()->number('referral_phone_no')->placeholder('Enter referral phone no')->class('form-control') }}
         </div>
     </div>
     <div class="col-md-6">
@@ -86,7 +86,7 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Address Email') }}
-            {{ html()->text('address_email')->placeholder('Enter address email')->class('form-control') }}
+            {{ html()->email('address_email')->placeholder('Enter address email')->class('form-control') }}
         </div>
     </div>
     <div class="col-md-6">
