@@ -16,10 +16,10 @@ return new class extends Migration
             $table->bigInteger('product_id');
             $table->string("language");
             $table->string("name");
-            $table->longText("information");
-            $table->longText("description");
-            $table->longText("ingredient");
-            $table->longText("usage");
+            $table->longText("information")->nullable();
+            $table->longText("description")->nullable();
+            $table->longText("ingredient")->nullable();
+            $table->longText("usage")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
