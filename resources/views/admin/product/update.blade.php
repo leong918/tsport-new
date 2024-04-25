@@ -64,6 +64,24 @@
                                                                                             <textarea class="form-control" required rows="3"
                                                                                                 name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_name]">{{ $term->name }}</textarea>
                                                                                         </div>
+                                                                                        <div class="m-2 ms-0">
+                                                                                            <label
+                                                                                                for="">SKU</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                required
+                                                                                                name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_sku]"
+                                                                                                value="{{ $term->sku }}">
+                                                                                        </div>
+                                                                                        <div class="m-2 ms-0">
+                                                                                            <label
+                                                                                                for="">Quantity</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                required
+                                                                                                name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_qty]"
+                                                                                                value="{{ $term->quantity }}">
+                                                                                        </div>
                                                                                     </div>
                                                                                     <div class="col-md-5 col-5">
                                                                                         <div class="m-2 ms-2">
@@ -143,6 +161,18 @@
                                                                                 <div class="m-2 ms-0">
                                                                                     <textarea type="text" class="form-control" required placeholder="{{ __('Attribute Term') }}" rows="3"
                                                                                         name="option[0][variation][0][term_name]"></textarea>
+                                                                                </div>
+                                                                                <div class="m-2 ms-0">
+                                                                                    <input type="text"
+                                                                                        class="form-control" required
+                                                                                        placeholder="{{ __('SKU') }}"
+                                                                                        name="option[0][variation][0][term_sku]">
+                                                                                </div>
+                                                                                <div class="m-2 ms-0">
+                                                                                    <input type="number"
+                                                                                        class="form-control" required
+                                                                                        placeholder="{{ __('Quantity') }}"
+                                                                                        name="option[0][variation][0][term_qty]">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-md-5 col-5">
@@ -231,6 +261,12 @@
                                     <div class="m-2 ms-0">
                                         <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="3"></textarea>
                                     </div>
+                                    <div class="m-2 ms-0">
+                                        <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
+                                    </div>
+                                    <div class="m-2 ms-0">
+                                        <input type="number" class="form-control" required placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
+                                    </div>
                                 </div>
                                 <div class="col-md-5 col-5">
                                     <div class="m-2 ms-2">
@@ -274,6 +310,12 @@
                 <div class="col-md-6 col-6 border-end">
                     <div class="m-2 ms-0">
                         <textarea class="form-control" required placeholder="{{__('Attribute Term')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_name]" rows="3"></textarea>
+                    </div>
+                    <div class="m-2 ms-0">
+                        <input type="text" class="form-control" required placeholder="{{__('SKU')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_sku]">
+                    </div>
+                    <div class="m-2 ms-0">
+                        <input type="number" class="form-control" required placeholder="{{__('Quantity')}}" name="option[@{{id}}][variation][@{{ variation_id }}][term_qty]">
                     </div>
                 </div>
                 <div class="col-md-5 col-5">

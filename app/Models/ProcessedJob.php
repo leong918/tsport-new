@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class ProductBalanceLog extends Model
+class ProcessedJob extends Model
 {
     use SoftDeletes;
 
@@ -17,7 +17,8 @@ class ProductBalanceLog extends Model
      */
     public static $rules = [];
 
-    protected $table = 'product_balance_log';
+    
+    protected $table = 'processed_job';
 
     /**
      * The attributes that are mass assignable.
@@ -25,11 +26,8 @@ class ProductBalanceLog extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'product_id',
-        'product_attribute_term_id',
-        'type',
-        'quantity',
-        'remark',
+        'name',
+        'end_at'
     ];
 
     /**
@@ -37,14 +35,17 @@ class ProductBalanceLog extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [];
+    protected $hidden = [
+    ];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [];
+    protected $casts = [
+
+    ];
 
     protected function createdAt(): Attribute
     {

@@ -99,17 +99,17 @@
                         <div class="content-wrapper">
                             {!! $product->getParameters('zh-CN')->additional_information !!}
 
-                            @if ($product->productAttribute->where('status', 1)->where('is_variation', 1)->count() > 0)
+                            @if ($product->productAttribute->where('status', 1)->where('is_variation', 0)->count() > 0)
                                 <div class="row mt-5">
                                     <div class="col-md-4">
                                         <div>Product Attribute</div>
-                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 1) as $product_attribute)
+                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 0) as $product_attribute)
                                             <div class="mt-2">{{ $product_attribute->name }}</div>
                                         @endforeach
                                     </div>
                                     <div class="col-md-8">
                                         <div>Variation</div>
-                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 1) as $product_attribute)
+                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 0) as $product_attribute)
                                             <div class="mt-2">
                                                 @php
                                                     $termNames = '';

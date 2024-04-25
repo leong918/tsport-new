@@ -78,6 +78,15 @@ class AdminMenuSeeder extends Seeder
                 'status' => 1
             ],
             [
+                'parent_id' => null,
+                'title' => 'Email',
+                'icon' => 'fa-solid fa-envelope',
+                'url' => null,
+                'type' => 'marketing',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
                 'parent_id' => 1,
                 'title' => 'Admin List',
                 'icon' => null,
@@ -236,6 +245,15 @@ class AdminMenuSeeder extends Seeder
                 'icon' => null,
                 'url' => 'admin.country.index',
                 'type' => 'system_config',
+                'sort' => 1,
+                'status' => 1
+            ],
+            [
+                'parent_id' => 8,
+                'title' => 'Email List',
+                'icon' => null,
+                'url' => 'admin.email_content.index',
+                'type' => 'marketing',
                 'sort' => 1,
                 'status' => 1
             ],

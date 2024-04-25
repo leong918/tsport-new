@@ -239,6 +239,8 @@ $(document).ready(function(){
 
     $(document).on('click', '#editButton', function(e){
         e.preventDefault();
+        $(this).attr('disabled', 'disabled');
+        $('#closeEditButton').attr('disabled', 'disabled');
         var inputType = $(this).parent().data('input-type');
         var url = $(this).parent().data('url');
         var column = $(this).parent().data('column');
@@ -275,8 +277,11 @@ $(document).ready(function(){
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: 'OK',
+                }).then((result) => {
+                    window.location.reload();
                 });
             });
+    
     });
 
     // Event handler for the close button
@@ -286,7 +291,7 @@ $(document).ready(function(){
         var originalUrl = $(this).parent().data('url');
         var originalData = $(this).parent().data('original-data');
         var originalElement = '';
-        if(originalInputType == 'text' || originalInputType == 'number'){
+        if(originalInputType == 'text' || originalInputType == 'number' || originalInputType == 'textarea'){
             originalElement = $("<span class='editable' data-input-type='" + originalInputType + "' data-column='" + originalColumn + "' data-url='" + originalUrl + "' data-original-data='" + originalData + "'></span>").html(originalData);
         }else if (originalInputType == 'select'){
             if(originalColumn == 'status'){

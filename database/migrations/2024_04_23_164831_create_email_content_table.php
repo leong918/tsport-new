@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_attribute_term', function (Blueprint $table) {
+        Schema::create('email_content', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id');
-            $table->bigInteger('product_attribute_id');
-            $table->string('name');
-            $table->string('sku')->nullable();
-            $table->integer('quantity')->default(0);
-            $table->integer("point_value")->default(0);
+            $table->text("subject");
+            $table->longtext("content");
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_attribute_term');
+        Schema::dropIfExists('email_content');
     }
 };

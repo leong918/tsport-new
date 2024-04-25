@@ -132,7 +132,7 @@ class AppController extends BaseController
 
     public function blog()
     {
-        $blog_list = $this->blogRepository->getListing()->get();
+        $blog_list = $this->blogRepository->getActiveListing();
         return $this->view('blog', compact('blog_list'));
     }
 

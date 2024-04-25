@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('brand_id');
             $table->bigInteger('category_id');
             $table->text("name");
-            $table->string("sku")->unique();
+            $table->text("sku");
             $table->text("alias");
             $table->integer("quantity")->default(0);
             $table->integer("point_value")->default(0);
