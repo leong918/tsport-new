@@ -80,6 +80,7 @@
                                 About
                             </button>
                             <ul class="dropdown-menu dropdown-about">
+                                <li><a class="dropdown-item" href="{{route('about.index')}}">About</a></li>
                                 <li><a class="dropdown-item" href="{{route('about.membership')}}">Membership</a></li>
                                 <li><a class="dropdown-item" href="{{route('about.points')}}">Point to Cash Programme</a></li>
                                 <li><a class="dropdown-item" href="{{route('about.contact')}}">Contact</a></li>
