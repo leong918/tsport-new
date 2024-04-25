@@ -85,7 +85,6 @@ class ProductAttributeTermRepository extends BaseRepository
     {
         $productAttributeRepository = new ProductAttributeRepository(new Container());
         $productAttribute = $productAttributeRepository->find($model->id);
-
         foreach ($input['variation'] as $key => $term) {
             if (str_contains($key, 'old')) {
                 $attribute_term_id = str_replace('old-', '', $key);
@@ -100,14 +99,25 @@ class ProductAttributeTermRepository extends BaseRepository
                     $term_model->quantity = $term['term_qty'];
 
                     $productBalanceLog = new ProductBalanceLogRepository(new Container());
-                    $productBalanceLog->createProductBalanceLog($model, $stockInput, $remark);
+                    $productBalanceLog->createProductBalanceLog($term_model, $stockInput, $remark);
                 }
+
+                $term_model->name = $term['term_name'];
+                $term_model->sku = $term['term_sku'];
+                $term_model->point_value = $term['term_add_on_point'];
+                $term_model->save();
             } else {
                 $term_model = new ProductAttributeTerm();
                 $term_model->quantity = $term['term_qty'];
+                $term_model->product_attribute_id = $productAttribute->id;
+                $term_model->product_id = $productAttribute->product_id;
+                $term_model->name = $term['term_name'];
+                $term_model->sku = $term['term_sku'];
+                $term_model->point_value = $term['term_add_on_point'];
+                $term_model->save();
 
                 if ($term['term_qty'] > 0) {
-                    $remark = 'Add new product attribute term';
+                    $remark = 'Update new product attribute term';
                     $stockInput['quantity'] = $term['term_qty'];
                     $stockInput['type'] = 'IN';
 
@@ -115,13 +125,6 @@ class ProductAttributeTermRepository extends BaseRepository
                     $productBalanceLog->createProductBalanceLog($term_model, $stockInput, $remark);
                 }
             }
-
-            $term_model->product_attribute_id = $productAttribute->id;
-            $term_model->product_id = $productAttribute->product_id;
-            $term_model->name = $term['term_name'];
-            $term_model->sku = $term['term_sku'];
-            $term_model->point_value = $term['term_add_on_point'];
-            $term_model->save();
 
             $productPrice = new ProductPriceRepository(new Container());
             $productPrice->createAttributeTermPrice($term, $term_model);

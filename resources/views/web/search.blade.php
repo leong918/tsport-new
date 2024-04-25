@@ -3,7 +3,7 @@
         <div>
             {{ html()->form('GET', route("web.product"))->id('search')->open()  }}
                 <div class="search-inner">
-                    {{ html()->text('search_keyword')->placeholder('Search')->class('')->required() }}
+                    {{ html()->text('search_keyword')->placeholder('Search')->class('') }}
                     <div class="cross-to-close">
                         <img src="{{asset('assets/web/assets/img/shopping_cart/remove.png')}}" alt="">
                     </div>

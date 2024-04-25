@@ -74,7 +74,6 @@
         })
 
         $('button[type="submit"]').click(function(e) {
-            console.log('here')
             e.preventDefault();
             var isValid = true;
 
