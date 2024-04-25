@@ -367,7 +367,6 @@ class SalesOrderRepository extends BaseRepository
                 if ($key == 'status') {
                     //update success order if order processing/completed
                     if ($previousValue == 0 && $value > 0) {
-                        $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
                         $this->updateSuccessOrder($sales_order);
                     }
                     //update failed order if order failed/cancelled/refunded

@@ -338,7 +338,7 @@
                 <div class="swiper mySwiper-category">
                     <div class="swiper-wrapper">
                         @foreach ($more_discover_category_list as $category)
-                        <div class="swiper-slide brand-img">
+                        <div class="swiper-slide more-discover-img">
                             <a href="{{ route('web.product', ['category_id' => $category->id ]) }}">
                                 <img src="{{$category->image}}">
                             </a>
