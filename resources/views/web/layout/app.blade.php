@@ -74,11 +74,10 @@
         })
 
         $('button[type="submit"]').click(function(e) {
-            console.log('here')
             e.preventDefault();
             var isValid = true;
 
-            $(':input[required]').each(function() {
+            $(this).parents('form').find(':input[required]').each(function() {
                 if ($(this).val().trim() === '') {
                     isValid = false;
                     return false;
