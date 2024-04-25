@@ -675,7 +675,7 @@ class SalesOrderRepository extends BaseRepository
                 $description = "Product " . ($action == "ADD" ? "added" : "deducted") . " due to stripe payment " . ($action == "ADD" ? "succeed." : "failed.");
             }
 
-            if ($sales_order_product->product_attribute_term) {
+            if ($sales_order_product->product_attribute_term && $sales_order_product->product_attribute_term != '[]') {
                 $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
                 $product_attribute_term_list = json_decode($sales_order_product->product_attribute_term);
 
