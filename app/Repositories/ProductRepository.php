@@ -218,7 +218,6 @@ class ProductRepository extends BaseRepository
 
     public function createProduct(array $input)
     {
-        $this->verifyDescription($input);
 
         $input['alias'] = strtolower($input['alias']);
         $model = new Product();
@@ -261,8 +260,6 @@ class ProductRepository extends BaseRepository
 
     public function updateProduct(array $input, int $id)
     {
-        $this->verifyDescription($input);
-
         $input['alias'] = strtolower($input['alias']);
         $model = Product::findOrFail($id);
         $original_quantity = $model->quantity;
@@ -322,24 +319,6 @@ class ProductRepository extends BaseRepository
         $model = Product::find($id);
         $model->status = !$model->status;
         $model->save();
-    }
-
-    private function verifyDescription($input)
-    {
-        foreach ($input['language'] as $key => $language) {
-            if (isset($language['information']) == false) {
-                throw new \Exception(__('Information cannot be empty!'));
-            }
-            if (isset($language['description']) == false) {
-                throw new \Exception(__('Description cannot be empty!'));
-            }
-            if (isset($language['ingredient']) == false) {
-                throw new \Exception(__('Ingredient cannot be empty!'));
-            }
-            if (isset($language['usage']) == false) {
-                throw new \Exception(__('Usage cannot be empty!'));
-            }
-        }
     }
 
     public function calculatePointEarned($user, $user_cart)

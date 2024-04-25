@@ -92,7 +92,7 @@
                                                                                                 required min="0"
                                                                                                 step="0.01"
                                                                                                 name="option[old-{{ $attribute->id }}][variation][old-{{ $term->id }}][term_add_on_price]"
-                                                                                                value="{{ $term->getCurrencyParameters('HKD')->price }}">
+                                                                                                value="{{ $term->getCurrencyParameters('HKD') ? $term->getCurrencyParameters('HKD')->price : 0 }}">
                                                                                         </div>
                                                                                         <div class="m-2 ms-2">
                                                                                             <label for="">Add On
