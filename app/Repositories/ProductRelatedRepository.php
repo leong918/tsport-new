@@ -38,7 +38,7 @@ class ProductRelatedRepository extends BaseRepository
 
     public function createProductRelated(array $input, int $product_id)
     {
-        ProductRelated::where('product_id', $product_id)->delete();
+        ProductRelated::where('related_product_id', $product_id)->delete();
 
         foreach($input['product_related'] as $data){
 

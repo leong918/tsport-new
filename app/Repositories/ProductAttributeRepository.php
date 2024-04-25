@@ -83,6 +83,28 @@ class ProductAttributeRepository extends BaseRepository
         }
     }
 
+    public function deleteAllAttribute($product_id)
+    {
+        // Delete unused product attribute
+        $productAttributeDelete = ProductAttribute::where('product_id', $product_id);
+
+        if ($productAttributeDelete->count() > 0) {
+            $userCartRepository = new UserCartRepository(new Container());
+            $userCartRepository->removeDeletedProductCart($productAttributeDelete, $product_id, 'attribute');
+            $productAttributeDelete->delete();
+        }
+
+        // Delete unused product attribute term
+        $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+        $productAttributeTermDelete = $productAttributeTermRepository->makeModel()->where('product_id', $product_id);
+
+        if ($productAttributeTermDelete->count() > 0) {
+            $userCartRepository = new UserCartRepository(new Container());
+            $userCartRepository->removeDeletedProductCart($productAttributeTermDelete, $product_id, 'term');
+            $productAttributeTermDelete->delete();
+        }
+    }
+
     public function deleteUnusedAttribute($input, $product_id)
     {
         // Delete unused product attribute
@@ -92,11 +114,13 @@ class ProductAttributeRepository extends BaseRepository
             return strpos($key, 'old') !== false;
         }, ARRAY_FILTER_USE_KEY)));
 
-        $productAttributeDelete = ProductAttribute::whereNotIn('id', $resultKeys);
+        $productAttributeDelete = ProductAttribute::where('product_id', $product_id)->whereNotIn('id', $resultKeys);
 
-        $userCartRepository = new UserCartRepository(new Container());
-        $userCartRepository->removeDeletedProductCart($productAttributeDelete, $product_id, 'attribute');
-        $productAttributeDelete->delete();
+        if ($productAttributeDelete->count() > 0) {
+            $userCartRepository = new UserCartRepository(new Container());
+            $userCartRepository->removeDeletedProductCart($productAttributeDelete, $product_id, 'attribute');
+            $productAttributeDelete->delete();
+        }
 
         // Delete unused product attribute term
         $variationKeys = array();
@@ -111,11 +135,13 @@ class ProductAttributeRepository extends BaseRepository
         }, $variationKeys);
 
         $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
-        $productAttributeTermDelete = $productAttributeTermRepository->makeModel()->whereNotIn('id', $resultKeys);
+        $productAttributeTermDelete = $productAttributeTermRepository->makeModel()->where('product_id', $product_id)->whereNotIn('id', $resultKeys);
 
-        $userCartRepository = new UserCartRepository(new Container());
-        $userCartRepository->removeDeletedProductCart($productAttributeTermDelete, $product_id, 'term');
-        $productAttributeTermDelete->delete();
+        if ($productAttributeTermDelete->count() > 0) {
+            $userCartRepository = new UserCartRepository(new Container());
+            $userCartRepository->removeDeletedProductCart($productAttributeTermDelete, $product_id, 'term');
+            $productAttributeTermDelete->delete();
+        }
     }
 
     public function deleteByProductId(int $product_id)

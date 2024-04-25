@@ -52,13 +52,13 @@
             var product_id = $(this).data('id');
             var url = $(this).data('url');
             var attribute = {};
-            console.log('here');
+            var validation = true;
 
             if ($('.attribute-input').length > 0) {
                 $('.attribute-input').each(function (i, obj) {
-                    if (!$(obj).val()) {
-                        showSwal('Warning!', 'Please choose ' + obj.data('name'));
-                        return false;
+                    if (!$(obj).val() && validation == true) {
+                        showSwal('Warning!', 'Please choose ' + $(obj).attr('data-name'));
+                        validation = false;
                     }
                 });
 
@@ -67,12 +67,14 @@
                 });
             }
 
-            var params = { 
-                product_id: product_id,
-                attribute: attribute 
-            };
+            if (validation == true) {
+                var params = { 
+                    product_id: product_id,
+                    attribute: attribute 
+                };
 
-            window.location.href = url + '?' + jQuery.param( params );
+                window.location.href = url + '?' + jQuery.param( params );
+            }
         })
 
         $('.attribute-dropdown li').on('click', function() {

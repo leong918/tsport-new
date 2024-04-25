@@ -55,8 +55,9 @@ class AppController extends BaseController
         $setting_list = $this->settingRepository->getListing()->get();
         $blog_list = $this->blogRepository->getListing()->get();
         $brand_list = $this->brandRepository->getListing()->where('status', 1)->get();
+        $more_discover_category_list = $this->categoryRepository->getMoreToDiscoverListing();
 
-        return $this->view('index', compact('slider_list', 'setting_list', 'blog_list', 'brand_list'));
+        return $this->view('index', compact('slider_list', 'setting_list', 'blog_list', 'brand_list', 'more_discover_category_list'));
     }
 
     public function product(Request $request, string $category_id = null)
@@ -131,7 +132,7 @@ class AppController extends BaseController
 
     public function blog()
     {
-        $blog_list = $this->blogRepository->getListing()->get();
+        $blog_list = $this->blogRepository->getActiveListing();
         return $this->view('blog', compact('blog_list'));
     }
 

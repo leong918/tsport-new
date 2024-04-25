@@ -8,9 +8,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Utils\IDGenerator;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\CustomerNoteMail;
+use App\Plugins\SalesOrder\Mail\CustomerNoteMail;
 use App\Plugins\SalesOrder\Mail\AdminOrderStatusMail;
-use App\Plugins\SalesOrder\Mail\OrderStatusMail;
 use Illuminate\Container\Container;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Repositories\CountryRepository;
@@ -24,6 +23,7 @@ use App\Repositories\ProductBalanceLogRepository;
 use App\Repositories\ReferralRepository;
 use App\Repositories\SettingRepository;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class SalesOrderRepository extends BaseRepository
 {
@@ -228,7 +228,7 @@ class SalesOrderRepository extends BaseRepository
     {
         return SalesOrder::leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
             ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
-            ->leftJoin('country','country.id', '=', 'sales_order.country_id')
+            ->leftJoin('country', 'country.id', '=', 'sales_order.country_id')
             ->whereIn('sales_order.id', $order_id_list)
             ->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku, country.code as country_code')
             ->get();
@@ -239,9 +239,10 @@ class SalesOrderRepository extends BaseRepository
 
         $models = SalesOrder::leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
             ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
-            ->leftJoin('country','country.id', '=', 'sales_order.country_id')
+            ->leftJoin('country', 'country.id', '=', 'sales_order.country_id')
             ->whereNull('sales_order_product.deleted_at')
-            ->orderBy('sales_order.id','desc');
+            ->where(['country.is_export_shipany' => 1, 'country.status' => 1])
+            ->orderBy('sales_order.id', 'desc');
         foreach (array_filter($form_data, 'filter') as $key => $value) {
             if ($key === 'sales_order.sales_order_id') {
                 $models->where($key, 'like', "%{$value}%");
@@ -262,6 +263,84 @@ class SalesOrderRepository extends BaseRepository
 
         return $models->selectRaw('sales_order.*, sales_order_product.quantity, sales_order_product.product_name, sales_order_product.quantity, sales_order_product.price, product.sku,country.code as country_code')->get();
     }
+
+    public function getOrderListing(array $form_data)
+    {
+        $models = SalesOrder::query()->leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id');
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay()->format('Y-m-d H:i:s');
+                    $dateTo = Carbon::parse($dates[1])->endOfDay()->format('Y-m-d H:i:s');
+                    $models->whereBetween('sales_order.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+                $models->where($key, $value);
+            }
+        }
+
+        $models->with('salesOrderTotal', function ($query) {
+            $query->where('code', 'coupon');
+        })
+            ->select(
+                'sales_order.id',
+                'sales_order.sales_order_id as order_id',
+                'sales_order.status as status',
+                DB::raw("CONCAT(sales_order.last_name, ' ', sales_order.first_name) as customer"),
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('sales_order.total as net_sales')
+            )
+            ->groupBy('sales_order.id')->get();
+
+        return $models;
+    }
+
+    public function getSalesOrderByMonth($form_data, $is_previous)
+    {
+        $models = SalesOrder::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+
+                    if ($is_previous != true) {
+                        $dateFrom = $dateFrom->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->format('Y-m-d H:i:s');
+                    } else {
+                        $dateFrom = $dateFrom->subYear()->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->subYear()->format('Y-m-d H:i:s');
+                    }
+
+                    $models->whereBetween('sales_order.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+
+                $models->leftJoin('sales_order_product', 'sales_order_product.sales_order_id', '=', 'sales_order.id')
+                    ->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
+                    ->where($key, $value);
+            }
+        }
+
+        return $models->select(
+            DB::raw('DATE_FORMAT(sales_order.created_at, "%m/%d/%Y") as date'),
+            DB::raw('(SELECT COUNT(sales_order_product.product_id) FROM sales_order_product WHERE sales_order_product.sales_order_id = sales_order.id) / COUNT(sales_order.id) as avg_item'),
+            DB::raw('SUM(sales_order.total) as net_sales'),
+            DB::raw('COUNT(sales_order.id) as orders'),
+            DB::raw('SUM(sales_order.total) / COUNT(sales_order.id) as avg_order_value'),
+        )->groupBy('sales_order.id')->get()->groupBy('date');
+    }
+
 
     public function updateSalesOrder(array $input, int $id, $admin)
     {
@@ -288,7 +367,6 @@ class SalesOrderRepository extends BaseRepository
                 if ($key == 'status') {
                     //update success order if order processing/completed
                     if ($previousValue == 0 && $value > 0) {
-                        $sales_order->shipping_fee_status = $sales_order->is_pay_later == 0 ? 1 : 0;
                         $this->updateSuccessOrder($sales_order);
                     }
                     //update failed order if order failed/cancelled/refunded
@@ -326,8 +404,12 @@ class SalesOrderRepository extends BaseRepository
             $description = "Change <b>" . $editedColumn . "</b> from " . ($previousValue ? (is_numeric($previousValue) ? number_format($previousValue, 2)  : $previousValue) : '<i>Empty</i>') . " to " . ($value ? (is_numeric($value) ? number_format($value, 2) : $value) : '<i>Empty</i>');
             $salesOrderlogRepository->createLog($sales_order, $admin->id, 'admin', 1, $description);
             if ($key == 'customer_note') {
+                $settingRepository = new SettingRepository(new Container());
+                $date = Carbon::parse($sales_order->created_at);
+                $formattedDate = $date->format('F j, Y');
+                $image = $settingRepository->getValueByKey('customer_note_email_image');
                 $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
-                Mail::to($sales_order->user->email)->send(new CustomerNoteMail($description));
+                Mail::to($sales_order->user->email)->send(new CustomerNoteMail($sales_order, $image, $formattedDate));
             }
         }
 
@@ -405,7 +487,7 @@ class SalesOrderRepository extends BaseRepository
             $date = Carbon::parse($sales_order->created_at);
             $formattedDate = $date->format('F j, Y');
             $status = renderModelData(SalesOrder::ORDER_STATUS, $sales_order->status);
-            Mail::to($receiver)->send(new AdminOrderStatusMail($sales_order,$formattedDate,$status));
+            Mail::to($receiver)->send(new AdminOrderStatusMail($sales_order, $formattedDate, $status));
         }
     }
 
@@ -478,7 +560,7 @@ class SalesOrderRepository extends BaseRepository
                 $insider_discount = $cartRuleRepository->makeModel()->where('type', 'insider_discount')->first();
                 $check_condition = $sales_order->salesOrderTotal->where('cart_rule_id', $insider_discount->id)->first();
             } else {
-                $check_condition = $$total_accumulate_amount >= $next_level_target->target_amount;
+                $check_condition = $total_accumulate_amount >= $next_level_target->target_amount;
             }
 
             if ($check_condition) {
@@ -579,7 +661,7 @@ class SalesOrderRepository extends BaseRepository
         $sales_order->save();
     }
 
-    public function updateProductQuantity($sales_order, $action, $admin, $previousOrderStatus = null, $newOrderStatus = null)
+    private function updateProductQuantity($sales_order, $action, $admin, $previousOrderStatus = null, $newOrderStatus = null)
     {
         foreach ($sales_order->salesOrderProduct as $sales_order_product) {
             $productBalanceLogRepository = new ProductBalanceLogRepository(new Container());
@@ -593,18 +675,18 @@ class SalesOrderRepository extends BaseRepository
                 $description = "Product " . ($action == "ADD" ? "added" : "deducted") . " due to stripe payment " . ($action == "ADD" ? "succeed." : "failed.");
             }
 
-            if ($sales_order_product->product_attribute_term) {
-                $productRepository = new ProductAttributeTermRepository(new Container());
+            if ($sales_order_product->product_attribute_term && $sales_order_product->product_attribute_term != '[]') {
+                $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
                 $product_attribute_term_list = json_decode($sales_order_product->product_attribute_term);
 
                 foreach ($product_attribute_term_list as $value) {
-                    $product_attribute_term = $productRepository->find($value);
+                    $product_attribute_term = $productAttributeTermRepository->find($value);
                     $product_attribute_term->quantity = $action == "ADD" ? $product_attribute_term->quantity += $sales_order_product->quantity : $product_attribute_term->quantity -= $sales_order_product->quantity;
                     $product_attribute_term->save();
 
-                    $data['stock_option'] = $action == "ADD" ? 0 : 1;
-                    $data['stock_amount'] = $sales_order_product->quantity;
-                    $productBalanceLogRepository->createProductBalanceLog($product_attribute_term, $data, null, $description);
+                    $data['type'] = $action == "ADD" ? 'IN' : 'OUT';
+                    $data['quantity'] = $sales_order_product->quantity;
+                    $productBalanceLogRepository->createProductBalanceLog($product_attribute_term, $data, $description);
                 }
             } else {
                 $productRepository = new ProductRepository(new Container());
@@ -613,9 +695,9 @@ class SalesOrderRepository extends BaseRepository
                 $product->quantity = $action == "ADD" ? $product->quantity += $sales_order_product->quantity : $product->quantity -= $sales_order_product->quantity;
                 $product->save();
 
-                $data['type'] = $action;
+                $data['type'] = $action == "ADD" ? 'IN' : 'OUT';
                 $data['quantity'] = $sales_order_product->quantity;
-                $productBalanceLogRepository->createProductBalanceLog($product, null, $data, $description);
+                $productBalanceLogRepository->createProductBalanceLog($product, $data, $description);
             }
         }
     }

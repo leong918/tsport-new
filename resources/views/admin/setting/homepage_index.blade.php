@@ -35,6 +35,10 @@
                                                         {{ html()->file('main_slider_image')->accept('image/*')->class('form-control')->required() }}
                                                     </div>
                                                     <div class="mb-3">
+                                                        {{ html()->label('Mobile Image') }}
+                                                        {{ html()->file('mobile_image')->accept('image/*')->class('form-control')->required() }}
+                                                    </div>
+                                                    <div class="mb-3">
                                                         {{ html()->label('URL') }}
                                                         {{ html()->text('main_url')->id('main_url')->placeholder('Enter URL')->class('form-control')->required() }}
                                                         <input type="text" name="type" value="main" hidden>
@@ -317,7 +321,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#product-left-select, #product-center-select, #product-recommended-select').select2({
+            $('#product-center-select, #product-recommended-select').select2({
                 theme: "bootstrap-5",
                 width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
                     'style',
@@ -326,7 +330,7 @@
                 allowClear: true,
             });
 
-            $("#product-right-select").select2({
+            $("#product-right-select, #product-left-select").select2({
                 theme: "bootstrap-5",
                 width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
                     'style',

@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         @if (function_exists('salesOrderRenderView'))
-                            {{ salesOrderRenderView('product_detail_wishlist') }}
+                            {{ salesOrderRenderView('product_detail_wishlist', $product) }}
                         @endif
                     </div>
                     @if (function_exists('salesOrderRenderView'))
@@ -58,8 +58,9 @@
             <div class="col-12 col-md-10 col-lg-7">
                 <ul class="nav nav-tabs info-action-button" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ isset($_GET['page']) ? '' : 'active' }}" data-bs-toggle="tab" data-bs-target="#desciption" type="button"
-                            role="tab" aria-controls="desciption" aria-selected="true">Description</button>
+                        <button class="nav-link {{ isset($_GET['page']) ? '' : 'active' }}" data-bs-toggle="tab"
+                            data-bs-target="#desciption" type="button" role="tab" aria-controls="desciption"
+                            aria-selected="true">Description</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ingredients" type="button"
@@ -78,7 +79,8 @@
                     @endif
                 </ul>
                 <div class="tab-content description" id="myTabContent">
-                    <div class="tab-pane fade {{ isset($_GET['page']) ? '' : 'show active' }}" id="desciption" role="tabpanel" aria-labelledby="desciption-tab">
+                    <div class="tab-pane fade {{ isset($_GET['page']) ? '' : 'show active' }}" id="desciption"
+                        role="tabpanel" aria-labelledby="desciption-tab">
                         <div class="content-wrapper">
                             {!! $product->getParameters('zh-CN')->description !!}
                         </div>
@@ -97,17 +99,17 @@
                         <div class="content-wrapper">
                             {!! $product->getParameters('zh-CN')->additional_information !!}
 
-                            @if ($product->productAttribute->where('status', 1)->where('is_variation', 1)->count() > 0)
+                            @if ($product->productAttribute->where('status', 1)->where('is_variation', 0)->count() > 0)
                                 <div class="row mt-5">
                                     <div class="col-md-4">
                                         <div>Product Attribute</div>
-                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 1) as $product_attribute)
+                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 0) as $product_attribute)
                                             <div class="mt-2">{{ $product_attribute->name }}</div>
                                         @endforeach
                                     </div>
                                     <div class="col-md-8">
                                         <div>Variation</div>
-                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 1) as $product_attribute)
+                                        @foreach ($product->productAttribute->where('status', 1)->where('is_variation', 0) as $product_attribute)
                                             <div class="mt-2">
                                                 @php
                                                     $termNames = '';
@@ -203,6 +205,7 @@
         });
 
         $(document).ready(function() {
+
             //------------------ review star -----------------------
             var selectReviewStar = 0;
             var comment_length = 0;
@@ -272,11 +275,10 @@
                 input_quantity.val(parseInt(input_quantity.val()) + 1);
             });
 
-            function validateRating()
-            {
+            function validateRating() {
                 var rating = $('#rate').val();
 
-                if(rating == 0){
+                if (rating == 0) {
                     showSwal('Error', 'Please leave a rating before submit!');
 
                     return false;
@@ -315,24 +317,30 @@
                     $('#comment').val('');
                     $('.review-star-control').each(function() {
                         $(this).children('img').attr("src",
-                            "{{ asset('assets/web/assets/img/product_details/star_2.png') }}");
+                            "{{ asset('assets/web/assets/img/product_details/star_2.png') }}"
+                        );
                     });
                 })
                 .catch(error => {
                     showSwal('Fail!', error.response.data.msg);
                 });
             });
-            
+
 
             //-------- review pagination -------------------
             $('.product_review_pagination nav').addClass('d-flex justify-content-center');
-            $('.product_review_pagination .page-item:first-child .page-link').text('<').addClass('reviewPagination').css('box-shadow', 'none'); 
-            $('.product_review_pagination .page-item:nth-child(2)').after('<li class="page-item"><span class="page-link reviewPagination">of</span></li>')
-            .empty().append('<span class="page-link currentPage reviewPagination"></span>');
+            $('.product_review_pagination .page-item:first-child .page-link').text('<').addClass('reviewPagination')
+                .css('box-shadow', 'none');
+            $('.product_review_pagination .page-item:nth-child(2)').after(
+                    '<li class="page-item"><span class="page-link reviewPagination">of</span></li>')
+                .empty().append('<span class="page-link currentPage reviewPagination"></span>');
 
             $('.product_review_pagination .page-item:last-child').prev('.page-item').remove();
-            $('.product_review_pagination .page-item:last-child').before('<li class="page-item"><span class="page-link avgPageCount reviewPagination">{{ ceil($review_total / 6) }}</span></li>');
-            $('.product_review_pagination .page-item:last-child .page-link').text('>').addClass('reviewPagination').css('box-shadow', 'none');
+            $('.product_review_pagination .page-item:last-child').before(
+                '<li class="page-item"><span class="page-link avgPageCount reviewPagination">{{ ceil($review_total / 6) }}</span></li>'
+            );
+            $('.product_review_pagination .page-item:last-child .page-link').text('>').addClass('reviewPagination')
+                .css('box-shadow', 'none');
 
             var searchParams = new URLSearchParams(window.location.search);
             var hasPage = searchParams.has('page');
@@ -341,6 +349,7 @@
             hasPage == true ? $('.currentPage').text(currentPage) : $('.currentPage').text('1');
 
             $('.page-item .page-link:not(.reviewPagination)').addClass('d-none');
+
 
             $('.slider-for').slick({
                 slidesToShow: 1,

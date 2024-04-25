@@ -155,22 +155,15 @@
                 headers: { "Content-Type": "multipart/form-data" },
             })
             .then(response => {
-                swal.fire({
-                    title: '{{__("page.blog_comment_added")}}',
-                    text: '{{__("page.txt_blog_added")}}',
-                    icon: 'success',
-                    confirmButtonClass: 'btn btn-success',
-                        confirmButtonText: '{{__("page.ok")}}',
-                });
                 window.location.reload();
             })
             .catch(error => {
                 swal.fire({
-                    title: '{{__("page.blog_comment_fail_add")}}',
+                    title: 'Failed',
                     text: error.response.data.msg,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: '{{__("page.ok")}}',
+                    confirmButtonText: 'OK',
                 });
             });
         });

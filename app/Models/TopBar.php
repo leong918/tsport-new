@@ -33,7 +33,7 @@ class TopBar extends Model
      */
     protected $fillable = [
         'name',
-        'background_colour',
+        'background_color',
         'status',
         'content',
     ];

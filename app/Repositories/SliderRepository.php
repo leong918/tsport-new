@@ -42,11 +42,19 @@ class SliderRepository extends BaseRepository
     {
         $this->upload_path = 'slider';
 
-        isset($input['sub_slider_image']) ? $this->uploadFile($input['sub_slider_image']) : $this->uploadFile($input['main_slider_image']);
-
         $slider = new Slider();
         $slider->url = isset($input['main_url']) ? $input['main_url'] : $input['sub_url'];
-        $slider->image = $this->uploaded_filename;
+
+        if(isset($input['sub_slider_image'])){
+            $this->uploadFile($input['sub_slider_image']);
+            $slider->image = $this->uploaded_filename;
+        } else {
+            $this->uploadFile($input['main_slider_image']);
+            $slider->image = $this->uploaded_filename;
+            $this->uploadFile($input['mobile_image']);
+            $slider->mobile_image = $this->uploaded_filename;
+        }
+
         $slider->type = ($input['type'] == 'main') ? 'main' : 'sub';
         $slider->save();
     }

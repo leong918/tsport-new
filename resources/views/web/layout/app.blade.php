@@ -72,6 +72,24 @@
             $('#sub-pages-overlay').removeClass('active');
             $('body').removeClass('active');
         })
+
+        $('button[type="submit"]').click(function(e) {
+            e.preventDefault();
+            var isValid = true;
+
+            $(this).parents('form').find(':input[required]').each(function() {
+                if ($(this).val().trim() === '') {
+                    isValid = false;
+                    return false;
+                }
+            });
+
+            if (!isValid) {
+                showSwal('Failed', 'Please fill in all the required fields!');
+            } else {
+                $(this).parents('form').submit();
+            }
+        });
         
         function showSwal(title = "", text = ""){ 
             swal.fire({

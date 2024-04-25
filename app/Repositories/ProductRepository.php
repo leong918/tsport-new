@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductRelated;
+use App\Models\ProductTag;
 use Illuminate\Container\Container;
 
 class ProductRepository extends BaseRepository
@@ -110,7 +112,7 @@ class ProductRepository extends BaseRepository
         return Product::leftjoin('product_tag', 'product.id', '=', 'product_tag.product_id')
             ->leftjoin('product_price', 'product.id', '=', 'product_price.product_id')
             ->leftjoin('tag', 'tag.id', '=', 'product_tag.tag_id')
-            ->where(['product.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
+            ->where(['product.status' => 1, 'tag.status' => 1, 'product_price.deleted_at' => null, 'product_price.product_attribute_term_id' => null])
             ->where(['product_price.code' => $currency_code])
             ->where(function ($query) use ($keyword) {
                 $query->where('tag.name', 'LIKE', '%' . $keyword . '%')
@@ -171,8 +173,9 @@ class ProductRepository extends BaseRepository
             ->get();
     }
 
-    public function getLowStockProduct(){
-        return Product::where('is_attribute',0)->where('quantity','<=',2)->get();
+    public function getLowStockProduct()
+    {
+        return Product::where('is_attribute', 0)->where('quantity', '<=', 2)->get();
     }
 
     public function regroupProductListByCategory($product_list)
@@ -232,13 +235,9 @@ class ProductRepository extends BaseRepository
             $productTag->createProductTag($input, $model->id);
         }
 
-        if (isset($input['option'])) {
+        if ($model->is_attribute && isset($input['option'])) {
             $productAttribute = new ProductAttributeRepository(new Container());
             $productAttribute->createProductAttribute($input, $model->id);
-        } else {
-            $remark = 'Create new product';
-            $productBalanceLog = new ProductBalanceLogRepository(new Container());
-            $productBalanceLog->createProductBalanceLog($model, null, null, $remark);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());
@@ -249,6 +248,15 @@ class ProductRepository extends BaseRepository
 
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
+
+        if (!$model->is_attribute && $model->quantity > 0) {
+            $remark = 'Create new product';
+            $stockInput['quantity'] = $model->quantity;
+            $stockInput['type'] = 'IN';
+
+            $productBalanceLog = new ProductBalanceLogRepository(new Container());
+            $productBalanceLog->createProductBalanceLog($model, $stockInput, $remark);
+        }
     }
 
     public function updateProduct(array $input, int $id)
@@ -257,12 +265,19 @@ class ProductRepository extends BaseRepository
 
         $input['alias'] = strtolower($input['alias']);
         $model = Product::findOrFail($id);
+        $original_quantity = $model->quantity;
+
         $model->fill($input);
         $model->save();
+
+        $related_product = ProductRelated::where('related_product_id', $model->id);
+        $product_tag = ProductTag::where('product_id', $model->id);
 
         if (isset($input['product_related'])) {
             $productRelatedRepository = new ProductRelatedRepository(new Container());
             $productRelatedRepository->createProductRelated($input, $model->id);
+        } else {
+            $related_product ? $related_product->delete() : null;
         }
 
         if (isset($input['image'])) {
@@ -273,11 +288,16 @@ class ProductRepository extends BaseRepository
         if (isset($input['product_tag'])) {
             $productTag = new ProductTagRepository(new Container());
             $productTag->createProductTag($input, $model->id);
+        } else {
+            $product_tag ? $product_tag->delete() : null;
         }
 
-        if (isset($input['option'])) {
+        if ($model->is_attribute && isset($input['option'])) {
             $productAttribute = new ProductAttributeRepository(new Container());
             $productAttribute->updateProductAttribute($input, $model->id);
+        } else {
+            $productAttribute = new ProductAttributeRepository(new Container());
+            $productAttribute->deleteAllAttribute($model->id);
         }
 
         $productPriceRepository = new ProductPriceRepository(new Container());
@@ -285,24 +305,16 @@ class ProductRepository extends BaseRepository
 
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
-    }
 
-    public function updateStock(array $input, int $id)
-    {
-        $model = Product::findOrFail($id);
+        if (!$model->is_attribute && $model->quantity != $original_quantity) {
+            $remark = 'Update product';
+            $quantity_diff = $model->quantity - $original_quantity;
+            $stockInput['quantity'] = abs($quantity_diff);
+            $stockInput['type'] = $quantity_diff < 0 ? 'OUT' : 'IN';
 
-        if ($input['type'] == 'ADD') {
-            $total = $model->quantity + $input['quantity'];
-        } else {
-            $total = $model->quantity - $input['quantity'];
+            $productBalanceLog = new ProductBalanceLogRepository(new Container());
+            $productBalanceLog->createProductBalanceLog($model, $stockInput, $remark);
         }
-
-        $model->quantity = $total;
-        $model->save();
-
-        $remark = 'Update prduct';
-        $productBalanceLog = new ProductBalanceLogRepository(new Container());
-        $productBalanceLog->createProductBalanceLog($model, null, $input, $remark);
     }
 
     public function toggleStatus(int $id)
@@ -315,19 +327,17 @@ class ProductRepository extends BaseRepository
     private function verifyDescription($input)
     {
         foreach ($input['language'] as $key => $language) {
-            $lang = ($key == 'zh-CN' ? 'Chinese' : 'English');
-
             if (isset($language['information']) == false) {
-                throw new \Exception(__('Information for ' . $lang . ' cannot be empty!'));
+                throw new \Exception(__('Information cannot be empty!'));
             }
             if (isset($language['description']) == false) {
-                throw new \Exception(__('Description for ' . $lang . ' cannot be empty!'));
+                throw new \Exception(__('Description cannot be empty!'));
             }
             if (isset($language['ingredient']) == false) {
-                throw new \Exception(__('Ingredient for ' . $lang . ' cannot be empty!'));
+                throw new \Exception(__('Ingredient cannot be empty!'));
             }
             if (isset($language['usage']) == false) {
-                throw new \Exception(__('Usage for ' . $lang . ' cannot be empty!'));
+                throw new \Exception(__('Usage cannot be empty!'));
             }
         }
     }

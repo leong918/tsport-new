@@ -172,6 +172,7 @@
                 margin: auto 0;
                 margin-top: 0px;
                 img {
+                    cursor: pointer;
                     width: 35px;
                 }
             }
@@ -803,10 +804,11 @@
 
     .swiper-slide.promotion-img img,
     .swiper-slide.product-img img,
-    .swiper-slide.new-launches-product-img img,
-    .swiper-slide.brand-img img {
+    .swiper-slide.new-launches-product-img img {
         max-width: 100%;
-        height: auto;
+        height: 290px;
+        object-fit: cover;
+        object-position: center;
         transition: clip-path 0.5s ease-in-out, opacity 0.4s ease-in-out;
     }
 

@@ -9,6 +9,8 @@ use App\Repositories\ProductRepository;
 use App\Repositories\ProductAttributeRepository;
 use App\Repositories\ProductAttributeTermRepository;
 use App\Repositories\ProductBalanceLogRepository;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SalesOrderProductRepository extends BaseRepository
 {
@@ -33,6 +35,155 @@ class SalesOrderProductRepository extends BaseRepository
     public function model()
     {
         return SalesOrderProduct::class;
+    }
+
+    public function getListing(array $form_data)
+    {
+        $models = SalesOrderProduct::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay()->format('Y-m-d H:i:s');
+                    $dateTo = Carbon::parse($dates[1])->endOfDay()->format('Y-m-d H:i:s');
+                    $models->whereBetween('sales_order_product.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order_product.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+
+                $models->where($key, $value);
+            }
+        }
+
+        $models->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
+            ->leftJoin('category', 'product.category_id', '=', 'category.id')
+            ->select(
+                'product.name as product_name',
+                'product.sku',
+                'category.name as category',
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+                DB::raw('COUNT(sales_order_product.product_id) as orders')
+            )
+            ->groupBy('product_id')->get();
+
+        return $models;
+    }
+
+    public function getSalesOrderProductByMonth($form_data, $is_previous)
+    {
+        $models = SalesOrderProduct::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+
+                    if ($is_previous != true) {
+                        $dateFrom = $dateFrom->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->format('Y-m-d H:i:s');
+                    } else {
+                        $dateFrom = $dateFrom->subYear()->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->subYear()->format('Y-m-d H:i:s');
+                    }
+
+                    $models->whereBetween('created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+                $models->where($key, $value);
+            }
+        }
+
+        return $models->select(
+            DB::raw('DATE_FORMAT(created_at, "%m/%d/%Y") as date'),
+            DB::raw('SUM(quantity) as product_sold'),
+            DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+            DB::raw('COUNT(sales_order_product.product_id) as orders')
+        )
+            ->groupBy('date')->get();
+    }
+
+    public function getCategoryListing(array $form_data)
+    {
+        $models = SalesOrderProduct::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay()->format('Y-m-d H:i:s');
+                    $dateTo = Carbon::parse($dates[1])->endOfDay()->format('Y-m-d H:i:s');
+                    $models->whereBetween('sales_order_product.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order_product.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+
+                $models->where($key, $value);
+            }
+        }
+
+        $models->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
+            ->leftJoin('category', 'product.category_id', '=', 'category.id')
+            ->select(
+                'category.name as category',
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+                DB::raw('COUNT(sales_order_product.product_id) as orders'),
+                DB::raw('COUNT(DISTINCT product.id) as products'),
+            )
+            ->groupBy('category')->get();
+
+        return $models;
+    }
+
+    public function getSalesOrderCategoryByMonth($form_data, $is_previous)
+    {
+        $models = SalesOrderProduct::query();
+
+        foreach (array_filter($form_data, 'filter') as $key => $value) {
+            if ($key === 'date_range') {
+                if (str_contains($value, ' - ')) {
+                    $dates = explode(' - ', $value);
+                    $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                    $dateTo = Carbon::parse($dates[1])->endOfDay();
+
+                    if ($is_previous != true) {
+                        $dateFrom = $dateFrom->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->format('Y-m-d H:i:s');
+                    } else {
+                        $dateFrom = $dateFrom->subYear()->format('Y-m-d H:i:s');
+                        $dateTo = $dateTo->subYear()->format('Y-m-d H:i:s');
+                    }
+
+                    $models->whereBetween('sales_order_product.created_at', [$dateFrom, $dateTo]);
+                } else {
+                    $date = Carbon::parse($value);
+                    $models->whereDate('sales_order_product.created_at', $date);
+                }
+            } elseif ($key === 'product_id') {
+                $models->where($key, $value);
+            }
+        }
+
+        return $models->leftJoin('product', 'sales_order_product.product_id', '=', 'product.id')
+            ->select(
+                DB::raw('DATE_FORMAT(sales_order_product.created_at, "%m/%d/%Y") as date'),
+                DB::raw('SUM(sales_order_product.quantity) as product_sold'),
+                DB::raw('SUM(sales_order_product.total_price) as net_sales'),
+                DB::raw('COUNT(sales_order_product.product_id) as orders'),
+                DB::raw('COUNT(DISTINCT product.id) as products'),
+            )
+            ->groupBy('date')->get();
     }
 
     public function getSalesOrderProductBySalesOrderId(int $id)
@@ -60,19 +211,19 @@ class SalesOrderProductRepository extends BaseRepository
                     $productAttributeTerm->quantity -= $cart->quantity;
                     $productAttributeTerm->save();
 
-                    $log_data['stock_option'] = 0;
-                    $log_data['stock_amount'] = $cart->quantity;
+                    $log_data['type'] = 'OUT';
+                    $log_data['quantity'] = $cart->quantity;
                     $remark = 'Deduct product for Order: ' . $order->sales_order_id;
-                    $productBalanceLogRepository->createProductBalanceLog($productAttributeTerm, $log_data, null, $remark);
+                    $productBalanceLogRepository->createProductBalanceLog($productAttributeTerm, $log_data, $remark);
                 }
             } else {
                 $product->quantity -= $cart->quantity;
                 $product->save();
 
-                $log_data['type'] = 'DEDUCT';
+                $log_data['type'] = 'OUT';
                 $log_data['quantity'] = $cart->quantity;
                 $remark = 'Deduct product for Order: ' . $order->sales_order_id;
-                $productBalanceLogRepository->createProductBalanceLog($product, null, $log_data, $remark);
+                $productBalanceLogRepository->createProductBalanceLog($product, $log_data, $remark);
             }
 
             $orderProduct = new SalesOrderProduct();

@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-wrapper">
                                 <div class="input-container">
-                                    {{ html()->text('address_phone_no')->class('disabled-txt')->required() }}
+                                    {{ html()->number('address_phone_no')->class('disabled-txt')->required() }}
                                     {{ html()->label('Phone No *')->class('placeholder-label') }}
                                 </div>
                             </div>

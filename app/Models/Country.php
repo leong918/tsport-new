@@ -22,6 +22,11 @@ class Country extends Model
         'INACTIVE' => 0,
     ];
 
+    public const SHIPANYEXPORT = [
+        'YES' => 1,
+        'NO' => 0,
+    ];
+
     protected $table = 'country';
 
     /**
@@ -36,6 +41,7 @@ class Country extends Model
         'min_spend_free_delivery',
         'delivery_flat_rate',
         'status',
+        'is_export_shipany'
     ];
 
     /**

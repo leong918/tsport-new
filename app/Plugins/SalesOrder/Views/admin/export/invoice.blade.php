@@ -95,7 +95,6 @@
             <td style="width:15% !important; padding:10px; word-wrap: break-word; max-width:100px">
                     [Free shipping 免運費 | 如寄 往順豐站/智能 櫃，直接輸入 點碼即可 ] 如果訂單包含預 訂商品，我們 將暫時擱置整個訂單，直到所有商品都齊貨才會將訂單寄出。 如客人
                     要求先寄出現 貨，滿$800的 訂單我們只會 負責第一次寄 貨的費用，第二次及隨後寄 貨的費用一律 到付由買家負責。
-                {{-- 123 --}}
             </td>
         </tr>
         <tr style="border-bottom: 1px solid grey">
