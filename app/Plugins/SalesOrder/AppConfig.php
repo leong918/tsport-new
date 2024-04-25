@@ -39,7 +39,8 @@ class AppConfig extends ConfigDefault
                 'url' => null,
                 'type' => 'shop',
                 'sort' => 1,
-                'status' => 1
+                'status' => 1,
+                'key' => $this->configKey,
             ];
             $parent_sidebar = $this->adminMenuRepository->create($parent_data);
 
@@ -62,7 +63,8 @@ class AppConfig extends ConfigDefault
                 'url' => null,
                 'type' => 'marketing',
                 'sort' => 1,
-                'status' => 1
+                'status' => 1,
+                'key' => $this->configKey,
             ];
             $parent_sidebar = $this->adminMenuRepository->create($parent_data);
 
