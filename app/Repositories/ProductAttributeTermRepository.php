@@ -62,11 +62,22 @@ class ProductAttributeTermRepository extends BaseRepository
             $term_model->product_attribute_id = $productAttribute->id;
             $term_model->product_id = $productAttribute->product_id;
             $term_model->name = $term['term_name'];
+            $term_model->sku = $term['term_sku'];
+            $term_model->quantity = $term['term_qty'];
             $term_model->point_value = $term['term_add_on_point'];
             $term_model->save();
 
             $productPrice = new ProductPriceRepository(new Container());
             $productPrice->createAttributeTermPrice($term, $term_model);
+
+            if ($term['term_qty'] > 0) {
+                $remark = 'Add new product attribute term';
+                $stockInput['quantity'] = $term['term_qty'];
+                $stockInput['type'] = 'IN';
+
+                $productBalanceLog = new ProductBalanceLogRepository(new Container());
+                $productBalanceLog->createProductBalanceLog($term_model, $stockInput, $remark);
+            }
         }
     }
 
@@ -79,13 +90,36 @@ class ProductAttributeTermRepository extends BaseRepository
             if (str_contains($key, 'old')) {
                 $attribute_term_id = str_replace('old-', '', $key);
                 $term_model = ProductAttributeTerm::find($attribute_term_id);
+
+                if ($term_model->quantity != $term['term_qty']) {
+                    $remark = 'Update product attribute term';
+                    $quantity_diff = $term['term_qty'] - $term_model->quantity;
+                    $stockInput['quantity'] = abs($quantity_diff);
+                    $stockInput['type'] = $quantity_diff < 0 ? 'OUT' : 'IN';
+
+                    $term_model->quantity = $term['term_qty'];
+
+                    $productBalanceLog = new ProductBalanceLogRepository(new Container());
+                    $productBalanceLog->createProductBalanceLog($model, $stockInput, $remark);
+                }
             } else {
                 $term_model = new ProductAttributeTerm();
+                $term_model->quantity = $term['term_qty'];
+
+                if ($term['term_qty'] > 0) {
+                    $remark = 'Add new product attribute term';
+                    $stockInput['quantity'] = $term['term_qty'];
+                    $stockInput['type'] = 'IN';
+
+                    $productBalanceLog = new ProductBalanceLogRepository(new Container());
+                    $productBalanceLog->createProductBalanceLog($term_model, $stockInput, $remark);
+                }
             }
 
             $term_model->product_attribute_id = $productAttribute->id;
             $term_model->product_id = $productAttribute->product_id;
             $term_model->name = $term['term_name'];
+            $term_model->sku = $term['term_sku'];
             $term_model->point_value = $term['term_add_on_point'];
             $term_model->save();
 

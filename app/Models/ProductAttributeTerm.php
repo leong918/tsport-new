@@ -30,6 +30,8 @@ class ProductAttributeTerm extends Model
         'product_id',
         'product_attribute_id',
         'name',
+        'sku',
+        'quantity',
         'point_value',
     ];
 

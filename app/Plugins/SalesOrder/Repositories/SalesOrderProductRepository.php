@@ -207,16 +207,24 @@ class SalesOrderProductRepository extends BaseRepository
                     $productAttribute = $productAttributeRepository->find($key);
                     $productAttributeTerm = $productAttributeTermRepository->find($product_attribute_term);
                     $description .= '- ' . $productAttribute->name . ': ' . $productAttributeTerm->name . '</br>';
+
+                    $productAttributeTerm->quantity -= $cart->quantity;
+                    $productAttributeTerm->save();
+
+                    $log_data['type'] = 'OUT';
+                    $log_data['quantity'] = $cart->quantity;
+                    $remark = 'Deduct product for Order: ' . $order->sales_order_id;
+                    $productBalanceLogRepository->createProductBalanceLog($productAttributeTerm, $log_data, $remark);
                 }
+            } else {
+                $product->quantity -= $cart->quantity;
+                $product->save();
+
+                $log_data['type'] = 'OUT';
+                $log_data['quantity'] = $cart->quantity;
+                $remark = 'Deduct product for Order: ' . $order->sales_order_id;
+                $productBalanceLogRepository->createProductBalanceLog($product, $log_data, $remark);
             }
-
-            $product->quantity -= $cart->quantity;
-            $product->save();
-
-            $log_data['type'] = 'DEDUCT';
-            $log_data['quantity'] = $cart->quantity;
-            $remark = 'Deduct product for Order: ' . $order->sales_order_id;
-            $productBalanceLogRepository->createProductBalanceLog($product, $log_data, $remark);
 
             $orderProduct = new SalesOrderProduct();
             $orderProduct->sales_order_id = $order->id;
