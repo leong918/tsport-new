@@ -51,7 +51,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Brand') }}
-                        {{ html()->select('brand_id')->options($brandDropdown)->class('form-control')->required() }}
+                        {{ html()->select('brand_id')->options([null => ''] + $brandDropdown)->class('form-control') }}
                     </div>
                 </div>
                 <div class="col-md-6">
