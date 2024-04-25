@@ -410,7 +410,7 @@ class SalesOrderRepository extends BaseRepository
                 $formattedDate = $date->format('F j, Y');
                 $image = $settingRepository->getValueByKey('customer_note_email_image');
                 $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
-                Mail::to($sales_order->user->email)->send(new CustomerNoteMail($sales_order,$image,$formattedDate));
+                Mail::to($sales_order->user->email)->send(new CustomerNoteMail($sales_order, $image, $formattedDate));
             }
         }
 
@@ -662,7 +662,7 @@ class SalesOrderRepository extends BaseRepository
         $sales_order->save();
     }
 
-    public function updateProductQuantity($sales_order, $action, $admin, $previousOrderStatus = null, $newOrderStatus = null)
+    private function updateProductQuantity($sales_order, $action, $admin, $previousOrderStatus = null, $newOrderStatus = null)
     {
         foreach ($sales_order->salesOrderProduct as $sales_order_product) {
             $productBalanceLogRepository = new ProductBalanceLogRepository(new Container());
@@ -676,15 +676,30 @@ class SalesOrderRepository extends BaseRepository
                 $description = "Product " . ($action == "ADD" ? "added" : "deducted") . " due to stripe payment " . ($action == "ADD" ? "succeed." : "failed.");
             }
 
-            $productRepository = new ProductRepository(new Container());
-            $product = $productRepository->find($sales_order_product->product_id);
+            if ($sales_order_product->product_attribute_term) {
+                $productAttributeTermRepository = new ProductAttributeTermRepository(new Container());
+                $product_attribute_term_list = json_decode($sales_order_product->product_attribute_term);
 
-            $product->quantity = $action == "ADD" ? $product->quantity += $sales_order_product->quantity : $product->quantity -= $sales_order_product->quantity;
-            $product->save();
+                foreach ($product_attribute_term_list as $value) {
+                    $product_attribute_term = $productAttributeTermRepository->find($value);
+                    $product_attribute_term->quantity = $action == "ADD" ? $product_attribute_term->quantity += $sales_order_product->quantity : $product_attribute_term->quantity -= $sales_order_product->quantity;
+                    $product_attribute_term->save();
 
-            $data['type'] = $action;
-            $data['quantity'] = $sales_order_product->quantity;
-            $productBalanceLogRepository->createProductBalanceLog($product, $data, $description);
+                    $data['type'] = $action == "ADD" ? 'IN' : 'OUT';
+                    $data['quantity'] = $sales_order_product->quantity;
+                    $productBalanceLogRepository->createProductBalanceLog($product_attribute_term, $data, $description);
+                }
+            } else {
+                $productRepository = new ProductRepository(new Container());
+                $product = $productRepository->find($sales_order_product->product_id);
+
+                $product->quantity = $action == "ADD" ? $product->quantity += $sales_order_product->quantity : $product->quantity -= $sales_order_product->quantity;
+                $product->save();
+
+                $data['type'] = $action == "ADD" ? 'IN' : 'OUT';
+                $data['quantity'] = $sales_order_product->quantity;
+                $productBalanceLogRepository->createProductBalanceLog($product, $data, $description);
+            }
         }
     }
 }

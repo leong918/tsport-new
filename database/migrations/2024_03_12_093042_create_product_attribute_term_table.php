@@ -16,6 +16,8 @@ return new class extends Migration
             $table->bigInteger('product_id');
             $table->bigInteger('product_attribute_id');
             $table->string('name');
+            $table->string('sku')->nullable();
+            $table->integer('quantity')->default(0);
             $table->integer("point_value")->default(0);
             $table->timestamps();
             $table->softDeletes();

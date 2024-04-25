@@ -247,10 +247,10 @@ class ProductRepository extends BaseRepository
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
 
-        if ($model->quantity > 0) {
+        if (!$model->is_attribute && $model->quantity > 0) {
             $remark = 'Create new product';
             $stockInput['quantity'] = $model->quantity;
-            $stockInput['type'] = 'ADD';
+            $stockInput['type'] = 'IN';
 
             $productBalanceLog = new ProductBalanceLogRepository(new Container());
             $productBalanceLog->createProductBalanceLog($model, $stockInput, $remark);
@@ -297,11 +297,11 @@ class ProductRepository extends BaseRepository
         $productDescriptionRepository = new ProductDescriptionRepository(new Container());
         $productDescriptionRepository->createProductDescription($input, $model->id);
 
-        if ($model->quantity != $original_quantity) {
+        if (!$model->is_attribute && $model->quantity != $original_quantity) {
             $remark = 'Update product';
             $quantity_diff = $model->quantity - $original_quantity;
             $stockInput['quantity'] = abs($quantity_diff);
-            $stockInput['type'] = $quantity_diff < 0 ? 'MINUS' : 'ADD';
+            $stockInput['type'] = $quantity_diff < 0 ? 'OUT' : 'IN';
 
             $productBalanceLog = new ProductBalanceLogRepository(new Container());
             $productBalanceLog->createProductBalanceLog($model, $stockInput, $remark);
@@ -318,19 +318,17 @@ class ProductRepository extends BaseRepository
     private function verifyDescription($input)
     {
         foreach ($input['language'] as $key => $language) {
-            $lang = ($key == 'zh-CN' ? 'Chinese' : 'English');
-
             if (isset($language['information']) == false) {
-                throw new \Exception(__('Information for ' . $lang . ' cannot be empty!'));
+                throw new \Exception(__('Information cannot be empty!'));
             }
             if (isset($language['description']) == false) {
-                throw new \Exception(__('Description for ' . $lang . ' cannot be empty!'));
+                throw new \Exception(__('Description cannot be empty!'));
             }
             if (isset($language['ingredient']) == false) {
-                throw new \Exception(__('Ingredient for ' . $lang . ' cannot be empty!'));
+                throw new \Exception(__('Ingredient cannot be empty!'));
             }
             if (isset($language['usage']) == false) {
-                throw new \Exception(__('Usage for ' . $lang . ' cannot be empty!'));
+                throw new \Exception(__('Usage cannot be empty!'));
             }
         }
     }
