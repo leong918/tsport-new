@@ -69,7 +69,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Quantity') }}
-                        {{ html()->number('quantity')->placeholder('Enter quantity')->attribute('min', 1)->class('form-control')->required() }}
+                        {{ html()->number('quantity')->placeholder('Enter quantity')->class('form-control')->required() }}
                     </div>
                 </div>
                 <div class="col-md-6">

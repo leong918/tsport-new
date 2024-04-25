@@ -21,13 +21,13 @@
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Email') }}
-            {{ html()->text('email')->placeholder('Enter email')->class('form-control')->required() }}
+            {{ html()->email('email')->placeholder('Enter email')->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="mb-3">
             {{ html()->label('Phone no') }}
-            {{ html()->text('phone_no')->placeholder('Enter phone no')->class('form-control')->required() }}
+            {{ html()->number('phone_no')->placeholder('Enter phone no')->class('form-control')->required() }}
         </div>
     </div>
     <div class="col-md-6">
@@ -125,11 +125,6 @@
             {{ html()->select('status')->options(renderSelect(Admin::STATUS))->class('form-control') }}
         </div>
     </div>
-</div>
-
-<div class="mb-3 float-end">
-    <a href="{{ route("admin.user.index") }}" class="btn btn-warning">Cancel</a>
-    <button type="submit" class="btn btn-primary">Submit</button>
 </div>
 
 @section('script')

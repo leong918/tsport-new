@@ -60,11 +60,21 @@
                                     @endif
                                 </div>
                                 <div class="mb-3">
-                                    {{ html()->label('Sales Order Status Image') }}
+                                    {{ html()->label('Sales Order Status Email Image') }}
                                     {{ html()->file('sales_order_status_image')->accept('image/*')->class('form-control') }}
                                     <br>
                                     @if(isset($setting_model['sales_order_status_image']) && $setting_model['sales_order_status_image'] != null)
                                         <img class="img-fluid" src="{{ $setting_model['sales_order_status_image'] }}" />
+                                    @else
+                                        <span>No image</span>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    {{ html()->label('Customer Note Email Image') }}
+                                    {{ html()->file('customer_note_email_image')->accept('image/*')->class('form-control') }}
+                                    <br>
+                                    @if(isset($setting_model['customer_note_email_image']) && $setting_model['customer_note_email_image'] != null)
+                                        <img class="img-fluid" src="{{ $setting_model['customer_note_email_image'] }}" />
                                     @else
                                         <span>No image</span>
                                     @endif
@@ -133,7 +143,7 @@
                                     {{ html()->label('Country') }}
                                     <select name="sender_country" class="form-control">                         
                                         @foreach($countryDropdown as $key => $country)
-                                            <option value="{{ $key }}" {{ $key == $setting_model['sender_country'] ? 'selected' : '' }}>{{ $country}}</option>
+                                            <option value="{{ $key }}" {{ isset($setting_model['sender_country']) && $key == $setting_model['sender_country'] ? 'selected' : '' }}>{{ $country}}</option>
                                         @endforeach
                                     </select>
                                 </div>

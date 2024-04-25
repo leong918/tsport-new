@@ -8,10 +8,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Utils\IDGenerator;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\CustomerNoteMail;
+use App\Plugins\SalesOrder\Mail\CustomerNoteMail;
 use App\Plugins\SalesOrder\Mail\AdminOrderStatusMail;
-use App\Plugins\SalesOrder\Mail\OrderStatusMail;
-use App\Plugins\SalesOrder\Models\SalesOrderTotal;
 use Illuminate\Container\Container;
 use App\Plugins\SalesOrder\Repositories\SalesOrderLogRepository;
 use App\Repositories\CountryRepository;
@@ -243,6 +241,7 @@ class SalesOrderRepository extends BaseRepository
             ->leftJoin('product', 'product.id', '=', 'sales_order_product.product_id')
             ->leftJoin('country', 'country.id', '=', 'sales_order.country_id')
             ->whereNull('sales_order_product.deleted_at')
+            ->where(['country.is_export_shipany' => 1, 'country.status' => 1])
             ->orderBy('sales_order.id', 'desc');
         foreach (array_filter($form_data, 'filter') as $key => $value) {
             if ($key === 'sales_order.sales_order_id') {
@@ -406,8 +405,12 @@ class SalesOrderRepository extends BaseRepository
             $description = "Change <b>" . $editedColumn . "</b> from " . ($previousValue ? (is_numeric($previousValue) ? number_format($previousValue, 2)  : $previousValue) : '<i>Empty</i>') . " to " . ($value ? (is_numeric($value) ? number_format($value, 2) : $value) : '<i>Empty</i>');
             $salesOrderlogRepository->createLog($sales_order, $admin->id, 'admin', 1, $description);
             if ($key == 'customer_note') {
+                $settingRepository = new SettingRepository(new Container());
+                $date = Carbon::parse($sales_order->created_at);
+                $formattedDate = $date->format('F j, Y');
+                $image = $settingRepository->getValueByKey('customer_note_email_image');
                 $description = "Your Order (" . $sales_order->sales_order_id . ") has updated a note. <br> <b>" . $value . "</b>";
-                Mail::to($sales_order->user->email)->send(new CustomerNoteMail($description));
+                Mail::to($sales_order->user->email)->send(new CustomerNoteMail($sales_order,$image,$formattedDate));
             }
         }
 

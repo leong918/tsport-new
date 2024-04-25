@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\User;
+use App\Models\Country;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class SalesOrder extends Model
 {
@@ -127,5 +129,10 @@ class SalesOrder extends Model
     public function checkVoucherExist(int $cart_rule_id)
     {
         return $this->salesOrderTotal->where('cart_rule_id', $cart_rule_id)->first();
+    }
+
+    public function countryRecord(): HasOne
+    {
+        return $this->hasOne(Country::class,'id', 'country_id');
     }
 }
