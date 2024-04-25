@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductRelated;
+use App\Models\ProductTag;
 use Illuminate\Container\Container;
 
 class ProductRepository extends BaseRepository
@@ -268,9 +270,14 @@ class ProductRepository extends BaseRepository
         $model->fill($input);
         $model->save();
 
+        $related_product = ProductRelated::where('related_product_id', $model->id);
+        $product_tag = ProductTag::where('product_id', $model->id);
+
         if (isset($input['product_related'])) {
             $productRelatedRepository = new ProductRelatedRepository(new Container());
             $productRelatedRepository->createProductRelated($input, $model->id);
+        } else {
+            $related_product ? $related_product->delete() : null;
         }
 
         if (isset($input['image'])) {
@@ -281,6 +288,8 @@ class ProductRepository extends BaseRepository
         if (isset($input['product_tag'])) {
             $productTag = new ProductTagRepository(new Container());
             $productTag->createProductTag($input, $model->id);
+        } else {
+            $product_tag ? $product_tag->delete() : null;
         }
 
         if ($model->is_attribute && isset($input['option'])) {
