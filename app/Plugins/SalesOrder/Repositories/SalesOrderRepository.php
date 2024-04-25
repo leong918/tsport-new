@@ -561,7 +561,7 @@ class SalesOrderRepository extends BaseRepository
                 $insider_discount = $cartRuleRepository->makeModel()->where('type', 'insider_discount')->first();
                 $check_condition = $sales_order->salesOrderTotal->where('cart_rule_id', $insider_discount->id)->first();
             } else {
-                $check_condition = $$total_accumulate_amount >= $next_level_target->target_amount;
+                $check_condition = $total_accumulate_amount >= $next_level_target->target_amount;
             }
 
             if ($check_condition) {
