@@ -57,19 +57,25 @@
         <div class="col-12 product-info-wrapper">
             <div class="col-12 col-md-10 col-lg-7">
                 <ul class="nav nav-tabs info-action-button" id="myTab" role="tablist">
+                    @if (($product->productDescription->where('language', 'zh-CN')->whereNotNull('description'))->isNotEmpty())
                     <li class="nav-item" role="presentation">
                         <button class="nav-link {{ isset($_GET['page']) ? '' : 'active' }}" data-bs-toggle="tab"
                             data-bs-target="#desciption" type="button" role="tab" aria-controls="desciption"
                             aria-selected="true">Description</button>
                     </li>
+                    @endif
+                    @if (($product->productDescription->where('language', 'zh-CN')->whereNotNull('ingredient'))->isNotEmpty())
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ingredients" type="button"
                             role="tab" aria-controls="ingredients" aria-selected="false">Ingredients</button>
                     </li>
+                    @endif
+                    @if (($product->productDescription->where('language', 'zh-CN')->whereNotNull('usage'))->isNotEmpty())
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#usage" type="button" role="tab"
                             aria-controls="usage" aria-selected="false">Usage</button>
                     </li>
+                    @endif
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab"
                             aria-controls="info" aria-selected="false">Additional Information</button>
