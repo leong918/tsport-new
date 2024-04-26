@@ -160,7 +160,7 @@
                                         <div class="product-description">{{ $productRelated->product->name }}</div>
                                         <div class="price-cart">
                                             <div class="product-price">
-                                                {{ $productRelated->product->getCurrencyParameters('HKD')->price }}</div>
+                                                ${{ $productRelated->product->getCurrencyParameters('HKD')->price }}</div>
                                             @if (function_exists('salesOrderRenderView'))
                                                 {{ salesOrderRenderView('product_list_cart_mobile', $productRelated->product) }}
                                             @endif

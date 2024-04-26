@@ -105,6 +105,19 @@ class Product extends Model
         return $this->hasMany(ProductAttribute::class);
     }
 
+    public function hasVariationAttribute()
+    {
+        $has_variation = false;
+        foreach ($this->productAttribute as $productAttribute) {
+            if ($productAttribute->is_variation) {
+                $has_variation = true;
+                break;
+            }
+        }
+
+        return $has_variation;
+    }
+
     public function productAttributeTerm(): HasMany
     {
         return $this->hasMany(ProductAttributeTerm::class);

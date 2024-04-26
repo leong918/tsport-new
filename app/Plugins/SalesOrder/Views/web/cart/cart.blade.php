@@ -10,7 +10,7 @@
                         <div class="shopping-cart-banner">
                             <div><img src="{{$setting_model['shopping_cart_banner']}}" /></div>
                             <div>
-                                @if (count($shopping_cart_banner_product->productAttribute) > 0)
+                                @if (count($shopping_cart_banner_product->productAttribute) > 0 && $shopping_cart_banner_product->hasVariationAttribute())
                                 <button class="add-to-cart d-none d-lg-block cart-button-redirect" data-href="{{ route('web.product_detail', ['alias' => $shopping_cart_banner_product->alias]) }}">
                                 ADD TO CART
                                 </button>
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div>
-                            @if (count($shopping_cart_banner_product->productAttribute) > 0)
+                            @if (count($shopping_cart_banner_product->productAttribute) > 0 && $shopping_cart_banner_product->hasVariationAttribute())
                             <button class="add-to-cart d-block d-lg-none cart-button-redirect" data-href="{{ route('web.product_detail', ['alias' => $shopping_cart_banner_product->alias]) }}">
                             ADD TO CART
                             </button>
