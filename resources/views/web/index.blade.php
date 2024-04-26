@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="product-description">{{ $product->name }}</div>
                                     <div class="price-cart">
-                                        <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                        <div class="product-price">${{$product->getCurrencyParameters('HKD')->price}}</div>
                                         @if(function_exists('salesOrderRenderView'))
                                         {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
                                         @endif
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="product-description">{{ $product->name }}</div>
                                     <div class="price-cart">
-                                        <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                        <div class="product-price">${{$product->getCurrencyParameters('HKD')->price}}</div>
                                         @if(function_exists('salesOrderRenderView'))
                                         {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
                                         @endif
@@ -192,7 +192,7 @@
                             </div>
                             <div class="product-description">{{ $product->name }}</div>
                             <div class="price-cart">
-                                <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                <div class="product-price">${{$product->getCurrencyParameters('HKD')->price}}</div>
                                 @if(function_exists('salesOrderRenderView'))
                                 {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
                                 @endif
@@ -272,7 +272,7 @@
                                 </div>
                                 <div class="product-description">{{ $product->name }}</div>
                                 <div class="price-cart">
-                                    <div class="product-price">$ {{$product->productPrice[0]->price}}</div>
+                                    <div class="product-price">${{$product->getCurrencyParameters('HKD')->price}}</div>
                                     @if(function_exists('salesOrderRenderView'))
                                     {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
                                     @endif
