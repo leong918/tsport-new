@@ -17,8 +17,8 @@
                         <div class="titlev2">
                             Contacts
                         </div>
+                        {{ html()->model($user)->form('PUT', route("account.updateAddress", ["id" => $user->id]))->id('update_user_address_form')->open() }}
                         <div class="all-form-wrap">
-                            {{ html()->model($user)->form('PUT', route("account.updateAddress", ["id" => $user->id]))->id('update_user_address_form')->open() }}
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-wrapper">
@@ -62,13 +62,11 @@
                             </div>
                             <div class="form-wrapper">
                                 <div class="input-container dropdown">
-                                    {{ html()->hidden('country_id')->placeholder('')->id('country-id')->required() }}
-                                    {{ html()->text()->class('disabled-txt country-input')->value($user->country)->attributes(['readonly' => true])->required() }}
-                                    <ul id="country-dropdown">
-                                        @foreach($countryDropdown as $key => $value)
-                                        <li data-country-id = {{ $key }}>{{ $value }}</li>
+                                    <select name="country_id">
+                                        @foreach($countryDropdown as $key => $name)
+                                        <option value="{{ $key }}" {{ isset($user) && $key == $user->country_id ? 'selected' : '' }}>{{ $name }}</option>
                                         @endforeach
-                                    </ul>
+                                    </select>
                                     {{ html()->label('Country / Region *')->class('placeholder-label') }}
                                 </div>
                             </div>
@@ -109,35 +107,36 @@
 </div>
 @endsection
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
-        $('.input-container input.country-input').focus(function() {
-            $('#country-dropdown').addClass('visible');
-        });
+        // $('.input-container input.country-input').focus(function() {
+        //     $('#country-dropdown').addClass('visible');
+        // });
     
-        $("#country-dropdown li").click(function() {
-            $('#country-id').val($(this).data('country-id'));
-            $('.country-input').val($(this).text());
-           $('#country-dropdown').removeClass('visible');
-        });
+        // $("#country-dropdown li").click(function() {
+        //     $('#country-id').val($(this).data('country-id'));
+        //     $('.country-input').val($(this).text());
+        //    $('#country-dropdown').removeClass('visible');
+        // });
         
-        $('.input-container input.country-input').on('blur', function() {
-            setTimeout(function() {
-                if (!$('.input-container input.country-input').is(':focus') && !$('#country-dropdown').is(':focus')) {
-                    $('#country-dropdown').removeClass('visible');
-                }
-            }, 100);
-        });
+        // $('.input-container input.country-input').on('blur', function() {
+        //     setTimeout(function() {
+        //         if (!$('.input-container input.country-input').is(':focus') && !$('#country-dropdown').is(':focus')) {
+        //             $('#country-dropdown').removeClass('visible');
+        //         }
+        //     }, 100);
+        // });
 
         var parentElement = document.getElementsByClassName('forgot-password-container')[0];
-        $("#update_user_address_form").submit(function(e) {
+
+        $("#update_user_address_form").submit(function(e) { 
             $(this).find('button[type="submit"]').attr('disabled','disabled');
 
             e.preventDefault();
 
             var url = $(this).attr('action');
             let formData = new FormData(this);
-
 
             axios({
                 method: "post",
