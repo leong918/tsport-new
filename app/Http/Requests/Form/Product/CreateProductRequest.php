@@ -26,7 +26,6 @@ class CreateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'brand_id' => 'required',
             'category_id' => 'required',
             'name' => 'required',
             'alias' => 'required|unique:product,alias,NULL,id,deleted_at,NULL|regex:/^[\w\p{Han}\-]+$/u',

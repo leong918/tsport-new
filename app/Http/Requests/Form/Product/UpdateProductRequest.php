@@ -27,7 +27,6 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'brand_id' => 'required',
             'category_id' => 'required',
             'name' => 'required',
             'alias' => 'required|unique:product,alias,' . $this->id . ',id,deleted_at,NULL|regex:/^[\w\p{Han}\-]+$/u',

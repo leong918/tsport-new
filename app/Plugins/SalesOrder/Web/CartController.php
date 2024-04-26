@@ -379,7 +379,7 @@ class CartController extends BaseController
         $order = null;
         $data['user_id'] = auth()->user()->id;
         $data['address'] = session()->get('cart-' . auth()->user()->id);
-
+   
         if (isset($data['stripe_payment_intent_id'])) {
             $order = $this->salesOrderRepository->getOrderByPaymentIntentId($data['stripe_payment_intent_id']['clientSecret']);
         }
@@ -397,15 +397,15 @@ class CartController extends BaseController
             $order = $this->salesOrderRepository->createOrder($data, $cartTotal, $buyNowData);
             $this->salesOrderProductRepository->createOrderProduct($order, $user_cart);
             $this->salesOrderTotalRepository->createOrderTotal($order, $cartTotal);
-
+   
             // update referral voucher
             $referrer_voucher = $this->cartRuleRepository->getReferrerVoucher();
-            if (in_array($referrer_voucher->id, array_column($cartTotal['discount'], 'id'))) {
+            if ($referrer_voucher && in_array($referrer_voucher->id, array_column($cartTotal['discount'], 'id'))) {
                 $this->referralRepository->updateReferrerVoucher($data['user_id'], $order->id);
             }
 
             $referee_voucher = $this->cartRuleRepository->getRefereeVoucher();
-            if (in_array($referee_voucher->id, array_column($cartTotal['discount'], 'id'))) {
+            if ($referee_voucher && in_array($referee_voucher->id, array_column($cartTotal['discount'], 'id'))) {
                 $this->referralRepository->updateRefereeVoucher($data['user_id'], $order->id);
             }
             // end update
