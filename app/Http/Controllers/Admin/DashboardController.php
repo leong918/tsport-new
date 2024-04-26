@@ -45,9 +45,7 @@ class DashboardController extends BaseController
 
                         return $status;
                     } else {
-                        $status = $model->email_verified_at;
-
-                        $status == null ? $status = 'Verified' : $status = 'Unverified';
+                        $model->status != null ? $status = 'Verified' : $status = 'Unverified';
 
                         return $status;
                     }
