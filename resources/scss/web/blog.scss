@@ -36,6 +36,10 @@
             @media (max-width:576px) {
                 min-height: 500px;
             }
+
+            a{
+                text-decoration: none;
+            }
         }
 
         .blog-block:hover {
@@ -1182,6 +1186,7 @@
     .blog-left{
         img{
             width: 100%;
+            object-fit: contain;
         }
         .left-desc{
             @media only screen and (max-width:767px){
@@ -1196,6 +1201,18 @@
             font-family: "ChironSungHK-Medium";
             font-size: 20px;
         }
+        a{
+            text-decoration: none;
+            color:black;
+            transition: all 0.3s linear;
+            &:hover{
+                opacity: 0.7;
+            }
+        }
+        p{
+            color:#a6a6a6;
+        }
+
     }
     .top-title-wrap{
         .dates{
