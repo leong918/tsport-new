@@ -148,7 +148,7 @@
                                         <img class="show"
                                             src="{{ $productRelated->product->getFirstProductImage()->url }}">
                                         @if (function_exists('salesOrderRenderView'))
-                                            {{ salesOrderRenderView('product_list_hover_web', $product) }}
+                                            {{ salesOrderRenderView('product_list_hover_web', $productRelated->product) }}
                                         @endif
                                     </div>
                                     <div class="product-info">
@@ -162,7 +162,7 @@
                                             <div class="product-price">
                                                 {{ $productRelated->product->getCurrencyParameters('HKD')->price }}</div>
                                             @if (function_exists('salesOrderRenderView'))
-                                                {{ salesOrderRenderView('product_list_cart_mobile', $product) }}
+                                                {{ salesOrderRenderView('product_list_cart_mobile', $productRelated->product) }}
                                             @endif
                                         </div>
                                     </div>

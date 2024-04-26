@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository extends BaseRepository
 {
@@ -35,6 +36,16 @@ class UserRepository extends BaseRepository
     public function getListing()
     {
         return User::query()->orderBy('created_at', 'desc');
+    }
+
+    public function getNewUsers()
+    {
+        return User::select(
+            DB::raw("CONCAT(last_name, ' ', first_name) as username"),
+            'email',
+            'email_verified_at as status',
+            'created_at',
+        )->orderBy('created_at', 'desc')->get();
     }
 
     public function getActiveUser(){

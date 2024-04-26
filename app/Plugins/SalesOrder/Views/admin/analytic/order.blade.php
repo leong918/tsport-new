@@ -321,7 +321,6 @@
                         var order_data_current = response.data.order_data_current;
                         var order_data_previous = response.data.order_data_previous;
 
-                        // console.log(order_data_current, order_data_previous);
                         updateLineChart(order_data_current, order_data_previous, sort_by);
                         updateOrderSummary(order_data_current, order_data_previous);
                     })
@@ -480,7 +479,6 @@
                 avg_product_per_order_prev = avg_product_per_order_prev / total_orders_previous;
                 avg_order_value_prev = avg_order_value_prev / total_orders_previous;    
 
-                console.log(avg_product_per_order);
                 var avg_product_per_order_percent = ((avg_product_per_order - avg_product_per_order_prev) / avg_product_per_order_prev) * 100;
                 var avg_order_value_percent = ((avg_order_value - avg_order_value_prev) / avg_order_value_prev) * 100;
                 var net_sales_percent = ((total_net_sales - total_net_sales_previous) / total_net_sales_previous) * 100;
