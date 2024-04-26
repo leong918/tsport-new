@@ -66,7 +66,7 @@ class UserRepository extends BaseRepository
         return $model;
     }
 
-    public function updateUser(array $input, int $id, int $admin_id)
+    public function updateUser(array $input, int $id, int $admin_id = null)
     {
         $model = User::findOrFail($id);
         if (isset($input['password']) && trim($input['password']) === '') {
@@ -80,7 +80,7 @@ class UserRepository extends BaseRepository
         }
         
         //create level change log
-        if($input['level_id'] != $model->level_id){
+        if(isset($input['level_id']) && $input['level_id'] != $model->level_id){
 
             $levelChangeLogRepository = new LevelChangeLogRepository(new Container());
             $adminRepository = new AdminRepository(new Container());

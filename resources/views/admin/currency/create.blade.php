@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="row">
+                        {{ html()->form('POST', route("admin.currency.create.post"))->acceptsFiles()->id('currency')->open()  }}
                         <div class="col-sm-12">
-                            {{ html()->form('POST', route("admin.currency.create.post"))->acceptsFiles()->id('currency')->open()  }}
                             <div class="card mb-3">
                                 <div class="card-header"><strong>Currency</strong> </div>
                                 <div class="card-body">
@@ -22,7 +22,7 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
-                            {{ html()->form()->close() }}
+                        {{ html()->form()->close() }}
                         </div>
                     </div>
                 </div>  

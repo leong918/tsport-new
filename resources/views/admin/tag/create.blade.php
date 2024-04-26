@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="row">
+                        {{ html()->form('POST', route("admin.tag.create.post"))->acceptsFiles()->id('tag')->open()  }}
                         <div class="col-sm-12">
-                            {{ html()->form('POST', route("admin.tag.create.post"))->acceptsFiles()->id('tag')->open()  }}
                             <div class="card mb-3">
                                 <div class="card-header"><strong>Tag</strong> </div>
                                 <div class="card-body">
