@@ -22,7 +22,7 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
-                            {{ html()->form()->close() }}
+                        {{ html()->form()->close() }}
                     </div>
                 </div>
             </div>

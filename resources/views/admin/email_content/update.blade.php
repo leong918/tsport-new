@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="row">
+                        {{ html()->model($model)->form('PUT', route("admin.email_content.update.put", ["id" => $model->id]))->acceptsFiles()->id('email_content')->open() }}
                         <div class="col-sm-12">
-                            {{ html()->model($model)->form('PUT', route("admin.email_content.update.put", ["id" => $model->id]))->acceptsFiles()->id('email_content')->open() }}
                             <div class="card mb-3">
                                 <div class="card-header"><strong>Email</strong> </div>
                                 <div class="card-body">
@@ -22,7 +22,7 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
-                            {{ html()->form()->close() }}
+                        {{ html()->form()->close() }}
                         </div>
                     </div>
                 </div>

@@ -54,7 +54,7 @@ class ProductRepository extends BaseRepository
             return [
                 'id' => $product->id,
                 'name' => $product->name,
-                'price' => $product->getCurrencyParameters($code)->price,
+                'price' => $product->getCurrencyParameters($code)->price ?? 0,
             ];
         });
 
