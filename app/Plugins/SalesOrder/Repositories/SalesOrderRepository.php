@@ -341,6 +341,10 @@ class SalesOrderRepository extends BaseRepository
         )->groupBy('sales_order.id')->get()->groupBy('date');
     }
 
+    public function getNewOrders()
+    {
+        return SalesOrder::query()->orderBy('created_at', 'desc');
+    }
 
     public function updateSalesOrder(array $input, int $id, $admin)
     {
@@ -455,6 +459,51 @@ class SalesOrderRepository extends BaseRepository
     public function getSalesOrderId($sales_order_id)
     {
         return SalesOrder::where('sales_order_id', $sales_order_id)->first();
+    }
+
+    public function getOverviewData($date, $is_previous)
+    {
+        if($is_previous != true){
+            $start_date = $date->copy()->startOfYear();
+            $end_date = $date->copy()->endOfYear();
+        } else {
+            $start_date = $date->copy()->subYear()->startOfYear();
+            $end_date = $date->copy()->subYear()->endOfYear();
+        }
+
+        return SalesOrder::whereBetween('sales_order.created_at', [$start_date, $end_date])
+            ->select(
+                DB::raw('SUM(sales_order.subtotal) as total_sales'),
+                DB::raw('SUM(sales_order.total) as net_sales'),
+                DB::raw('COUNT(sales_order.id) as orders'),
+                DB::raw('(SELECT SUM(sales_order_product.quantity) FROM sales_order_product WHERE sales_order_product.sales_order_id = sales_order.id) as product_sold'),
+            )->groupBy('sales_order.id')->get();
+    }
+
+    public function getMonthlyOrder($date)
+    {
+        $start_date = $date->copy()->subDay(29);
+
+        return SalesOrder::whereBetween('sales_order.created_at', [$start_date, $date])
+            ->select(
+                DB::raw('DATE_FORMAT(sales_order.created_at, "%m/%d") as date'),
+                DB::raw('SUM(sales_order.total) as net_sales'),
+                DB::raw('COUNT(sales_order.id) as orders')
+            )
+            ->groupBy('sales_order.id')->get()->groupBy('date');
+    }
+
+    public function getYearlyOrder($date)
+    {
+        $start_date = $date->copy()->subMonth(11);
+
+        return SalesOrder::whereBetween('sales_order.created_at', [$start_date, $date])
+            ->select(
+                DB::raw('DATE_FORMAT(sales_order.created_at, "%m/%d/%Y") as date'),
+                DB::raw('SUM(sales_order.total) as net_sales'),
+                DB::raw('COUNT(sales_order.id) as orders')
+            )
+            ->groupBy('date')->get()->groupBy('date');
     }
 
     public function getOrderByPaymentIntentId($payment_intent_id)

@@ -286,7 +286,6 @@
             var previousDatasetLabel = [];
             var dayOfMonth = [];
 
-
             var currentDay = $('#dropdown_datepicker').data('daterangepicker').endDate._d;
 
             for (let i = 1; i <= moment(currentDay).format('DD'); i++) {
