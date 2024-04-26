@@ -1398,9 +1398,8 @@
     }
 
     .swiper-slide.brand-img img {
-        height: 290px;
-        object-fit: cover;
-        object-position: center;
+        width: 100%;
+        height: auto;
     }
 
     .swiper-slide.more-discover-img img {
