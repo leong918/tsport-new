@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('username', 50);
             $table->string('email')->unique()->nullable();
             $table->string('phone_no');
-            $table->timestamp('dob')->nullable();
+            $table->datetime('dob')->default(now());
             $table->string('password');
             $table->string('referral_email')->nullable();
             $table->string('referral_phone_no')->nullable();
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('postcode')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
-            $table->string('address')->nullable();
+            $table->text('address')->nullable();
             $table->rememberToken();
             $table->timestamp('level_upgrade_at')->nullable();
             $table->timestamp('level_validity')->nullable();
