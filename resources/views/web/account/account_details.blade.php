@@ -17,8 +17,8 @@
                         <div class="title">
                             Account Details
                         </div>
+                        {{ html()->model($user)->form('PUT', route("account.updateUser", ["id" => $user->id]))->id('update_user_form')->open() }}
                         <div class="all-form-wrap">
-                            {{ html()->model($user)->form('PUT', route("account.updateUser", ["id" => $user->id]))->id('update_user_form')->open() }}
                             <div class="row">
                                  <div class="col-6">
                                     <div class="form-wrapper">

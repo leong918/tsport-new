@@ -69,7 +69,7 @@
             </tr>
             <tr>
                 <th>{{ html()->label('Payment Method :') }}</th>
-                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD)) }}' data-column="payment_method" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->payment_method}}">{!! isset($model) && isset($model->payment_method) ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method) : '<i>Empty</i>' !!}</span></div></td>
+                <td><div><span class="editable" data-input-type="select" data-dropdown-list='{{ json_encode(array_flip(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD)) }}' data-column="payment_method" data-url="{{ route('admin.sales_order.update.put',["id" => $model->id]) }}" data-original-data="{{$model->payment_method}}">{!! isset($model) && isset($model->payment_method) && $model->payment_method != null  ? renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method) : '<i>Empty</i>' !!}</span></div></td>
             </tr>
             <tr>
                 <th>{{ html()->label('Earned Points :') }}</th>
@@ -295,9 +295,9 @@ $(document).ready(function(){
             originalElement = $("<span class='editable' data-input-type='" + originalInputType + "' data-column='" + originalColumn + "' data-url='" + originalUrl + "' data-original-data='" + originalData + "'></span>").html(originalData);
         }else if (originalInputType == 'select'){
             if(originalColumn == 'status'){
-                var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status); ?>";
+                var rendering = "<?php if(isset($model) && isset($model->status)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status);?>";
             }else if (originalColumn == 'payment_method'){
-                var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method); ?>";
+                var rendering = "<?php if(isset($model) && isset($model->payment_method) && $model->payment_method != null) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method); else echo '<i>Empty</i>'; ?>";
             }else if(originalColumn == 'country_id'){
                 var rendering = "<?php if(isset($model)) echo $countryDropdown[$model->country_id] ?>";
             }
@@ -313,9 +313,9 @@ $(document).ready(function(){
         var originalElement = '';
         if(originalDropdown){
             if(originalColumn == 'status'){
-                var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status); ?>";
+                var rendering = "<?php if(isset($model) && isset($model->status)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::ORDER_STATUS, $model->status); ?>";
             }else if (originalColumn == 'payment_method'){
-                var rendering = "<?php if(isset($model)) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method); ?>";
+                var rendering = "<?php if(isset($model) && isset($model->payment_method) && $model->payment_method != null) echo renderModelData(App\Plugins\SalesOrder\Models\SalesOrder::PAYMENT_METHOD, $model->payment_method); else echo '<i>Empty</i>'; ?>";
             }else if(originalColumn == 'country_id'){
                 var rendering = "<?php if(isset($model)) echo $countryDropdown[$model->country_id] ?>";
             }

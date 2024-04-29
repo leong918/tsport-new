@@ -59,13 +59,14 @@
                                     <div class="address-title">Shipping Address</div>
                                     <div class="mb-40 d-flex justify-content-between gap-5">
                                         <div class="input-container" style="width:47%">
-                                            {{ html()->hidden('country_id')->value(old('country_id', $addressData['country_id']))->required() }}
-                                            {{ html()->text('country')->placeholder('')->class('address-input')->value(old('country', $addressData['country']))->required()->isReadonly() }}
-                                            <ul id="country-dropdown">
+                                            {{ html()->hidden('country')->id('country')->class('address-input')->value(old('country', $addressData['country']))->required() }}
+                                            <select name="country_id">
                                                 @foreach($countryList as $country)
-                                                <li data-value="{{ $country->id }}">{{ $country->name }}</li>
+                                                    <option value="{{ $country->id }}" {{ old('country_id', $addressData['country_id']) == $country->id ? 'selected' : '' }}>
+                                                        {{ $country->name }}
+                                                    </option>
                                                 @endforeach
-                                            </ul>
+                                            </select>
                                             <label class="placeholder-label">Country / Region</label>
                                         </div>
                                         <div class="input-container" style="width:47%">
@@ -123,24 +124,24 @@
 @push('scripts')
 <script>
 $(document).ready(function() {
-    $('.input-container input#country').focus(function() {
-        $('#country-dropdown').addClass('visible');
-    });
+    // $('.input-container input#country').focus(function() {
+    //     $('#country-dropdown').addClass('visible');
+    // });
 
-    $("#country-dropdown li").click(function() {
-        $('#country').attr('value', $(this).text());
-        $('#country_id').val($(this).data('value'));
-        $('#country-dropdown').removeClass('visible');
+    $("select[name='country_id']").change(function() {
+        $('#country').attr('value', $(this).find('option:selected').text());
+        // $('#country_id').val($(this).data('value'));
+        // $('#country-dropdown').removeClass('visible');
         $('#country').trigger('paste');
     });
     
-    $('.input-container input#country').on('blur', function() {
-        setTimeout(function() {
-            if (!$('.input-container input#country').is(':focus') && !$('#country-dropdown').is(':focus')) {
-                $('#country-dropdown').removeClass('visible');
-            }
-        }, 100);
-    });
+    // $('.input-container input#country').on('blur', function() {
+    //     setTimeout(function() {
+    //         if (!$('.input-container input#country').is(':focus') && !$('#country-dropdown').is(':focus')) {
+    //             $('#country-dropdown').removeClass('visible');
+    //         }
+    //     }, 100);
+    // });
 
     $('.address-input').on('change paste keyup', function () {
         $('.shipping-fee-section').removeClass('d-none');
@@ -150,7 +151,7 @@ $(document).ready(function() {
         var state = $('#state').val();
         var postcode = $('#postcode').val();
         var country = $('#country').val();
-
+        
         $('#shipping_address').html(address + ', ' + postcode + ', ' + city + ', ' + state + ', ' + country);
 
         if ($(this).attr('name') == 'country') {
