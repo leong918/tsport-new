@@ -82,13 +82,23 @@ class AppController extends BaseController
             $category_list = $this->categoryRepository->getSubCategoryByCategoryId($current_category->id);
             $parent_category = $this->categoryRepository->find($current_category->parent_category_id);
 
-            $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
+            if($category_list->isNotEmpty()){
+                $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
+
+                foreach ($category_list as $category) {
+                    $product = $this->productRepository->getProductByCategoryType($category->id, 'HKD');
+                    $product_list = $product_list->merge($product);
+                    $product_list = $product_list->sortByDesc('created_at')->values();
+                }
+            } else {
+                $product_list = $this->productRepository->getProductByCategoryType($category_id, 'HKD');
+            }
+
         }
 
         //search page
         if ($request->input('search_keyword')) {
             $search_keyword = $request->input('search_keyword');
-
             $product_list = $this->productRepository->getProductByTagOrKeywords($search_keyword, 'HKD');
         }
 

@@ -10,7 +10,7 @@
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
         <li class="nav-item"><a class="nav-link" href="{{ route('admin.dashboard') }}">
             <i class="fa-solid fa-chart-bar nav-icon"></i>
-             Dashboard<span class="badge bg-info-gradient ms-auto">NEW</span></a></li>
+             Dashboard</a></li>
         <li class="nav-title">Shop</li>
         @foreach($sidebar_item['shop'] as $parent_item)
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">

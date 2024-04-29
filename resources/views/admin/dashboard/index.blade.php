@@ -392,13 +392,18 @@
                 $('.percentage span').each(function() {
                     var value = parseFloat($(this).text().split('%'));
 
-                    if ($.isNumeric(value)) {
-                        value > 0 ? $(this).parent().removeClass('bg-success bg-danger').addClass(
-                                'bg-success') : $(this).parent().removeClass('bg-success bg-danger')
-                            .addClass('bg-danger');
+                    if(!isNaN(value) && isFinite(value)){
+                        if ($.isNumeric(value)) {
+                            value > 0 ? $(this).parent().removeClass('bg-success bg-danger').addClass(
+                                    'bg-success') : $(this).parent().removeClass('bg-success bg-danger')
+                                .addClass('bg-danger');
+                        } else {
+                            $(this).parent().removeClass('bg-success bg-danger');
+                        }
                     } else {
-                        $(this).parent().removeClass('bg-success bg-danger');
+                        $(this).text('');
                     }
+                    
                 });
 
                 $('.summary li').on('click', function(e) {
