@@ -37,23 +37,6 @@
                             </div>
                             <label class="placeholder-label">Date of Birth. *</label>
                             <div class="input-desc">cannot be changed after becoming a member</div>
-                            {{-- birth month --}}
-                            {{-- {{ html()->hidden('birth_month')->placeholder('')->id('birth-month') }}
-                            <input type="text" placeholder=" " class="birth-input" required readonly/>
-                            <ul id="month-dropdown">
-                                <li>January</li>
-                                <li>February</li>
-                                <li>March</li>
-                                <li>April</li>
-                                <li>May</li>
-                                <li>June</li>
-                                <li>July</li>
-                                <li>August</li>
-                                <li>September</li>
-                                <li>October</li>
-                                <li>November</li>
-                                <li>December</li>
-                            </ul> --}}
                         </div>
                         <div class="mb-40 input-container">
                             {{ html()->password('password')->placeholder('')->class('requiredClass') }}

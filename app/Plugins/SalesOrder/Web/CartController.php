@@ -201,7 +201,7 @@ class CartController extends BaseController
             $addressData = $this->userRepository->getAddressData(auth()->user()->id);
         }
 
-        $countryList = $this->countryRepository->getListing();
+        $countryList = $this->countryRepository->getActiveListing();
         $coupon_session = $request->session()->get('coupon-' . $user_data['user_data']) ?? array();
         $point_session = $request->session()->get('point-' . $user_data['user_data']) ?? false;
         $cartTotal = $this->userCartRepository->calculateUserCartTotal($user_data, $coupon_session, $point_session, auth()->user()->id, $addressData, $buyNowData);

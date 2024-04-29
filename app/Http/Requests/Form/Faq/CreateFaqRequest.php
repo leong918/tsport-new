@@ -3,7 +3,8 @@
 namespace App\Http\Requests\Form\Faq;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 class CreateFaqRequest extends FormRequest
 {
     /**
@@ -29,5 +30,14 @@ class CreateFaqRequest extends FormRequest
             'status' => 'required',
             'sort' => 'required',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'msg' => $validator->errors(),
+            ], 500)
+        );
     }
 }

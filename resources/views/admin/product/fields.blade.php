@@ -11,6 +11,9 @@
 </style>
 
 <x-alert />
+{{-- alert container before submit --}}
+<div id="productErrorAlertContainer" class="alert alert-danger" style="display:none" role="alert"></div>
+
 <div class="col-sm-12">
     <div class="card mb-3">
         <div class="card-header">
@@ -21,84 +24,84 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Name') }}
-                        {{ html()->text('name')->id('productName')->placeholder('Enter name')->class('form-control')->required() }}
+                        {{ html()->text('name')->id('productName')->placeholder('Enter name')->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Alias') }}
-                        {{ html()->text('alias')->id('alias')->placeholder('Enter alias')->class('form-control')->required() }}
+                        {{ html()->text('alias')->id('alias')->placeholder('Enter alias')->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('SKU') }}
-                        {{ html()->text('sku')->placeholder('Enter SKU')->class('form-control')->required() }}
+                        {{ html()->text('sku')->placeholder('Enter SKU')->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Status') }}
-                        {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control')->required() }}
+                        {{ html()->select('status')->options(renderSelect(Brand::STATUS))->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Category') }}
-                        {{ html()->select('category_id')->options($categoryDropdown)->class('form-control')->required() }}
+                        {{ html()->select('category_id')->options($categoryDropdown)->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Brand') }}
+                        {{ html()->label('Brand (Optional)') }}
                         {{ html()->select('brand_id')->options([null => ''] + $brandDropdown)->class('form-control') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Price') }}    
-                        {{ html()->number('product_price')->placeholder('Enter price')->class('form-control')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->where('product_attribute_term_id', null)->first()->price : null )->required() }}
+                        {{ html()->number('product_price')->placeholder('Enter price')->class('form-control requiredClass')->attributes(['min' => '0.01','step' => '0.01'])->value(isset($model) && count($model->productPrice) > 0 ? $model->productPrice->where('product_attribute_term_id', null)->first()->price : null )}}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Point') }}
-                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control')->required() }}
+                        {{ html()->number('point_value')->placeholder('Enter point')->attribute('min', 0)->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Quantity') }}
-                        {{ html()->number('quantity')->placeholder('Enter quantity')->class('form-control')->required() }}
+                        {{ html()->number('quantity')->placeholder('Enter quantity')->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Has Attribute') }}
-                        {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control')->required() }}
+                        {{ html()->select('is_attribute')->options(['No', 'Yes'])->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Is New') }}
-                        {{ html()->select('is_new')->options(['No', 'Yes'])->class('form-control')->required() }}
+                        {{ html()->select('is_new')->options(['No', 'Yes'])->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Is Best Seller') }}
-                        {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control')->required() }}
+                        {{ html()->select('is_best_seller')->options(['No', 'Yes'])->class('form-control requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Is Backorder') }}
-                        {{ html()->select('is_backorder')->options(['No', 'Yes'])->class('form-control is_backorder')->required() }}
+                        {{ html()->select('is_backorder')->options(['No', 'Yes'])->class('form-control is_backorder requiredClass') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Product Tag') }}
+                        {{ html()->label('Product Tag (Optional)') }}
                         <select class="form-multi-select" id="product-tag-select" name="product_tag[]" multiple
                             data-placeholder="Choose product tag">
                             @foreach ($tagDropdown as $tag_id => $tag_name)
@@ -111,7 +114,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Related Product') }}
+                        {{ html()->label('Related Product (Optional)') }}
                         <select class="form-select" id="product-related-select" name="product_related[]"
                             data-placeholder="Choose related product" multiple>
                             @foreach ($productDropdown as $product_id => $product_name)
@@ -124,32 +127,32 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Information') }}
+                        {{ html()->label('Information (Optional)') }}
                         {{ html()->textarea('language[zh-CN][information]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->information : "")->class('form-control wysiwyg') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Description') }}
+                        {{ html()->label('Description (Optional)') }}
                         {{ html()->textarea('language[zh-CN][description]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->description : "")->class('form-control wysiwyg') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Ingredient') }}
+                        {{ html()->label('Ingredient (Optional)') }}
                         {{ html()->textarea('language[zh-CN][ingredient]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->ingredient : "")->class('form-control wysiwyg') }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Usage') }}
+                        {{ html()->label('Usage (Optional)') }}
                         {{ html()->textarea('language[zh-CN][usage]')->value(isset($model) && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->usage : "")->class('form-control wysiwyg') }}
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="mb-3">
                         {{ html()->label('Image') }}
-                        {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control')->required(isset($model) && $model->productImage->count() > 0 ? false : true) }}
+                        {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control '. (isset($model) && isset($model->productImage) && $model->productImage->count() > 0 ? '' : 'requiredClass')) }}
                         <br />
                         @if (isset($model) && $model->productImage->count() > 0)
                             <div class="row">
@@ -391,45 +394,64 @@
         $("#product").submit(function(e) {
             e.preventDefault();
 
-            tinymce.triggerSave();
-
-            var url = $(this).attr('action');
-
-            let formData = new FormData(this);
-
-            $(".form-control-file").each(function() {
-                formData.append($(this).attr("name"), $(this)[0].files[0]);
-            })
-
-            axios({
-                method: "post",
-                url: url,
-                data: formData,
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                },
-            })
-            .then(response => {
-                swal.fire({
-                    title: 'Success',
-                    text: 'Product Added!',
-                    icon: 'success',
-                    confirmButtonClass: 'btn btn-success',
-                    confirmButtonText: 'OK',
-                });
-                setTimeout(function() {
-                    window.location.replace('/admin/product/index');
-                }, 1000);
-            })
-            .catch(error => {
-                swal.fire({
-                    title: 'Fail',
-                    text: error.response.data.msg,
-                    icon: 'error',
-                    confirmButtonClass: 'btn btn-danger',
-                    confirmButtonText: 'OK',
-                });
+            var requiredFields = $(this).find('.requiredClass');
+            
+            var emptyFields = requiredFields.filter(function() {
+                return $(this).val() === '';
             });
+            if(emptyFields.length > 0){
+                var errorMessage = '';
+                emptyFields.each(function()
+                {
+                    var fields = $(this).attr('name').replace(/[_\[\]]/g, ' ');
+                    errorMessage += 'The <span style="font-family:RecklessNeue-Medium">'+fields+'</span> fields is required. <br/>';
+                });
+                $('#productErrorAlertContainer').html(errorMessage).show();
+                // Scroll to the top of the page
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }else{
+                $('#productErrorAlertContainer').hide();
+                    
+                tinymce.triggerSave();
+
+                var url = $(this).attr('action');
+
+                let formData = new FormData(this);
+
+                $(".form-control-file").each(function() {
+                    formData.append($(this).attr("name"), $(this)[0].files[0]);
+                })
+
+                axios({
+                    method: "post",
+                    url: url,
+                    data: formData,
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                })
+                .then(response => {
+                    swal.fire({
+                        title: 'Success',
+                        text: 'Product Added!',
+                        icon: 'success',
+                        confirmButtonClass: 'btn btn-success',
+                        confirmButtonText: 'OK',
+                    });
+                    setTimeout(function() {
+                        window.location.replace('/admin/product/index');
+                    }, 1000);
+                })
+                .catch(error => {
+                    swal.fire({
+                        title: 'Fail',
+                        text: error.response.data.msg,
+                        icon: 'error',
+                        confirmButtonClass: 'btn btn-danger',
+                        confirmButtonText: 'OK',
+                    });
+                });
+            }
         });
     });
 </script>
