@@ -15,7 +15,7 @@
                         {{ html()->model($model)->form('PUT', route("admin.blog.update.put", ["id" => $model->id]))->acceptsFiles()->id('blog')->open() }}
                         <div class="col-sm-12">
                             <div class="card mb-3">
-                                <div class="card-header"><strong>Brand</strong> </div>
+                                <div class="card-header"><strong>Blog</strong> </div>
                                 <div class="card-body">
                                     @include("admin.blog.fields")
                                 </div>

@@ -295,8 +295,8 @@
             <div class="row row-cols-1 row-cols-lg-4 row-cols-md-3 row-cols-sm-2">
                 @foreach ($blog_list->take(4) as $blog)
                 <div class="blog-container blog-img">
+                    <div class="blog-block">
                     <a class="text-decoration-none" style="color: inherit" href="{{route('web.blog_detail', ['blog_id' => $blog->id])}}">
-                        <div class="blog-block">
                             <div class="img-block">
                                 <img src="{{ $blog->getParameters('zh-CN')->image }}">
                             </div>
@@ -307,8 +307,8 @@
                             <div class="blog-button">
                                 <div style="color: inherit"">READ MORE</div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
                 @endforeach
             </div>
