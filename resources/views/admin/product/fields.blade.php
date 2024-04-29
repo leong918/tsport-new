@@ -254,11 +254,9 @@
         //-------- display product attribute field by on change (create product) -----------
         $('select[name="is_attribute"]').on('change', function() {
             if ($(this).val() == 1) {
-                $('input[name="quantity"]').prop('disabled', true).val('');
                 $('.product-attribute-input').show();
                 $('.optionContent .form-control').prop('disabled', false);
             } else {
-                $('input[name="quantity"]').prop('disabled', false);
                 $('.product-attribute-input').hide();
                 $('.optionContent .form-control').prop('disabled', true);
             }

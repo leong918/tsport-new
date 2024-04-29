@@ -8,7 +8,7 @@
         <img class="cart-mobile cart-out-stock" src="{{asset('assets/web/assets/img/homepage/out-of-stock-cart.png')}}">
     </div>
     @else
-    @if(count($product->productAttribute) > 0)
+    @if(count($product->productAttribute) > 0 && $product->hasVariationAttribute())
     <div class="cart-container cart-button-redirect" href="{{route('web.product_detail', ['alias' => $product->alias])}}">
         <img class="cart-mobile" src="{{asset('assets/web/assets/img/homepage/add-cart-2.png')}}">
     </div>
