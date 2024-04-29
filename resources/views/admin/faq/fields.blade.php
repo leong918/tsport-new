@@ -126,9 +126,20 @@
                 }, 1000);
             })
             .catch(error => {
+                let errorMessage = '';
+                if (typeof error.response.data.msg === 'object') {
+                    Object.keys(error.response.data.msg).forEach(key => {
+                            errorMessage += `${error.response.data.msg[key]}<br>`;
+                    });
+                } else if(error.response.data.msg){
+                    errorMessage = error.response.data.msg;
+                } else if(error.response.data.message){
+                    errorMessage = error.response.data.message;
+                }
+                
                 swal.fire({
                     title: 'Fail',
-                    text: error.response.data.msg,
+                    html: errorMessage,
                     icon: 'error',
                     confirmButtonClass: 'btn btn-danger',
                     confirmButtonText: 'OK',

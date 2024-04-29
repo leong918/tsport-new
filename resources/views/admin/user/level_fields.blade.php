@@ -1,4 +1,4 @@
-<x-alert />
+
 <div class="row">
     <div class="col-md-6">
         <div class="mb-3">
@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-6">
         <div class="mb-3">
-            {{ html()->label('Level Validity') }}
+            {{ html()->label('Level Validity (Optional)') }}
             <div class="input-group datePicker" data-td-target-input="nearest"
                 data-td-target-toggle="nearest">
                 <input id="levelValidityDatePicker" type="datetime" class="form-control" name="level_validity"

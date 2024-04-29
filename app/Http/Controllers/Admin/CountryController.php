@@ -28,7 +28,7 @@ class CountryController extends BaseController
                 ->addColumn('status', function ($model) {
                     $route = route('admin.country.status.post', ['id' => $model->id]);
                     $status = $model->status;
-                    return $this->view('country.status', compact('route', 'status', 'model'));
+                    return view('shared.status', compact('route', 'status', 'model'));
                 })
                 ->addColumn('action', function ($model) {
                     return $this->view('country.action', compact('model'));
