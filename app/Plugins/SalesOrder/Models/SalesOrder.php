@@ -51,6 +51,8 @@ class SalesOrder extends Model
         'sales_order_id',
         'payment_method',
         'delivery_partner',
+        'tracking_number',
+        'tracking_link',
         'stripe_payment_intent_id',
         'subtotal',
         'shipping',
