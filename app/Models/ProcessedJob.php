@@ -26,6 +26,7 @@ class ProcessedJob extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'email_content_id',
         'name',
         'end_at'
     ];
