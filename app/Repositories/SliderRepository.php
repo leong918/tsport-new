@@ -12,8 +12,7 @@ class SliderRepository extends BaseRepository
     /**
      * @var array
      */
-    protected $fieldSearchable = [
-    ];
+    protected $fieldSearchable = [];
 
     /**
      * Return searchable fields
@@ -35,7 +34,7 @@ class SliderRepository extends BaseRepository
 
     public function getListing()
     {
-        return Slider::query()->orderBy('created_at', 'desc');
+        return Slider::query();
     }
 
     public function updateSlider(array $input)
@@ -45,7 +44,7 @@ class SliderRepository extends BaseRepository
         $slider = new Slider();
         $slider->url = isset($input['main_url']) ? $input['main_url'] : $input['sub_url'];
 
-        if(isset($input['sub_slider_image'])){
+        if (isset($input['sub_slider_image'])) {
             $this->uploadFile($input['sub_slider_image']);
             $slider->image = $this->uploaded_filename;
         } else {
@@ -58,5 +57,4 @@ class SliderRepository extends BaseRepository
         $slider->type = ($input['type'] == 'main') ? 'main' : 'sub';
         $slider->save();
     }
-
 }
