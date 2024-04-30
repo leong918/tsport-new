@@ -24,11 +24,11 @@ class EmailContentController extends BaseController
     public function index(Request $request)
     {
         $subscriberMailRunning = $this->processedJobRepository->getLatestJobByName('ProcessSendSubscriberMail');
-        $lastSubscriberMailRan = $this->processedJobRepository->getLastRunningJobByName('ProcessSendSubscriberMail');
         if ($request->ajax()) {
             $model = $this->emailContentRepository->getListing();
             return DataTables::of($model)
-                ->editColumn('last_sent_on', function ($model) use ($lastSubscriberMailRan) {
+                ->editColumn('last_sent_on', function ($model) {
+                    $lastSubscriberMailRan = $this->processedJobRepository->getLastRunningJob('ProcessSendSubscriberMail', $model->id);
                     return isset($lastSubscriberMailRan) && $lastSubscriberMailRan->end_at ? $lastSubscriberMailRan->end_at : 'None';
                 })
                 ->addColumn('action', function ($model) use ($subscriberMailRunning){
@@ -90,7 +90,7 @@ class EmailContentController extends BaseController
     {
         //process job data
         $data['name'] = "ProcessSendSubscriberMail";
-
+        $data['email_content_id'] = $id;
         //create process job record
         $processedJob = $this->processedJobRepository->create($data);
         ProcessSendSubscriberMail::dispatch($id, $processedJob->id);
