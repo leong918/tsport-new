@@ -31,6 +31,11 @@ class CountryRepository extends BaseRepository
 
     public function getListing()
     {
+        return Country::query()->orderBy('name');
+    }
+
+    public function getActiveListing()
+    {
         return Country::where('status', 1)->orderBy('name')->get();
     }
 
