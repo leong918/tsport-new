@@ -27,11 +27,11 @@ class Kernel extends ConsoleKernel
             ->emailOutputOnFailure('vvinners.development@gmail.com');
 
         $schedule->command('check:low_stock_quantity')
-        ->daily()
-        ->timezone('Asia/Kuala_Lumpur')
-        ->runInBackground()
-        ->emailOutputTo('vvinners.development@gmail.com')
-        ->emailOutputOnFailure('vvinners.development@gmail.com');
+            ->daily()
+            ->timezone('Asia/Kuala_Lumpur')
+            ->runInBackground()
+            ->emailOutputTo('vvinners.development@gmail.com')
+            ->emailOutputOnFailure('vvinners.development@gmail.com');
     }
 
     /**
