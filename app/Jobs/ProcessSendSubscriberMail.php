@@ -19,8 +19,8 @@ class ProcessSendSubscriberMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $email_content_id;
-    public $processed_job_id;
+    private $email_content_id;
+    private $processed_job_id;
     /**
      * Create a new job instance.
      *
@@ -31,8 +31,6 @@ class ProcessSendSubscriberMail implements ShouldQueue
         $this->email_content_id = $email_content_id;
         $this->processed_job_id = $processed_job_id;
     }
-
-    public $tries = 0;
 
     /**
      * Execute the job.
@@ -48,8 +46,8 @@ class ProcessSendSubscriberMail implements ShouldQueue
         $email_content = $emailContentRepository->find($this->email_content_id);
         $processed_job = $processedJobRepository->find($this->processed_job_id);
 
-        foreach($user_list as $user) {
-            Mail::to($user->email)->send(new SubscriberMail($user,$email_content));
+        foreach ($user_list as $user) {
+            Mail::to($user->email)->send(new SubscriberMail($user, $email_content));
         }
 
         // update process job table after running queue
