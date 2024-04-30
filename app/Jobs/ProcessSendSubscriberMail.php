@@ -48,6 +48,7 @@ class ProcessSendSubscriberMail implements ShouldQueue
 
         foreach ($user_list as $user) {
             Mail::to($user->email)->send(new SubscriberMail($user, $email_content));
+            sleep(3);
         }
 
         // update process job table after running queue

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('processed_job', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('email_content_id');
             $table->string('name');
             $table->timestamp('end_at')->nullable();
             $table->timestamps();

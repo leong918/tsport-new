@@ -40,8 +40,8 @@ class ProcessedJobRepository extends BaseRepository
         return ProcessedJob::where('name', $jobName)->orderBy('id','desc')->first();
     }
 
-    public function getLastRunningJobByName(string $jobName)
+    public function getLastRunningJob(string $jobName, int $email_content_id)
     {
-        return ProcessedJob::where('name', $jobName)->whereNotNull('end_at')->orderBy('id','desc')->first();
+        return ProcessedJob::where(['name' => $jobName, 'email_content_id' => $email_content_id])->whereNotNull('end_at')->orderBy('created_at','desc')->first();
     }
 }
