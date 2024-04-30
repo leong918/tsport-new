@@ -73,6 +73,7 @@ class SalesOrderRepository extends BaseRepository
             $table->string('payment_method')->nullable();
             $table->string('delivery_partner');
             $table->string('tracking_number')->nullable();
+            $table->string('tracking_link')->nullable();
             $table->string('stripe_payment_intent_id')->nullable();
             $table->decimal('subtotal', 16, 2)->default(0);
             $table->decimal('shipping', 16, 2)->default(0);
