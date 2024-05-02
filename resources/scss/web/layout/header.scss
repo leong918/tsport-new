@@ -20,7 +20,9 @@
         color: #6B5B41;
         font-family: "RecklessNeue-Medium";
         font-size: 10px;
-        text-align: center;
+        p {
+            margin-bottom: 0px;
+        }
     }
 
     nav.navbar.bg-body-tertiary.fixed-top {
