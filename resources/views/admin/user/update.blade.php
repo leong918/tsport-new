@@ -2,7 +2,7 @@
 
 @section('style')
     @parent
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/css/tempus-dominus.css"/>
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/tempus-dominus.css') }}"/>
 @endsection
 
 @section("content")
