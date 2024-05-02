@@ -159,7 +159,7 @@
 </div>
 @section('script')
 @parent
-<script src="https://cdn.jsdelivr.net/npm/mustache@4.2.0/mustache.min.js"></script>
+<script src="{{ asset('assets/admin/js/mustache.min.js') }} "></script>
 <script id="addProductContent" type="x-tmpl-mustache">
     <tr class="addProductRow">
         <td>

@@ -2,7 +2,7 @@
 
 @section('style')
     @parent
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/dataTables.bootstrap5.min.css') }}" />
 @endsection
 
 @section('content')
