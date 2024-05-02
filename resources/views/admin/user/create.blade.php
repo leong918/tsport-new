@@ -1,10 +1,5 @@
 @extends('admin.layout.app')
 
-{{-- @section('style')
-    @parent
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/css/tempus-dominus.css"/>
-@endsection --}}
-
 @section("content")
 <main class="c-main">
     <div class="container-fluid">
