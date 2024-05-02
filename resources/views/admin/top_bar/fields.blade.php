@@ -93,8 +93,8 @@
                 input.click();
             },
             setup: function(editor) {
-                editor.on('input', function(e) {
-                    $('#output').html(tinymce.activeEditor.getContent());
+                editor.on('change', function(e) {
+                    $('.output').html(tinymce.activeEditor.getContent());
                 });
             }
         };
