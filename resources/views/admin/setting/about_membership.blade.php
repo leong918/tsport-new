@@ -65,8 +65,8 @@
 
 @section('script')
     @parent
-    <script src="{{ asset('assets/admin/js/tinymce.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/jquery.tinymce.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
     <script src="{{ asset('assets/admin/js/bootstrap.min.js')}}"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
