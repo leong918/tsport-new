@@ -9,8 +9,8 @@
             <div class="col-12 col-xl-2 col-lg-2 col-md-2 col-sm-6">
                 <div class="footer-primary">COMPANY</div>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="{{route('about.index')}}" class="nav-link p-0 text-body-secondary">About</a></li>
-                    <li class="nav-item mb-2"><a href="{{route('about.contact')}}" class="nav-link p-0 text-body-secondary">Contact</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Contact</a></li>
                 </ul>
             </div>
             <div class="col-12 col-xl-2 col-lg-2 col-md-2 col-sm-6">
@@ -18,11 +18,7 @@
                     <p5>CUSTOMER SERVICES</p5>
                 </div>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="{{route('web.how_to')}}" class="nav-link p-0 text-body-secondary">下單及享用優惠教學</a></li>
-                    <li class="nav-item mb-2"><a href="{{route('about.membership')}}" class="nav-link p-0 text-body-secondary">Membership</a></li>
-                    <li class="nav-item mb-2"><a href="{{route('about.points')}}" class="nav-link p-0 text-body-secondary">Points to Cash Programme</a></li>
-                    <li class="nav-item mb-2"><a href="{{ (Auth::user()) ? route('account.details') : route('web.login') }}" class="nav-link p-0 text-body-secondary">My account</a></li>
-                    <li class="nav-item mb-2"><a href="{{route('about.shipping')}}" class="nav-link p-0 text-body-secondary">Shipping Info</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">下單及享用優惠教學</a></li>
                 </ul>
             </div>
             <div class="col-12 col-xl-3 col-lg-3 col-md-3 col-sm-6">

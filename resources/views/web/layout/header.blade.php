@@ -1,16 +1,4 @@
 <div id="header">
-    <!--floating-button-->
-    <a class="floating-img-button" href="https://wa.me/85254425298" target="_blank">
-        <img class="show" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-1.png')}}" alt="Bootstrap">
-        <img class="hide" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-2.png')}}" alt="Bootstrap">
-    </a>
-
-    @if (isset($top_bar))
-    <div class="container-fluid fixed-top" style="background-color: {{ $top_bar->background_colour }}">
-        <div class="text-top">{!! $top_bar->content !!}</div>
-    </div>
-    @endif
-    
     <nav class="navbar bg-body-tertiary fixed-top">
         <div class="container">
             <div class="row align-items-center">
@@ -28,18 +16,6 @@
                     <a class="navbar-search" data-bs-toggle="collapse" href="#nav-search-toggle" role="button" aria-expanded="false" aria-controls="collapseExample">
                         <img src="{{asset('assets/web/assets/img/navigation/search-icon.png')}}" alt="Bootstrap" width="25" height="24">
                     </a>
-                    @if(function_exists('salesOrderRenderView'))
-                    {{ salesOrderRenderView('header_wishlist') }}
-                    @endif
-                    <a class="navbar-my-account-icon nav-acc-mobile" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
-                        <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
-                    </a>
-                    <a class="navbar-my-account-icon nav-acc-desktop" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
-                        <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
-                    </a>
-                    @if(function_exists('salesOrderRenderView'))
-                    {{ salesOrderRenderView('header_cart') }}
-                    @endif
 
                     <!--navbar-toggle-->
                     <a class="navbar-toggler-concept" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -59,65 +35,21 @@
                             <button class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Brands
                             </button>
-                            <ul class="dropdown-menu dropdown-brand">
-                                @foreach ($sidebar_brand_list as $brand)
-                                    <li><a class="dropdown-item" href="{{route('web.brand',['brand_id' => $brand->id ])}}">{{ $brand->name }}</a></li>
-                                @endforeach
-                            </ul> 
-                        </li>
-
-                        @foreach ($sidebar_category_list as $category)
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.product',['category_id' => $category->id ])}}">{{$category->name}}</a>
-                        </li>
-                        @endforeach
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.blog')}}">Blog</a>
                         </li>
                         <li class="nav-item dropdown">
                             <button class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 About
                             </button>
                             <ul class="dropdown-menu dropdown-about">
-                                <li><a class="dropdown-item" href="{{route('about.index')}}">About</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.membership')}}">Membership</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.points')}}">Point to Cash Programme</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.contact')}}">Contact</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.tnc')}}">Terms & Conditions</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.shipping')}}">Shipping Info</a></li>
+                                <li><a class="dropdown-item" href="#">About</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.how_to')}}">下單及享用優惠教學</a>
+                            <a class="nav-link" href="#">下單及享用優惠教學</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.voucher')}}">消費券 Consumption Voucher</a>
+                            <a class="nav-link" href="#">消費券 Consumption Voucher</a>
                         </li>
-                        @if(auth()->user())
-                        <hr/>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('cart.wishlist')}}">Wishlist</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">My Account</a>
-                        </li>
-                        <hr/>
-                        <li class="nav-item nav-logout">
-                            <a class="nav-link" href="{{route('web.logout')}}">
-                                <img src="{{asset('assets/web/assets/img/navigation/logout.png')}}" alt="">
-                                Logout
-                            </a>
-                        </li>
-                        @else
-                        <hr/>
-                        <li class="nav-item nav-logout">
-                            <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
-                                <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="">
-                                Login
-                            </a>
-                        </li>
-                        @endif
                     </ul>
                 </div>
             </div>

@@ -56,13 +56,13 @@ function unzipFile(string $pathToSource, string $pathSaveTo)
     return false;
 }
 
-function getPluginNamespace(string $key)
-{
-    $key = Str::camel($key);
-    $key = ucfirst($key);
+// function getPluginNamespace(string $key)
+// {
+//     $key = Str::camel($key);
+//     $key = ucfirst($key);
 
-    return '\App\Plugins\\' . $key;
-}
+//     return '\App\Plugins\\' . $key;
+// }
 
 function checkExistPlugin(string $key)
 {

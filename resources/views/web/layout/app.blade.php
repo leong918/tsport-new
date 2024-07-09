@@ -29,8 +29,6 @@
     @include('web.layout.header')
 
     <div id="main-page">
-        @include('web.search')
-
         @yield('content')
 
         <div id="sub-pages-overlay"></div>
