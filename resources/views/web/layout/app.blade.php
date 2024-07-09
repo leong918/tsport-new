@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Tag Concept</title>
+    <title>Hello Smile</title>
     <!-- favicons Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset("assets/favicon/apple-touch-icon.png") }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset("assets/favicon/favicon-32x32.png") }}">
@@ -31,8 +31,6 @@
     <div id="main-page">
         @yield('content')
 
-        <div id="sub-pages-overlay"></div>
-
         @include('web.layout.footer')
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -46,49 +44,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@eonasdan/tempus-dominus@6.7.10/dist/js/jQuery-provider.js"></script>
     <script src="{{asset('assets/web/js/cart.js')}}"></script>
     <script type="text/javascript">
-        $('.navbar-search').on('click', function(){
-            $('#header').toggleClass('active');
-            $('#sub-pages-overlay').toggleClass('active');
-            $('body').toggleClass('active');
-        })
-        $('.cross-to-close').on('click', function(){
-            $('#header').removeClass('active');
-            $('#sub-pages-overlay').removeClass('active');
-            $('body').removeClass('active');
-            $('#nav-search-toggle').collapse('toggle');
-        })
-        $('#sub-pages-overlay').on('click', function(){
-            $('#header').removeClass('active');
-            $('#sub-pages-overlay').removeClass('active');
-            $('body').removeClass('active');
-            $('#nav-search-toggle').collapse('toggle');
-        })
-
-        $('.narber-toggler-concept').on('click', function(){
-            $('#nav-search-toggle').collapse('hide');
-            $('#header').removeClass('active');
-            $('#sub-pages-overlay').removeClass('active');
-            $('body').removeClass('active');
-        })
-
-        $('button[type="submit"]').click(function(e) {
-            e.preventDefault();
-            var isValid = true;
-
-            $(this).parents('form').find(':input[required]').each(function() {
-                if ($(this).val().trim() === '') {
-                    isValid = false;
-                    return false;
-                }
-            });
-
-            if (!isValid) {
-                showSwal('Failed', 'Please fill in all the required fields!');
-            } else {
-                $(this).parents('form').submit();
-            }
-        });
-        
         function showSwal(title = "", text = ""){ 
             swal.fire({
                 title: '<button type="button" id="custom-close-button"></button><p class="swal-register-title">' + title + '</p>',
@@ -104,53 +59,6 @@
                     });
                 }
             });
-        }
-
-        function updateColumnValue(array) {
-            $('.subtotal-price').html('$' + array.subtotal.toFixed(2));
-            $('.order-total-price').html('$' + array.total.toFixed(2));
-            $('.shipping-price').html(array.delivery_partner + ' : $' + array.shipping_fee.toFixed(2));
-
-            if (array.point_redemption.toFixed(2) > 0) {
-                $('.point-redemption').removeClass('d-none');
-                $('.point-price').html('-$' + array.point_redemption.toFixed(2));
-            } else {
-                $('.point-redemption').addClass('d-none');
-                $('.point-price').html('-$0.00');
-            }
-
-            if (Array.isArray(array.discount) && array.discount.length > 0) {
-                $('#discount').removeClass('d-none');
-                $('.discount-content-wrapper').html('');
-                $.each(array.discount, function (key, value) {
-                    var template = document.getElementById('discountLayout').innerHTML;
-                    var rendered = Mustache.render(template, {
-                        name: value.name,
-                        price: value.discount_amount.toFixed(2),
-                    });
-                    $('.discount-content-wrapper').append(rendered);
-                });
-            } else {
-                $('#discount').addClass('d-none');
-                $('.discount-content-wrapper').html('');
-            }
-
-            if (Array.isArray(array.coupon) && array.coupon.length > 0) {
-                $('#coupon').removeClass('d-none');
-                $('.coupon-content-wrapper').html('');
-                $.each(array.coupon, function (key, value) {
-                    var template = document.getElementById('couponLayout').innerHTML;
-                    var rendered = Mustache.render(template, {
-                        id: value.id,
-                        name: value.name,
-                        price: value.discount_amount.toFixed(2),
-                    });
-                    $('.coupon-content-wrapper').append(rendered);
-                });
-            } else {
-                $('#coupon').addClass('d-none');
-                $('.coupon-content-wrapper').html('');
-            }
         }
     </script>
     @stack('scripts')
