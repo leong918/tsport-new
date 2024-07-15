@@ -85,9 +85,9 @@
   font-style: normal;
 }
 
-html
+html body
 {
-  font-family: "Helvetiva";
+  font-family: "Helvetica";
   &:lang(zh-CN) {
     font-family: "PingFangHK";
   }

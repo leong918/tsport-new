@@ -1,6 +1,21 @@
 @import "layout/fonts.scss";
 @import "layout/header.scss";
 @import "layout/footer.scss";
+@import "home.scss";
+
+html {
+    scroll-behavior: smooth;
+
+    #fixed-chatbox {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        display: block;
+        width: 60px;
+        overflow: hidden;
+        z-index: 999;
+    }
+}
 
 body{
     &.active{
