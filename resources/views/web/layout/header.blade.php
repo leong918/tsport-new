@@ -147,11 +147,5 @@
         e.stopPropagation();
         $('#mobileNav').removeClass('show');
     });
-    
-    $(document).click(function(event) {
-        if (!$(event.target).closest('#mobileNav').length && !$(event.target).is('.navbar-toggler')) {
-            $('#mobileNav').removeClass('show');
-        }
-    });
 </script>
 @endpush
