@@ -11,10 +11,10 @@
                 <img src="{{ asset('assets/web/assets/img/home/banner-1.jpg') }}" alt="" class="img img-fluid banner-img">
                 <div class="banner-content">
                     <p class="banner-title">
-                        {!! __('page.EVERYONE DESERVES A HEALTHY "SMILE"') !!}
+                        {!! __('EVERYONE DESERVES A HEALTHY "SMILE"') !!}
                     </p>
                     <a href="#" class="button p2 d-flex align-items-center btn-more">
-                        {{ __('page.Read More') }}
+                        {{ __('Read More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
                 </div>
@@ -23,10 +23,10 @@
                 <img src="{{ asset('assets/web/assets/img/home/banner-2.jpg') }}" alt="" class="img img-fluid banner-img">
                 <div class="banner-content">
                     <p class="banner-title">
-                        {!! __('page.WE CAN ALL DO SMALL THINGS WITH GREAT LOVE') !!}
+                        {!! __('WE CAN ALL DO SMALL THINGS WITH GREAT LOVE') !!}
                     </p>
                     <a href="#" class="button p2 d-flex align-items-center btn-more">
-                        {{ __('page.Read More') }}
+                        {{ __('Read More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
                 </div>
@@ -40,10 +40,10 @@
     <div class="slogan text-center">
         <div class="content-wrapper m-auto">
             <p class="p2">
-                {{ __('page.Hello Smile Hong Kong (HSHK) is dedicated to serving the local Hong Kong community to improve the oral health of the underserved community') }}
+                {{ __('Hello Smile Hong Kong (HSHK) is dedicated to serving the local Hong Kong community to improve the oral health of the underserved community') }}
             </p>
             <h2 class="h2">
-                {{ __('page."Love, Compassion, Respect, and Integrity"') }}
+                {{ __('"Love, Compassion, Respect, and Integrity"') }}
             </h2>
         </div>
         <div class="slideshow d-flex align-items-center" id="slogan-slideshow">
@@ -70,7 +70,7 @@
             </div>
         </div>
         <a href="#" class="button p2 d-flex align-items-center btn-more m-auto mt-5">
-            {{ __('page.Read More') }}
+            {{ __('Read More') }}
             <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
         </a>
     </div>
@@ -79,9 +79,9 @@
     <div id="what-we-do">
         <div class="what-wrapper m-auto">
             <div class="d-flex align-items-center justify-content-between flex-wrap">
-                <h1 class="h1">{{ __('page.What We Do.') }}</h1>
+                <h1 class="h1">{{ __('What We Do.') }}</h1>
                 <a href="#" class="button p2 d-flex align-items-center btn-more">
-                    {{ __('page.Read More') }}
+                    {{ __('Read More') }}
                     <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                 </a>
             </div>
@@ -98,9 +98,9 @@
                             <img src="{{ asset('assets/web/assets/img/home/education.png') }}" alt="" class="img img-fluid">
                         </div>
                         <div class="detail-content">
-                            <h4 class="h4">{{ __('page.Public Education') }}</h4>
+                            <h4 class="h4">{{ __('Public Education') }}</h4>
                             <p class="p2">
-                                {{ __('page.Organizing educational trainings & disseminate educational information to health institutions or personnel, schools, general public') }}
+                                {{ __('Organizing educational trainings & disseminate educational information to health institutions or personnel, schools, general public') }}
                             </p>
                         </div>
                     </div>
@@ -109,9 +109,9 @@
                             <img src="{{ asset('assets/web/assets/img/home/professional.png') }}" alt="" class="img img-fluid">
                         </div>
                         <div class="detail-content">
-                            <h4 class="h4">{{ __('page.Professional Team') }}</h4>
+                            <h4 class="h4">{{ __('Professional Team') }}</h4>
                             <p class="p2">
-                                {{ __('page.Providing qualified team at public events') }}
+                                {{ __('Providing qualified team at public events') }}
                             </p>
                         </div>
                     </div>
@@ -120,9 +120,9 @@
                             <img src="{{ asset('assets/web/assets/img/home/dental.png') }}" alt="" class="img img-fluid">
                         </div>
                         <div class="detail-content">
-                            <h4 class="h4">{{ __('page.Dental service for the persons with special needs') }}</h4>
+                            <h4 class="h4">{{ __('Dental service for the persons with special needs') }}</h4>
                             <p class="p2">
-                                {{ __('page.Providing dental service to persons with special needs') }}
+                                {{ __('Providing dental service to persons with special needs') }}
                             </p>
                         </div>
                     </div>
@@ -131,9 +131,9 @@
                             <img src="{{ asset('assets/web/assets/img/home/community.png') }}" alt="" class="img img-fluid">
                         </div>
                         <div class="detail-content">
-                            <h4 class="h4">{{ __('page.Community Outreach') }}</h4>
+                            <h4 class="h4">{{ __('Community Outreach') }}</h4>
                             <p class="p2">
-                                {{ __('page.Provide dental care screenings, oral health education, dental treatments') }}
+                                {{ __('Provide dental care screenings, oral health education, dental treatments') }}
                             </p>
                         </div>
                     </div>
@@ -147,9 +147,9 @@
         <div class="row news-event-wrapper m-auto justify-content-between">
             <div class="col-12 col-lg-6 col-xl-7">
                 <div class="title d-flex align-items-center justify-content-between">
-                    <h1 class="h1">{{ __('page.News') }}</h1>
+                    <h1 class="h1">{{ __('News') }}</h1>
                     <a href="#" class="button p2 d-flex align-items-center btn-more">
-                        {{ __('page.More') }}
+                        {{ __('More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
                 </div>
@@ -203,9 +203,9 @@
             </div>
             <div class="col-12 col-lg-5 col-xl-4 mt-5 mt-lg-0">
                 <div class="title d-flex align-items-center justify-content-between">
-                    <h1 class="h1">{{ __('page.Events') }}</h1>
+                    <h1 class="h1">{{ __('Events') }}</h1>
                     <a href="#" class="button p2 d-flex align-items-center btn-more">
-                        {{ __('page.More') }}
+                        {{ __('More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
                 </div>
@@ -259,7 +259,7 @@
     <!-- programme -->
      <div id="programme" class="programme">
         <div class="programme-wrapper m-auto">
-            <h1 class="h1 text-center">{{ __('page.Programme') }}</h1>
+            <h1 class="h1 text-center">{{ __('Programme') }}</h1>
             <div class="card">
                 <a href="#">
                     <div class="card-body">

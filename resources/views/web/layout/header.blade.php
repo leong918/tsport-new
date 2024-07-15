@@ -2,10 +2,10 @@
 @php
     $locales = [
         'en' => 'EN',
-        'zh_CN' => '简',
-        'zh_TW' => '繁'
+        'sc' => '简',
+        'tc' => '繁'
     ];
-    unset($locales[app()->getLocale()]);
+    unset($locales[LaravelLocalization::getCurrentLocale()]);
 @endphp
 
 <div id="header">
@@ -26,47 +26,47 @@
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 p3 align-items-center">
                             <li class="nav-item dropdown" id="about-dropdown">
                                 <a class="nav-link" href="#">
-                                    {{ __('page.Who we are') }}
+                                    {{ __('Who we are') }}
                                 </a>
                                 <div class="dropdown-menu-wrapper">
                                     <ul class="dropdown-menu p3" id="about-menu">
-                                        <li><a class="dropdown-item" href="{{ route('web.about-us') }}">{{ __('page.About Us') }}</a></li>
-                                        <li><a class="dropdown-item" href="#">{{ __('page.Mission, Vision, Value') }}</a></li>
-                                        <li><a class="dropdown-item" href="#">{{ __('page.Founder & Committee Members') }}</a></li>
-                                        <li><a class="dropdown-item" href="#">{{ __('page.Our Partners') }}</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('web.about-us') }}">{{ __('About Us') }}</a></li>
+                                        <li><a class="dropdown-item" href="#">{{ __('Mission, Vision, Value') }}</a></li>
+                                        <li><a class="dropdown-item" href="#">{{ __('Founder & Committee Members') }}</a></li>
+                                        <li><a class="dropdown-item" href="#">{{ __('Our Partners') }}</a></li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('page.What do we do') }}</a>
+                                <a class="nav-link" href="#">{{ __('What do we do') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('page.News & Events') }}</a>
+                                <a class="nav-link" href="#">{{ __('News & Events') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" id="programDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ __('page.Programme') }}
+                                    {{ __('Programme') }}
                                 </a>
                                 <div class="dropdown-menu-wrapper">
                                     <ul class="dropdown-menu p3" aria-labelledby="programDropdown">
-                                        <li><a class="dropdown-item" href="#">{{ __('page.Healthy Teeth Collaboration') }}</a></li>
+                                        <li><a class="dropdown-item" href="#">{{ __('Healthy Teeth Collaboration') }}</a></li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('page.Blog') }}</a>
+                                <a class="nav-link" href="#">{{ __('Blog') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('page.Contact Us') }}</a>
+                                <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link text-uppercase" href="#">
-                                    {{ app()->getLocale() }}
+                                    {{ LaravelLocalization::getCurrentLocaleNative() }}
                                 </a>
                                 <div class="dropdown-menu-wrapper">
                                     <ul class="dropdown-menu p3">
                                         @foreach($locales as $locale => $label)
-                                            <li><a class="dropdown-item" href="#">{{ $label }}</a></li>
+                                            <li><a class="dropdown-item" href="{{ LaravelLocalization::getLocalizedURL($locale, null, [], true) }}">{{ $label }}</a></li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -91,31 +91,31 @@
             </div>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 p3 align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('page.About Us') }}</a>
+                    <a class="nav-link" href="#">{{ __('About Us') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('page.What do we do') }}</a>
+                    <a class="nav-link" href="#">{{ __('What do we do') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('page.News & Events') }}</a>
+                    <a class="nav-link" href="#">{{ __('News & Events') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('page.Programme') }}</a>
+                    <a class="nav-link" href="#">{{ __('Programme') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('page.Blog') }}</a>
+                    <a class="nav-link" href="#">{{ __('Blog') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('page.Contact Us') }}</a>
+                    <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link text-uppercase" href="#">
-                        {{ app()->getLocale() }}
+                        {{ LaravelLocalization::getCurrentLocale() }}
                     </a>
                     <div class="dropdown-menu-wrapper">
                         <ul class="dropdown-menu p3">
                             @foreach($locales as $locale => $label)
-                                <li><a class="dropdown-item" href="#">{{ $label }}</a></li>
+                                <li><a class="dropdown-item" href="{{ LaravelLocalization::getLocalizedURL($locale, null, [], true) }}">{{ $label }}</a></li>
                             @endforeach
                         </ul>
                     </div>
