@@ -1,40 +1,200 @@
 @font-face {
-    font-family: "RecklessNeue-Light";
-    src: url("/public/assets/web/assets/fonts/Reckless-Neus/RecklessNeue-Light.ttf");
+  font-family: "Helvetica";
+  src: url("/public/assets/web/assets/fonts/Helvetica/Helvetica.ttf");
+  font-weight: 400;
+  font-style: normal;
 }
-  
-  @font-face {
-    font-family: "RecklessNeue-Medium";
-    src: url("/public/assets/web/assets/fonts/Reckless-Neus/RecklessNeue-Medium.ttf");
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("/public/assets/web/assets/fonts/Helvetica/Helvetica-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("/public/assets/web/assets/fonts/Helvetica/Helvetica-BoldOblique.ttf");
+  font-weight: 700;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("/public/assets/web/assets/fonts/Helvetica/Helvetica-Light.ttf");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("/public/assets/web/assets/fonts/Helvetica/Helvetica-Oblique.ttf");
+  font-weight: 400;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: "Helvetica-Compressed";
+  src: url("/public/assets/web/assets/fonts/Helvetica/Helvetica-Compressed.otf");
+}
+
+@font-face {
+  font-family: "Helvetica-Rounded";
+  src: url("/public/assets/web/assets/fonts/Helvetica/Helvetica-RoundedBold.otf");
+}
+
+@font-face {
+  font-family: "PingFangHK";
+  src: url("/public/assets/web/assets/fonts/PingFangHK/PingFangHK-Regular.otf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PingFangHK";
+  src: url("/public/assets/web/assets/fonts/PingFangHK/PingFangHK-Light.otf");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PingFangHK";
+  src: url("/public/assets/web/assets/fonts/PingFangHK/PingFangHK-Medium.otf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PingFangHK";
+  src: url("/public/assets/web/assets/fonts/PingFangHK/PingFangHK-Semibold.otf");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PingFangHK";
+  src: url("/public/assets/web/assets/fonts/PingFangHK/PingFangHK-Thin.otf");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PingFangHK";
+  src: url("/public/assets/web/assets/fonts/PingFangHK/PingFangHK-Ultralight.otf");
+  font-weight: 200;
+  font-style: normal;
+}
+
+html body
+{
+  font-family: "Helvetica";
+  &:lang(zh-CN) {
+    font-family: "PingFangHK";
   }
-  
-  @font-face {
-    font-family: "RecklessNeue-Regular";
-    src: url("/public/assets/web/assets/fonts/Reckless-Neus/RecklessNeue-Regular.ttf");
+}
+
+.h1 {
+  font-size: 60px;
+  font-weight: bold;
+  line-height: 64px;
+  @media screen and (max-width: 992px) {
+    font-size: 36px;
+    line-height: 40px;
   }
-  
-  @font-face {
-    font-family: "BanglaSangam-Regular";
-    src: url("/public/assets/web/assets/fonts/Bangla-Sangam-MN/Bangla-Sangam-MN-Regular.ttf");
+}
+
+.h2 {
+  font-size: 42px;
+  font-weight: bold;
+  line-height: 45px;
+  @media screen and (max-width: 992px) {
+    font-size: 28px;
+    line-height: 34px;
   }
-  
-  @font-face {
-    font-family: "BanglaSangam-Bold";
-    src: url("/public/assets/web/assets/fonts/Bangla-Sangam-MN/Bangla-Sangam-MN-Bold.ttc");
+}
+
+.h3 {
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 40px;
+  @media screen and (max-width: 992px) {
+    font-size: 22px;
+    line-height: 28px;
   }
-  
-  @font-face {
-    font-family: "ChironSungHK-Light";
-    src: url("/public/assets/web/assets/fonts/Chiron-Sung-HK/ChironSungHK-Text-L.otf");
+}
+
+.h4 {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 28px;
+  @media screen and (max-width: 992px) {
+    font-size: 18px;
+    line-height: 22px;
   }
-  
-  @font-face {
-    font-family: "ChironSungHK-Medium";
-    src: url("/public/assets/web/assets/fonts/Chiron-Sung-HK/ChironSungHK-Text-M.otf");
+}
+
+.h5 {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 28px;
+  @media screen and (max-width: 992px) {
+    font-size: 16px;
+    line-height: 22px;
   }
-  
-  @font-face {
-    font-family: "ChironSungHK-Regular";
-    src: url("/public/assets/web/assets/fonts/Chiron-Sung-HK/ChironSungHK-Text-R.otf");
+}
+
+.h6 {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 28px;
+  @media screen and (max-width: 992px) {
+    font-size: 14px;
+    line-height: 22px;
   }
-  
+}
+
+.h7 {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 16px;
+  @media screen and (max-width: 992px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.p1 {
+  font-size: 22px;
+  line-height: 24px;
+  @media screen and (max-width: 992px) {
+    font-size: 22px;
+    line-height: 24px;
+  }
+}
+
+.p2 {
+  font-size: 16px;
+  line-height: 24px;
+  @media screen and (max-width: 992px) {
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+
+.p3 {
+  font-size: 14px;
+  line-height: 22px;
+  @media screen and (max-width: 992px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.p4 {
+  font-size: 12px;
+  line-height: 18px;
+  @media screen and (max-width: 992px) {
+    font-size: 10px;
+    line-height: 16px;
+  }
+}

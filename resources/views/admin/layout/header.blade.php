@@ -11,8 +11,6 @@
             </a>
             <ul class="header-nav d-none d-md-flex">
                 <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
             </ul>
         </div>
         <div class="right-content d-flex align-items-center">

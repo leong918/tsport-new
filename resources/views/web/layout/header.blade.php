@@ -1,126 +1,151 @@
+
+@php
+    $locales = [
+        'en' => 'EN',
+        'sc' => '简',
+        'tc' => '繁'
+    ];
+    unset($locales[LaravelLocalization::getCurrentLocale()]);
+@endphp
+
 <div id="header">
-    <!--floating-button-->
-    <a class="floating-img-button" href="https://wa.me/85254425298" target="_blank">
-        <img class="show" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-1.png')}}" alt="Bootstrap">
-        <img class="hide" src="{{asset('assets/web/assets/img/navigation/whatsapp-logo-2.png')}}" alt="Bootstrap">
-    </a>
-
-    @if (isset($top_bar))
-    <div class="container-fluid fixed-top" style="background-color: {{ $top_bar->background_colour }}">
-        <div class="text-top">{!! $top_bar->content !!}</div>
-    </div>
-    @endif
-    
-    <nav class="navbar bg-body-tertiary fixed-top">
-        <div class="container">
-            <div class="row align-items-center">
-
-                <!-- spacer for centering -->
-                <div class="col-md-5 d-none d-md-block"></div>
-                <!--navbar-logo-->
-                <div class="col-8 col-md-2 text-center">
-                    <a class="navbar-brand p-0 m-0" href="{{route('web.home')}}">
-                        <img src="{{asset('assets/web/assets/img/navigation/logo.png')}}" alt="Bootstrap" width="140px" height="auto">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="">
+                    <a class="navbar-brand d-flex align-items-center" href="/">
+                        <img src="{{asset('assets/web/assets/img/header/logo.png')}}" alt="hellosmile" class="img img-fluid d-none d-lg-block">
+                        <img src="{{asset('assets/web/assets/img/header/logo-mobile.png')}}" alt="hellosmile" class="img img-fluid d-block d-lg-none">
                     </a>
                 </div>
-                <!-- navbar-icon -->
-                <div class="col-4 col-md-5 text-end functional-wrapper">
-                    <a class="navbar-search" data-bs-toggle="collapse" href="#nav-search-toggle" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        <img src="{{asset('assets/web/assets/img/navigation/search-icon.png')}}" alt="Bootstrap" width="25" height="24">
-                    </a>
-                    @if(function_exists('salesOrderRenderView'))
-                    {{ salesOrderRenderView('header_wishlist') }}
-                    @endif
-                    <a class="navbar-my-account-icon nav-acc-mobile" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
-                        <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
-                    </a>
-                    <a class="navbar-my-account-icon nav-acc-desktop" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
-                        <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="Bootstrap" width="25" height="24">
-                    </a>
-                    @if(function_exists('salesOrderRenderView'))
-                    {{ salesOrderRenderView('header_cart') }}
-                    @endif
-
-                    <!--navbar-toggle-->
-                    <a class="navbar-toggler-concept" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                        <img src="{{asset('assets/web/assets/img/navigation/menu_icon.png')}}" alt="Bootstrap" width="25" height="24">
-                    </a>
-                </div>
-            </div>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header align-self-end">
-                    <a data-bs-dismiss="offcanvas" aria-label="Close">
-                        <img src="{{asset('assets/web/assets/img/navigation/cross.png')}}" alt="Bootstrap" width="30" height="30">
-                    </a>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item dropdown">
-                            <button class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Brands
-                            </button>
-                            <ul class="dropdown-menu dropdown-brand">
-                                @foreach ($sidebar_brand_list as $brand)
-                                    <li><a class="dropdown-item" href="{{route('web.brand',['brand_id' => $brand->id ])}}">{{ $brand->name }}</a></li>
-                                @endforeach
-                            </ul> 
-                        </li>
-
-                        @foreach ($sidebar_category_list as $category)
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.product',['category_id' => $category->id ])}}">{{$category->name}}</a>
-                        </li>
-                        @endforeach
-                        
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.blog')}}">Blog</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <button class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                About
-                            </button>
-                            <ul class="dropdown-menu dropdown-about">
-                                <li><a class="dropdown-item" href="{{route('about.index')}}">About</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.membership')}}">Membership</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.points')}}">Point to Cash Programme</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.contact')}}">Contact</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.tnc')}}">Terms & Conditions</a></li>
-                                <li><a class="dropdown-item" href="{{route('about.shipping')}}">Shipping Info</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.how_to')}}">下單及享用優惠教學</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('web.voucher')}}">消費券 Consumption Voucher</a>
-                        </li>
-                        @if(auth()->user())
-                        <hr/>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('cart.wishlist')}}">Wishlist</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">My Account</a>
-                        </li>
-                        <hr/>
-                        <li class="nav-item nav-logout">
-                            <a class="nav-link" href="{{route('web.logout')}}">
-                                <img src="{{asset('assets/web/assets/img/navigation/logout.png')}}" alt="">
-                                Logout
-                            </a>
-                        </li>
-                        @else
-                        <hr/>
-                        <li class="nav-item nav-logout">
-                            <a class="nav-link" href="{{auth()->user() ? route('account.details') : route('web.login')}}">
-                                <img src="{{asset('assets/web/assets/img/navigation/my-account-icon.png')}}" alt="">
-                                Login
-                            </a>
-                        </li>
-                        @endif
-                    </ul>
+                <div class="">
+                    <button class="navbar-toggler" type="button">
+                        <img src="{{asset('assets/web/assets/img/header/hamburger.png')}}" alt="hellosmile" class="img img-fluid">
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 p3 align-items-center">
+                            <li class="nav-item dropdown" id="about-dropdown">
+                                <a class="nav-link" href="#">
+                                    {{ __('Who we are') }}
+                                </a>
+                                <div class="dropdown-menu-wrapper">
+                                    <ul class="dropdown-menu p3" id="about-menu">
+                                        <li><a class="dropdown-item" href="{{ route('web.about-us') }}">{{ __('About Us') }}</a></li>
+                                        <li><a class="dropdown-item" href="#">{{ __('Mission, Vision, Value') }}</a></li>
+                                        <li><a class="dropdown-item" href="#">{{ __('Founder & Committee Members') }}</a></li>
+                                        <li><a class="dropdown-item" href="#">{{ __('Our Partners') }}</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{ __('What do we do') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{ __('News & Events') }}</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" id="programDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __('Programme') }}
+                                </a>
+                                <div class="dropdown-menu-wrapper">
+                                    <ul class="dropdown-menu p3" aria-labelledby="programDropdown">
+                                        <li><a class="dropdown-item" href="#">{{ __('Healthy Teeth Collaboration') }}</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{ __('Blog') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-uppercase" href="#">
+                                    {{ LaravelLocalization::getCurrentLocaleNative() }}
+                                </a>
+                                <div class="dropdown-menu-wrapper">
+                                    <ul class="dropdown-menu p3">
+                                        @foreach($locales as $locale => $label)
+                                            <li><a class="dropdown-item" href="{{ LaravelLocalization::getLocalizedURL($locale, null, [], true) }}">{{ $label }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </li>
+                            {{-- <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <img src="{{ asset('assets/web/assets/img/header/search.png') }}" alt="" class="img img-fluid search-icon">
+                                </a>
+                            </li> --}}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- mobile-nav -->
+    <div id="mobileNav" class="mobile-nav">
+        <div class="mobile-nav-content">
+            <div class="text-end">
+                <i id="mobile-nav-close" class="fa-solid fa-xmark"></i>
+            </div>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 p3 align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{ __('About Us') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{ __('What do we do') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{ __('News & Events') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{ __('Programme') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{ __('Blog') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-uppercase" href="#">
+                        {{ LaravelLocalization::getCurrentLocale() }}
+                    </a>
+                    <div class="dropdown-menu-wrapper">
+                        <ul class="dropdown-menu p3">
+                            @foreach($locales as $locale => $label)
+                                <li><a class="dropdown-item" href="{{ LaravelLocalization::getLocalizedURL($locale, null, [], true) }}">{{ $label }}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </li>
+                {{-- <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="{{ asset('assets/web/assets/img/header/search.png') }}" alt="" class="img img-fluid search-icon">
+                    </a>
+                </li> --}}
+            </ul>
+        </div>
+    </div>
 </div>
+
+@push('scripts')
+<script>
+    $('.dropdown').hover(function() {
+        $(this).find('.nav-link').addClass('active');
+    }, function() {
+        $(this).find('.nav-link').removeClass('active');
+    });
+
+    $('.navbar-toggler').click(function (e) {
+        e.stopPropagation();
+        $('#mobileNav').toggleClass('show');
+    });
+
+    $('#mobile-nav-close').click(function(e) {
+        e.stopPropagation();
+        $('#mobileNav').removeClass('show');
+    });
+</script>
+@endpush
