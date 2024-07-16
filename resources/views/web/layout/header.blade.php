@@ -19,7 +19,7 @@
                     </a>
                 </div>
                 <div class="">
-                    <button class="navbar-toggler" type="button">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNav" aria-expanded="false" aria-controls="mobileNav">
                         <img src="{{asset('assets/web/assets/img/header/hamburger.png')}}" alt="hellosmile" class="img img-fluid">
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -84,14 +84,24 @@
     </nav>
 
     <!-- mobile-nav -->
-    <div id="mobileNav" class="mobile-nav">
+    <div id="mobileNav" class="collapse mobile-nav">
         <div class="mobile-nav-content">
-            <div class="text-end">
-                <i id="mobile-nav-close" class="fa-solid fa-xmark"></i>
-            </div>
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 p3 align-items-center">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 h5">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('About Us') }}</a>
+                    <a class="nav-link d-flex justify-content-between" data-bs-toggle="collapse" href="#collapse-who" role="button" aria-expanded="false" aria-controls="collapse-who">
+                        {{ __('Who we are') }}
+                        <span class="arrow ms-2">
+                            <img src="{{ asset('assets/web/assets/img/header/arrow-down.png') }}" alt="" class="img img-fluid arrow-down">
+                        </span>
+                    </a>
+                    <div class="collapse" id="collapse-who">
+                        <ul class="list-group">
+                            <li class="list-item"><a class="p2" href="{{ route('web.about-us') }}">{{ __('About Us') }}</a></li>
+                            <li class="list-item"><a class="p2" href="#">{{ __('Mission, Vision, Value') }}</a></li>
+                            <li class="list-item"><a class="p2" href="#">{{ __('Founder & Committee Members') }}</a></li>
+                            <li class="list-item"><a class="p2" href="#">{{ __('Our Partners') }}</a></li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">{{ __('What do we do') }}</a>
@@ -100,7 +110,17 @@
                     <a class="nav-link" href="#">{{ __('News & Events') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('Programme') }}</a>
+                    <a class="nav-link d-flex justify-content-between" data-bs-toggle="collapse" href="#collapse-programme" role="button" aria-expanded="false" aria-controls="collapse-programme">
+                        {{ __('Programme') }}
+                        <span class="arrow ms-2">
+                            <img src="{{ asset('assets/web/assets/img/header/arrow-down.png') }}" alt="" class="img img-fluid arrow-down">
+                        </span>
+                    </a>
+                    <div class="collapse" id="collapse-programme">
+                        <ul class="list-group">
+                            <li class="list-item"><a class="p2" href="#">{{ __('Healthy Teeth Collaboration') }}</a></li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">{{ __('Blog') }}</a>
@@ -108,23 +128,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link text-uppercase" href="#">
-                        {{ LaravelLocalization::getCurrentLocale() }}
-                    </a>
-                    <div class="dropdown-menu-wrapper">
-                        <ul class="dropdown-menu p3">
-                            @foreach($locales as $locale => $label)
-                                <li><a class="dropdown-item" href="{{ LaravelLocalization::getLocalizedURL($locale, null, [], true) }}">{{ $label }}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </li>
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="#">
                         <img src="{{ asset('assets/web/assets/img/header/search.png') }}" alt="" class="img img-fluid search-icon">
                     </a>
                 </li> --}}
+            </ul>
+            <ul class="navbar-nav language-nav flex-row mb-0">
+                @foreach($locales as $locale => $label)
+                    <li class="nav-item">
+                        <a class="nav-link text-uppercase" href="{{ LaravelLocalization::getLocalizedURL($locale, null, [], true) }}">
+                            {{ $label }}
+                        </a>
+                    </li>
+                @endforeach
             </ul>
         </div>
     </div>
@@ -138,14 +155,28 @@
         $(this).find('.nav-link').removeClass('active');
     });
 
-    $('.navbar-toggler').click(function (e) {
-        e.stopPropagation();
-        $('#mobileNav').toggleClass('show');
+    $('#mobileNav').on('show.bs.collapse', function(e) {
+        $('body').css('overflow', 'hidden');
+    })
+
+    $('#mobileNav').on('hide.bs.collapse', function(e) {
+        $('body').css('overflow', '');
+    })
+
+    $('#collapse-who').on('show.bs.collapse', function () {
+        $(this).siblings().find('.arrow-down').removeClass('down').addClass('up');
     });
 
-    $('#mobile-nav-close').click(function(e) {
-        e.stopPropagation();
-        $('#mobileNav').removeClass('show');
+    $('#collapse-who').on('hide.bs.collapse', function () {
+        $(this).siblings().find('.arrow-down').removeClass('up').addClass('down');
+    });
+
+    $('#collapse-programme').on('show.bs.collapse', function () {
+        $(this).siblings().find('.arrow-down').removeClass('down').addClass('up');
+    });
+
+    $('#collapse-programme').on('hide.bs.collapse', function () {
+        $(this).siblings().find('.arrow-down').removeClass('up').addClass('down');
     });
 </script>
 @endpush
