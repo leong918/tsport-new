@@ -79,7 +79,7 @@
         <div class="what-wrapper m-auto">
             <div class="d-flex align-items-center justify-content-between flex-wrap">
                 <h1 class="h1">{{ __('What We Do.') }}</h1>
-                <a href="#" class="button p2 d-flex align-items-center btn-more">
+                <a href="#" class="button p2 d-none d-lg-flex align-items-center btn-more">
                     {{ __('Read More') }}
                     <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                 </a>
@@ -138,6 +138,14 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <a href="#" class="button p2 d-flex d-lg-none align-items-center btn-more m-auto mt-3">
+                        {{ __('Read More') }}
+                        <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -147,7 +155,7 @@
             <div class="col-12 col-lg-6 col-xl-7">
                 <div class="title d-flex align-items-center justify-content-between">
                     <h1 class="h1">{{ __('News') }}</h1>
-                    <a href="#" class="button p2 d-flex align-items-center btn-more">
+                    <a href="#" class="button p2 d-none d-lg-flex align-items-center btn-more">
                         {{ __('More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
@@ -199,11 +207,15 @@
                         </div>
                     </a>
                 </div>
+                <a href="#" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
+                    {{ __('More') }}
+                    <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
+                </a>
             </div>
             <div class="col-12 col-lg-5 col-xl-4 mt-5 mt-lg-0">
                 <div class="title d-flex align-items-center justify-content-between">
                     <h1 class="h1">{{ __('Events') }}</h1>
-                    <a href="#" class="button p2 d-flex align-items-center btn-more">
+                    <a href="#" class="button p2 d-none d-lg-flex align-items-center btn-more">
                         {{ __('More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
@@ -251,6 +263,10 @@
                         <img src="{{ asset('assets/web/assets/img/home/event-right.png') }}" alt="" class="img img-fluid" id="event-right">
                     </div>
                 </div>
+                <a href="#" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
+                    {{ __('More') }}
+                    <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
+                </a>
             </div>
         </div>
     </div>

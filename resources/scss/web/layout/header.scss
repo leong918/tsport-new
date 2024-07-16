@@ -2,6 +2,9 @@
     .navbar {
         padding: 20px 60px;
         box-shadow: 0px 4px 10px 0px #0000001A;
+        width: 100%;
+        background: white;
+        z-index: 101;
         @media (max-width: 992px) {
             padding: 16px 30px;
         }
@@ -93,17 +96,55 @@
     // mobile-navbar
     .mobile-nav {
         position: absolute;
-        // top: 0;
-        // right: -50%;
-        background-color: white;
-        transition: all 0.3s ease-in-out;
-        z-index: 99;
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
-        min-height: calc(100vh - 72px);
+        z-index: 100;
         width: 100%;
+        background-color: white;
+        
+        .mobile-nav-content {
+            padding: 17px 0;
+            height: calc(100vh - 72px);
+            
+            .nav-item {
+                .nav-link {
+                    padding: 16px 30px;
 
-        &.show {
-            overflow-y: scroll;
+                    .arrow-down {
+                        width: 17px;
+                        transition: transform 0.3s ease;
+                    }
+                    .arrow-down.down {
+                        transform: rotate(0deg);
+                    }
+                    .arrow-down.up {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+
+            .list-group {
+                .list-item {
+                    padding: 0 48px 8px;
+                    a {
+                        text-decoration: none;
+                        color: black;
+                    }
+                }
+            }
+        }
+        
+        .language-nav {
+            bottom: 17px;
+            position: fixed;
+            padding: 16px 14px;
+
+            .nav-item {
+                &:first-child .nav-link {
+                    border-right: 1px solid #B7B7B7
+                }
+                .nav-link {
+                    padding: 0 16px;
+                }
+            }
         }
     }
 }
