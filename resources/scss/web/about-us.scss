@@ -1,0 +1,152 @@
+#about-us {
+    .header-row {
+        min-height: 30vh;
+
+        .banner-background {
+            background-image: url('/public/assets/web/assets/img/about-us/title-background.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+    
+            .title {
+                color: white;
+                position: relative;
+                left: 25%;
+                top: 40%;
+                width: fit-content;
+                @media (max-width: 767px) {
+                    left: 60px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+    
+                .breadcrumb-item, .breadcrumb-item::before {
+                    color: white;
+                }
+    
+                a {
+                    color: white;
+                    text-decoration: none;
+                }
+    
+                .h2 {
+                    margin-top: 24px;
+                }
+            }
+        }
+
+        .banner-img {
+            object-fit: cover;
+        }
+    }
+
+    .content-section {
+        padding-top: 120px;
+        padding-bottom: 120px;
+        background-image: url('/public/assets/web/assets/img/about-us/background.png');
+        background-repeat: no-repeat;
+        background-position: bottom -200px left;
+        background-size: 40%;
+    
+        @media (max-width: 991px) {
+            padding-top: 80px;
+        }
+
+        .content-top {
+            width: 80%;
+            @media (max-width: 1199px) {
+                width: 90%;
+            }
+
+            #about-carousel {
+                background-image: url('/public/assets/web/assets/img/about-us/carousel-background.png');
+                background-repeat: no-repeat;
+                background-size: 120%;
+                background-position: center;
+                // width: 80%;
+                margin: auto;
+                @media (max-width: 767px) {
+                    width: 60%;
+                }
+                @media (max-width: 575px) {
+                    width: 90%;
+                }
+            }
+    
+            .content-wrapper {
+                // width: 80%;
+                // @media (max-width: 1400px) {
+                //     width: 90%;
+                // }
+                // @media (max-width: 991px) {
+                //     width: 100%;
+                // }
+                // @media (max-width: 767px) {
+                //     width: 80%;
+                // }
+                // @media (max-width: 575px) {
+                //     width: 90%;
+                // }
+    
+                .h3 {
+                    color: #004080;
+                    margin-bottom: 40px;
+                }
+                .p2 {
+                    margin-bottom: 40px;
+                }
+                .h2 {
+                    color: #06B2D8;
+                }
+                .stats {
+                    margin-right: 40px;
+                    @media (max-width: 1199px) {
+                        margin-right: 20px;
+                    }
+                    @media (max-width: 767px) {
+                        margin-right: 0;
+                    }
+                    .p2 {
+                        margin-top: 16px;
+                    }
+                }
+            }
+        }
+
+        .content-bottom {
+            margin-top: 120px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
+            @media (max-width: 1199px) {
+                width: 90%;
+            }
+            @media (max-width: 767px) {
+                margin-top: 80px;
+            }
+
+            .content-wrapper {
+                width: 90%;
+                @media (max-width: 767px) {
+                    width: 100%;
+                    margin-top: 40px;
+                }
+                .p2 {
+                    margin-bottom: 40px;
+                }
+                .h3 {
+                    color: #004080;
+                }
+            }
+
+            .hand-img {
+                @media (max-width: 767px) {
+                    width: 50%;
+                }
+                @media (max-width: 575px) {
+                    width: 90%;
+                }
+            }
+        }
+    }
+}
