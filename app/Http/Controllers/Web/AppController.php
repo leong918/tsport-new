@@ -19,4 +19,9 @@ class AppController extends BaseController
     {
         return $this->view('about-us');
     }
+
+    public function mission()
+    {
+        return $this->view('mission');
+    }
 }
