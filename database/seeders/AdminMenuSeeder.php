@@ -86,42 +86,42 @@ class AdminMenuSeeder extends Seeder
                 'sort' => 1,
                 'status' => 1
             ],
-            [
-                'parent_id' => 1,
-                'title' => 'Admin List',
-                'icon' => null,
-                'url' => 'admin.admin.index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 2,
-                'title' => 'Product List',
-                'icon' => null,
-                'url' => 'admin.product.index',
-                'type' => 'shop',
-                'sort' => 2,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 2,
-                'title' => 'Category List',
-                'icon' => null,
-                'url' => 'admin.category.index',
-                'type' => 'shop',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 2,
-                'title' => 'Brand List',
-                'icon' => null,
-                'url' => 'admin.brand.index',
-                'type' => 'shop',
-                'sort' => 1,
-                'status' => 1
-            ],
+            // [
+            //     'parent_id' => 1,
+            //     'title' => 'Admin List',
+            //     'icon' => null,
+            //     'url' => 'admin.admin.index',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 2,
+            //     'title' => 'Product List',
+            //     'icon' => null,
+            //     'url' => 'admin.product.index',
+            //     'type' => 'shop',
+            //     'sort' => 2,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 2,
+            //     'title' => 'Category List',
+            //     'icon' => null,
+            //     'url' => 'admin.category.index',
+            //     'type' => 'shop',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 2,
+            //     'title' => 'Brand List',
+            //     'icon' => null,
+            //     'url' => 'admin.brand.index',
+            //     'type' => 'shop',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
             [
                 'parent_id' => 3,
                 'title' => 'Blog List',
@@ -131,132 +131,132 @@ class AdminMenuSeeder extends Seeder
                 'sort' => 1,
                 'status' => 1
             ],
-            [
-                'parent_id' => 2,
-                'title' => 'Tag List',
-                'icon' => null,
-                'url' => 'admin.tag.index',
-                'type' => 'shop',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 4,
-                'title' => 'Currency List',
-                'icon' => null,
-                'url' => 'admin.currency.index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 5,
-                'title' => 'User List',
-                'icon' => null,
-                'url' => 'admin.user.index',
-                'type' => 'marketing',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'Homepage',
-                'icon' => null,
-                'url' => 'admin.setting.homepage_index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'About',
-                'icon' => null,
-                'url' => 'admin.setting.about_index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'About-Membership',
-                'icon' => null,
-                'url' => 'admin.setting.about_membership',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'About-PTC',
-                'icon' => null,
-                'url' => 'admin.faq.index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'About-Contact',
-                'icon' => null,
-                'url' => 'admin.setting.about_contact',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'About-TNC',
-                'icon' => null,
-                'url' => 'admin.setting.about_tnc',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'About-Shipping',
-                'icon' => null,
-                'url' => 'admin.setting.about_shipping',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'Top Bar',
-                'icon' => null,
-                'url' => 'admin.top_bar.index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 6,
-                'title' => 'Global Setting',
-                'icon' => null,
-                'url' => 'admin.setting.global_index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 7,
-                'title' => 'Country List',
-                'icon' => null,
-                'url' => 'admin.country.index',
-                'type' => 'system_config',
-                'sort' => 1,
-                'status' => 1
-            ],
-            [
-                'parent_id' => 8,
-                'title' => 'Email List',
-                'icon' => null,
-                'url' => 'admin.email_content.index',
-                'type' => 'marketing',
-                'sort' => 1,
-                'status' => 1
-            ],
+            // [
+            //     'parent_id' => 2,
+            //     'title' => 'Tag List',
+            //     'icon' => null,
+            //     'url' => 'admin.tag.index',
+            //     'type' => 'shop',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 4,
+            //     'title' => 'Currency List',
+            //     'icon' => null,
+            //     'url' => 'admin.currency.index',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 5,
+            //     'title' => 'User List',
+            //     'icon' => null,
+            //     'url' => 'admin.user.index',
+            //     'type' => 'marketing',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'Homepage',
+            //     'icon' => null,
+            //     'url' => 'admin.setting.homepage_index',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'About',
+            //     'icon' => null,
+            //     'url' => 'admin.setting.about_index',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'About-Membership',
+            //     'icon' => null,
+            //     'url' => 'admin.setting.about_membership',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'About-PTC',
+            //     'icon' => null,
+            //     'url' => 'admin.faq.index',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'About-Contact',
+            //     'icon' => null,
+            //     'url' => 'admin.setting.about_contact',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'About-TNC',
+            //     'icon' => null,
+            //     'url' => 'admin.setting.about_tnc',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'About-Shipping',
+            //     'icon' => null,
+            //     'url' => 'admin.setting.about_shipping',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'Top Bar',
+            //     'icon' => null,
+            //     'url' => 'admin.top_bar.index',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 6,
+            //     'title' => 'Global Setting',
+            //     'icon' => null,
+            //     'url' => 'admin.setting.global_index',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 7,
+            //     'title' => 'Country List',
+            //     'icon' => null,
+            //     'url' => 'admin.country.index',
+            //     'type' => 'system_config',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
+            // [
+            //     'parent_id' => 8,
+            //     'title' => 'Email List',
+            //     'icon' => null,
+            //     'url' => 'admin.email_content.index',
+            //     'type' => 'marketing',
+            //     'sort' => 1,
+            //     'status' => 1
+            // ],
         ];
 
         foreach ($adminMenus as $adminMenu) {

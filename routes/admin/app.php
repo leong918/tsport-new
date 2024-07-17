@@ -16,5 +16,5 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         require_once 'blog.php';
-    });
+    }); 
 });
