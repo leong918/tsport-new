@@ -1,0 +1,105 @@
+#mission {
+    .header-row {
+        min-height: 30vh;
+
+        .banner-background {
+            background-image: url('/public/assets/web/assets/img/about-us/title-background.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+    
+            .title {
+                color: white;
+                position: relative;
+                left: 25%;
+                top: 40%;
+                width: fit-content;
+                @media (max-width: 767px) {
+                    left: 60px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+    
+                .breadcrumb-item, .breadcrumb-item::before {
+                    color: white;
+                }
+    
+                a {
+                    color: white;
+                    text-decoration: none;
+                }
+    
+                .h2 {
+                    margin-top: 24px;
+                }
+            }
+        }
+
+        .banner-img {
+            object-fit: cover;
+        }
+    }
+
+    .content-section {
+        padding-top: 120px;
+        padding-bottom: 120px;
+        background-image: url('/public/assets/web/assets/img/about-us/background.png');
+        background-repeat: no-repeat;
+        background-position: bottom -200px left;
+        background-size: 40%;
+    
+        @media (max-width: 991px) {
+            padding-top: 80px;
+            padding-bottom: 80px;
+        }
+
+        .content-wrapper {
+            width: 80%;
+            margin: auto;
+            margin-bottom: 180px;
+            @media (max-width: 1199px) {
+                width: 90%;
+            }
+            @media (max-width: 991px) {
+                margin-bottom: 140px;
+            }
+
+            .detail-wrapper:first-child {
+                .detail {
+                    margin-top: 25%;
+                }
+            }
+
+            .detail-wrapper:last-child {
+                .detail {
+                    margin-top: 50%;
+                }
+            }
+
+            .detail {
+                margin: 0 10px;
+                .h3 {
+                    color: #004080;
+                    margin-top: 40px;
+                    margin-bottom: 24px;
+                }
+            }
+        }
+
+        #slogan-slideshow {
+            .slick-track {
+                display: flex;
+                align-items: center;
+                .swiper-slide {
+                    margin: 0 20px;
+                    @media (max-width: 991px) {
+                        margin: 0 10px;
+                    }
+                    @media (max-width: 575px) {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}
