@@ -26,10 +26,16 @@ class CreateBlogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'blog_category_id' => 'required',
+            'image' => 'required|max:1024',
             'status' => 'required',
             'sort' => 'required',
-            'published_at' => 'required',
+            'language.en.name' => 'required',
+            'language.tc.name' => 'required',
+            'language.zh-CN.name' => 'required',
+            'language.en.content' => 'required',
+            'language.tc.content' => 'required',
+            'language.zh-CN.content' => 'required',
         ];
     }
 

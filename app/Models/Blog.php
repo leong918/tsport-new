@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Carbon\Carbon;
 
 class Blog extends Model
@@ -33,7 +34,9 @@ class Blog extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'blog_category_id',
         'name',
+        'image',
         'status',
         'sort',
         'published_at',
@@ -58,6 +61,11 @@ class Blog extends Model
         return Attribute::make(
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
+    }
+    
+    public function blogCategory(): BelongsTo
+    {
+        return $this->belongsTo(BlogCategory::class);
     }
 
     protected function blogDescription(): HasMany
