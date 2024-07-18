@@ -24,4 +24,14 @@ class AppController extends BaseController
     {
         return $this->view('mission');
     }
+
+    public function event()
+    {
+        return $this->view('event');
+    }
+
+    public function eventDetails()
+    {
+        return $this->view('event_details');
+    }
 }

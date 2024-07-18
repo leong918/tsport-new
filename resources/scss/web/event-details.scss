@@ -1,0 +1,115 @@
+#event-details {
+
+    .content-section{
+        padding-top: 120px;
+        padding-bottom: 120px;
+        background-image: url('/public/assets/web/assets/img/event-details/background.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+
+        .event-detail-container{
+            margin: auto;
+            width: 80%;
+        }
+
+        .breadcrumb-container{
+            margin-bottom: 40px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            .breadcrumb{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .breadcrumb-item, .breadcrumb-item::before {
+                color: #6a6a6a;
+            }
+
+            a {
+                color: #6a6a6a;
+                text-decoration: none;
+            }
+
+            .h2 {
+                margin-top: 24px;
+            }
+        }
+
+        .date-container{
+            text-align: center;
+        }
+
+        .name-container{
+            text-align: center;
+
+            p{
+                margin-bottom: 60px;
+                color: #004080;
+                font-weight: bold;
+                font-size: 30px;
+            }
+        }
+
+        .event-img-list-container{
+            --bs-gutter-y: 1.5rem;
+
+            .event-img{
+                width: 100%;
+                position: relative;
+
+                &:hover{
+                    img {
+                        transform: scale(1.05);
+                    }
+                }
+        
+                img{
+                    width: 100%;
+                    height: auto;
+                    object-fit: cover;
+                    border-radius: 7px;
+                    aspect-ratio: 1/1;
+                    transition: all 500ms ease;
+                    transform: scale(1);
+                }
+            }
+        }
+    }
+
+    #imageModal{
+        .modal-content{
+            border: none;
+            background-color: transparent;
+
+            .modal-body{
+                position: relative;
+                padding: 50px;
+
+                .close-btn {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    z-index: 1051;
+                    background-color: transparent;
+                    border: none;
+                    padding: 0;
+
+                    @media (max-width: 767px) {
+                        top: 15px;
+                        right: 15px;
+
+                        img{
+                            width: 30px;
+                            height: 30px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

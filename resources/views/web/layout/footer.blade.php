@@ -13,7 +13,7 @@
                 <a class="h6" href="#">
                     {{ __('page.What do we do') }}
                 </a>
-                <a class="h6" href="#">
+                <a class="h6" href="{{ route('web.event') }}">
                     {{ __('page.News & Events') }}
                 </a>
                 <a class="h6" href="#">

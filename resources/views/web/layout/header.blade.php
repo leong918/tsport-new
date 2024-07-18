@@ -41,7 +41,7 @@
                                 <a class="nav-link" href="#">{{ __('What do we do') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('News & Events') }}</a>
+                                <a class="nav-link" href="{{ route('web.event') }}">{{ __('News & Events') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" id="programDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
