@@ -22,7 +22,7 @@
                 <a class="h6" href="#">
                     {{ __('page.Blog') }}
                 </a>
-                <a class="h6" href="#">
+                <a class="h6" href="{{ route('web.contact-us') }}">
                     {{ __('page.Contact Us') }}
                 </a>
             </div>

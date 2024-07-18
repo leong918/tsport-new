@@ -34,4 +34,9 @@ class AppController extends BaseController
     {
         return $this->view('event_details');
     }
+
+    public function contactUs()
+    {
+        return $this->view('contact-us');
+    }
 }

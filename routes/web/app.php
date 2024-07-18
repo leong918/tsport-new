@@ -10,4 +10,5 @@ Route::group(['namespace' => 'Web', 'prefix' => LaravelLocalization::setLocale()
     Route::get('/mission', [AppController::class, 'mission'])->name('web.mission');
     Route::get('/event', [AppController::class, 'event'])->name('web.event');
     Route::get('/event_details', [AppController::class, 'eventDetails'])->name('web.event_details');
+    Route::get('/contact-us', [AppController::class, 'contactUs'])->name('web.contact-us');
 });
