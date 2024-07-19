@@ -7,28 +7,28 @@
         </div>
         <div class="col-12 col-lg-9 mt-4 mt-lg-0 order-3 order-lg-2">
             <div class="row row-top mb-0 justify-content-between align-items-lg-center h6 flex-column flex-lg-row">
-                <a class="h6" href="/about">
-                    {{ __('page.About Us') }}
+                <a class="h6" href="{{ route('web.about-us') }}">
+                    {{ __('About Us') }}
+                </a>
+                <a class="h6" href="{{ route('web.what-do-we-do') }}">
+                    {{ __('What do we do') }}
                 </a>
                 <a class="h6" href="#">
-                    {{ __('page.What do we do') }}
+                    {{ __('News & Events') }}
                 </a>
                 <a class="h6" href="#">
-                    {{ __('page.News & Events') }}
+                    {{ __('Programme') }}
                 </a>
                 <a class="h6" href="#">
-                    {{ __('page.Programme') }}
+                    {{ __('Blog') }}
                 </a>
                 <a class="h6" href="#">
-                    {{ __('page.Blog') }}
-                </a>
-                <a class="h6" href="#">
-                    {{ __('page.Contact Us') }}
+                    {{ __('Contact Us') }}
                 </a>
             </div>
             <div class="row row-bottom align-items-center justify-content-center">
                 <div class="col-12 col-lg d-flex align-items-center h6">
-                    {{ __('page.Follow Us') }} 
+                    {{ __('Follow Us') }} 
                     <a href="https://www.instagram.com/hellosmilehk/" target="_blank" class="mt-0">
                         <img src="{{asset('assets/web/assets/img/footer/instagram.png')}}" alt="instagram" class="img img-fluid instagram">
                     </a>
@@ -40,7 +40,7 @@
         </div>
         <div class="col-6 col-lg-1 order-2 order-lg-3">
             <div class="top-wrapper d-flex justify-content-end">
-                <img src="{{asset('assets/web/assets/img/footer/top.png')}}" alt="hellosmile" class="img img-fluid scroll-top">
+                <img src="{{ asset('assets/web/assets/img/footer/top.png') }}" alt="hellosmile" class="img img-fluid scroll-top">
             </div>
         </div>
     </div>

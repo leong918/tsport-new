@@ -38,7 +38,7 @@
                             {!! __('A healthy body starts with a healthy set of teeth, especially for young children and children with special health care needs') !!}
                             <br/>
                             <br/>
-                            {!! __('We believe oral health is the foundation of wellbeing and happiness. An effort made for the happiness of others lifts above us. Not everyone can do great things but we can all do small things with great love.') !!}
+                            {!! __('We believe oral health is the foundation of wellbeing and happiness.<br/>An effort made for the happiness of others lifts above us. Not everyone can do great things but we can all do small things with great love.') !!}
                         </p>
                         <div class="row">
                             <div class="col-5 stats">

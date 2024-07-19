@@ -43,14 +43,19 @@
     .content-section {
         padding-top: 120px;
         padding-bottom: 120px;
-        background-image: url('/public/assets/web/assets/img/about-us/background.png');
+        background-image: url('/public/assets/web/assets/img/about-us/background.png'), url("/public/assets/web/assets/img/about-us/background-right.png");
         background-repeat: no-repeat;
-        background-position: bottom -200px left;
-        background-size: 40%;
-    
+        background-position: bottom -200px left, center right;
+        background-size: 40%, 20%;
         @media (max-width: 991px) {
             padding-top: 80px;
-            padding-bottom: 80px;
+            background-size: 60%, 40%;
+        }
+        @media (max-width: 767px) {
+            background-size: 80%, 60%;
+        }
+        @media (max-width: 575px) {
+            background-size: 100%, 80%;
         }
 
         .content-wrapper {
@@ -63,21 +68,34 @@
             @media (max-width: 991px) {
                 margin-bottom: 140px;
             }
+            @media (max-width: 575px) {
+                width: 100%;
+                margin-bottom: 120px;
+            }
 
             .detail-wrapper:first-child {
                 .detail {
                     margin-top: 25%;
+                    @media (max-width: 767px) {
+                        margin-top: 0;
+                    }
                 }
             }
 
             .detail-wrapper:last-child {
                 .detail {
                     margin-top: 50%;
+                    @media (max-width: 991px) {
+                        margin-top: 60px;
+                    }
                 }
             }
 
             .detail {
                 margin: 0 10px;
+                @media (max-width: 767px) {
+                    margin-top: 60px;
+                }
                 .h3 {
                     color: #004080;
                     margin-top: 40px;
