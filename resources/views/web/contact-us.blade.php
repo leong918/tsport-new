@@ -26,35 +26,40 @@
             <div class="row contact-row">
                 <div class="col-sm-12 col-lg-5">
                     <div class="contact-list-section">
-                        <div class="contact-list-item">
-                            <div class="contact-icon">
-                                <img src="{{ asset('assets/web/assets/img/contact-us/phone-icon.png') }}" alt="">
+                        <a href="tel:(852) 2868 3808">
+                            <div class="contact-list-item">
+                                <div class="contact-icon">
+                                    <img src="{{ asset('assets/web/assets/img/contact-us/phone-icon.png') }}" alt="">
+                                </div>
+                                <div class="contact-content">
+                                    <p>(852) 2868 3808</p>
+                                </div>
                             </div>
-                            <div class="contact-content">
-                                <p>(852) 2868 3808</p>
-                            </div>
-                        </div>
+                        </a>
 
-                        <div class="contact-list-item">
-                            <div class="contact-icon">
-                                <img src="{{ asset('assets/web/assets/img/contact-us/mail-icon.png') }}" alt="">
+                        <a href="mailto:hellosmilehk@gmail.com">
+                            <div class="contact-list-item">
+                                <div class="contact-icon">
+                                    <img src="{{ asset('assets/web/assets/img/contact-us/mail-icon.png') }}" alt="">
+                                </div>
+                                <div class="contact-content">
+                                    <p>hellosmilehk@gmail.com</p>
+                                </div>
                             </div>
-                            <div class="contact-content">
-                                <p>hellosmilehk@gmail.com</p>
-                            </div>
-                        </div>
+                        </a>
 
-                        <div class="contact-list-item">
-                            <div class="contact-icon">
-                                <img src="{{ asset('assets/web/assets/img/contact-us/location-icon.png') }}" alt="">
+                        <a href="https://maps.app.goo.gl/AfaUt929wKPkKSeT7" target="_blank">
+                            <div class="contact-list-item">
+                                <div class="contact-icon">
+                                    <img src="{{ asset('assets/web/assets/img/contact-us/location-icon.png') }}" alt="">
+                                </div>
+                                <div class="contact-content">
+                                    <u>
+                                        1901-1906 T.O.P, 700 Nathan Road, Mongkok, Kowloon
+                                    </u>
+                                </div>
                             </div>
-                            <div class="contact-content">
-                                <u>
-                                    1901-1906 T.O.P, 700 Nathan
-                                    Road, Mongkok, Kowloon
-                                </u>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-7">
@@ -63,7 +68,8 @@
                         <div>Please contact us via this website or email without disclosing confidential information.</div>
                     </div>
                     <div class="bottom-section">
-                        <form>
+                        <form id="contact-form" action="{{ route('web.send-contact') }}" method="POST">
+                            @csrf
                             <div class="form-section">
                                 <div class="row">
                                     <div class="col-lg-6 first-name-container">
@@ -82,9 +88,9 @@
                             </div>
                             <div class="form-section">
                                 <label>{{ __('Message') }} <span>*</span></label>
-                                <textarea class="form-control" rows="4"></textarea>
+                                <textarea class="form-control" rows="4" name="message"></textarea>
                             </div>
-                            <button type="button" class="btn btn-contact btn-send" data-bs-toggle="modal" data-bs-target="#successModal">
+                            <button type="submit" class="btn btn-contact btn-send">
                                 {{ __('Send') }}
                                 <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="">
                             </button>
@@ -130,3 +136,44 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#contact-form').on('submit', function (e) {
+            e.preventDefault();
+
+            const submitButton = $(this).find('button[type="submit"]');
+            submitButton.prop('disabled', true);
+
+            let formData = new FormData(this);
+
+            axios.post(this.action, formData)
+            .then(response => {
+                swal.fire({
+                    title: 'Submitted!',
+                    text: 'Form has been submitted successfully.',
+                    icon: 'success',
+                });
+                this.reset();
+                submitButton.prop('disabled', false);
+            })
+
+            .catch(error => {
+                let errorMessage = 'An error occurred while submitting the form. Please try again.';
+                if (error.response && error.response.data && error.response.data.errors) {
+                    const errors = error.response.data.errors;
+                    const firstErrorKey = Object.keys(errors)[0];
+                    errorMessage = errors[firstErrorKey][0];
+                }
+                swal.fire({
+                    title: 'Error!',
+                    text: errorMessage,
+                    icon: 'error',
+                });
+                submitButton.prop('disabled', false);
+            });
+        });
+    })
+</script>
+@endpush

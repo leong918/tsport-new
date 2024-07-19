@@ -68,14 +68,24 @@
                 padding: 0;
             }
 
-            .contact-list-item{
-                margin-bottom: 30px;
-                display: flex;
-                align-items: baseline;
-                gap: 15px;
+            a{
+                text-decoration: none;
+                color: unset;
+                cursor: pointer;
 
-                @media (max-width: 992px) {
-                    margin-bottom: 20px;
+                &:hover{
+                    color: #004080;
+                }
+
+                .contact-list-item{
+                    margin-bottom: 30px;
+                    display: flex;
+                    align-items: baseline;
+                    gap: 15px;
+
+                    @media (max-width: 992px) {
+                        margin-bottom: 20px;
+                    }
                 }
             }
         }
