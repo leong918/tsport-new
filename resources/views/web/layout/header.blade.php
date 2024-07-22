@@ -32,16 +32,16 @@
                                     <ul class="dropdown-menu p3" id="about-menu">
                                         <li><a class="dropdown-item" href="{{ route('web.about-us') }}">{{ __('About Us') }}</a></li>
                                         <li><a class="dropdown-item" href="{{ route('web.mission') }}">{{ __('Mission, Vision, Value') }}</a></li>
-                                        <li><a class="dropdown-item" href="#">{{ __('Founder & Committee Members') }}</a></li>
-                                        <li><a class="dropdown-item" href="#">{{ __('Our Partners') }}</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('web.founder') }}">{{ __('Founder & Committee Members') }}</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('web.our-partner') }}">{{ __('Our Partners') }}</a></li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('What do we do') }}</a>
+                                <a class="nav-link" href="{{ route('web.what-do-we-do') }}">{{ __('What do we do') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('News & Events') }}</a>
+                                <a class="nav-link" href="{{ route('web.event') }}">{{ __('News & Events') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" id="programDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,7 +57,7 @@
                                 <a class="nav-link" href="#">{{ __('Blog') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
+                                <a class="nav-link" href="{{ route('web.contact-us') }}">{{ __('Contact Us') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link text-uppercase" href="#">
@@ -98,16 +98,16 @@
                         <ul class="list-group">
                             <li class="list-item"><a class="p2" href="{{ route('web.about-us') }}">{{ __('About Us') }}</a></li>
                             <li class="list-item"><a class="p2" href="{{ route('web.mission') }}">{{ __('Mission, Vision, Value') }}</a></li>
-                            <li class="list-item"><a class="p2" href="#">{{ __('Founder & Committee Members') }}</a></li>
-                            <li class="list-item"><a class="p2" href="#">{{ __('Our Partners') }}</a></li>
+                            <li class="list-item"><a class="p2" href="{{ route('web.founder') }}">{{ __('Founder & Committee Members') }}</a></li>
+                            <li class="list-item"><a class="p2" href="{{ route('web.our-partner') }}">{{ __('Our Partners') }}</a></li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('What do we do') }}</a>
+                    <a class="nav-link" href="{{ route('web.what-do-we-do') }}">{{ __('What do we do') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('News & Events') }}</a>
+                    <a class="nav-link" href="{{ route('web.event') }}">{{ __('News & Events') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link d-flex justify-content-between" data-bs-toggle="collapse" href="#collapse-programme" role="button" aria-expanded="false" aria-controls="collapse-programme">
@@ -126,7 +126,7 @@
                     <a class="nav-link" href="#">{{ __('Blog') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
+                    <a class="nav-link" href="{{ route('web.contact-us') }}">{{ __('Contact Us') }}</a>
                 </li>
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="#">

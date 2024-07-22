@@ -4,7 +4,7 @@
     <!-- header -->
     <div class="section-header">
         <div class="row gx-0 header-row">
-            <div class="col-12 col-md-5 banner-background">
+            <div class="col-12 col-md-6 col-lg-5  banner-background">
                 <div class="title">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -18,7 +18,7 @@
                     </h2>
                 </div>
             </div>
-            <div class="col-12 col-md-7 d-none d-md-block">
+            <div class="col-12 col-md-6 col-lg-7 d-none d-md-block">
                 <img src="{{ asset('assets/web/assets/img/mission/banner.png') }}" alt="" class="img img-fluid banner-img h-100">
             </div>
         </div>
