@@ -73,16 +73,6 @@ class Blog extends Model
         return $this->hasMany(BlogDescription::class);
     }
 
-    protected function blogComment(): HasMany
-    {
-        return $this->hasMany(BlogComment::class);
-    }
-
-    public function firstLayerBlogComment()
-    {
-        return $this->blogComment()->whereNull('parent_id')->orderBy('created_at', 'desc')->get();
-    }
-
     public function getParameters(string $params, string $column = null)
     {
         $language = $this->blogDescription->where('language', $params)->first();

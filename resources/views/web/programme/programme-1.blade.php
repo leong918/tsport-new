@@ -26,7 +26,7 @@
         <div class="m-auto">
             <div class="row d-flex align-items-center justify-content-between w-100">
                 <div class="col-12 col-md-12">
-                    <div class="content-wrapper m-auto mt-5 mt-md-0">
+                    <div class="content-wrapper m-auto">
                         <h3 class="h3">{{ __('Healthy Teeth Collaboration') }}</h3>
                         <p class="p2">
                             {!! __('We are very privileged to be a designated clinic to provide dental service for the persons with intellectual disability (PID) of the Healthy Teeth Collaboration Project managed by the Department of Health.') !!}

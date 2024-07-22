@@ -21,12 +21,11 @@
                 color: white;
                 position: relative;
                 left: 25%;
-                top: 40%;
+                top: 50%;
+                transform: translateY(-50%);
                 width: fit-content;
                 @media (max-width: 992px) {
                     left: 60px;
-                    top: 50%;
-                    transform: translateY(-50%);
                 }
     
                 .breadcrumb-item, .breadcrumb-item::before {
@@ -56,6 +55,9 @@
         background-repeat: no-repeat;
         background-position: bottom -200px left;
         background-size: 40%;
+        @media (max-width: 991px) {
+            padding-top: 80px;
+        }
 
         .contact-row{
             --bs-gutter-y: 40px;
