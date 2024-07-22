@@ -12,7 +12,8 @@
         <li class="nav-title">Shop</li>
         <li class="nav-group">
             <a class="nav-link" href="{{ route('admin.blog.index') }}">
-                <i class="fa-solid fa-chart-bar nav-icon"></i> Blog
+                <i class="fa-solid fa-blog nav-icon"></i>
+                Blog
             </a>
         </li>
     </ul>
