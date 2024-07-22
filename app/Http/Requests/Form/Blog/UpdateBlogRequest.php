@@ -32,10 +32,10 @@ class UpdateBlogRequest extends FormRequest
             'sort' => 'required',
             'language.en.name' => 'required',
             'language.tc.name' => 'required',
-            'language.zh-CN.name' => 'required',
+            'language.sc.name' => 'required',
             'language.en.content' => 'required',
             'language.tc.content' => 'required',
-            'language.zh-CN.content' => 'required',
+            'language.sc.content' => 'required',
         ];
     }
     

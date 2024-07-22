@@ -29,20 +29,20 @@
         </div>
         <div id="knowledge-blog">
             <div class="knowledge-blog-wrapper m-auto justify-content-center">
-                <div class="blog-swiper" id="blog-swiper">
+                <div class="knowledge-swiper" id="knowledge-swiper">
                     <div class="swiper-wrapper ">
                         @foreach($knowledges as $knowledge)
                         <div class="swiper-slide">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ $knowledge->image }}" alt=""
-                                            class="img img-fluid blog-img">
+                                        <img src="{{ $knowledge->image }}" alt="" class="img img-fluid blog-img">
                                     </div>
-                                    <p class="p3">{{ $knowledge->published_at }}</p>
+                                    <p class="p3">{{ $knowledge->publishedDate() }}</p>
                                     <h5 class="h5">{{ $knowledge->getParameters(app()->getLocale(), 'name') }}</h5>
                                     <div class="d-flex justify-content-end">
-                                        <a class="blog-arrow-wrapper" href="{{ route('web.blog_details', $knowledge->id)}}">
+                                        <a class="blog-arrow-wrapper"
+                                            href="{{ route('web.blog_details', $knowledge->id)}}">
                                             <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt=""
                                                 class="img img-fluid blog-arrow">
                                             <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt=""
@@ -65,8 +65,9 @@
                             </div>
                         </div>
                         <div class="col-md-0 col-xl-9 col-lg-9">
-                            <div class="interview-border-1"></div>
-                            <div class="interview-border-2"></div>
+                            <div class="scrollbar-wrapper">
+                                <div class="swiper-scrollbar"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,25 +76,21 @@
         @endif
         @if(count($interviews) != 0)
         <div id="interviews-blog" class="interviews-blog">
-            <div class="row interviews-blog-wrapper m-auto justify-content-between d-flex">
-                <div class="interviews-section">
-                    <div class="d-flex justify-content-center">
-                        <h3 class="h3">{{ __('Interviews') }}</h3>
-                    </div>
+            <div class="row interviews-blog-wrapper m-auto justify-content-center d-flex">
+                <div class="d-flex justify-content-center">
+                    <h3 class="h3">{{ __('Interviews') }}</h3>
                 </div>
-                @if($first_interview)
                 <div class="col-12 col-lg-6 col-xl-5 mt-lg-0">
                     <div class="interview-card">
                         <div class="card">
                             <div class="card-body">
                                 <div class="img-wrapper d-flex justify-content-center">
-                                    <img src="{{ $first_interview->image }}" alt=""
-                                        class="img img-fluid blog-img">
+                                    <img src="{{ $first_interview->image }}" alt="" class="img img-fluid blog-img">
                                 </div>
-                                <p class="p3">{{ $first_interview->published_at }}</p>
+                                <p class="p3">{{ $first_interview->publishedDate() }}</p>
                                 <h5 class="h5">{{ $first_interview->getParameters(app()->getLocale(), 'name') }}</h5>
                                 <div class="d-flex justify-content-end">
-                                    <a class="blog-arrow-wrapper" href="#">
+                                    <a class="blog-arrow-wrapper" href="{{ route('web.blog_details', $first_interview->id)}}">
                                         <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
                                             class="img img-fluid blog-arrow">
                                         <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
@@ -104,21 +101,19 @@
                         </div>
                     </div>
                 </div>
-                @endif
                 <div class="col-12 col-lg-6 col-xl-7">
-                    <div class="overflow-auto d-flex blog-list-wrapper">
+                    <div class="d-flex blog-list-wrapper">
                         <div class="blog-list">
                             @foreach($interviews as $interview)
                             <a href="{{ route('web.blog_details', $interview->id)}}" class="blog-detail">
                                 <div class="row d-flex">
                                     <div class="col-5 col-md-4">
                                         <div class="img-wrapper">
-                                            <img src="{{ $interview->image }}" alt=""
-                                                class="img img-fluid">
+                                            <img src="{{ $interview->image }}" alt="" class="img img-fluid">
                                         </div>
                                     </div>
                                     <div class="col-7 col-md-8">
-                                        <p class="p3">{{ $interview->published_at }}</p>
+                                        <p class="p3">{{ $interview->publishedDate() }}</p>
                                         <h5 class="h5">
                                             {{ $interview->getParameters(app()->getLocale(), 'name')}}
                                         </h5>
@@ -138,7 +133,7 @@
 
 @push('scripts')
 <script>
-    var blogSwiper = new Swiper("#blog-swiper", {
+    var knowledgeSwiper = new Swiper("#knowledge-swiper", {
         navigation:{
             nextEl: "#blog-right",
             prevEl: "#blog-left",
@@ -146,6 +141,11 @@
         freemode: "enabled",
         slidesPerView: 1,
         spaceBetween: 10,
+        scrollbar: {
+            el: ".swiper-scrollbar",
+            hide: false,
+            dragSize: 200,
+        },
         pagination: {
             el: ".swiper-pagination",
             type: "fraction",

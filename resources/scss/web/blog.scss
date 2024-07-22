@@ -163,14 +163,14 @@
     }
 
     #knowledge-blog {
-      .knowledge-blog-wrapper{
+      .knowledge-blog-wrapper {
         width: 80%;
         @media (max-width: 1199px) {
           width: 90%;
         }
-        .blog-swiper {
+        .knowledge-swiper {
           overflow: hidden;
-  
+
           .card {
             box-shadow: 0px 8px 20px 0px #00408026;
             border-radius: 8px;
@@ -179,7 +179,7 @@
             @media (max-width: 575px) {
               margin: 30px 0;
             }
-  
+
             &:hover {
               .blog-img {
                 transform: scale(1.1);
@@ -191,7 +191,7 @@
                 left: 0;
               }
             }
-  
+
             .card-body {
               padding: 35px 30px;
               &:hover {
@@ -213,17 +213,7 @@
               }
             }
           }
-          
-          .interview-border-1{
-            margin-top: 20px;
-            border: 1px solid #B7B7B7;
-          }
-          .interview-border-2{
-            margin-top: -4px;
-            width: 25%;
-            border: 4px solid #06B2D8;
-          }
-          
+
           .pagination-wrapper {
             margin-top: 20px;
             .swiper-pagination {
@@ -242,6 +232,20 @@
               width: 24px;
               cursor: pointer;
               position: relative;
+            }
+          }
+
+          .scrollbar-wrapper{
+            margin-top: 20px;
+            .swiper-scrollbar{
+              position: relative;
+              top: 0;
+              bottom: 0;
+              width: auto;
+              margin: 0 40px;
+              --swiper-scrollbar-bg-color: #B7B7B7;
+              --swiper-scrollbar-drag-bg-color: #06B2D8;
+              --swiper-scrollbar-size: 4px;
             }
           }
         }
@@ -310,21 +314,34 @@
           }
         }
 
+        .blog-list-wrapper::-webkit-scrollbar {
+          width: 4px;
+        }
+        .blog-list-wrapper::-webkit-scrollbar-track {
+          background:#B7B7B7; 
+          border-radius: 10px;
+        }
+        .blog-list-wrapper::-webkit-scrollbar-thumb {
+          background: #06B2D8; 
+          border-radius: 10px;
+        }
+         
         .blog-list-wrapper {
+          height: 300px;
+          overflow: auto;
           padding-right: 30px;
-          border-right: 1px solid #b7b7b7;
           .blog-list {
             @media (max-width: 768px) {
-              height:calc(1000px + 5vh);
+              max-height: 30vmax;
             }
             @media (max-width: 1024px) {
-              height: 30vw;
+              max-height: 30vmax;
             }
             @media (max-width: 1440px) {
-              height: 30vmax;
+              max-height: 40vw;
             }
             @media (min-width: 1440px) {
-              height: 30vmax;
+              max-height: 25vw;
             }
             .blog-detail {
               text-decoration: none;
