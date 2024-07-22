@@ -10,9 +10,9 @@
             <div class="swiper-slide">
                 <img src="{{ asset('assets/web/assets/img/home/banner-1.jpg') }}" alt="" class="img img-fluid banner-img">
                 <div class="banner-content">
-                    <p class="banner-title">
+                    <h2 class="banner-title h2">
                         {!! __('EVERYONE DESERVES A HEALTHY "SMILE"') !!}
-                    </p>
+                    </h2>
                     <a href="#" class="button p2 d-flex align-items-center btn-more">
                         {{ __('Read More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
@@ -22,9 +22,9 @@
             <div class="swiper-slide">
                 <img src="{{ asset('assets/web/assets/img/home/banner-2.jpg') }}" alt="" class="img img-fluid banner-img">
                 <div class="banner-content">
-                    <p class="banner-title">
+                    <h2 class="banner-title h2">
                         {!! __('WE CAN ALL DO SMALL THINGS WITH GREAT LOVE') !!}
-                    </p>
+                    </h2>
                     <a href="#" class="button p2 d-flex align-items-center btn-more">
                         {{ __('Read More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
@@ -32,7 +32,13 @@
                 </div>
             </div>
         </div>
-        <div class="swiper-pagination"></div>
+        <div class="swiper-bottom d-flex align-items-center">
+            <div class="swiper-pagination"></div>
+            <img src="{{ asset('assets/web/assets/img/home/play.png') }}" alt="" class="img img-fluid play d-none d-lg-block">
+            <img src="{{ asset('assets/web/assets/img/home/pause.png') }}" alt="" class="img img-fluid pause d-none d-lg-block">
+            <img src="{{ asset('assets/web/assets/img/home/play-mobile.png') }}" alt="" class="img img-fluid play d-block d-lg-none">
+            <img src="{{ asset('assets/web/assets/img/home/pause-mobile.png') }}" alt="" class="img img-fluid pause d-block d-lg-none">
+        </div>
     </div>
 
     <!-- slogan -->
@@ -274,7 +280,7 @@
     <!-- programme -->
      <div id="programme" class="programme">
         <div class="programme-wrapper m-auto">
-            <h1 class="h1 text-center">{{ __('Programme') }}</h1>
+            <h1 class="h1 text-lg-center">{{ __('Programme') }}</h1>
             <div class="card">
                 <a href="#">
                     <div class="card-body">
@@ -314,7 +320,7 @@
 <script>
     const swiper = new Swiper('.swiper', {
         loop: true,
-        autoplay: { delay: 3000 },
+        // autoplay: { delay: 3000 },
         speed: 3000,
         effect: "fade",
         fadeEffect: {
@@ -325,6 +331,16 @@
             clickable: true,
         },
     });
+
+    $('.play').click(function() {
+        swiper.autoplay.start();
+        console.log('play');
+    })
+
+    $('.pause').click(function() {
+        swiper.autoplay.stop();
+        console.log('pause');
+    })
 
     $('#slogan-slideshow').slick({
         slidesToShow: 5,
