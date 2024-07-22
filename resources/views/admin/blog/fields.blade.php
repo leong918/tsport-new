@@ -132,8 +132,8 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Name') }}
-                                {{ html()->text('language[zh-CN][name]')->placeholder('Enter name')->value(isset($model)
-                                && $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->name :
+                                {{ html()->text('language[sc][name]')->placeholder('Enter name')->value(isset($model)
+                                && $model->getParameters('sc') ? $model->getParameters('sc')->name :
                                 '')->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
@@ -141,8 +141,8 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('SEO Description') }}
-                                {{ html()->text('language[zh-CN][short_desc]')->value(isset($model) &&
-                                $model->getParameters('zh-CN') ? $model->getParameters('zh-CN')->short_desc :
+                                {{ html()->text('language[sc][short_desc]')->value(isset($model) &&
+                                $model->getParameters('sc') ? $model->getParameters('sc')->short_desc :
                                 '')->class('form-control') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
@@ -150,8 +150,8 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Content') }}
-                                {{ html()->textarea('language[zh-CN][content]')->value(isset($model) &&
-                                $model->getParameters('zh-CN') ? e($model->getParameters('zh-CN')->content) :
+                                {{ html()->textarea('language[sc][content]')->value(isset($model) &&
+                                $model->getParameters('sc') ? e($model->getParameters('sc')->content) :
                                 '')->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
