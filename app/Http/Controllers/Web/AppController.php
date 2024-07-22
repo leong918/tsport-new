@@ -29,6 +29,21 @@ class AppController extends BaseController
         return $this->view('mission');
     }
 
+    public function ourPartner()
+    {
+        return $this->view('our-partner');
+    }
+
+    public function founder()
+    {
+        return $this->view('founder');
+    }
+
+    public function whatDoWeDo()
+    {
+        return $this->view('what-do-we-do');
+    }
+
     public function event()
     {
         $events = Event::getAllEvents();
