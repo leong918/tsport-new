@@ -80,7 +80,6 @@
         }
 
         .event-container{
-            //height: 519px;
             overflow: hidden;
 
             a{
@@ -93,8 +92,10 @@
                 border-radius: 8px;
                 border: none;
                 margin: 30px 20px;
+                min-height: 458.14px;
                 @media (max-width: 575px) {
                     margin: 30px 0;
+                    min-height: 440.14px;
                 }
     
                 &:hover {

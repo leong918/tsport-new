@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\Form\ContactUs\CreateContactRequest;
+use App\Models\Event;
 
 class AppController extends BaseController
 {
@@ -29,23 +31,29 @@ class AppController extends BaseController
 
     public function event()
     {
-        return $this->view('event');
+        $events = Event::getAllEvents();
+
+        return $this->view('event', compact('events'));
     }
 
     public function eventDetails($slug)
     {
-        /*
-        $folderPath = asset('assets/web/assets/img/event-details/' . $slug);
+
+        $event = Event::getEventBySlug($slug);
+
+        if(!$event){
+            abort(404);
+        }
+
+        $files = File::files(public_path('assets/web/assets/img/event-details/' . $slug));
         $images = [];
 
 
-        $images = array_diff(scandir($folderPath), ['..', '.']); // Get all files except '.' and '..'
+        foreach ($files as $file) {
+            $images[] = asset('assets/web/assets/img/event-details/' . $slug . '/' . $file->getRelativePathname());  
+        }
 
-        $imageUrls = array_map(function ($image) use ($slug) {
-            return asset('assets/web/assets/img/event-details/' . $slug . '/' . $image);
-        }, $images);
-*/
-        return $this->view('event_details');
+        return $this->view('event_details', compact('event', 'images'));
     }
 
     public function contactUs()
@@ -69,7 +77,6 @@ class AppController extends BaseController
 
             return response()->json(['type' => 'success', 'message' => 'Form submitted successfully.']);
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(['type' => 'error', 'message' => 'Failed to send email. Please try again later.']);
         }
     }

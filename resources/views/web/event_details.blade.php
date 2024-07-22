@@ -7,81 +7,27 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item p4"><a href="{{ route('web.home') }}">{{ __('Home') }}</a></li>
-                        <li class="breadcrumb-item p4"><a href="{{ route('web.event') }}">{{ __('News & Events') }}</a></li>
-                        <li class="breadcrumb-item active p4" aria-current="page">Hello Smile HK x Faith in Love Foundation</li>
+                        <li class="breadcrumb-item p4"><a href="{{ route('web.event') }}">{{ __(App\Models\Event::TYPE[$event['type']]) }}</a></li>
+                        <li class="breadcrumb-item active p4" aria-current="page">{{ $event['name'] }}</li>
                     </ol>
                 </nav>
             </div>
 
             <div class="date-container">
-                <p>2024/04/01</p>
+                <p>{{ $event['date'] }}</p>
             </div>
             <div class="name-container">
-                <p>Hello Smile HK x Faith in Love Foundation</p>
+                <p>{{ $event['name'] }}</p>
             </div>
 
             <div class="row event-img-list-container">
+                @foreach($images as $image)
                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/1.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/1.png') }}" alt="" />
+                    <div class="event-img" data-image="{{ $image }}" data-bs-toggle="modal" data-bs-target="#imageModal">
+                        <img src="{{ $image }}" alt="" />
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/2.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/2.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/3.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/3.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/4.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/4.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/5.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/5.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/6.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/6.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/7.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/7.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/8.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/8.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/9.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/9.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/10.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/10.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/11.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/11.png') }}" alt="" />
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ asset('assets/web/assets/img/event-details/12.png') }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ asset('assets/web/assets/img/event-details/12.png') }}" alt="" />
-                    </div>
-                </div>
-
+                @endforeach
             </div>
         </div>
     </div>

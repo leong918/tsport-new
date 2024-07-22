@@ -38,82 +38,22 @@
                 </div>
                 <div class="row event-list-container align-items-stretch">
                     <!-- Event items go here -->
-                    <div class="col-lg-4 col-sm-12 event-container news">
-                        <a href="{{ route('web.event_details', ['slug' => strtolower(preg_replace('/[^A-Za-z0-9-]+/', '-', 'Hello Smile HK x ChickenSoup Foundation'))]) }}">
+                    @foreach($events as $slug => $event)
+                    <div class="col-lg-4 col-md-6 col-sm-12 event-container {{ $event['type'] }}">
+                        <a href="{{ route('web.event_details', ['slug' => $slug]) }}">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ asset('assets/web/assets/img/event/post-img-1.png') }}" alt="" class="img img-fluid event-img">
+                                        <img src="{{ $event['banner'] }}" alt="" class="img img-fluid event-img">
                                     </div>
-                                    <p class="p3">2023/03/11</p>
-                                    <h5 class="h5">Hello Smile HK x ChickenSoup Foundation</h5>
-                                    <div class="d-flex justify-content-end">
-                                        <a class="event-arrow-wrapper" href="#">
-                                            <img src="{{ asset('assets/web/assets/img/event/event-arrow.png') }}" alt="" class="img img-fluid event-arrow">
-                                            <img src="{{ asset('assets/web/assets/img/event/event-arrow.png') }}" alt="" class="img img-fluid event-arrow-after">
-                                        </a>
-                                    </div>
+                                    <p class="p3">{{ $event['date'] }}</p>
+                                    <h5 class="h5">{{ $event['name'] }}</h5>
+
                                 </div>
                             </div>
                         </a>
                     </div>
-                    <div class="col-lg-4 col-sm-12 event-container news">
-                        <a href="{{ route('web.event_details', ['slug' => strtolower(preg_replace('/[^A-Za-z0-9-]+/', '-', 'Hello Smile HK x Faith in Love Foundation'))]) }}">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ asset('assets/web/assets/img/event/post-img-2.png') }}" alt="" class="img img-fluid event-img">
-                                    </div>
-                                    <p class="p3">2022/11/20</p>
-                                    <h5 class="h5">Hello Smile HK x Faith in Love Foundation</h5>
-                                    <div class="d-flex justify-content-end">
-                                        <a class="event-arrow-wrapper" href="#">
-                                            <img src="{{ asset('assets/web/assets/img/event/event-arrow.png') }}" alt="" class="img img-fluid event-arrow">
-                                            <img src="{{ asset('assets/web/assets/img/event/event-arrow.png') }}" alt="" class="img img-fluid event-arrow-after">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-sm-12 event-container news">
-                        <a href="{{ route('web.event_details', ['slug' => strtolower(preg_replace('/[^A-Za-z0-9-]+/', '-', 'Hello Smile HK x SoCo'))]) }}">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ asset('assets/web/assets/img/event/post-img-3.png') }}" alt="" class="img img-fluid event-img">
-                                    </div>
-                                    <p class="p3">2022/10/15</p>
-                                    <h5 class="h5">Hello Smile HK x SoCo</h5>
-                                    <div class="d-flex justify-content-end">
-                                        <a class="event-arrow-wrapper" href="#">
-                                            <img src="{{ asset('assets/web/assets/img/event/event-arrow.png') }}" alt="" class="img img-fluid event-arrow">
-                                            <img src="{{ asset('assets/web/assets/img/event/event-arrow.png') }}" alt="" class="img img-fluid event-arrow-after">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-lg-4 col-sm-12 event-container news">
-                        <a href="{{ route('web.event_details', ['slug' => strtolower(preg_replace('/[^A-Za-z0-9-]+/', '-', 'Hello Smile HK x ChickenSoup Foundation'))]) }}">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ asset('assets/web/assets/img/event/post-img-4.png') }}" alt="" class="img img-fluid event-img">
-                                    </div>
-                                    <p class="p3">2022/09/03</p>
-                                    <h5 class="h5">Hello Smile Hk x ChickenSoup Foundation</h5>
-                                    <div class="d-flex justify-content-end">
-                                        <a class="event-arrow-wrapper" href="#">
-                                            <img src="{{ asset('assets/web/assets/img/event/event-arrow.png') }}" alt="" class="img img-fluid event-arrow">
-                                            <img src="{{ asset('assets/web/assets/img/event/event-arrow.png') }}" alt="" class="img img-fluid event-arrow-after">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                    @endforeach
                 </div>
                 <div class="pagination-container">
                     <a href="#" id="event-prev">
