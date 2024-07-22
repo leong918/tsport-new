@@ -33,7 +33,7 @@
                 <div class="row details">
                     <div class="col-12 col-sm-3">
                         <div class="img-wrapper d-flex justify-content-center">
-                            <img src="{{ asset('assets/web/assets/img/founder/founder-1.png') }}" alt="" class="img img-fluid">
+                            <img src="{{ asset('assets/web/assets/img/founder/irene.png') }}" alt="" class="img img-fluid">
                         </div>
                     </div>
                     <div class="col-10 col-sm-9 mt-4 mt-md-0 mx-auto">
@@ -57,7 +57,7 @@
                 <div class="row details">
                     <div class="col-12 col-sm-3">
                         <div class="img-wrapper d-flex justify-content-center">
-                            <img src="{{ asset('assets/web/assets/img/founder/founder-2.png') }}" alt="" class="img img-fluid">
+                            <img src="{{ asset('assets/web/assets/img/founder/richard.png') }}" alt="" class="img img-fluid">
                         </div>
                     </div>
                     <div class="col-10 col-sm-9 mt-4 mt-md-0 mx-auto">
@@ -87,7 +87,7 @@
                 <div class="row details">
                     <div class="col-12 col-sm-3">
                         <div class="img-wrapper d-flex justify-content-center">
-                            <img src="{{ asset('assets/web/assets/img/founder/committee-1.png') }}" alt="" class="img img-fluid">
+                            <img src="{{ asset('assets/web/assets/img/founder/jack.png') }}" alt="" class="img img-fluid">
                         </div>
                     </div>
                     <div class="col-10 col-sm-9 mt-4 mt-md-0 mx-auto">
@@ -138,7 +138,7 @@
                 <div class="row details">
                     <div class="col-12 col-sm-3">
                         <div class="img-wrapper d-flex justify-content-center">
-                            <img src="{{ asset('assets/web/assets/img/founder/committee-3.png') }}" alt="" class="img img-fluid">
+                            <img src="{{ asset('assets/web/assets/img/founder/lor.png') }}" alt="" class="img img-fluid">
                         </div>
                     </div>
                     <div class="col-10 col-sm-9 mt-4 mt-md-0 mx-auto">
@@ -165,7 +165,7 @@
                 <div class="row details">
                     <div class="col-12 col-sm-3">
                         <div class="img-wrapper d-flex justify-content-center">
-                            <img src="{{ asset('assets/web/assets/img/founder/committee-4.png') }}" alt="" class="img img-fluid">
+                            <img src="{{ asset('assets/web/assets/img/founder/caroline.png') }}" alt="" class="img img-fluid">
                         </div>
                     </div>
                     <div class="col-10 col-sm-9 mt-4 mt-md-0 mx-auto">
@@ -219,7 +219,7 @@
                 <div class="row details">
                     <div class="col-12 col-sm-3">
                         <div class="img-wrapper d-flex justify-content-center">
-                            <img src="{{ asset('assets/web/assets/img/founder/advisor-2.png') }}" alt="" class="img img-fluid">
+                            <img src="{{ asset('assets/web/assets/img/founder/sunny.png') }}" alt="" class="img img-fluid">
                         </div>
                     </div>
                     <div class="col-10 col-sm-9 mt-4 mt-md-0 mx-auto">
