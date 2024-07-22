@@ -12,12 +12,14 @@
                 color: white;
                 position: relative;
                 left: 25%;
-                top: 40%;
+                // top: 40%;
+                top: 50%;
+                transform: translateY(-50%);
                 width: fit-content;
                 @media (max-width: 767px) {
                     left: 60px;
-                    top: 50%;
-                    transform: translateY(-50%);
+                    // top: 50%;
+                    // transform: translateY(-50%);
                 }
     
                 .breadcrumb-item, .breadcrumb-item::before {

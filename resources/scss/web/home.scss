@@ -21,8 +21,11 @@
         @media (max-width: 991px) {
             height: calc(100vh - 79px);
         }
-        height: calc(100vh - 105px);
         .swiper-wrapper {
+            overflow: hidden;
+            @media (max-width: 991px) {
+                height: calc(100% - 70px);
+            }
             .swiper-slide {
                 position: relative;
                 .banner-img {
@@ -40,15 +43,19 @@
                     transition: opacity 3s ease, transform 3s ease;
                     @media (max-width: 991px) {
                         left: 10%;
+                        top: auto;
+                        bottom: 20px;
+                        transform: translateX(-100%) translateY(-20px);
                     }
                     .banner-title {
-                        font-family: 'Helvetica';
-                        font-size: 42px;
-                        font-weight: 700;
-                        line-height: 56px;
+                        // font-family: 'Helvetica';
+                        // font-size: 42px;
+                        // font-weight: 700;
+                        // line-height: 56px;
                         text-align: left;
                         text-shadow: 0px 4px 20px #000000A6;
                         color: white;
+                        margin-bottom: 20px;
                     }
                     .button {
                         background-color: #06B2D8;
@@ -64,31 +71,59 @@
                 .banner-content {
                     opacity: 1;
                     transform: translateX(0) translateY(-50%);
+                    @media (max-width: 991px) {
+                        transform: translateX(0) translateY(-20px);
+                    }
                 }
             }
         }
     
-        .swiper-pagination {
-            width: auto;
+        .swiper-bottom {
+            position: absolute;
             left: 86px;
             bottom: 70px;
             @media (max-width: 991px) {
-                left: 10%;
+                bottom: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .swiper-pagination {
+                width: auto;
+                position: static;
+    
+                .swiper-pagination-bullet {
+                    text-align: center;
+                    width: 10px;
+                    height: 10px;
+                    opacity: 1;
+                    background-color: white;
+                    border-radius: 0px;
+                    margin-right: 24px;
+                    @media (max-width: 991px) {
+                        background-color: black;
+                    }
+                }
+            
+                .swiper-pagination-bullet-active {
+                    color: #fff;
+                    background: #004080;
+                    @media (max-width: 991px) {
+                        background: #06B2D8;
+                    }
+                }
             }
 
-            .swiper-pagination-bullet {
-                text-align: center;
-                width: 10px;
-                height: 10px;
-                opacity: 1;
-                background-color: white;
-                border-radius: 0px;
-                margin-right: 15px;
+            .play {
+                width: 22px;
+                margin-right: 12px;
+                z-index: 1;
+                cursor: pointer;
             }
-        
-            .swiper-pagination-bullet-active {
-                color: #fff;
-                background: #004080;
+
+            .pause {
+                width: 22px;
+                z-index: 1;
+                cursor: pointer;
             }
         }
     }
@@ -194,6 +229,12 @@
                     .p2 {
                         margin-bottom: 0;
                     }
+                }
+            }
+
+            .detail:first-child {
+                @media (max-width: 991px) {
+                    border-top: 1px solid #B7B7B7;
                 }
             }
 
@@ -346,6 +387,12 @@
         background-repeat: no-repeat;
         background-position: center left;
         background-size: 35%;
+        @media (max-width: 1199px) {
+            background-size: 50%;
+        }
+        @media (max-width: 767px) {
+            background-size: 80%;
+        }
         .programme-wrapper {
             width: 80%;
             padding-top: 120px;
