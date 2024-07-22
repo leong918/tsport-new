@@ -50,6 +50,34 @@ class BlogRepository extends BaseRepository
             ->get(), $key, 'name');
     }
 
+    public function getBlogByCategory($blog_category_id)
+    {
+        return Blog::where('status', 1)
+            ->whereHas('blogCategory', function($query) use ($blog_category_id) {
+                $query->where('id', $blog_category_id);
+            })
+            ->orderBy('sort', 'desc')
+            ->orderBy('published_at', 'desc')
+            ->get();
+    }
+
+    public function getFirstBlogByCategory($blog_category_id)
+    {
+        return Blog::where('status', 1)
+            ->whereHas('blogCategory', function($query) use ($blog_category_id) {
+                $query->where('id', $blog_category_id);
+            })
+            ->orderBy('sort', 'desc')
+            ->orderBy('published_at', 'desc')
+            ->first();
+    }
+
+    public function getActiveBlog($id)
+    {
+        return Blog::where('status', 1)
+            ->find($id);
+    }
+
     public function createBlog(array $input)
     {
         $input['published_at'] = $input['published_at'] ? Carbon::createFromFormat('Y-m-d', $input['published_at'])->startOfDay()->format('Y-m-d H:i:s') : null;

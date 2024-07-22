@@ -1,0 +1,372 @@
+#blog {
+  .swiper {
+    width: 100%;
+    height: 100%;
+    .swiper-wrapper {
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .banner-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 5s ease;
+        }
+        .banner-content {
+          position: absolute;
+          top: 50%;
+          left: 86px;
+          opacity: 0;
+          transform: translateX(-100%) translateY(-50%);
+          transition: opacity 3s ease, transform 3s ease;
+          @media (max-width: 991px) {
+            left: 10%;
+          }
+          .banner-title {
+            font-family: "Helvetica";
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 56px;
+            text-align: left;
+            text-shadow: 0px 4px 20px #000000a6;
+            color: white;
+          }
+          .button {
+            background-color: #06b2d8;
+            border: 1px solid #06b2d8;
+          }
+        }
+      }
+
+      .swiper-slide-active {
+        .banner-img {
+          transform: scale(1.05);
+        }
+        .banner-content {
+          opacity: 1;
+          transform: translateX(0) translateY(-50%);
+        }
+      }
+    }
+
+    .swiper-pagination {
+      width: auto;
+      left: 86px;
+      bottom: 70px;
+      @media (max-width: 991px) {
+        left: 10%;
+      }
+
+      .swiper-pagination-bullet {
+        text-align: center;
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+        background-color: white;
+        border-radius: 0px;
+        margin-right: 15px;
+      }
+
+      .swiper-pagination-bullet-active {
+        color: #fff;
+        background: #004080;
+      }
+    }
+  }
+  .header-row {
+    min-height: 30vh;
+
+    .banner-background {
+      background-image: url("/public/assets/web/assets/img/about-us/title-background.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+
+      .title {
+        color: white;
+        position: relative;
+        left: 25%;
+        top: 40%;
+        width: fit-content;
+        @media (max-width: 767px) {
+          left: 60px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .breadcrumb-item,
+        .breadcrumb-item::before {
+          color: white;
+        }
+
+        a {
+          color: white;
+          text-decoration: none;
+        }
+
+        .h2 {
+          margin-top: 24px;
+        }
+      }
+    }
+
+    .banner-img {
+      object-fit: cover;
+    }
+  }
+
+  .content-section {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background-image: url("/public/assets/web/assets/img/about-us/background.png");
+    background-repeat: no-repeat;
+    background-position: bottom -200px left;
+    background-size: 40%;
+
+    @media (max-width: 991px) {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+    .h3 {
+      color: #004080;
+      margin-bottom: 40px;
+      @media (max-width: 991px) {
+        margin-bottom: 10px;
+      }
+    }
+    .h5 {
+      margin-bottom: 40px;
+    }
+
+    .blog-arrow-wrapper {
+      width: 20px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+
+      .blog-arrow {
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+
+      .blog-arrow-after {
+        position: absolute;
+        left: -100%;
+        height: 100%;
+        transition: left 0.3s ease;
+      }
+    }
+
+    #knowledge-blog {
+      .knowledge-blog-wrapper{
+        width: 80%;
+        @media (max-width: 1199px) {
+          width: 90%;
+        }
+        .blog-swiper {
+          overflow: hidden;
+  
+          .card {
+            box-shadow: 0px 8px 20px 0px #00408026;
+            border-radius: 8px;
+            border: none;
+            margin: 30px 20px;
+            @media (max-width: 575px) {
+              margin: 30px 0;
+            }
+  
+            &:hover {
+              .blog-img {
+                transform: scale(1.1);
+              }
+              .blog-arrow {
+                transform: translateX(100%);
+              }
+              .blog-arrow-after {
+                left: 0;
+              }
+            }
+  
+            .card-body {
+              padding: 35px 30px;
+              &:hover {
+                cursor: pointer;
+              }
+              .p3 {
+                margin-top: 30px;
+              }
+              .h5 {
+                margin-top: 16px;
+                margin-bottom: 40px;
+              }
+              .img-wrapper {
+                overflow: hidden;
+                border-radius: 8px;
+                .blog-img {
+                  transition: transform 1s ease;
+                }
+              }
+            }
+          }
+          
+          .interview-border-1{
+            margin-top: 20px;
+            border: 1px solid #B7B7B7;
+          }
+          .interview-border-2{
+            margin-top: -4px;
+            width: 25%;
+            border: 4px solid #06B2D8;
+          }
+          
+          .pagination-wrapper {
+            margin-top: 20px;
+            .swiper-pagination {
+              position: relative;
+              top: 0;
+              bottom: 0;
+              width: auto;
+              margin: 0 40px;
+              .swiper-pagination-current,
+              .swiper-pagination-total {
+                margin: 6px;
+              }
+            }
+            #blog-right,
+            #blog-left {
+              width: 24px;
+              cursor: pointer;
+              position: relative;
+            }
+          }
+        }
+      }
+    }
+
+    #interviews-blog {
+      .interviews-blog-wrapper {
+        width: 80%;
+        padding-top: 100px;
+        @media (max-width: 1199px) {
+          width: 90%;
+        }
+        @media (max-width: 991px) {
+          padding-top: 80px;
+        }
+
+        .interview-card {
+          margin-right: 20px;
+          @media (max-width: 768px) {
+            margin-right: auto;
+          }
+          .card {
+            box-shadow: 0px 8px 20px 0px #00408026;
+            border-radius: 8px;
+            border: none;
+            @media (max-width: 991px) {
+              margin-bottom: 60px;
+            }
+            @media (max-width: 768px) {
+              margin-bottom: 60px;
+            }
+
+            &:hover {
+              .blog-img {
+                transform: scale(1.1);
+              }
+              .blog-arrow {
+                transform: translateX(100%);
+              }
+              .blog-arrow-after {
+                left: 0;
+              }
+            }
+
+            .card-body {
+              padding: 35px 30px;
+              &:hover {
+                cursor: pointer;
+              }
+              .p3 {
+                margin-top: 30px;
+              }
+              .h5 {
+                margin-top: 16px;
+                margin-bottom: 40px;
+              }
+              .img-wrapper {
+                overflow: hidden;
+                border-radius: 8px;
+                .blog-img {
+                  transition: transform 1s ease;
+                }
+              }
+            }
+          }
+        }
+
+        .blog-list-wrapper {
+          padding-right: 30px;
+          border-right: 1px solid #b7b7b7;
+          .blog-list {
+            @media (max-width: 768px) {
+              height:calc(1000px + 5vh);
+            }
+            @media (max-width: 1024px) {
+              height: 30vw;
+            }
+            @media (max-width: 1440px) {
+              height: 30vmax;
+            }
+            @media (min-width: 1440px) {
+              height: 30vmax;
+            }
+            .blog-detail {
+              text-decoration: none;
+              color: black;
+              .row {
+                border-bottom: 1px solid #b7b7b7;
+                @media (min-width: 1440px) {
+                  padding-bottom: 20px;
+                  margin-bottom: 20px;
+                }
+                @media (max-width: 1440px) {
+                  padding-bottom: 20px;
+                  margin-bottom: 20px;
+                }
+                @media (max-width: 1024px) {
+                  padding-bottom: 20px;
+                  margin-bottom: 30px;
+                }
+                @media (max-width: 425px) {
+                  padding-bottom: 0px;
+                  margin-bottom: 20px;
+                }
+              }
+              .img-wrapper {
+                overflow: hidden;
+                border-radius: 8px;
+                img {
+                  transition: transform 0.5s ease;
+                }
+              }
+              &:hover {
+                img {
+                  transform: scale(1.1);
+                }
+                .h5 {
+                  color: #06b2d8;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

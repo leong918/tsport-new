@@ -83,13 +83,18 @@ class Blog extends Model
         return $this->blogComment()->whereNull('parent_id')->orderBy('created_at', 'desc')->get();
     }
 
-    public function getParameters(string $params)
+    public function getParameters(string $params, string $column = null)
     {
-        return $this->blogDescription->where('language', $params)->first();
+        $language = $this->blogDescription->where('language', $params)->first();
+        if (!$language || ($column && !$language->$column)) {
+            $language = $this->blogDescription->where('language', 'en')->first();
+        }
+
+        return $column ? $language->$column : $language;
     }
 
     public function publishedDate()
     {
-        return Carbon::parse($this->published_at)->format('M j, Y');
+        return Carbon::parse($this->published_at)->format('Y/m/d');
     }
 }
