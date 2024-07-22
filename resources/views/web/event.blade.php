@@ -85,7 +85,7 @@
             var currentPage = 1;
             var currentFilter = getQueryString('type') || '*';
             var pageCount = 1;
-            
+
             // Handle filter button clicks
             $('.filter-button').on('click', function(e) {
                 e.preventDefault();
@@ -94,9 +94,6 @@
 
                 currentFilter = $(this).attr('data-filter'); // Update currentFilter
 
-                //history.replaceState(null, '', url.pathname + url.search);
-
-                // $container.isotope({ filter: currentFilter }); // Apply filter
                 setPagination(currentFilter); // Update pagination based on the new filter
                 goToPage(1); // Go to the first page
             });
@@ -134,7 +131,7 @@
                 // Create pagination links
                 var pagination = '';
                 for (var i = 1; i <= pageCount; i++) {
-                    pagination += '<li><a href="#"' + (i === 1 ? ' class="active"' : '') + '>' + i + '</a></li>';
+                    pagination += '<li><a href="#"' + (i === 1 ? ' class="p2 active"' : ' class="p2"') + '>' + i + '</a></li>';
                 }
                 $('.pagination-container ul').html(pagination);
 
@@ -184,12 +181,35 @@
 
             function getQueryString(name) {
                 var queryString = new URLSearchParams(window.location.search);
-                return queryString.get(name);
+                var value = queryString.get(name);
+                return value ? '.' + value : null;
             }
 
-            // Initialize pagination and set the first page
-            setPagination(currentFilter);
-            goToPage(1);
+            function setActiveFilterButton(filter) {
+                $('.filter-button').removeClass('active');
+                if (filter === '*') {
+                    $('.filter-button[data-filter="*"]').addClass('active');
+                } else {
+                    $('.filter-button[data-filter="' + filter + '"]').addClass('active');
+                }
+            }
+
+            //For Initialize
+            function applyFilter(filterValue) {
+                var $filteredItems = $('.event-container').filter(function() {
+                    return $(this).is(currentFilter);
+                });
+
+                if ($filteredItems.length === 0) {
+                    currentFilter = '*';
+                }
+
+                setActiveFilterButton(currentFilter);
+                setPagination(currentFilter);
+                goToPage(1);
+            }
+
+            applyFilter(currentFilter);
         });
     </script>
 

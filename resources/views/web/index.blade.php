@@ -161,7 +161,7 @@
             <div class="col-12 col-lg-6 col-xl-7">
                 <div class="title d-flex align-items-center justify-content-between">
                     <h1 class="h1">{{ __('News') }}</h1>
-                    <a href="#" class="button p2 d-none d-lg-flex align-items-center btn-more">
+                    <a href="{{ route('web.event', ['type' => 'news']) }}" class="button p2 d-none d-lg-flex align-items-center btn-more">
                         {{ __('More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
@@ -221,7 +221,7 @@
             <div class="col-12 col-lg-5 col-xl-4 mt-5 mt-lg-0">
                 <div class="title d-flex align-items-center justify-content-between">
                     <h1 class="h1">{{ __('Events') }}</h1>
-                    <a href="#" class="button p2 d-none d-lg-flex align-items-center btn-more">
+                    <a href="{{ route('web.event', ['type' => 'event']) }}" class="button p2 d-none d-lg-flex align-items-center btn-more">
                         {{ __('More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
