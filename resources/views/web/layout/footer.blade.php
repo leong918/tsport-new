@@ -13,16 +13,15 @@
                 <a class="h6" href="{{ route('web.what-do-we-do') }}">
                     {{ __('What do we do') }}
                 </a>
-                <a class="h6" href="#">
+                <a class="h6" href="{{ route('web.event') }}">
                     {{ __('News & Events') }}
-                </a>
                 <a class="h6" href="#">
                     {{ __('Programme') }}
                 </a>
                 <a class="h6" href="#">
                     {{ __('Blog') }}
                 </a>
-                <a class="h6" href="#">
+                <a class="h6" href="{{ route('web.contact-us') }}">
                     {{ __('Contact Us') }}
                 </a>
             </div>

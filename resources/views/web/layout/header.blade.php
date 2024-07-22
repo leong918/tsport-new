@@ -41,7 +41,7 @@
                                 <a class="nav-link" href="{{ route('web.what-do-we-do') }}">{{ __('What do we do') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('News & Events') }}</a>
+                                <a class="nav-link" href="{{ route('web.event') }}">{{ __('News & Events') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" id="programDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,7 +57,7 @@
                                 <a class="nav-link" href="#">{{ __('Blog') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
+                                <a class="nav-link" href="{{ route('web.contact-us') }}">{{ __('Contact Us') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link text-uppercase" href="#">
@@ -107,7 +107,7 @@
                     <a class="nav-link" href="{{ route('web.what-do-we-do') }}">{{ __('What do we do') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('News & Events') }}</a>
+                    <a class="nav-link" href="{{ route('web.event') }}">{{ __('News & Events') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link d-flex justify-content-between" data-bs-toggle="collapse" href="#collapse-programme" role="button" aria-expanded="false" aria-controls="collapse-programme">
@@ -126,7 +126,7 @@
                     <a class="nav-link" href="#">{{ __('Blog') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('Contact Us') }}</a>
+                    <a class="nav-link" href="{{ route('web.contact-us') }}">{{ __('Contact Us') }}</a>
                 </li>
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="#">
