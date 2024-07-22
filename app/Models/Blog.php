@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Carbon\Carbon;
 
 class Blog extends Model
@@ -33,7 +34,9 @@ class Blog extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'blog_category_id',
         'name',
+        'image',
         'status',
         'sort',
         'published_at',
@@ -59,6 +62,11 @@ class Blog extends Model
             get: fn (string $value) => date('Y-m-d H:i:s', strtotime($value)),
         );
     }
+    
+    public function blogCategory(): BelongsTo
+    {
+        return $this->belongsTo(BlogCategory::class);
+    }
 
     protected function blogDescription(): HasMany
     {
@@ -75,13 +83,18 @@ class Blog extends Model
         return $this->blogComment()->whereNull('parent_id')->orderBy('created_at', 'desc')->get();
     }
 
-    public function getParameters(string $params)
+    public function getParameters(string $params, string $column = null)
     {
-        return $this->blogDescription->where('language', $params)->first();
+        $language = $this->blogDescription->where('language', $params)->first();
+        if (!$language || ($column && !$language->$column)) {
+            $language = $this->blogDescription->where('language', 'en')->first();
+        }
+
+        return $column ? $language->$column : $language;
     }
 
     public function publishedDate()
     {
-        return Carbon::parse($this->published_at)->format('M j, Y');
+        return Carbon::parse($this->published_at)->format('Y/m/d');
     }
 }

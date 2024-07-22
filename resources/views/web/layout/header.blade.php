@@ -49,12 +49,12 @@
                                 </a>
                                 <div class="dropdown-menu-wrapper">
                                     <ul class="dropdown-menu p3" aria-labelledby="programDropdown">
-                                        <li><a class="dropdown-item" href="#">{{ __('Healthy Teeth Collaboration') }}</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('web.programme_1') }}">{{ __('Healthy Teeth Collaboration') }}</a></li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('Blog') }}</a>
+                                <a class="nav-link" href="{{ route('web.blog') }}">{{ __('Blog') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('web.contact-us') }}">{{ __('Contact Us') }}</a>

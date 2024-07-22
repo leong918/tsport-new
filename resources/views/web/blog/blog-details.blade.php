@@ -1,0 +1,73 @@
+@extends('web.layout.app')
+@section('content')
+<div id="blog-details">
+    <div class="section-header">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item p4"><a href="/">{{ __('Home') }}</a></li>
+                        <li class="breadcrumb-item p4"><a href="/blog">{{ __('Blog') }}</a></li>
+                        <li class="breadcrumb-item active p4" aria-current="page">{{ $blog->getParameters(app()->getLocale(), 'name') }}</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-12">
+                <p class="p3 justify-content-center d-flex">{{ $blog->publishedDate() }}</p>
+            </div>
+            <div class="col-12">
+                <h2 class="h3 justify-content-center d-flex">{{ $blog->getParameters(app()->getLocale(), 'name') }}</h2>
+            </div>
+            <div class="col-12 col-md-7">
+                <img src="{{ $blog->image }}" alt="" class="img img-fluid d-none d-md-block h-100">
+            </div>
+        </div>
+    </div>
+    
+    <div class="content-section">
+        <div class="m-auto">
+            <div class="row d-flex align-items-center justify-content-between w-100">
+                <div class="col-12 col-md-12">
+                    <div class="content-wrapper m-auto mt-5 mt-md-0">
+                        <div class="col-12 col-md-12">
+                            <div class="share-to-container">
+                                <img src="{{ asset('assets/web/assets/img/blog-details/share.png') }}"
+                                    class="share-to-icon share" alt="...">
+                                <div id="facebook">
+                                    <a target="_blank"
+                                        href="https://www.facebook.com/sharer/sharer.php?u=&display=popup">
+                                        <img src="{{ asset('assets/web/assets/img/blog-details/facebook.png') }}"
+                                            class="share-to-icon social-media" alt="...">
+                                    </a>
+                                </div>
+                                <div id="twitter">
+                                    <a target="_blank"
+                                        href="https://twitter.com/intent/tweet?url=">
+                                        <img src="{{ asset('assets/web/assets/img/blog-details/twitter.png') }}"
+                                            class="share-to-icon social-media" alt="..." id="twitter">
+                                    </a>
+                                </div>
+                                <div id="linkedin">
+                                    <a target="_blank"
+                                        href="https://www.linkedin.com/sharing/share-offsite/?url=">
+                                        <img src="{{ asset('assets/web/assets/img/blog-details/linkedin.png') }}"
+                                            class="share-to-icon social-media" alt="..." id="linkedin">
+                                    </a>
+                                </div>
+                                <div id="whatsapp">
+                                    <a target="_blank"
+                                        href="">
+                                        <img src="{{ asset('assets/web/assets/img/blog-details/copy.png') }}"
+                                            class="share-to-icon social-media" alt="..." id="whatsapp">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {!! $blog->getParameters(app()->getLocale(), 'name') !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
