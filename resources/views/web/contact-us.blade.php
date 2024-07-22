@@ -32,7 +32,7 @@
                                     <img src="{{ asset('assets/web/assets/img/contact-us/phone-icon.png') }}" alt="">
                                 </div>
                                 <div class="contact-content">
-                                    <p>(852) 2868 3808</p>
+                                    <p class="p2">(852) 2868 3808</p>
                                 </div>
                             </div>
                         </a>
@@ -43,7 +43,7 @@
                                     <img src="{{ asset('assets/web/assets/img/contact-us/mail-icon.png') }}" alt="">
                                 </div>
                                 <div class="contact-content">
-                                    <p>hellosmilehk@gmail.com</p>
+                                    <p class="p2">hellosmilehk@gmail.com</p>
                                 </div>
                             </div>
                         </a>
@@ -54,7 +54,7 @@
                                     <img src="{{ asset('assets/web/assets/img/contact-us/location-icon.png') }}" alt="">
                                 </div>
                                 <div class="contact-content">
-                                    <u>
+                                    <u class="p2">
                                         1901-1906 T.O.P, 700 Nathan Road, Mongkok, Kowloon
                                     </u>
                                 </div>
@@ -64,8 +64,12 @@
                 </div>
                 <div class="col-sm-12 col-lg-7">
                     <div class="top-section">
-                        <div>Email us hellosmilehk@gmail.com</div>
-                        <div>Please contact us via this website or email without disclosing confidential information.</div>
+                        <div class="p2">
+                            Email us hellosmilehk@gmail.com
+                        </div>
+                        <div class="p2">
+                            Please contact us via this website or email without disclosing confidential information.
+                        </div>
                     </div>
                     <div class="bottom-section">
                         <form id="contact-form" action="{{ route('web.send-contact') }}" method="POST">
@@ -73,24 +77,24 @@
                             <div class="form-section">
                                 <div class="row">
                                     <div class="col-lg-6 first-name-container">
-                                        <label>{{ __('First Name') }} <span>*</span></label>
+                                        <label class="p2">{{ __('First Name') }} <span>*</span></label>
                                         <input type="text" class="form-control" name="first_name" />
                                     </div>
                                     <div class="col-lg-6">
-                                        <label>{{ __('Last Name') }} <span>*</span></label>
+                                        <label class="p2">{{ __('Last Name') }} <span>*</span></label>
                                         <input type="text" class="form-control" name="last_name" />
                                     </div>
                                 </div>
                             </div>
                             <div class="form-section">
-                                <label>{{ __('Email') }} <span>*</span></label>
+                                <label class="p2">{{ __('Email') }} <span>*</span></label>
                                 <input type="text" class="form-control" name="email" />
                             </div>
                             <div class="form-section">
-                                <label>{{ __('Message') }} <span>*</span></label>
+                                <label class="p2">{{ __('Message') }} <span>*</span></label>
                                 <textarea class="form-control" rows="4" name="message"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-contact btn-send">
+                            <button type="submit" class="btn btn-contact btn-send p2">
                                 {{ __('Send') }}
                                 <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="">
                             </button>
@@ -99,16 +103,22 @@
                 </div>
             </div>
             <div class="warning-container">
-                <div class="warning-title">Clinic Opening Hours during Typhoons and Black Rainstorm Warning</div>
+                <div class="warning-title">
+                    <h4 class="h4">Clinic Opening Hours during Typhoons and Black Rainstorm Warning</h4>
+                </div>
                 <div class="warning-text-list">
                     <ol>
                         <li>
-                            When Typhoon No. 8 or above or Black Rainstorm warning issued by the Hong Kong Observatory is in effect, our clinics will be closed. Patients should not come to our
-                            clinics. Our staff will contact you later for rescheduling your appointments.
+                            <p class="p3">
+                                When Typhoon No. 8 or above or Black Rainstorm warning issued by the Hong Kong Observatory is in effect, our clinics will be closed. Patients should not come to our
+                                clinics. Our staff will contact you later for rescheduling your appointments.
+                            </p>
                         </li>
                         <li>
-                            Two hours after Typhoon No. 8 or above or Black Rainstorm warning is cancelled (or changed to a lower typhoon or rainstorm warning), our clinics will resume service.
-                            Patients are advised to pay close attention to the latest weather forecast by the Hong Kong Observatory before they visit our clinics.
+                            <p class="p3">
+                                Two hours after Typhoon No. 8 or above or Black Rainstorm warning is cancelled (or changed to a lower typhoon or rainstorm warning), our clinics will resume service.
+                                Patients are advised to pay close attention to the latest weather forecast by the Hong Kong Observatory before they visit our clinics.
+                            </p>
                         </li>
                     </ol>
                 </div>
@@ -151,9 +161,14 @@
             axios.post(this.action, formData)
             .then(response => {
                 swal.fire({
-                    title: 'Submitted!',
-                    text: 'Form has been submitted successfully.',
-                    icon: 'success',
+                    title: 'Thank you!',
+                    text: 'Your contact form has been submitted.',
+                    width: 450,
+                    confirmButtonText: `Back to Home <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="">`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '{{ route('web.home') }}';
+                    }
                 });
                 this.reset();
                 submitButton.prop('disabled', false);
@@ -169,7 +184,7 @@
                 swal.fire({
                     title: 'Error!',
                     text: errorMessage,
-                    icon: 'error',
+                    width: 450,
                 });
                 submitButton.prop('disabled', false);
             });
