@@ -104,7 +104,7 @@
             </div>
             <div class="warning-container">
                 <div class="warning-title">
-                    <h4>Clinic Opening Hours during Typhoons and Black Rainstorm Warning</h4>
+                    <h4 class="h4">Clinic Opening Hours during Typhoons and Black Rainstorm Warning</h4>
                 </div>
                 <div class="warning-text-list">
                     <ol>

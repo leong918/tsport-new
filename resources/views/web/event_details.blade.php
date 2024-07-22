@@ -17,7 +17,7 @@
                 <p class="p3">{{ $event['date'] }}</p>
             </div>
             <div class="name-container">
-                <h3>{{ $event['name'] }}</h3>
+                <h3 class="h3">{{ $event['name'] }}</h3>
             </div>
 
             <div class="row event-img-list-container">
