@@ -10,23 +10,26 @@
 @import "event.scss";
 @import "event-details.scss";
 @import "contact-us.scss";
+@import "programme-1.scss";
+@import "blog.scss";
+@import "blog-details.scss";
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 
-    #fixed-chatbox {
-        position: fixed;
-        right: 20px;
-        bottom: 20px;
-        display: block;
-        width: 60px;
-        overflow: hidden;
-        z-index: 999;
-    }
+  #fixed-chatbox {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: block;
+    width: 60px;
+    overflow: hidden;
+    z-index: 999;
+  }
 }
 
-body{
-    &.active{
-        overflow: hidden;
-    }
+body {
+  &.active {
+    overflow: hidden;
+  }
 }

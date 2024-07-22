@@ -14,5 +14,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
     Route::group(['middleware' => ['auth.admin', 'auth.admin.inactive.logout']], function () {
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    });
+
+        require_once 'blog.php';
+    }); 
 });

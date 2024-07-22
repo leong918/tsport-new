@@ -8,11 +8,16 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\Form\ContactUs\CreateContactRequest;
 use App\Models\Event;
+use App\Repositories\BlogRepository;
 
 class AppController extends BaseController
 {
+    private BlogRepository $blogRepository;
 
-    public function __construct() {}
+    public function __construct(BlogRepository $blogRepository)
+    {
+        $this->blogRepository = $blogRepository;
+    }
 
     public function index()
     {
@@ -56,7 +61,7 @@ class AppController extends BaseController
 
         $event = Event::getEventBySlug($slug);
 
-        if(!$event){
+        if (!$event) {
             abort(404);
         }
 
@@ -65,7 +70,7 @@ class AppController extends BaseController
 
 
         foreach ($files as $file) {
-            $images[] = asset('assets/web/assets/img/event-details/' . $slug . '/' . $file->getRelativePathname());  
+            $images[] = asset('assets/web/assets/img/event-details/' . $slug . '/' . $file->getRelativePathname());
         }
 
         return $this->view('event_details', compact('event', 'images'));
@@ -94,5 +99,25 @@ class AppController extends BaseController
         } catch (\Exception $e) {
             return response()->json(['type' => 'error', 'message' => 'Failed to send email. Please try again later.']);
         }
+    }
+
+    public function programme()
+    {
+        return $this->view('programme.programme-1');
+    }
+
+    public function blog()
+    {
+        $knowledges = $this->blogRepository->getBlogByCategory(1);
+        $interviews = $this->blogRepository->getBlogByCategory(2);
+        $first_interview = $this->blogRepository->getFirstBlogByCategory(2);
+        return $this->view('blog.blog', compact('knowledges', 'interviews', 'first_interview'));
+    }
+
+    public function blogDetails(Request $request, $id)
+    {
+        $blog = $this->blogRepository->getActiveBlog($id);
+
+        return $this->view('blog.blog-details', compact('blog'));
     }
 }

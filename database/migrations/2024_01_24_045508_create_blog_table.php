@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('blog', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("blog_category_id");
             $table->string("name");
+            $table->string("image");
             $table->tinyInteger("status")->default(0);
             $table->integer("sort")->default(0);
             $table->timestamp("published_at")->nullable();
