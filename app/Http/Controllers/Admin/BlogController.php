@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Form\Blog\CreateBlogRequest;
 use App\Http\Requests\Form\Blog\UpdateBlogRequest;
-use App\Repositories\BlogCommentRepository;
 use App\Repositories\BlogCategoryRepository;
 use App\Repositories\BlogRepository;
 use Illuminate\Http\Request;
@@ -15,13 +14,11 @@ use Carbon\Carbon;
 class BlogController extends BaseController
 {
     private BlogRepository $blogRepository;
-    private BlogCommentRepository $blogCommentRepository;
     private BlogCategoryRepository $blogCategoryRepository;
 
-    public function __construct(BlogRepository $blogRepository, BlogCommentRepository $blogCommentRepository, BlogCategoryRepository $blogCategoryRepository)
+    public function __construct(BlogRepository $blogRepository, BlogCategoryRepository $blogCategoryRepository)
     {
         $this->blogRepository = $blogRepository;
-        $this->blogCommentRepository = $blogCommentRepository;
         $this->blogCategoryRepository = $blogCategoryRepository;
     }
 
@@ -94,23 +91,5 @@ class BlogController extends BaseController
     public function toggleStatus(int $id)
     {
         $this->blogRepository->toggleStatus($id);
-    }
-
-    public function getBlogComment(Request $request)
-    {
-        if ($request->ajax()) {
-            $id = $request->id;
-            if ($id) {
-                $model = $this->blogCommentRepository->getBlogComment($id);
-
-                return DataTables::of($model)
-                    ->addColumn('status', function ($model) {
-                        $route = route('admin.blog.status.post', ['id' => $model->id]);
-                        $status = $model->status;
-                        return view('shared.status', compact('route', 'status', 'model'));
-                    })
-                    ->make(true);
-            }
-        }
     }
 }
