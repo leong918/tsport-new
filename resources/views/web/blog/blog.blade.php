@@ -30,7 +30,7 @@
         <div id="knowledge-blog">
             <div class="knowledge-blog-wrapper m-auto justify-content-center">
                 <div class="knowledge-swiper" id="knowledge-swiper">
-                    <div class="swiper-wrapper ">
+                    <div class="swiper-wrapper">
                         @foreach($knowledges as $knowledge)
                         <div class="swiper-slide">
                             <div class="card">
@@ -39,7 +39,7 @@
                                         <img src="{{ $knowledge->image }}" alt="" class="img img-fluid blog-img">
                                     </div>
                                     <p class="p3">{{ $knowledge->publishedDate() }}</p>
-                                    <h5 class="h5">{{ $knowledge->getParameters(app()->getLocale(), 'name') }}</h5>
+                                    <h5 class="h5 card_desc">{{ $knowledge->getParameters(app()->getLocale(), 'short_desc') }}</h5>
                                     <div class="d-flex justify-content-end">
                                         <a class="blog-arrow-wrapper"
                                             href="{{ route('web.blog_details', $knowledge->id)}}">
@@ -88,9 +88,10 @@
                                     <img src="{{ $first_interview->image }}" alt="" class="img img-fluid blog-img">
                                 </div>
                                 <p class="p3">{{ $first_interview->publishedDate() }}</p>
-                                <h5 class="h5">{{ $first_interview->getParameters(app()->getLocale(), 'name') }}</h5>
+                                <h5 class="h5 card-desc">{{ $first_interview->getParameters(app()->getLocale(), 'short_desc') }}</h5>
                                 <div class="d-flex justify-content-end">
-                                    <a class="blog-arrow-wrapper" href="{{ route('web.blog_details', $first_interview->id)}}">
+                                    <a class="blog-arrow-wrapper"
+                                        href="{{ route('web.blog_details', $first_interview->id)}}">
                                         <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
                                             class="img img-fluid blog-arrow">
                                         <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
@@ -104,41 +105,49 @@
                 <div class="col-12 col-lg-6 col-xl-7">
                     <div class="d-flex blog-list-wrapper">
                         <div class="blog-list">
-                            @foreach($interviews as $interview)
-                            <a href="{{ route('web.blog_details', $interview->id)}}" class="blog-detail">
-                                <div class="row d-flex">
-                                    <div class="col-5 col-md-4">
-                                        <div class="img-wrapper">
-                                            <img src="{{ $interview->image }}" alt="" class="img img-fluid">
-                                        </div>
+                            <div class="swiper interviewSwiper" id="interviewSwiper">
+                                <div class="swiper-wrapper">
+                                    @foreach($interviews as $interview)
+                                    <div class="swiper-slide">
+                                        <a href="{{ route('web.blog_details', $interview->id)}}" class="blog-detail">
+                                            <div class="row d-flex">
+                                                <div class="col-5 col-md-4">
+                                                    <div class="img-wrapper">
+                                                        <img src="{{ $interview->image }}" alt="" class="img img-fluid">
+                                                    </div>
+                                                </div>
+                                                <div class="col-7 col-md-8">
+                                                    <p class="p3">{{ $interview->publishedDate() }}</p>
+                                                    <h5 class="h5 list-desc">
+                                                        {{ $interview->getParameters(app()->getLocale(), 'short_desc')}}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
-                                    <div class="col-7 col-md-8">
-                                        <p class="p3">{{ $interview->publishedDate() }}</p>
-                                        <h5 class="h5">
-                                            {{ $interview->getParameters(app()->getLocale(), 'name')}}
-                                        </h5>
-                                    </div>
+                                    @endforeach
                                 </div>
-                            </a>
-                            @endforeach
+                                <div class="scrollbar-wrapper">
+                                    <div class="swiper-scrollbar2"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
         </div>
-        @endif
     </div>
-</div>
-@endsection
+    @endsection
 
-@push('scripts')
-<script>
-    var knowledgeSwiper = new Swiper("#knowledge-swiper", {
+    @push('scripts')
+    <script>
+        var knowledgeSwiper = new Swiper("#knowledge-swiper", {
         navigation:{
             nextEl: "#blog-right",
             prevEl: "#blog-left",
         },
-        freemode: "enabled",
+        freeMode: true,
         slidesPerView: 1,
         spaceBetween: 10,
         scrollbar: {
@@ -183,5 +192,17 @@
             }
         }
      });
-</script>
-@endpush
+
+     var interviewSwiper = new Swiper("#interviewSwiper", {
+      direction: "vertical",
+      slidesPerView: 3,
+      freeMode: true,
+      spaceBetween: 10,
+      scrollbar: {
+            el: ".swiper-scrollbar2",
+            hide: false,
+            dragSize: 200,
+        },
+    });
+    </script>
+    @endpush
