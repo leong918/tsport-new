@@ -16,7 +16,7 @@
                 <p class="p3 justify-content-center d-flex">{{ $blog->publishedDate() }}</p>
             </div>
             <div class="col-12">
-                <h2 class="h3 justify-content-center d-flex">{{ $blog->getParameters(app()->getLocale(), 'name') }}</h2>
+                <h2 class="h3 justify-content-center d-flex">{{ $blog->getParameters(app()->getLocale(), 'short_desc') }}</h2>
             </div>
             <div class="col-12 col-md-7">
                 <img src="{{ $blog->image }}" alt="" class="img img-fluid d-none d-md-block h-100">
