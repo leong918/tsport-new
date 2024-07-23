@@ -282,7 +282,7 @@
         <div class="programme-wrapper m-auto">
             <h1 class="h1 text-lg-center">{{ __('Programme') }}</h1>
             <div class="card">
-                <a href="#">
+                <a href="{{ route('web.programme') }}">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 col-md-6">

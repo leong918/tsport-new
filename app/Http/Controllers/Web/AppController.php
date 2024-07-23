@@ -103,7 +103,7 @@ class AppController extends BaseController
 
     public function programme()
     {
-        return $this->view('programme.programme-1');
+        return $this->view('programme.programme');
     }
 
     public function blog()

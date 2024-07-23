@@ -1,6 +1,6 @@
 @extends('web.layout.app')
 @section('content')
-<div id="programme_1">
+<div id="programme">
     <div class="section-header">
         <div class="row gx-0 header-row">
             <div class="col-12 col-md-5 banner-background">

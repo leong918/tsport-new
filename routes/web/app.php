@@ -15,7 +15,7 @@ Route::group(['namespace' => 'Web', 'prefix' => LaravelLocalization::setLocale()
     Route::get('/event_details/{slug}', [AppController::class, 'eventDetails'])->name('web.event_details');
     Route::get('/contact-us', [AppController::class, 'contactUs'])->name('web.contact-us');
     Route::post('/send-contact', [AppController::class, 'sendContact'])->name('web.send-contact');
-    Route::get('/programme/healthy-teeth-collaboration', [AppController::class, 'programme'])->name('web.programme_1');
+    Route::get('/programme/healthy-teeth-collaboration', [AppController::class, 'programme'])->name('web.programme');
     Route::get('/blog', [AppController::class, 'blog'])->name('web.blog');
     Route::get('/blog-details/{id}', [AppController::class, 'blogDetails'])->name('web.blog_details');
 });
