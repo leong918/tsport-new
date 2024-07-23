@@ -283,16 +283,16 @@
         .blog-list-wrapper {
           height: 450px;
           @media (min-width: 768px) {
-            max-height: 510px;
+            min-height: 560px;
           }
           @media (min-width: 1024px) {
-            max-height: 510px;
+            min-height: 510px;
           }
           @media (min-width: 1440px) {
-            max-height: 520px;
+            min-height: 520px;
           }
           @media (min-width: 2560px) {
-            max-height: 720px;
+            min-height: 720px;
           }
           .blog-list {
             .blog-detail {
