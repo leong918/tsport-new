@@ -124,12 +124,7 @@
                             </a>
                             <div class="collapse bio" id="collapseElok">
                                 <p class="p3">
-                                    {{ __('Elok has continued to pursue a career in pediatric dentistry and enroll in the specialist training program since she has earned her Bachelor of Dental Surgery in 2019. 
-                                        She strongly believes that young patients should have a favorable dental experience in order to build a foundation for future oral health and awareness. The pleasant feeling that 
-                                        comes from giving every youngster who comes to the clinic a bright and healthy grin endures despite the fact that every patient is unique and every interaction is different. Dentistry 
-                                        has taken Elok all around the world. She received an international research award in Vietnam, performed volunteer work in Cambodia and Nepal, and took part in numerous foreign exchange 
-                                        programs in countries like Australia, Spain, and France, to mention a few, to further her dentistry education. She enjoys cooking and eating in her own time and co-owns a food blog 
-                                        where she shares her favourite eateries in Hong Kong and beyond.') }}
+                                    {{ __('Elok has continued to pursue a career in pediatric dentistry and enroll in the specialist training program since she has earned her Bachelor of Dental Surgery in 2019. She strongly believes that young patients should have a favorable dental experience in order to build a foundation for future oral health and awareness. The pleasant feeling that comes from giving every youngster who comes to the clinic a bright and healthy grin endures despite the fact that every patient is unique and every interaction is different. Dentistry has taken Elok all around the world. She received an international research award in Vietnam, performed volunteer work in Cambodia and Nepal, and took part in numerous foreign exchange programs in countries like Australia, Spain, and France, to mention a few, to further her dentistry education. She enjoys cooking and eating in her own time and co-owns a food blog where she shares her favourite eateries in Hong Kong and beyond.') }}
                                 </p>
                             </div>
                         </div>
@@ -152,11 +147,7 @@
                             </a>
                             <div class="collapse bio" id="collapseLoretta">
                                 <p class="p3">
-                                    {{ __('Dr. Loretta Yuen graduated from the University of Hong Kong\'s dental school in 2004 with the best award in General Dentistry. In 2007, she earned her postgraduate diploma in 
-                                        general dental surgery. She worked as a general practitioner for over 18 years after graduating, focusing primarily on orthodontics and pediatric dentistry. Dr. Yuen is now a co-founder 
-                                        of two Hong Kong multidisciplinary dental clinics. She is the Vice President of the Han Kong Association, and is dedicated to promoting the development of the economy, culture, technology, 
-                                        and healthcare in Wuhan and Hong Kong. She is also a member of the Y Elites Association and has studied at the Chinese Academy of Governance in Beijing twice. Aside from delivering outstanding 
-                                        dental services to Hong Kong residents, Dr. Yuen hopes to expand our high-tech dental technology and quality services throughout the Greater Bay China region in the future.') }}
+                                    {{ __('Dr. Loretta Yuen graduated from the University of Hong Kong\'s dental school in 2004 with the best award in General Dentistry. In 2007, she earned her postgraduate diploma in general dental surgery. She worked as a general practitioner for over 18 years after graduating, focusing primarily on orthodontics and pediatric dentistry. Dr. Yuen is now a co-founder of two Hong Kong multidisciplinary dental clinics. She is the Vice President of the Han Kong Association, and is dedicated to promoting the development of the economy, culture, technology, and healthcare in Wuhan and Hong Kong. She is also a member of the Y Elites Association and has studied at the Chinese Academy of Governance in Beijing twice. Aside from delivering outstanding dental services to Hong Kong residents, Dr. Yuen hopes to expand our high-tech dental technology and quality services throughout the Greater Bay China region in the future.') }}
                                 </p>
                             </div>
                         </div>
@@ -179,10 +170,7 @@
                             </a>
                             <div class="collapse bio" id="collapseCaroline">
                                 <p class="p3">
-                                    {{ __('Dr Caroline Mo was born and raised in the UK and graduated from University of Wales, College of Medicine in 2005. She continued to complete her vocational training in the UK 
-                                        before deciding to take the licensing exam to work in Hong Kong. She is the co-founder of two multi-disciplinary dental clinics in Hong Kong and continues to enjoy working in the 
-                                        field of general dentistry, as well as helping the underprivileged by providing dental treatment in organised "free clinics". She has a developing interest in dental sleep medicine 
-                                        working with patients to help alleviate sleep problems. In her spare time she enjoys spending time with her two children cooking, travelling and pursuing outdoor activities.') }}
+                                    {{ __('Hello Smile Hong Kong (HSHK) is dedicated to serving the local Hong Kong community to improve the oral health of the underserved community with an emphasis on young children and children with special health care needs and to contribute to the enhancement of their overall quality of life. We endeavor to raise public awareness of oral health care by initiating educational programs with the public sector with a focus on anticipatory guidance to prevent dental and oral health issues and to provide dental care to the underserved community.') }}
                                 </p>
                             </div>
                         </div>

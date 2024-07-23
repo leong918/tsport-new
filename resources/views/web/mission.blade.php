@@ -32,10 +32,7 @@
                     <img src="{{ asset('assets/web/assets/img/mission/mission-1.png') }}" alt="" class="img img-fluid">
                     <h3 class="h3">{{ __('Mission') }}</h3>
                     <p class="p2">
-                        {{ __('Hello Smile Hong Kong (HSHK) is dedicated to serving the local Hong Kong community to improve the oral health of 
-                            the underserved community with an emphasis on young children and children with special health care needs and to contribute to the enhancement of their 
-                            overall quality of life. We endeavor to raise public awareness of oral health care by initiating educational programs with the public sector with a focus on anticipatory 
-                            guidance to prevent dental and oral health issues and to provide dental care to the underserved community.') }}
+                        {{ __('Hello Smile Hong Kong (HSHK) is dedicated to serving the local Hong Kong community to improve the oral health of the underserved community with an emphasis on young children and children with special health care needs and to contribute to the enhancement of their overall quality of life. We endeavor to raise public awareness of oral health care by initiating educational programs with the public sector with a focus on anticipatory guidance to prevent dental and oral health issues and to provide dental care to the underserved community.') }}
                     </p>
                 </div>
             </div>

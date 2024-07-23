@@ -65,10 +65,10 @@
                 <div class="col-sm-12 col-lg-7">
                     <div class="top-section">
                         <div class="p2">
-                            Email us hellosmilehk@gmail.com
+                            {{ __('Email us hellosmilehk@gmail.com') }}
                         </div>
                         <div class="p2">
-                            Please contact us via this website or email without disclosing confidential information.
+                            {{ __('Please contact us via this website or email without disclosing confidential information.') }}
                         </div>
                     </div>
                     <div class="bottom-section">
@@ -104,20 +104,19 @@
             </div>
             <div class="warning-container">
                 <div class="warning-title">
-                    <h4 class="h4">Clinic Opening Hours during Typhoons and Black Rainstorm Warning</h4>
+                    <h4 class="h4">{{ __('Clinic Opening Hours during Typhoons and Black Rainstorm Warning') }}</h4>
                 </div>
                 <div class="warning-text-list">
                     <ol>
                         <li>
                             <p class="p3">
-                                When Typhoon No. 8 or above or Black Rainstorm warning issued by the Hong Kong Observatory is in effect, our clinics will be closed. Patients should not come to our
-                                clinics. Our staff will contact you later for rescheduling your appointments.
+                                {{ __('When Typhoon No. 8 or above or Black Rainstorm warning issued by the Hong Kong Observatory is in effect, our clinics will be closed. Patients should not come to our clinics. Our staff will contact you later for rescheduling your appointments.') }}
                             </p>
                         </li>
                         <li>
                             <p class="p3">
-                                Two hours after Typhoon No. 8 or above or Black Rainstorm warning is cancelled (or changed to a lower typhoon or rainstorm warning), our clinics will resume service.
-                                Patients are advised to pay close attention to the latest weather forecast by the Hong Kong Observatory before they visit our clinics.
+                                {{ __('Two hours after Typhoon No. 8 or above or Black Rainstorm warning is cancelled (or changed to a lower typhoon or rainstorm warning), our clinics will resume service. Patients are advised to pay close attention to the latest weather forecast by the Hong Kong Observatory before they visit our clinics.') }}
+                                
                             </p>
                         </li>
                     </ol>
@@ -150,6 +149,8 @@
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
+
+
         $('#contact-form').on('submit', function (e) {
             e.preventDefault();
 
@@ -161,10 +162,10 @@
             axios.post(this.action, formData)
             .then(response => {
                 swal.fire({
-                    title: 'Thank you!',
-                    text: 'Your contact form has been submitted.',
+                    title: "{{ __('Thank you!') }}",
+                    text: "{{ __('Your contact form has been submitted.') }}",
                     width: 450,
-                    confirmButtonText: `Back to Home <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="">`,
+                    confirmButtonText: `{{ __('Back to Home') }} <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="">`,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.href = '{{ route('web.home') }}';
@@ -175,14 +176,14 @@
             })
 
             .catch(error => {
-                let errorMessage = 'An error occurred while submitting the form. Please try again.';
+                let errorMessage = "{{ __('An error occurred while submitting the form. Please try again.') }}";
                 if (error.response && error.response.data && error.response.data.errors) {
                     const errors = error.response.data.errors;
                     const firstErrorKey = Object.keys(errors)[0];
                     errorMessage = errors[firstErrorKey][0];
                 }
                 swal.fire({
-                    title: 'Error!',
+                    title: "{{ __('Error!') }}",
                     text: errorMessage,
                     width: 450,
                 });

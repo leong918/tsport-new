@@ -116,7 +116,7 @@
                         <div class="detail-content">
                             <h4 class="h4">{{ __('Professional Team') }}</h4>
                             <p class="p2">
-                                {{ __('Providing qualified team at public events') }}
+                                {{ __('Providing qualified team at public events') }}
                             </p>
                         </div>
                     </div>
