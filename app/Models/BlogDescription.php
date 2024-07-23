@@ -29,7 +29,7 @@ class BlogDescription extends Model
         'blog_id',
         'language',
         'name',
-        'image',
+        'short_desc',
         'content',
     ];
 

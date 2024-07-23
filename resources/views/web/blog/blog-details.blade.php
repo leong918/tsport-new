@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-                        {!! $blog->getParameters(app()->getLocale(), 'name') !!}
+                        {!! $blog->getParameters(app()->getLocale(), 'content') !!}
                     </div>
                 </div>
             </div>

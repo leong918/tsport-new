@@ -105,9 +105,9 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('SEO Description') }}
-                                {{ html()->text('language[en][short_desc]')->value(isset($model) &&
+                                {{ html()->text('language[en][short_desc]')->placeholder('Enter SEO Description')->value(isset($model) &&
                                 $model->getParameters('en') ? $model->getParameters('en')->short_desc :
-                                '')->class('form-control') }}
+                                '')->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
@@ -141,9 +141,9 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('SEO Description') }}
-                                {{ html()->text('language[sc][short_desc]')->value(isset($model) &&
+                                {{ html()->text('language[sc][short_desc]')->placeholder('Enter SEO Description')->value(isset($model) &&
                                 $model->getParameters('sc') ? $model->getParameters('sc')->short_desc :
-                                '')->class('form-control') }}
+                                '')->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
@@ -177,9 +177,9 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('SEO Description') }}
-                                {{ html()->text('language[tc][short_desc]')->value(isset($model) &&
+                                {{ html()->text('language[tc][short_desc]')->placeholder('Enter SEO Description')->value(isset($model) &&
                                 $model->getParameters('tc') ? $model->getParameters('tc')->short_desc :
-                                '')->class('form-control') }}
+                                '')->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
