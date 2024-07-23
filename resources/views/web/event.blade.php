@@ -48,7 +48,6 @@
                                     </div>
                                     <p class="p3">{{ $event['date'] }}</p>
                                     <h5 class="h5">{{ $event['name'] }}</h5>
-
                                 </div>
                             </div>
                         </a>
@@ -66,7 +65,6 @@
                         <img src="{{ asset('assets/web/assets/img/event/pagination-next-inactive.png') }}" alt="Next" class="img img-fluid">
                     </a>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -212,6 +210,4 @@
             applyFilter(currentFilter);
         });
     </script>
-
-
     @endpush

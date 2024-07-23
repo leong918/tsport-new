@@ -12,4 +12,6 @@ Route::group(['as' => 'admin.'], function () {
     Route::delete('admin/delete/{id}', [AdminController::class, 'destroy'])->name('destroy.delete');
     Route::post('admin/status/{id}', [AdminController::class, 'toggleStatus'])->name('status.post');
     Route::any('admin/profile', [AdminController::class, 'profile'])->name('profile');
+    Route::post('admin/updateProfile', [AdminController::class, 'updateProfile'])->name('updateProfile');
+    Route::post('admin/updatePassword', [AdminController::class, 'updatePassword'])->name('updatePassword');
 });

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Carbon\Carbon;
 
 class Event extends Model
 {
@@ -47,8 +48,30 @@ class Event extends Model
         $events = self::$rows;
         foreach ($events as $slug => &$event) {
             $event['banner'] = url($event['banner']);
+            $event['slug'] = $slug;
         }
         return $events;
+    }
+
+    public static function getLatestEvents($limit, $type = null)
+    {
+        $events = self::getAllEvents();
+
+        foreach ($events as $slug => &$event) {
+            $event['date'] = Carbon::createFromFormat('Y/m/d', $event['date']);
+        }
+        
+        if ($type) {
+            $events = array_filter($events, function ($event) use ($type) {
+                return $event['type'] === $type;
+            });
+        }
+
+        usort($events, function ($a, $b) {
+            return $b['date']->timestamp - $a['date']->timestamp;
+        });
+
+        return array_slice($events, 0, $limit);
     }
 
     public static function getEventBySlug($slug)
