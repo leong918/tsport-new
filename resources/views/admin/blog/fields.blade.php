@@ -162,7 +162,7 @@
         </div>
         <div class="col-sm-6">
             <div class="card mb-3">
-                <div class="card-header"><strong>Chinese</strong></div>
+                <div class="card-header"><strong>Traditional Chinese</strong></div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
