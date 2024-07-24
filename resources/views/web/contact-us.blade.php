@@ -129,6 +129,8 @@
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
+
+
         $('#contact-form').on('submit', function (e) {
             e.preventDefault();
 

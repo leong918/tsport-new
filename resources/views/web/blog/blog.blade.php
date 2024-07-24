@@ -28,9 +28,9 @@
             <h3 class="h3">{{ __('Dental Knowledge') }}</h3>
         </div>
         <div id="knowledge-blog">
-            <div class="knowledge-blog-wrapper m-auto justify-content-center">
+            <div class="knowledge-blog-wrapper m-auto">
                 <div class="knowledge-swiper" id="knowledge-swiper">
-                    <div class="swiper-wrapper ">
+                    <div class="swiper-wrapper">
                         @foreach($knowledges as $knowledge)
                         <div class="swiper-slide">
                             <div class="card">
@@ -39,7 +39,8 @@
                                         <img src="{{ $knowledge->image }}" alt="" class="img img-fluid blog-img">
                                     </div>
                                     <p class="p3">{{ $knowledge->publishedDate() }}</p>
-                                    <h5 class="h5">{{ $knowledge->getParameters(app()->getLocale(), 'name') }}</h5>
+                                    <h5 class="h5 card_desc">{{ $knowledge->getParameters(app()->getLocale(),
+                                        'name') }}</h5>
                                     <div class="d-flex justify-content-end">
                                         <a class="blog-arrow-wrapper"
                                             href="{{ route('web.blog_details', $knowledge->id)}}">
@@ -88,9 +89,11 @@
                                     <img src="{{ $first_interview->image }}" alt="" class="img img-fluid blog-img">
                                 </div>
                                 <p class="p3">{{ $first_interview->publishedDate() }}</p>
-                                <h5 class="h5">{{ $first_interview->getParameters(app()->getLocale(), 'name') }}</h5>
+                                <h5 class="h5 card-desc">{{ $first_interview->getParameters(app()->getLocale(),
+                                    'name') }}</h5>
                                 <div class="d-flex justify-content-end">
-                                    <a class="blog-arrow-wrapper" href="{{ route('web.blog_details', $first_interview->id)}}">
+                                    <a class="blog-arrow-wrapper"
+                                        href="{{ route('web.blog_details', $first_interview->id)}}">
                                         <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
                                             class="img img-fluid blog-arrow">
                                         <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
@@ -125,20 +128,19 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
-        @endif
     </div>
-</div>
-@endsection
+    @endsection
 
-@push('scripts')
-<script>
-    var knowledgeSwiper = new Swiper("#knowledge-swiper", {
+    @push('scripts')
+    <script>
+        var knowledgeSwiper = new Swiper("#knowledge-swiper", {
         navigation:{
             nextEl: "#blog-right",
             prevEl: "#blog-left",
         },
-        freemode: "enabled",
+        freeMode: true,
         slidesPerView: 1,
         spaceBetween: 10,
         scrollbar: {
@@ -183,5 +185,20 @@
             }
         }
      });
-</script>
-@endpush
+
+     $(document).ready(function() {
+    // Function to adjust heights
+    function adjustHeights() {
+        var cardHeight = $('.interview-card').outerHeight();
+        $('.blog-list-wrapper').css({
+            'max-height': cardHeight + 'px',
+            'overflow-y': 'auto' 
+        });
+    }
+
+    adjustHeights();
+    $(window).resize(adjustHeights); 
+});
+
+    </script>
+    @endpush

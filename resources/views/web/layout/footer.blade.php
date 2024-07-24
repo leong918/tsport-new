@@ -15,10 +15,10 @@
                 </a>
                 <a class="h6" href="{{ route('web.event') }}">
                     {{ __('News & Events') }}
-                <a class="h6" href="#">
+                <a class="h6" href="{{ route('web.programme') }}">
                     {{ __('Programme') }}
                 </a>
-                <a class="h6" href="#">
+                <a class="h6" href="{{ route('web.blog') }}">
                     {{ __('Blog') }}
                 </a>
                 <a class="h6" href="{{ route('web.contact-us') }}">

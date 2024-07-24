@@ -116,7 +116,7 @@
                         <div class="detail-content">
                             <h4 class="h4">{{ __('Professional Team') }}</h4>
                             <p class="p2">
-                                {{ __('Providing qualified team at public events') }}
+                                {{ __('Providing qualified team at public events') }}
                             </p>
                         </div>
                     </div>
@@ -241,7 +241,7 @@
         <div class="programme-wrapper m-auto">
             <h1 class="h1 text-lg-center">{{ __('Programme') }}</h1>
             <div class="card">
-                <a href="#">
+                <a href="{{ route('web.programme') }}">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 col-md-6">

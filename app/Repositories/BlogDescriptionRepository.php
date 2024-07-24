@@ -46,7 +46,6 @@ class BlogDescriptionRepository extends BaseRepository
             $data['blog_id'] = $blog_id;
             $data['language'] = $key;
             $data['name'] = $language['name'];
-            $data['short_desc'] = $language['short_desc'];
             $data['content'] = $language['content'];
 
             $model = new BlogDescription();

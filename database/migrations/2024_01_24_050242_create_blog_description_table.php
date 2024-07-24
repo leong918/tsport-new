@@ -16,7 +16,6 @@ return new class extends Migration
             $table->bigInteger('blog_id');
             $table->string("language");
             $table->string("name");
-            $table->string("image")->nullable();
             $table->longText("content");
             $table->timestamps();
             $table->softDeletes();

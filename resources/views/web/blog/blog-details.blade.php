@@ -19,7 +19,9 @@
                 <h2 class="h3 justify-content-center d-flex">{{ $blog->getParameters(app()->getLocale(), 'name') }}</h2>
             </div>
             <div class="col-12 col-md-7">
-                <img src="{{ $blog->image }}" alt="" class="img img-fluid d-none d-md-block h-100">
+                <div class="d-flex justify-content-center">
+                    <img src="{{ $blog->image }}" alt="" class="img img-fluid d-none d-md-block h-100">
+                </div>
             </div>
         </div>
     </div>
@@ -35,35 +37,34 @@
                                     class="share-to-icon share" alt="...">
                                 <div id="facebook">
                                     <a target="_blank"
-                                        href="https://www.facebook.com/sharer/sharer.php?u=&display=popup">
+                                        href="https://www.facebook.com/sharer/sharer.php?u={{ route('web.blog_details', $blog->id) }}&display=popup">
                                         <img src="{{ asset('assets/web/assets/img/blog-details/facebook.png') }}"
                                             class="share-to-icon social-media" alt="...">
                                     </a>
                                 </div>
                                 <div id="twitter">
                                     <a target="_blank"
-                                        href="https://twitter.com/intent/tweet?url=">
+                                        href="https://twitter.com/intent/tweet?url={{ route('web.blog_details', $blog->id) }}">
                                         <img src="{{ asset('assets/web/assets/img/blog-details/twitter.png') }}"
                                             class="share-to-icon social-media" alt="..." id="twitter">
                                     </a>
                                 </div>
                                 <div id="linkedin">
                                     <a target="_blank"
-                                        href="https://www.linkedin.com/sharing/share-offsite/?url=">
+                                        href="https://www.linkedin.com/sharing/share-offsite/?url={{ route('web.blog_details', $blog->id) }}">
                                         <img src="{{ asset('assets/web/assets/img/blog-details/linkedin.png') }}"
                                             class="share-to-icon social-media" alt="..." id="linkedin">
                                     </a>
                                 </div>
-                                <div id="whatsapp">
-                                    <a target="_blank"
-                                        href="">
+                                <div id="copy-link">
+                                    <a id="copy-link-address" href="{{ route('web.blog_details', $blog->id) }}">
                                         <img src="{{ asset('assets/web/assets/img/blog-details/copy.png') }}"
                                             class="share-to-icon social-media" alt="..." id="whatsapp">
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        {!! $blog->getParameters(app()->getLocale(), 'name') !!}
+                        {!! $blog->getParameters(app()->getLocale(), 'content') !!}
                     </div>
                 </div>
             </div>
@@ -71,3 +72,18 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $('#copy-link-address').click(function(e) {
+        e.preventDefault();
+        var copyText = $(this).attr('href');
+        document.addEventListener('copy', function(e) {
+            e.clipboardData.setData('text/plain', copyText);
+            e.preventDefault();
+        }, true);
+        document.execCommand('copy');
+        alert('copied text: ' + copyText); 
+      });
+</script>
+@endpush
