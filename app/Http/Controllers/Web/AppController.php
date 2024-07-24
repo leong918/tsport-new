@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use App\Http\Requests\Form\ContactUs\CreateContactRequest;
 use App\Models\Event;
 use App\Repositories\BlogRepository;
+use App\Mail\ContactMail;
 
 class AppController extends BaseController
 {
@@ -83,17 +84,8 @@ class AppController extends BaseController
 
     public function sendContact(CreateContactRequest $request)
     {
-        $data = array(
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'messages' => $request->message,
-        );
         try {
-            Mail::send('web.mail', $data, function ($message) use ($request) {
-                $message->to('hellosmilehk@gmail.com', 'Hello Smile')->subject('Contact Us');
-                $message->from($request->email, $request->first_name);
-            });
+            Mail::to('hellosmilehk@gmail.com')->send(new ContactMail($request->first_name, $request->last_name, $request->email, $request->message));
 
             return response()->json(['type' => 'success', 'message' => 'Form submitted successfully.']);
         } catch (\Exception $e) {
