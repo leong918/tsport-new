@@ -28,7 +28,7 @@
             <h3 class="h3">{{ __('Dental Knowledge') }}</h3>
         </div>
         <div id="knowledge-blog">
-            <div class="knowledge-blog-wrapper m-auto justify-content-center">
+            <div class="knowledge-blog-wrapper m-auto">
                 <div class="knowledge-swiper" id="knowledge-swiper">
                     <div class="swiper-wrapper">
                         @foreach($knowledges as $knowledge)
@@ -39,7 +39,8 @@
                                         <img src="{{ $knowledge->image }}" alt="" class="img img-fluid blog-img">
                                     </div>
                                     <p class="p3">{{ $knowledge->publishedDate() }}</p>
-                                    <h5 class="h5 card_desc">{{ $knowledge->getParameters(app()->getLocale(), 'short_desc') }}</h5>
+                                    <h5 class="h5 card_desc">{{ $knowledge->getParameters(app()->getLocale(),
+                                        'name') }}</h5>
                                     <div class="d-flex justify-content-end">
                                         <a class="blog-arrow-wrapper"
                                             href="{{ route('web.blog_details', $knowledge->id)}}">
@@ -88,7 +89,8 @@
                                     <img src="{{ $first_interview->image }}" alt="" class="img img-fluid blog-img">
                                 </div>
                                 <p class="p3">{{ $first_interview->publishedDate() }}</p>
-                                <h5 class="h5 card-desc">{{ $first_interview->getParameters(app()->getLocale(), 'short_desc') }}</h5>
+                                <h5 class="h5 card-desc">{{ $first_interview->getParameters(app()->getLocale(),
+                                    'name') }}</h5>
                                 <div class="d-flex justify-content-end">
                                     <a class="blog-arrow-wrapper"
                                         href="{{ route('web.blog_details', $first_interview->id)}}">
@@ -116,7 +118,7 @@
                                     <div class="col-7 col-md-8">
                                         <p class="p3">{{ $interview->publishedDate() }}</p>
                                         <h5 class="h5">
-                                            {{ $interview->getParameters(app()->getLocale(), 'short_desc')}}
+                                            {{ $interview->getParameters(app()->getLocale(), 'name')}}
                                         </h5>
                                     </div>
                                 </div>
@@ -183,5 +185,20 @@
             }
         }
      });
+
+     $(document).ready(function() {
+    // Function to adjust heights
+    function adjustHeights() {
+        var cardHeight = $('.interview-card').outerHeight();
+        $('.blog-list-wrapper').css({
+            'max-height': cardHeight + 'px',
+            'overflow-y': 'auto' 
+        });
+    }
+
+    adjustHeights();
+    $(window).resize(adjustHeights); 
+});
+
     </script>
     @endpush

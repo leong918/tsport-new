@@ -104,15 +104,6 @@
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
-                                {{ html()->label('SEO Description') }}
-                                {{ html()->text('language[en][short_desc]')->placeholder('Enter SEO Description')->value(isset($model) &&
-                                $model->getParameters('en') ? $model->getParameters('en')->short_desc :
-                                '')->class('form-control requiredInput') }}
-                                <small class="text-danger errorMessage"></small>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
                                 {{ html()->label('Content') }}
                                 {{ html()->textarea('language[en][content]')->value(isset($model) &&
                                 $model->getParameters('en') ? e($model->getParameters('en')->content) :
@@ -140,15 +131,6 @@
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
-                                {{ html()->label('SEO Description') }}
-                                {{ html()->text('language[sc][short_desc]')->placeholder('Enter SEO Description')->value(isset($model) &&
-                                $model->getParameters('sc') ? $model->getParameters('sc')->short_desc :
-                                '')->class('form-control requiredInput') }}
-                                <small class="text-danger errorMessage"></small>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
                                 {{ html()->label('Content') }}
                                 {{ html()->textarea('language[sc][content]')->value(isset($model) &&
                                 $model->getParameters('sc') ? e($model->getParameters('sc')->content) :
@@ -170,15 +152,6 @@
                                 {{ html()->label('Name') }}
                                 {{ html()->text('language[tc][name]')->placeholder('Enter name')->value(isset($model) &&
                                 $model->getParameters('tc') ? $model->getParameters('tc')->name :
-                                '')->class('form-control requiredInput') }}
-                                <small class="text-danger errorMessage"></small>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                {{ html()->label('SEO Description') }}
-                                {{ html()->text('language[tc][short_desc]')->placeholder('Enter SEO Description')->value(isset($model) &&
-                                $model->getParameters('tc') ? $model->getParameters('tc')->short_desc :
                                 '')->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>

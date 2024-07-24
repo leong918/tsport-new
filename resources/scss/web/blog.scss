@@ -281,48 +281,16 @@
         }
          
         .blog-list-wrapper {
-          height: 450px;
           overflow: auto;
           padding-right: 30px;
-          @media (min-width: 768px) {
-            min-height: 560px;
-          }
-          @media (min-width: 1024px) {
-            min-height: 510px;
-          }
-          @media (min-width: 1440px) {
-            min-height: 520px;
-          }
-          @media (min-width: 2560px) {
-            min-height: 720px;
-          }
           .blog-list {
             .blog-detail {
               text-decoration: none;
               color: black;
-              .list-desc{
-                display: -webkit-box;
-                -webkit-box-orient: vertical;
-                -webkit-line-clamp: 3;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                line-height: 1.4em; 
-                height: 4.2em; 
-              }
               .row {
+                margin-bottom: 20px;
+                padding-bottom: 20px;
                 border-bottom: 1px solid #b7b7b7;
-                @media (min-width: 1440px) {
-                  margin-bottom: 20px;
-                }
-                @media (max-width: 1440px) {
-                  margin-bottom: 20px;
-                }
-                @media (max-width: 1024px) {
-                  margin-bottom: 30px;
-                }
-                @media (max-width: 425px) {
-                  margin-bottom: 20px;
-                }
               }
               .img-wrapper {
                 overflow: hidden;
