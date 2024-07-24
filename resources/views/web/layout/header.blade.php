@@ -156,11 +156,15 @@
     });
 
     $('#mobileNav').on('show.bs.collapse', function(e) {
-        $('body').css('overflow', 'hidden');
+        if (e.target === this) {
+            $('body').css('overflow', 'hidden');
+        }
     })
 
     $('#mobileNav').on('hide.bs.collapse', function(e) {
-        $('body').css('overflow', '');
+        if (e.target === this) {
+            $('body').css('overflow', 'auto');
+        }
     })
 
     $('#collapse-who').on('show.bs.collapse', function () {
