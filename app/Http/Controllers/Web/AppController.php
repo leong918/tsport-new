@@ -22,7 +22,10 @@ class AppController extends BaseController
 
     public function index()
     {
-        return $this->view('index');
+        $news = Event::getLatestEvents(3, 'news');
+        $events = Event::getLatestEvents(3, 'event');
+
+        return $this->view('index', compact('news', 'events'));
     }
 
     public function aboutUs()
@@ -61,14 +64,18 @@ class AppController extends BaseController
     {
 
         $event = Event::getEventBySlug($slug);
+        $path = public_path('assets/web/assets/img/event-details/' . $slug);
 
         if (!$event) {
             abort(404);
         }
 
-        $files = File::files(public_path('assets/web/assets/img/event-details/' . $slug));
-        $images = [];
+        if(!is_dir($path)){
+            abort(404);
+        }
 
+        $files = File::files($path);
+        $images = [];
 
         foreach ($files as $file) {
             $images[] = asset('assets/web/assets/img/event-details/' . $slug . '/' . $file->getRelativePathname());

@@ -1,5 +1,12 @@
 @extends('admin.layout.app')
 
+@section('breadcrumb')
+    <li class="breadcrumb-item">
+        <a class="nav-link" href="{{ route('admin.blog.index') }}">Blog</a>
+    </li>
+    <li class="breadcrumb-item active"><span>Create</span></li>
+@endsection
+
 @section("content")
 <main class="c-main">
     <div class="container-fluid">

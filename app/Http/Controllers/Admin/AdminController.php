@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Exceptions\GeneralException;
 use App\Http\Requests\Form\Admin\CreateAdminRequest;
 use App\Http\Requests\Form\Admin\UpdateAdminRequest;
+use App\Http\Requests\Form\Admin\UpdatePasswordRequest;
 use App\Repositories\AdminRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends BaseController
@@ -92,5 +94,23 @@ class AdminController extends BaseController
         }
 
         return $this->view('admin.profile');
+    }
+
+    public function updateProfile(UpdateAdminRequest $request)
+    {
+        $id = auth('admin')->user()->id;
+        $this->adminRepository->updateAccount($request->all(), $id);
+        return redirect(route('admin.admin.profile'))->with('success', "Successfully update profile");
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        if (Hash::check($request->password, auth('admin')->user()->password)) {
+            $id = auth('admin')->user()->id;
+            $this->adminRepository->updateAccount($request->all(), $id);
+            return redirect(route('admin.admin.profile'))->with('success', "Successfully update password");
+        }
+
+        return redirect(route('admin.admin.profile'))->with('error', "Wrong Current Password");
     }
 }

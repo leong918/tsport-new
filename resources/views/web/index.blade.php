@@ -167,51 +167,23 @@
                     </a>
                 </div>
                 <div class="news-list">
-                    <a href="#" class="news-detail">
+                    @foreach($news as $new)
+                    <a href="{{ route('web.event_details', $new['slug']) }}" class="news-detail">
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="img-wrapper">
-                                    <img src="{{ asset('assets/web/assets/img/home/news-1.png') }}" alt="news-1" class="img img-fluid">
+                                    <img src="{{ $new['banner'] }}" alt="news-1" class="img img-fluid">
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
-                                <p class="p3">2024/04/01</p>
+                                <p class="p3">{{ $new['date']->format('Y/m/d') }}</p>
                                 <h5 class="h5">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elitauris non rutrum nisi
+                                    {{ $new['name'] }}
                                 </h5>
                             </div>
                         </div>
                     </a>
-                    <a href="#" class="news-detail">
-                        <div class="row">
-                            <div class="col-5 col-md-4">
-                                <div class="img-wrapper">
-                                    <img src="{{ asset('assets/web/assets/img/home/news-2.png') }}" alt="news-2" class="img img-fluid">
-                                </div>
-                            </div>
-                            <div class="col-7 col-md-8">
-                                <p class="p3">2024/03/06</p>
-                                <h5 class="h5">
-                                    Aenean sed nisl quis nisl pulvinar porttitor dui nunc dapibus justo, quis ornare purus ante eget microtime
-                                </h5>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="news-detail">
-                        <div class="row">
-                            <div class="col-5 col-md-4">
-                                <div class="img-wrapper">
-                                    <img src="{{ asset('assets/web/assets/img/home/news-3.png') }}" alt="news-3" class="img img-fluid">
-                                </div>
-                            </div>
-                            <div class="col-7 col-md-8">
-                                <p class="p3">2024/02/02</p>
-                                <h5 class="h5">
-                                    Aenean sed nisl quis nisl pulvinar porttitor dui nunc dapibus justo, quis ornare purus ante eget mi
-                                </h5>
-                            </div>
-                        </div>
-                    </a>
+                    @endforeach
                 </div>
                 <a href="#" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
                     {{ __('More') }}
@@ -228,14 +200,16 @@
                 </div>
                 <div class="event-swiper" id="event-swiper">
                     <div class="swiper-wrapper">
+                        @foreach($events as $event)
                         <div class="swiper-slide">
+                            <a href="{{ route('web.event_details', $event['slug']) }}">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ asset('assets/web/assets/img/home/event-1.png') }}" alt="" class="img img-fluid event-img">
+                                        <img src="{{ $event['banner'] }}" alt="" class="img img-fluid event-img">
                                     </div>
-                                    <p class="p3">2023/11/03</p>
-                                    <h5 class="h5">Hello Smile HK x ChickenSoup Foundation</h5>
+                                    <p class="p3">{{ $event['date']->format('Y/m/d') }}</p>
+                                    <h5 class="h5">{{ $event['name'] }}</h5>
                                     <div class="d-flex justify-content-end">
                                         <a class="event-arrow-wrapper" href="#">
                                             <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt="" class="img img-fluid event-arrow">
@@ -244,24 +218,9 @@
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
-                        <div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ asset('assets/web/assets/img/home/event-2.png') }}" alt="" class="img img-fluid event-img">
-                                    </div>
-                                    <p class="p3">2023/11/03</p>
-                                    <h5 class="h5">Hello Smile HK x ChickenSoup Foundation</h5>
-                                    <div class="d-flex justify-content-end">
-                                        <a class="event-arrow-wrapper" href="#">
-                                            <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt="" class="img img-fluid event-arrow">
-                                            <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt="" class="img img-fluid event-arrow-after">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="pagination-wrapper d-flex align-items-center justify-content-center">
                         <img src="{{ asset('assets/web/assets/img/home/event-left-inactive.png') }}" alt="" class="img img-fluid" id="event-left">
