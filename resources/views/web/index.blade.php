@@ -185,7 +185,7 @@
                     </a>
                     @endforeach
                 </div>
-                <a href="#" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
+                <a href="{{ route('web.event', ['type' => 'news']) }}" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
                     {{ __('More') }}
                     <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                 </a>
@@ -228,7 +228,7 @@
                         <img src="{{ asset('assets/web/assets/img/home/event-right.png') }}" alt="" class="img img-fluid" id="event-right">
                     </div>
                 </div>
-                <a href="#" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
+                <a href="{{ route('web.event', ['type' => 'event']) }}" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
                     {{ __('More') }}
                     <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                 </a>
