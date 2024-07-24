@@ -118,12 +118,12 @@
                     </a>
                     <div class="collapse" id="collapse-programme">
                         <ul class="list-group">
-                            <li class="list-item"><a class="p2" href="#">{{ __('Healthy Teeth Collaboration') }}</a></li>
+                            <li class="list-item"><a class="p2" href="{{ route('web.programme') }}">{{ __('Healthy Teeth Collaboration') }}</a></li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">{{ __('Blog') }}</a>
+                    <a class="nav-link" href="{{ route('web.blog') }}">{{ __('Blog') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('web.contact-us') }}">{{ __('Contact Us') }}</a>

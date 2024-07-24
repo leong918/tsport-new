@@ -27,10 +27,10 @@
                         {{ html()->label('Blog Category') }}
                         <select name="blog_category_id" class="form-control" id="blog_category_id">
                             @foreach ($blogCategoryDropdown as $category)
-                            <option value="{{ $category->id }}" data-is-private="{{ $category->is_private }}" {{
-                                isset($model) && $model->blog_category_id == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
+                                <option value="{{ $category->id }}" data-is-private="{{ $category->is_private }}" {{
+                                    old('blog_category_id', isset($model) && $model->blog_category_id == $category->id ? 'selected' : '') }}>
+                                    {{ $category->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -38,8 +38,8 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Ranking') }}<small class="text-secondary"> (數字愈大, 排名愈高)</small>
-                        {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)->value(isset($model)
-                        && $model->sort ? $model->sort : 0)->class('form-control requiredInput') }}
+                        {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)
+                            ->value(old('sort', isset($model) && $model->sort ? $model->sort : 0))->class('form-control requiredInput') }}
                         <small class="text-danger errorMessage"></small>
                     </div>
                 </div>
@@ -52,11 +52,9 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Published Date') }}
-                        <div class="input-group datePicker" data-td-target-input="nearest"
-                            data-td-target-toggle="nearest">
-                            <input type="datetime" class="form-control" name="published_at"
-                                data-td-toggle="datetimepicker" value="{{ isset($model) ? $model->published_at : '' }}"
-                                autocomplete="off" />
+                        <div class="input-group datePicker" data-td-target-input="nearest" data-td-target-toggle="nearest">
+                            <input type="datetime" class="form-control" name="published_at" data-td-toggle="datetimepicker"
+                                value="{{ old('published_at', isset($model) ? $model->published_at : '') }}" autocomplete="off" />
                         </div>
                         <small class="text-danger errorMessage"></small>
                     </div>
@@ -96,18 +94,18 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Name') }}
-                                {{ html()->text('language[en][name]')->placeholder('Enter name')->class('form-control
-                                requiredInput')->value(isset($model) && $model->getParameters('en') ?
-                                $model->getParameters('en')->name : '') }}
+                                {{ html()->text('language[en][name]')->placeholder('Enter name')
+                                    ->value(old('language.en.name', isset($model) && $model->getParameters('en') ? $model->getParameters('en')->name : ''))
+                                    ->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Content') }}
-                                {{ html()->textarea('language[en][content]')->value(isset($model) &&
-                                $model->getParameters('en') ? e($model->getParameters('en')->content) :
-                                '')->id('en_content')->class('form-control wysiwyg requiredInput') }}
+                                {{ html()->textarea('language[en][content]')
+                                    ->value(old('language.en.content', isset($model) && $model->getParameters('en') ? e($model->getParameters('en')->content) : ''))
+                                    ->id('en_content')->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
@@ -123,18 +121,18 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Name') }}
-                                {{ html()->text('language[sc][name]')->placeholder('Enter name')->value(isset($model)
-                                && $model->getParameters('sc') ? $model->getParameters('sc')->name :
-                                '')->class('form-control requiredInput') }}
+                                {{ html()->text('language[sc][name]')->placeholder('Enter name')
+                                    ->value(old('language.sc.name', isset($model) && $model->getParameters('sc') ? $model->getParameters('sc')->name : ''))
+                                    ->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Content') }}
-                                {{ html()->textarea('language[sc][content]')->value(isset($model) &&
-                                $model->getParameters('sc') ? e($model->getParameters('sc')->content) :
-                                '')->class('form-control wysiwyg requiredInput') }}
+                                {{ html()->textarea('language[sc][content]')
+                                    ->value(old('language.sc.content', isset($model) && $model->getParameters('sc') ? e($model->getParameters('sc')->content) : ''))
+                                    ->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
@@ -150,18 +148,18 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Name') }}
-                                {{ html()->text('language[tc][name]')->placeholder('Enter name')->value(isset($model) &&
-                                $model->getParameters('tc') ? $model->getParameters('tc')->name :
-                                '')->class('form-control requiredInput') }}
+                                {{ html()->text('language[tc][name]')->placeholder('Enter name')
+                                    ->value(old('language.tc.name', isset($model) && $model->getParameters('tc') ? $model->getParameters('tc')->name : ''))
+                                    ->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Content') }}
-                                {{ html()->textarea('language[tc][content]')->value(isset($model) &&
-                                $model->getParameters('tc') ? e($model->getParameters('tc')->content) :
-                                '')->class('form-control wysiwyg requiredInput') }}
+                                {{ html()->textarea('language[tc][content]')
+                                    ->value(old('language.tc.content', isset($model) && $model->getParameters('tc') ? e($model->getParameters('tc')->content) : ''))
+                                    ->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>

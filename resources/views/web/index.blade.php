@@ -74,7 +74,7 @@
                 <img src="{{ asset('assets/web/assets/img/home/slideshow-7.png') }}" alt="" class="img img-fluid">
             </div>
         </div>
-        <a href="#" class="button p2 d-flex align-items-center btn-more m-auto mt-5">
+        <a href="{{ route('web.about-us') }}" class="button p2 d-flex align-items-center btn-more m-auto mt-5">
             {{ __('Read More') }}
             <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
         </a>
@@ -85,7 +85,7 @@
         <div class="what-wrapper m-auto">
             <div class="d-flex align-items-center justify-content-between flex-wrap">
                 <h1 class="h1">{{ __('What We Do.') }}</h1>
-                <a href="#" class="button p2 d-none d-lg-flex align-items-center btn-more">
+                <a href="{{ route('web.what-do-we-do') }}" class="button p2 d-none d-lg-flex align-items-center btn-more">
                     {{ __('Read More') }}
                     <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                 </a>
@@ -146,7 +146,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <a href="#" class="button p2 d-flex d-lg-none align-items-center btn-more m-auto mt-3">
+                    <a href="{{ route('web.what-do-we-do') }}" class="button p2 d-flex d-lg-none align-items-center btn-more m-auto mt-3">
                         {{ __('Read More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>

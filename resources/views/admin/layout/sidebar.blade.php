@@ -1,7 +1,7 @@
 <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
         <a class="navbar-brand d-flex align-items-center" href="{{ route('admin.dashboard') }}">
-            <img src="{{asset('assets/web/assets/img/sidebar/logo.png')}}" alt="hellosmile" class="img-fluid sidebar-brand-full">
+            <img src="{{asset('assets/web/assets/img/sidebar/logo-white.png')}}" alt="hellosmile" class="img-fluid sidebar-brand-full w-50">
             <img src="{{asset('assets/web/assets/img/sidebar/logo-mobile.png')}}" alt="hellosmile" class="img-fluid sidebar-brand-narrow">
         </a>
     </div>

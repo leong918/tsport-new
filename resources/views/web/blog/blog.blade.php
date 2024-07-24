@@ -33,25 +33,26 @@
                     <div class="swiper-wrapper">
                         @foreach($knowledges as $knowledge)
                         <div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ $knowledge->image }}" alt="" class="img img-fluid blog-img">
-                                    </div>
-                                    <p class="p3">{{ $knowledge->publishedDate() }}</p>
-                                    <h5 class="h5 card_desc">{{ $knowledge->getParameters(app()->getLocale(),
-                                        'name') }}</h5>
-                                    <div class="d-flex justify-content-end">
-                                        <a class="blog-arrow-wrapper"
-                                            href="{{ route('web.blog_details', $knowledge->id)}}">
-                                            <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt=""
-                                                class="img img-fluid blog-arrow">
-                                            <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt=""
-                                                class="img img-fluid blog-arrow-after">
-                                        </a>
+                            <a href="{{ route('web.blog_details', $knowledge->id)}}">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="img-wrapper d-flex justify-content-center">
+                                            <img src="{{ $knowledge->image }}" alt="" class="img img-fluid blog-img">
+                                        </div>
+                                        <p class="p3">{{ $knowledge->publishedDate() }}</p>
+                                        <h5 class="h5 card_desc">{{ $knowledge->getParameters(app()->getLocale(),
+                                            'name') }}</h5>
+                                        <div class="d-flex justify-content-end">
+                                            <div class="blog-arrow-wrapper">
+                                                <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt=""
+                                                    class="img img-fluid blog-arrow">
+                                                <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt=""
+                                                    class="img img-fluid blog-arrow-after">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         @endforeach
                     </div>
@@ -83,25 +84,26 @@
                 </div>
                 <div class="col-12 col-lg-6 col-xl-5 mt-lg-0">
                     <div class="interview-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="img-wrapper d-flex justify-content-center">
-                                    <img src="{{ $first_interview->image }}" alt="" class="img img-fluid blog-img">
-                                </div>
-                                <p class="p3">{{ $first_interview->publishedDate() }}</p>
-                                <h5 class="h5 card-desc">{{ $first_interview->getParameters(app()->getLocale(),
-                                    'name') }}</h5>
-                                <div class="d-flex justify-content-end">
-                                    <a class="blog-arrow-wrapper"
-                                        href="{{ route('web.blog_details', $first_interview->id)}}">
-                                        <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
-                                            class="img img-fluid blog-arrow">
-                                        <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
-                                            class="img img-fluid blog-arrow-after">
-                                    </a>
+                        <a href="{{ route('web.blog_details', $first_interview->id)}}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="img-wrapper d-flex justify-content-center">
+                                        <img src="{{ $first_interview->image }}" alt="" class="img img-fluid blog-img">
+                                    </div>
+                                    <p class="p3">{{ $first_interview->publishedDate() }}</p>
+                                    <h5 class="h5 card-desc">{{ $first_interview->getParameters(app()->getLocale(),
+                                        'name') }}</h5>
+                                    <div class="d-flex justify-content-end">
+                                        <div class="blog-arrow-wrapper">
+                                            <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
+                                                class="img img-fluid blog-arrow">
+                                            <img src="{{ asset('assets/web/assets/img/blog/blog-arrow.png') }}" alt=""
+                                                class="img img-fluid blog-arrow-after">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div class="col-12 col-lg-6 col-xl-7">

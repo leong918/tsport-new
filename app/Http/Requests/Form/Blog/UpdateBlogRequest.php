@@ -38,14 +38,4 @@ class UpdateBlogRequest extends FormRequest
             'language.sc.content' => 'required',
         ];
     }
-    
-    // Returning errors as exception
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(
-            response()->json([
-                'msg' => $validator->errors()->first(),
-            ], 500)
-        );
-    }
 }
