@@ -40,7 +40,7 @@ class AdminRepository extends BaseRepository
 
     public function updateAccount(array $input, int $id)
     {
-        if (trim($input['password']) === '') {
+        if (!isset($input['password']) || !$input['password']) {
             unset($input['password']);
         }
         $model = Admin::findOrFail($id);

@@ -121,9 +121,9 @@
 
   "Dental Knowledge": "Dental Knowledge",
   "Interviews": "Interviews",
-
   "Email us hellosmilehk@gmail.com": "Email us hellosmilehk@gmail.com",
   "Please contact us via this website or email without disclosing confidential information.": "Please contact us via this website or email without disclosing confidential information.",
+  "Home": "Home",
   "First Name": "First Name",
   "Last Name": "Last Name",
   "Email": "Email",
@@ -141,5 +141,9 @@
   "Your contact form has been submitted.": "Your contact form has been submitted.",
   "Back to Home": "Back to Home",
   "An error occurred while submitting the form. Please try again.": "An error occurred while submitting the form. Please try again.",
-  "Error!": "Error!"
+  "Error!": "Error!",
+  "Clinic Opening Hours during Typhoons and Black Rainstorm Warning": "Clinic Opening Hours during Typhoons and Black Rainstorm Warning",
+  "When Typhoon No. 8 or above or Black Rainstorm warning issued by the Hong Kong Observatory is in effect, our clinics will be closed. Patients should not come to our clinics. Our staff will contact you later for rescheduling your appointments.": "When Typhoon No. 8 or above or Black Rainstorm warning issued by the Hong Kong Observatory is in effect, our clinics will be closed. Patients should not come to our clinics. Our staff will contact you later for rescheduling your appointments.",
+  "Two hours after Typhoon No. 8 or above or Black Rainstorm warning is cancelled (or changed to a lower typhoon or rainstorm warning), our clinics will resume service. Patients are advised to pay close attention to the latest weather forecast by the Hong Kong Observatory before they visit our clinics.": "Two hours after Typhoon No. 8 or above or Black Rainstorm warning is cancelled (or changed to a lower typhoon or rainstorm warning), our clinics will resume service. Patients are advised to pay close attention to the latest weather forecast by the Hong Kong Observatory before they visit our clinics.",
+  "Event": "Event"
 }

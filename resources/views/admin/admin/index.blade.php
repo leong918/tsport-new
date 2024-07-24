@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/css/dataTables.bootstrap5.min.css') }}" />
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item active"><span>Admin</span></li>
+@endsection
+
 @section('content')
     <main class="c-main">
         <div class="container-fluid">

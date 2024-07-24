@@ -116,29 +116,9 @@
                         <li>
                             <p class="p3">
                                 {{ __('Two hours after Typhoon No. 8 or above or Black Rainstorm warning is cancelled (or changed to a lower typhoon or rainstorm warning), our clinics will resume service. Patients are advised to pay close attention to the latest weather forecast by the Hong Kong Observatory before they visit our clinics.') }}
-                                
                             </p>
                         </li>
                     </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true" data-bs-backdrop="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="success-title">
-                        <p>{{ __('Thank You!') }}</p>
-                    </div>
-                    <div class="success-text">
-                        <p>{{ __('Your contact form has been submitted.') }}</p>
-                    </div>
-                    <a class="btn btn-contact btn-back" href="{{ route('web.home') }}">
-                        {{ __('Back to Home') }}
-                        <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="">
-                    </a>
                 </div>
             </div>
         </div>
@@ -162,10 +142,10 @@
             axios.post(this.action, formData)
             .then(response => {
                 swal.fire({
-                    title: "{{ __('Thank you!') }}",
-                    text: "{{ __('Your contact form has been submitted.') }}",
+                    title: '{{ __('Thank You!') }}',
+                    text: '{{ __('Your contact form has been submitted.') }}',
                     width: 450,
-                    confirmButtonText: `{{ __('Back to Home') }} <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="">`,
+                    confirmButtonText: `{{ __('Back to Home') }} <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="{{ __('Back to Home') }}">`,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.href = '{{ route('web.home') }}';
@@ -176,14 +156,14 @@
             })
 
             .catch(error => {
-                let errorMessage = "{{ __('An error occurred while submitting the form. Please try again.') }}";
+                let errorMessage = '{{ __('An error occurred while submitting the form. Please try again.') }}';
                 if (error.response && error.response.data && error.response.data.errors) {
                     const errors = error.response.data.errors;
                     const firstErrorKey = Object.keys(errors)[0];
                     errorMessage = errors[firstErrorKey][0];
                 }
                 swal.fire({
-                    title: "{{ __('Error!') }}",
+                    title: '{{ __('Error!') }}',
                     text: errorMessage,
                     width: 450,
                 });

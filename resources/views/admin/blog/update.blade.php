@@ -5,6 +5,13 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/css/tempus-dominus.css') }}"/>
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item">
+        <a class="nav-link" href="{{ route('admin.blog.index') }}">Blog</a>
+    </li>
+    <li class="breadcrumb-item active"><span>Update</span></li>
+@endsection
+
 @section("content")
 <main class="c-main">
     <div class="container-fluid">
