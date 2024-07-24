@@ -1,6 +1,9 @@
 #event {
     .header-row {
         min-height: 30vh;
+        @media (max-width: 575px) {
+            min-height: 40vh;
+        }
 
         .banner-background {
             background-image: url('/public/assets/web/assets/img/event/title-background.png');
