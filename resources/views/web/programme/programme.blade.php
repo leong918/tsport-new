@@ -62,15 +62,15 @@
                         </ul>
                         <h4 class="h4">{{ __('Forms Download') }}:</h4>
                         <ul class="ul">
-                            <li><a href="#" class="p2">{!! __('Application Form (not required for existing patient)') !!}</a></li>
-                            <li><a href="#" class="p2">{!! __('Appendices to Application Form') !!}</a></li>
-                            <li><a href="#" class="p2">{!! __('Assessment Form (required for every patient every service year, i.e. 16 July – 15 July)') !!}</a></li>
-                            <li><a href="#" class="p2">{!! __('Certificate of Disability Type') !!}</a></li>
-                            <li><a href="#" class="p2">{!! __('Escort / Transport Fee Claim Form') !!}</a></li>
-                            <li><a href="#" class="p2">{!! __('Declaration by Claimant on Transport Fee (e.g. taxi receipt)') !!}</a></li>
-                            <li><a href="#" class="p2">{!! __('Statement of Relationship between Agent and Applicant') !!}</a></li>
-                            <li><a href="#" class="p2">{!! __('Agreement Form of Eligibility Checking for Dental Treatment') !!}</a></li>
-                            <li><a href="#" class="p2">{!! __('Attendance Record') !!}</a></li>
+                            <li><p class="p2">{!! __('Application Form (not required for existing patient)') !!}</p></li>
+                            <li><p class="p2">{!! __('Appendices to Application Form') !!}</p></li>
+                            <li><p class="p2">{!! __('Assessment Form (required for every patient every service year, i.e. 16 July – 15 July)') !!}</p></li>
+                            <li><p class="p2">{!! __('Certificate of Disability Type') !!}</p></li>
+                            <li><p class="p2">{!! __('Escort / Transport Fee Claim Form') !!}</p></li>
+                            <li><p class="p2">{!! __('Declaration by Claimant on Transport Fee (e.g. taxi receipt)') !!}</p></li>
+                            <li><p class="p2">{!! __('Statement of Relationship between Agent and Applicant') !!}</p></li>
+                            <li><p class="p2">{!! __('Agreement Form of Eligibility Checking for Dental Treatment') !!}</p></li>
+                            <li><p class="p2">{!! __('Attendance Record') !!}</p></li>
                         </ul>
                     </div>
                 </div>
