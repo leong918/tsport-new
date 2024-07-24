@@ -252,7 +252,7 @@
                             <div class="col-12 col-md-6">
                                 <div class="content-wrapper d-flex flex-column justify-content-between h-100 mt-3 mt-md-0">
                                     <div>
-                                        <h3 class="h3">Healthy Teeth Collaboration</h3>
+                                        <h3 class="h3">{{ __('Healthy Teeth Collaboration') }}</h3>
                                         <p class="p2">
                                             Aenean sed nisl quis nisl pulvinar porttitor dui nunc dapibus justo, quis ornare purus ante eget mi, Henean sed nisl quis nisl pulvinar 
                                             porttitor dui nunc dapibus justo, quis ornare purus ante egetmi. Enean sed nisl quiorttitor dui nunc dapibus justo, quis ornare purus ante eget mi
