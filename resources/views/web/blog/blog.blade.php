@@ -105,32 +105,23 @@
                 <div class="col-12 col-lg-6 col-xl-7">
                     <div class="d-flex blog-list-wrapper">
                         <div class="blog-list">
-                            <div class="swiper interviewSwiper" id="interviewSwiper">
-                                <div class="swiper-wrapper">
-                                    @foreach($interviews as $interview)
-                                    <div class="swiper-slide">
-                                        <a href="{{ route('web.blog_details', $interview->id)}}" class="blog-detail">
-                                            <div class="row d-flex">
-                                                <div class="col-5 col-md-4">
-                                                    <div class="img-wrapper">
-                                                        <img src="{{ $interview->image }}" alt="" class="img img-fluid">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7 col-md-8">
-                                                    <p class="p3">{{ $interview->publishedDate() }}</p>
-                                                    <h5 class="h5 list-desc">
-                                                        {{ $interview->getParameters(app()->getLocale(), 'short_desc')}}
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                        </a>
+                            @foreach($interviews as $interview)
+                            <a href="{{ route('web.blog_details', $interview->id)}}" class="blog-detail">
+                                <div class="row d-flex">
+                                    <div class="col-5 col-md-4">
+                                        <div class="img-wrapper">
+                                            <img src="{{ $interview->image }}" alt="" class="img img-fluid">
+                                        </div>
                                     </div>
-                                    @endforeach
+                                    <div class="col-7 col-md-8">
+                                        <p class="p3">{{ $interview->publishedDate() }}</p>
+                                        <h5 class="h5">
+                                            {{ $interview->getParameters(app()->getLocale(), 'short_desc')}}
+                                        </h5>
+                                    </div>
                                 </div>
-                                <div class="scrollbar-wrapper">
-                                    <div class="swiper-scrollbar2"></div>
-                                </div>
-                            </div>
+                            </a>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -192,17 +183,5 @@
             }
         }
      });
-
-     var interviewSwiper = new Swiper("#interviewSwiper", {
-      direction: "vertical",
-      slidesPerView: 3,
-      freeMode: true,
-      spaceBetween: 10,
-      scrollbar: {
-            el: ".swiper-scrollbar2",
-            hide: false,
-            dragSize: 200,
-        },
-    });
     </script>
     @endpush
