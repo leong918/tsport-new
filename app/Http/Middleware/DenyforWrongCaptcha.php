@@ -21,6 +21,9 @@ class DenyforWrongCaptcha
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             // redirect to previous page
+            if ($request->ajax()) {
+                return response()->json('Wrong captcha', 500);
+            }
             return back()->withInput()->with('error', 'Wrong captcha');
         }
 

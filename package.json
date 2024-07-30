@@ -19,6 +19,6 @@
     "@coreui/coreui-pro": "^4.6.4",
     "@popperjs/core": "^2.11.8",
     "chart.js": "^4.4.2",
-    "sweetalert2": "^11.10.3"
+    "sweetalert2": "^11.6.13"
   }
 }

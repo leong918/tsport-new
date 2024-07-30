@@ -8,7 +8,10 @@
     <div class="swiper banner">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/banner-1.jpg') }}" alt="" class="img img-fluid banner-img">
+                <picture>
+                    <source media="(max-width: 992px)" srcset="{{ asset('assets/web/assets/img/home/banner-mobile-1.png') }}">
+                    <img src="{{ asset('assets/web/assets/img/home/banner-1.jpg') }}" class="img img-fluid banner-img">
+                </picture>
                 <div class="banner-content">
                     <h2 class="banner-title h2">
                         {!! __('EVERYONE DESERVES A HEALTHY "SMILE"') !!}
@@ -20,7 +23,10 @@
                 </div>
             </div>
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/banner-2.jpg') }}" alt="" class="img img-fluid banner-img">
+                <picture>
+                    <source media="(max-width: 992px)" srcset="{{ asset('assets/web/assets/img/home/banner-mobile-2.png') }}">
+                    <img src="{{ asset('assets/web/assets/img/home/banner-2.jpg') }}" class="img img-fluid banner-img">
+                </picture>
                 <div class="banner-content">
                     <h2 class="banner-title h2">
                         {!! __('WE CAN ALL DO SMALL THINGS WITH GREAT LOVE') !!}
@@ -53,25 +59,25 @@
         </div>
         <div class="slideshow d-flex align-items-center" id="slogan-slideshow">
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/slideshow-1.png') }}" alt="" class="img img-fluid">
+                <img src="{{ asset('assets/web/assets/img/home/slideshow-1.png') }}" alt="" class="img img-fluid w-100">
             </div>
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/slideshow-2.png') }}" alt="" class="img img-fluid">
+                <img src="{{ asset('assets/web/assets/img/home/slideshow-2.png') }}" alt="" class="img img-fluid w-100">
             </div>
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/slideshow-3.png') }}" alt="" class="img img-fluid">
+                <img src="{{ asset('assets/web/assets/img/home/slideshow-3.png') }}" alt="" class="img img-fluid w-100">
             </div>
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/slideshow-4.png') }}" alt="" class="img img-fluid">
+                <img src="{{ asset('assets/web/assets/img/home/slideshow-4.png') }}" alt="" class="img img-fluid w-100">
             </div>
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/slideshow-5.png') }}" alt="" class="img img-fluid">
+                <img src="{{ asset('assets/web/assets/img/home/slideshow-5.png') }}" alt="" class="img img-fluid w-100">
             </div>
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/slideshow-6.png') }}" alt="" class="img img-fluid">
+                <img src="{{ asset('assets/web/assets/img/home/slideshow-6.png') }}" alt="" class="img img-fluid w-100">
             </div>
             <div class="swiper-slide">
-                <img src="{{ asset('assets/web/assets/img/home/slideshow-7.png') }}" alt="" class="img img-fluid">
+                <img src="{{ asset('assets/web/assets/img/home/slideshow-7.png') }}" alt="" class="img img-fluid w-100">
             </div>
         </div>
         <a href="{{ route('web.about-us') }}" class="button p2 d-flex align-items-center btn-more m-auto mt-5">
@@ -279,7 +285,7 @@
 <script>
     const swiper = new Swiper('.swiper', {
         loop: true,
-        // autoplay: { delay: 3000 },
+        autoplay: { delay: 3000 },
         speed: 3000,
         effect: "fade",
         fadeEffect: {

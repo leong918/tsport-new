@@ -17,8 +17,8 @@
                 </div>
             </div>
             <div class="col-12 col-md-7 d-none d-md-block">
-                <img src="{{ asset('assets/web/assets/img/about-us/banner.png') }}" alt=""
-                    class="img img-fluid banner-img h-100">
+                <img src="{{ asset('assets/web/assets/img/blog/banner.png') }}" alt=""
+                    class="img img-fluid banner-img h-100 w-100">
             </div>
         </div>
     </div>

@@ -35,9 +35,9 @@
         @include('web.layout.footer')
     </div>
 
-    {{-- <a href="#">
+    <a href="https://wa.me/85267280025" target="_blank">
         <img src="{{asset('assets/web/assets/img/home/chatbox.png')}}" alt="hellosmile" class="img img-fluid" id="fixed-chatbox">
-    </a> --}}
+    </a>
 
     <script src="{{ asset('assets/web/js/jquery-3.7.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/web/js/bootstrap.bundle.min.js') }}"></script>

@@ -29,7 +29,7 @@
         <div class="row content-wrapper">
             <div class="col-12 col-md-6 col-lg detail-wrapper">
                 <div class="detail">
-                    <img src="{{ asset('assets/web/assets/img/mission/mission-1.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/mission/mission-1.png') }}" alt="" class="img img-fluid w-100">
                     <h3 class="h3">{{ __('Mission') }}</h3>
                     <p class="p2">
                         {{ __('Hello Smile Hong Kong (HSHK) is dedicated to serving the local Hong Kong community to improve the oral health of the underserved community with an emphasis on young children and children with special health care needs and to contribute to the enhancement of their overall quality of life. We endeavor to raise public awareness of oral health care by initiating educational programs with the public sector with a focus on anticipatory guidance to prevent dental and oral health issues and to provide dental care to the underserved community.') }}
@@ -38,7 +38,7 @@
             </div>
             <div class="col-12 col-md-6 col-lg detail-wrapper">
                 <div class="detail">
-                    <img src="{{ asset('assets/web/assets/img/mission/mission-2.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/mission/mission-2.png') }}" alt="" class="img img-fluid w-100">
                     <h3 class="h3">{{ __('Vision') }}</h3>
                     <p class="p2">
                         {{ __('We believe everyone deserves a healthy “SMILE”. HSHK envisions to provide access to a “dental home” for the underserved community where they can have access to oral health education, preventive services, dental care screenings, and dental treatments.') }}
@@ -47,7 +47,7 @@
             </div>
             <div class="col-12 col-md-6 col-lg detail-wrapper">
                 <div class="detail">
-                    <img src="{{ asset('assets/web/assets/img/mission/mission-3.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/mission/mission-3.png') }}" alt="" class="img img-fluid w-100">
                     <h3 class="h3">{{ __('Values') }}</h3>
                     <p class="p2">
                         {{ __('Our values represent our beliefs and guide how we behave. They are Love, Compassion, Respect, and Integrity.') }}
@@ -60,25 +60,25 @@
          <div class="carousel-wrapper">
             <div class="slideshow d-flex align-items-center overflow-hidden" id="slogan-slideshow">
                 <div class="swiper-slide">
-                    <img src="{{ asset('assets/web/assets/img/home/slideshow-1.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/home/slideshow-1.png') }}" alt="" class="img img-fluid w-100">
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ asset('assets/web/assets/img/home/slideshow-2.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/home/slideshow-2.png') }}" alt="" class="img img-fluid w-100">
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ asset('assets/web/assets/img/home/slideshow-3.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/home/slideshow-3.png') }}" alt="" class="img img-fluid w-100">
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ asset('assets/web/assets/img/home/slideshow-4.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/home/slideshow-4.png') }}" alt="" class="img img-fluid w-100">
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ asset('assets/web/assets/img/home/slideshow-5.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/home/slideshow-5.png') }}" alt="" class="img img-fluid w-100">
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ asset('assets/web/assets/img/home/slideshow-6.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/home/slideshow-6.png') }}" alt="" class="img img-fluid w-100">
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ asset('assets/web/assets/img/home/slideshow-7.png') }}" alt="" class="img img-fluid">
+                    <img src="{{ asset('assets/web/assets/img/home/slideshow-7.png') }}" alt="" class="img img-fluid w-100">
                 </div>
             </div>
          </div>

@@ -7,7 +7,7 @@ return [
     'default' => [
         'length' => 9,
         'width' => 120,
-        'height' => 36,
+        'height' => 50,
         'quality' => 90,
         'math' => false,
         'expire' => 60,
@@ -16,7 +16,7 @@ return [
     'math' => [
         'length' => 9,
         'width' => 120,
-        'height' => 36,
+        'height' => 50,
         'quality' => 90,
         'math' => true,
     ],
@@ -24,12 +24,12 @@ return [
     'flat' => [
         'length' => 4,
         'width' => 160,
-        'height' => 38,
+        'height' => 50,
         'quality' => 50,
         'lines' => -1,
         'bgImage' => false,
-        'bgColor' => '#f1f1f1',
-        'fontColors' => ['#2c3e50', '#c0392b', '#16a085', '#c0392b', '#8e44ad', '#303f9f', '#f57c00', '#795548'],
+        'bgColor' => '#ABD5D6',
+        'fontColors' => ['#084080'],
         'contrast' => 0,
     ],
     'mini' => [

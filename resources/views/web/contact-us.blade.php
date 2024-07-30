@@ -94,6 +94,24 @@
                                 <label class="p2">{{ __('Message') }} <span>*</span></label>
                                 <textarea class="form-control" rows="4" name="message"></textarea>
                             </div>
+                            <div class="form-section">
+                                <label class="p2">{{ __('Captcha') }} <span>*</span></label>
+                                <div class="row">
+                                    <div class="col-5 col-lg-3">
+                                        <div class="input-group">
+                                            <input class="form-control" name="captcha" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-7">
+                                        <div class="d-flex align-items-center h-100">
+                                            <img src="{{Captcha::src('flat')}}" class="img-fluid captcha-img me-3" />
+                                            <span id="refresh" style="cursor: pointer;">
+                                                <i class="fa fa-refresh"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <button type="submit" class="btn btn-contact btn-send p2">
                                 {{ __('Send') }}
                                 <img src="{{ asset('assets/web/assets/img/contact-us/right-icon.png') }}" alt="">
@@ -129,7 +147,14 @@
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function() {
-
+        $('#refresh').on('click', function () {
+            var captcha = $('img.captcha-img');
+            var config = captcha.data('refresh-config');
+            axios.get('{{ route('captcha') }}')
+                .then((response) => {
+                    captcha.prop('src', response.data);
+                })
+        });
 
         $('#contact-form').on('submit', function (e) {
             e.preventDefault();
@@ -157,10 +182,14 @@
 
             .catch(error => {
                 let errorMessage = '{{ __('An error occurred while submitting the form. Please try again.') }}';
-                if (error.response && error.response.data && error.response.data.errors) {
-                    const errors = error.response.data.errors;
-                    const firstErrorKey = Object.keys(errors)[0];
-                    errorMessage = errors[firstErrorKey][0];
+                if (error.response && error.response.data) {
+                    if (error.response.data.errors) {
+                        const errors = error.response.data.errors;
+                        const firstErrorKey = Object.keys(errors)[0];
+                        errorMessage = errors[firstErrorKey][0];
+                    } else {
+                        errorMessage = error.response.data;
+                    }
                 }
                 swal.fire({
                     title: '{{ __('Error!') }}',

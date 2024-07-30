@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-center order-1 order-md-2">
-                    <img src="{{ asset('assets/web/assets/img/about-us/about-3.png') }}" alt="" class="img img-fluid hand-img">
+                    <img src="{{ asset('assets/web/assets/img/about-us/about-3.png') }}" alt="" class="img img-fluid hand-img w-100">
                 </div>
             </div>
         </div>
