@@ -57,20 +57,20 @@
                         </ul>
                         <h4 class="h4">{{ __('Booking / Enquiries') }}:</h4>
                         <ul class="ul">
-                            <li><p class="p2">{!! __('Call xxxx xxxx (at 9:00am to 6:00pm, Mon to Sat)') !!}</p></li>
-                            <li><p class="p2">{!! __('WhatsApp xxxx xxxx') !!}</p></li>
+                            <li><p class="p2">{!! __('Call 38539672 (at 9:00am to 6:00pm, Mon to Sat)') !!}</p></li>
+                            <li><p class="p2">{!! __('WhatsApp 59313940') !!}</p></li>
                         </ul>
                         <h4 class="h4">{{ __('Forms Download') }}:</h4>
                         <ul class="ul">
-                            <li><p class="p2">{!! __('Application Form (not required for existing patient)') !!}</p></li>
-                            <li><p class="p2">{!! __('Appendices to Application Form') !!}</p></li>
-                            <li><p class="p2">{!! __('Assessment Form (required for every patient every service year, i.e. 16 July – 15 July)') !!}</p></li>
-                            <li><p class="p2">{!! __('Certificate of Disability Type') !!}</p></li>
-                            <li><p class="p2">{!! __('Escort / Transport Fee Claim Form') !!}</p></li>
-                            <li><p class="p2">{!! __('Declaration by Claimant on Transport Fee (e.g. taxi receipt)') !!}</p></li>
-                            <li><p class="p2">{!! __('Statement of Relationship between Agent and Applicant') !!}</p></li>
-                            <li><p class="p2">{!! __('Agreement Form of Eligibility Checking for Dental Treatment') !!}</p></li>
-                            <li><p class="p2">{!! __('Attendance Record') !!}</p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC Application Form(C)_202107 (hello smile logo).pdf') }}" target="_blank">{!! __('Application Form (not required for existing patient)') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC Application Form(Appendix)(C)_202407.pdf') }}" target="_blank">{!! __('Appendices to Application Form') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/護齒同行申請人評估表 (30-7-24).pdf') }}" target="_blank">{!! __('Assessment Form (required for every patient every service year, i.e. 16 July – 15 July)') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC01C-Certificate of Disability Type_202407.pdf') }}" target="_blank">{!! __('Certificate of Disability Type') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/護齒同行陪診&交通資助申請書.pdf') }}" target="_blank">{!! __('Escort / Transport Fee Claim Form') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC08-申請交通津貼聲明書_202407.pdf') }}" target="_blank">{!! __('Declaration by Claimant on Transport Fee (e.g. taxi receipt)') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC02-代理人與申請人關係聲明書_202407.pdf') }}" target="_blank">{!! __('Statement of Relationship between Agent and Applicant') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC03-Agreement Form of Eligibility Checking for Dental Treatment (HTC).pdf') }}" target="_blank">{!! __('Agreement Form of Eligibility Checking for Dental Treatment') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC09-到診記錄_202407.pdf') }}" target="_blank">{!! __('Attendance Record') !!}</a></p></li>
                         </ul>
                     </div>
                 </div>
