@@ -9,8 +9,8 @@
         <div class="swiper-wrapper">
             <div class="swiper-slide">
                 <picture>
-                    <source media="(max-width: 992px)" srcset="{{ asset('assets/web/assets/img/home/banner-mobile-1.png') }}">
-                    <img src="{{ asset('assets/web/assets/img/home/banner-1.jpg') }}" class="img img-fluid banner-img">
+                    <source media="(max-width: 992px)" srcset="{{ asset('assets/web/assets/img/home/banner-mobile-3.png') }}">
+                    <img src="{{ asset('assets/web/assets/img/home/banner-3.png') }}" class="img img-fluid banner-img">
                 </picture>
                 <div class="banner-content">
                     <h2 class="banner-title h2">

@@ -33,6 +33,12 @@
             <div class="col-9 col-sm-8 col-md-5 col-lg-4 col-xxl-3 mt-5 mt-md-0 d-flex justify-content-center">
                 <img src="{{ asset('assets/web/assets/img/our-partner/chicken-soup.png') }}" alt="" class="img img-fluid chicken-soup">
             </div>
+            <div class="col-9 col-sm-8 col-md-5 col-lg-4 col-xxl-3 mt-5 mt-md-0 d-flex justify-content-center">
+                <img src="{{ asset('assets/web/assets/img/our-partner/heep-hong.png') }}" alt="" class="img img-fluid chicken-soup">
+            </div>
+            <div class="col-9 col-sm-8 col-md-5 col-lg-4 col-xxl-3 mt-5 mt-md-0 d-flex justify-content-center">
+                <img src="{{ asset('assets/web/assets/img/our-partner/nda.png') }}" alt="" class="img img-fluid chicken-soup">
+            </div>
         </div>
     </div>
 </div>
