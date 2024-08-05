@@ -54,9 +54,15 @@
                                     <img src="{{ asset('assets/web/assets/img/contact-us/location-icon.png') }}" alt="">
                                 </div>
                                 <div class="contact-content">
-                                    <u class="p2">
-                                        1901-1906 T.O.P, 700 Nathan Road, Mongkok, Kowloon
-                                    </u>
+                                    <div class="p2">
+                                        <p>
+                                            (T.O.P Dental by family smile)
+                                            <br/>
+                                            <u>
+                                                1901-1906 T.O.P, 700 Nathan<br/>Road, Mongkok, Kowloon
+                                            </u>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </a>
