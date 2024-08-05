@@ -50,14 +50,42 @@
             padding-top: 80px;
         }
 
-        .soco {
-            max-width: 200px;
-            width: 100%;
-        }
+        .content-wrapper {
+            width: 70%;
+    
+            @media (max-width: 1199px) {
+                width: 80%;
+            }
+    
+            @media (max-width: 575px) {
+                width: 90%;
+            }
 
-        .chicken-soup {
-            max-width: 355px;
-            width: 100%;
+            .soco {
+                max-width: 200px;
+                width: 100%;
+            }
+    
+            .chicken-soup {
+                max-width: 355px;
+                width: 100%;
+            }
+
+            .heep-hong {
+                max-width: 230px;
+            }
+
+            .nda {
+                max-width: 200px;
+            }
+            
+            .children, .faith {
+                max-width: 100px;
+    
+                @media (max-width: 991px) {
+                    max-width: 140px;
+                }
+            }
         }
     }
 }
