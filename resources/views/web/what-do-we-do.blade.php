@@ -30,7 +30,7 @@
                 <div class="content-wrapper">
                     <div class="content">
                         <p class="p2">
-                            {{ __('Hello Smile Hong Kong is an NGO that is registered as a charity in Hong Kong under Section 88 of the Inland Revenue Ordinance to service the oral health needs of local grass-roots families, with an emphasis on young children and children with special health care needs.') }}
+                            {{ __('Hello Smile Hong Kong is an NGO that is registered as a charity in Hong Kong under Section 88 of the Inland Revenue Ordinance to service the oral health needs of local grassroots families, children and adults with special health care needs.') }}
                         </p>
                         <p class="p2">
                             {{ __('We believe oral health is the foundation of wellbeing and happiness. An effort made for the happiness of others lifts above us. Not everyone can do great things but we can all do small things with great love.') }}
@@ -51,7 +51,7 @@
                             <div class="education-wrapper">
                                 <h3 class="h3">{{ __('Education') }}</h3>
                                 <p class="p2">
-                                    {{ __('Organize educational trainings & disseminate educational information to health institutions or personnel, schools, general public to promote the importance of oral health. We advocate the importance of establishing a dental home for young children and children with special healthcare needs to promote early dental intervention and provide preventive oral health counseling.') }}
+                                    {{ __('Organize educational trainings & disseminate educational information to health institutions or personnel, schools, general public to promote the importance of oral health. We advocate the importance of establishing a dental home for young children , children and adults with special healthcare needs to promote early dental intervention and provide preventive oral health counseling.') }}
                                 </p>
                             </div>
                             <img src="{{ asset('assets/web/assets/img/what-do-we-do/community.png') }}" alt="" class="img img-fluid d-none d-md-block">
@@ -64,7 +64,7 @@
                             <div class="community-wrapper">
                                 <h3 class="h3">{{ __('Community Outreach') }}</h3>
                                 <p class="p2">
-                                    {{ __('Provide dental care screenings, oral health education, dental treatments to underserved community including young children and children with special health care needs.') }}
+                                    {{ __('Provide dental care screenings, oral health education, dental treatments to underserved community including young children, children and adults with special health care needs.') }}
                                 </p>
                             </div>
                             <img src="{{ asset('assets/web/assets/img/what-do-we-do/community.png') }}" alt="" class="img img-fluid d-block d-md-none">

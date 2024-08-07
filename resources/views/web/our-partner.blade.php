@@ -26,12 +26,24 @@
 
     <!-- content -->
     <div class="content-section">
-        <div class="row content-wrapper w-100 justify-content-center align-items-center m-auto">
-            <div class="col-6 col-md-4 col-lg-3 col-xxl-2 d-flex justify-content-center">
+        <div class="row content-wrapper justify-content-center align-items-center m-auto">
+            <div class="col-12 col-md-5 col-lg-4 mb-5 d-flex justify-content-center">
                 <img src="{{ asset('assets/web/assets/img/our-partner/soco.png') }}" alt="" class="img img-fluid soco">
             </div>
-            <div class="col-9 col-sm-8 col-md-5 col-lg-4 col-xxl-3 mt-5 mt-md-0 d-flex justify-content-center">
+            <div class="col-12 col-sm-8 col-md-5 col-lg-4 mt-5 mb-5 mt-md-0 d-flex justify-content-center">
                 <img src="{{ asset('assets/web/assets/img/our-partner/chicken-soup.png') }}" alt="" class="img img-fluid chicken-soup">
+            </div>
+            <div class="col-12 col-sm-8 col-md-5 col-lg-4 mt-5 mb-5 mt-md-0 d-flex justify-content-center">
+                <img src="{{ asset('assets/web/assets/img/our-partner/heep-hong.png') }}" alt="" class="img img-fluid heep-hong">
+            </div>
+            <div class="col-12 col-sm-8 col-md-5 col-lg-3 mt-5 mb-5 mt-md-0 d-flex justify-content-center">
+                <img src="{{ asset('assets/web/assets/img/our-partner/nda.png') }}" alt="" class="img img-fluid nda">
+            </div>
+            <div class="col-12 col-sm-8 col-md-5 col-lg-2 mt-5 mb-5 mt-md-0 d-flex justify-content-center">
+                <img src="{{ asset('assets/web/assets/img/our-partner/children.png') }}" alt="" class="img img-fluid children">
+            </div>
+            <div class="col-12 col-sm-8 col-md-5 col-lg-2 mt-5 mb-5 mt-md-0 d-flex justify-content-center">
+                <img src="{{ asset('assets/web/assets/img/our-partner/faith_in_love.png') }}" alt="" class="img img-fluid faith">
             </div>
         </div>
     </div>
