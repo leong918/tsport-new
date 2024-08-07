@@ -13,7 +13,7 @@
                         </ol>
                     </nav>
                     <h2 class="h2">
-                        {!! __('Healthy Teeth<br/>Collaboration') !!}
+                        {{ __('Healthy Teeth Collaboration') }}
                     </h2>
                 </div>
             </div>

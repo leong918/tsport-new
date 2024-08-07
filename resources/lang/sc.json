@@ -9,7 +9,7 @@
   "Who We Are": "我们是谁",
   "Founder & Committee Members": "创始人与委员会成员",
   "Our Partners": "我们的合作伙伴",
-  "Healthy Teeth Collaboration": "健康牙齿合作项目",
+  "Healthy Teeth Collaboration": "护齿同行",
   "Who we are": "我们是谁",
   "Mission, Vision, Value": "使命，愿景，价值",
 
@@ -78,11 +78,11 @@
 
   "Our Partner": "我们的合作伙伴",
 
-  "Hello Smile Hong Kong is an NGO that is registered as a charity in Hong Kong under Section 88 of the Inland Revenue Ordinance to service the oral health needs of local grass-roots families, with an emphasis on young children and children with special health care needs.": "Hello Smile Hong Kong 是一家根据香港税务条例第88节注册的慈善非政府组织，致力于服务本地基层家庭的口腔健康需求，特别关注幼儿和有特殊健康需求的儿童。",
+  "introduction": "Hello Smile Hong Kong是一家根据《税务条例》第88条在香港注册为慈善机构的非政府组织，旨在满足当地基层家庭、有特殊医疗保健需求的儿童和成人的口腔健康需求。",
   "We believe oral health is the foundation of wellbeing and happiness. An effort made for the happiness of others lifts above us. Not everyone can do great things but we can all do small things with great love.": "我们相信口腔健康是幸福和健康的基础。为他人的幸福而努力让我们提升。不是每个人都能做伟大的事情，但我们都可以用伟大的爱做小事。",
   "Education": "教育",
-  "Organize educational trainings & disseminate educational information to health institutions or personnel, schools, general public to promote the importance of oral health. We advocate the importance of establishing a dental home for young children and children with special healthcare needs to promote early dental intervention and provide preventive oral health counseling.": "组织教育培训并向医疗机构、学校和公众传播有关口腔健康的教育信息。我们倡导为幼儿和有特殊健康需求的儿童建立“牙科之家”的重要性，以促进早期牙科干预和提供预防性口腔健康咨询。",
-  "Provide dental care screenings, oral health education, dental treatments to underserved community including young children and children with special health care needs.": "为包括幼儿和有特殊健康需求的儿童在内的服务不足的社区提供牙科护理筛查、口腔健康教育和牙科治疗。",
+  "education desc": "组织教育培训并向医疗机构、学校和公众传播有关口腔健康的教育信息。我们倡导为幼儿和有特殊健康需求的儿童建立“牙科之家”的重要性，以促进早期牙科干预和提供预防性口腔健康咨询。",
+  "community outreach desc": "为服务不足的社区（包括幼儿、有特殊医疗保健需求的儿童和成人）提供牙科保健筛检、口腔健康教育和牙科治疗。",
   "Get Involved": "参与其中",
   "Donation": "捐赠",
   "Big or small, we are always grateful for donations – help us serve the oral health needs of the local community by donating today.": "无论大小，我们都非常感激您的捐赠——今天的捐赠将帮助我们满足当地社区的口腔健康需求。",
@@ -146,5 +146,9 @@
   "Your contact form has been submitted.": "您的联系表单已提交。",
   "Back to Home": "返回首页",
   "An error occurred while submitting the form. Please try again.": "提交表单时发生错误，请重试。",
-  "Error!": "错误！"
+  "Error!": "错误！",
+  "Healthy Teeth Collaboration Elaboration": "我们很荣幸，被委任为卫生署推行的「护齿同行」计划中的一家指定诊所，为符合资格的成年智障人士及/或自闭症谱系障碍患者提供牙科服务。",
+  "T.O.P Dental by family smile": "香港牙科医疗集团有限公司",
+  "Clinic Address": "九龙旺角弥敦道 700 号 T.O.P.<br />19 楼 1901-1906 室",
+  "All right reserved.": "版权所有。"
 }
