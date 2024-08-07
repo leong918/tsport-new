@@ -13,6 +13,10 @@ class Blog extends Model
 {
     use SoftDeletes;
 
+    public const CATEGORY = [
+        'Knowledge' => 'knowledge',
+        'Interviews' => 'interviews',
+    ];
     public const STATUS = [
         'ACTIVE' => 1,
         'INACTIVE' => 0,

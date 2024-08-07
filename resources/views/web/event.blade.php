@@ -32,22 +32,22 @@
                             <a href="#" class="filter-button" data-filter=".news">{{ __('News') }}</a>
                         </li>
                         <li>
-                            <a href="#" class="filter-button" data-filter=".event">{{ __('Events') }}</a>
+                            <a href="#" class="filter-button" data-filter=".events">{{ __('Events') }}</a>
                         </li>
                     </ul>
                 </div>
                 <div class="row event-list-container align-items-stretch">
                     <!-- Event items go here -->
-                    @foreach($events as $slug => $event)
-                    <div class="col-lg-4 col-md-6 col-sm-12 event-container {{ $event['type'] }}">
-                        <a href="{{ route('web.event_details', ['slug' => $slug]) }}">
+                    @foreach($events as $event)
+                    <div class="col-lg-4 col-md-6 col-sm-12 event-container {{ $event->type }}">
+                        <a href="{{ route('web.event_details', ['id' => $event->id]) }}">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ $event['banner'] }}" alt="" class="img img-fluid event-img">
+                                        <img src="{{ $event->eventGallery[0]->url }}" alt="" class="img img-fluid event-img">
                                     </div>
-                                    <p class="p3">{{ $event['date'] }}</p>
-                                    <h5 class="h5">{{ $event['name'] }}</h5>
+                                    <p class="p3">{{ $event->publishedDate() }}</p>
+                                    <h5 class="h5">{{ $event->getParameters(app()->getLocale(), 'name') }}</h5>
                                 </div>
                             </div>
                         </a>

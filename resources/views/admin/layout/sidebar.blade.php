@@ -25,6 +25,12 @@
                 Blog
             </a>
         </li>
+        <li class="nav-group">
+            <a class="nav-link" href="{{ route('admin.event.index') }}">
+                <i class="fa-solid fa-calendar-week nav-icon"></i>
+                Event
+            </a>
+        </li>
     </ul>
     <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
 </div>

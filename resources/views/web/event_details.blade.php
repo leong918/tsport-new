@@ -7,24 +7,24 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item p4"><a href="{{ route('web.home') }}">{{ __('Home') }}</a></li>
-                        <li class="breadcrumb-item p4"><a href="{{ route('web.event') }}">{{ __(App\Models\Event::TYPE[$event['type']]) }}</a></li>
+                        <li class="breadcrumb-item p4"><a href="{{ route('web.event') }}">{{ __($event->type) }}</a></li>
                         <li class="breadcrumb-item active p4" aria-current="page">{{ $event['name'] }}</li>
                     </ol>
                 </nav>
             </div>
 
             <div class="date-container">
-                <p class="p3">{{ $event['date'] }}</p>
+                <p class="p3">{{ $event->publishedDate() }}</p>
             </div>
             <div class="name-container">
-                <h3 class="h3">{{ $event['name'] }}</h3>
+                <h3 class="h3">{{ $event->name }}</h3>
             </div>
 
             <div class="row event-img-list-container">
-                @foreach($images as $image)
+                @foreach($event->eventGallery as $gallery)
                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="event-img" data-image="{{ $image }}" data-bs-toggle="modal" data-bs-target="#imageModal">
-                        <img src="{{ $image }}" alt="" />
+                    <div class="event-img" data-image="{{ $gallery->url }}" data-bs-toggle="modal" data-bs-target="#imageModal">
+                        <img src="{{ $gallery->url }}" alt="" />
                     </div>
                 </div>
                 @endforeach
