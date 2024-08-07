@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <meta name="description" content="Ecommerce Boilerplate Admin Template">
+  <meta name="description" content="Hello Smile Admin">
   <meta name="author" content="Tag Concept">
   <meta name="keyword" content="Bootstrap,Admin,Template,SCSS,HTML,RWD,Dashboard">
   <title>Hello Smile</title>
