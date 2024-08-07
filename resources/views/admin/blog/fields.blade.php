@@ -1,7 +1,7 @@
 @section('style')
-@parent
-<link rel="stylesheet" href="{{ asset('assets/admin/css/select2.min.css') }}" />
-<link rel="stylesheet" href="{{ asset('assets/admin/css/select2-bootstrap-5-theme.min.css') }}" />
+    @parent
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/select2.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/select2-bootstrap-5-theme.min.css') }}" />
 @endsection
 
 <style>
@@ -25,21 +25,20 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Blog Category') }}
-                        <select name="blog_category_id" class="form-control" id="blog_category_id">
-                            @foreach ($blogCategoryDropdown as $category)
-                                <option value="{{ $category->id }}" data-is-private="{{ $category->is_private }}" {{
-                                    old('blog_category_id', isset($model) && $model->blog_category_id == $category->id ? 'selected' : '') }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
+                        <select name="blog_category_name" class="form-control" id="blog_category_name">
+                            <option value="knowledge"
+                                {{ old('blog_category_name', isset($model) && $model->blog_category_name == 'knowledge' ? 'selected' : '') }}>
+                                Knowledge</option>
+                            <option value="interviews"
+                                {{ old('blog_category_name', isset($model) && $model->blog_category_name == 'interviews' ? 'selected' : '') }}>
+                                Interviews</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Ranking') }}<small class="text-secondary"> (數字愈大, 排名愈高)</small>
-                        {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)
-                            ->value(old('sort', isset($model) && $model->sort ? $model->sort : 0))->class('form-control requiredInput') }}
+                        {{ html()->number('sort')->placeholder('Enter sort')->attribute('min', 0)->value(old('sort', isset($model) && $model->sort ? $model->sort : 0))->class('form-control requiredInput') }}
                         <small class="text-danger errorMessage"></small>
                     </div>
                 </div>
@@ -52,9 +51,12 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Published Date') }}
-                        <div class="input-group datePicker" data-td-target-input="nearest" data-td-target-toggle="nearest">
-                            <input type="datetime" class="form-control" name="published_at" data-td-toggle="datetimepicker"
-                                value="{{ old('published_at', isset($model) ? $model->published_at : '') }}" autocomplete="off" />
+                        <div class="input-group datePicker" data-td-target-input="nearest"
+                            data-td-target-toggle="nearest">
+                            <input type="datetime" class="form-control" name="published_at"
+                                data-td-toggle="datetimepicker"
+                                value="{{ old('published_at', isset($model) ? $model->published_at : '') }}"
+                                autocomplete="off" />
                         </div>
                         <small class="text-danger errorMessage"></small>
                     </div>
@@ -62,21 +64,19 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Image <b>(Below 300kb, Recommended Size: 324px X 215px)</b>') }}
-                        {{ html()->file('image')->accept('image/*')->class('form-control image-uploader' .
-                        (isset($model) && $model->image ? '' : ' requiredInput')) }}
+                        {{ html()->file('image')->accept('image/*')->class('form-control image-uploader' . (isset($model) && $model->image ? '' : ' requiredInput')) }}
                         <small class="text-danger errorMessage"></small>
-                        {{ html()->hidden('original_image')->value(isset($model) && $model->image ? $model->image : '')
-                        }}
+                        {{ html()->hidden('original_image')->value(isset($model) && $model->image ? $model->image : '') }}
                         <div class="my-3">
                             <div id="image-preview-container"></div>
                         </div>
                         @if (isset($model) && $model->image)
-                        <div class="mb-3">
-                            <label>Original Image Preview</label>
-                            <div class="col-3 d-flex justify-content-center">
-                                <img class="img-fluid" {{ $model->image ? 'src=' . $model->image : '' }} />
+                            <div class="mb-3">
+                                <label>Original Image Preview</label>
+                                <div class="col-3 d-flex justify-content-center">
+                                    <img class="img-fluid" {{ $model->image ? 'src=' . $model->image : '' }} />
+                                </div>
                             </div>
-                        </div>
                         @endif
                     </div>
                 </div>
@@ -94,18 +94,21 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Name') }}
-                                {{ html()->text('language[en][name]')->placeholder('Enter name')
-                                    ->value(old('language.en.name', isset($model) && $model->getParameters('en') ? $model->getParameters('en')->name : ''))
-                                    ->class('form-control requiredInput') }}
+                                {{ html()->text('language[en][name]')->placeholder('Enter name')->value(
+                                        old('language.en.name', isset($model) && $model->getParameters('en') ? $model->getParameters('en')->name : ''),
+                                    )->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Content') }}
-                                {{ html()->textarea('language[en][content]')
-                                    ->value(old('language.en.content', isset($model) && $model->getParameters('en') ? e($model->getParameters('en')->content) : ''))
-                                    ->id('en_content')->class('form-control wysiwyg requiredInput') }}
+                                {{ html()->textarea('language[en][content]')->value(
+                                        old(
+                                            'language.en.content',
+                                            isset($model) && $model->getParameters('en') ? e($model->getParameters('en')->content) : '',
+                                        ),
+                                    )->id('en_content')->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
@@ -121,18 +124,21 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Name') }}
-                                {{ html()->text('language[sc][name]')->placeholder('Enter name')
-                                    ->value(old('language.sc.name', isset($model) && $model->getParameters('sc') ? $model->getParameters('sc')->name : ''))
-                                    ->class('form-control requiredInput') }}
+                                {{ html()->text('language[sc][name]')->placeholder('Enter name')->value(
+                                        old('language.sc.name', isset($model) && $model->getParameters('sc') ? $model->getParameters('sc')->name : ''),
+                                    )->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Content') }}
-                                {{ html()->textarea('language[sc][content]')
-                                    ->value(old('language.sc.content', isset($model) && $model->getParameters('sc') ? e($model->getParameters('sc')->content) : ''))
-                                    ->class('form-control wysiwyg requiredInput') }}
+                                {{ html()->textarea('language[sc][content]')->value(
+                                        old(
+                                            'language.sc.content',
+                                            isset($model) && $model->getParameters('sc') ? e($model->getParameters('sc')->content) : '',
+                                        ),
+                                    )->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
@@ -148,18 +154,21 @@
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Name') }}
-                                {{ html()->text('language[tc][name]')->placeholder('Enter name')
-                                    ->value(old('language.tc.name', isset($model) && $model->getParameters('tc') ? $model->getParameters('tc')->name : ''))
-                                    ->class('form-control requiredInput') }}
+                                {{ html()->text('language[tc][name]')->placeholder('Enter name')->value(
+                                        old('language.tc.name', isset($model) && $model->getParameters('tc') ? $model->getParameters('tc')->name : ''),
+                                    )->class('form-control requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
                                 {{ html()->label('Content') }}
-                                {{ html()->textarea('language[tc][content]')
-                                    ->value(old('language.tc.content', isset($model) && $model->getParameters('tc') ? e($model->getParameters('tc')->content) : ''))
-                                    ->class('form-control wysiwyg requiredInput') }}
+                                {{ html()->textarea('language[tc][content]')->value(
+                                        old(
+                                            'language.tc.content',
+                                            isset($model) && $model->getParameters('tc') ? e($model->getParameters('tc')->content) : '',
+                                        ),
+                                    )->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
@@ -171,11 +180,11 @@
 </div>
 
 @section('script')
-@parent
-<script src="{{ asset('assets/admin/js/tinymce/tinymce.min.js') }}"></script>
-<script src="{{ asset('assets/admin/js/select2.min.js') }}"></script>
-<script>
-    $(document).ready(function() {
+    @parent
+    <script src="{{ asset('assets/admin/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/select2.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
             $('.datePicker').tempusDominus({
                 localization: {
                     format: 'yyyy-MM-dd'
@@ -190,7 +199,7 @@
             var editor_config = {
                 path_absolute: "{{ config('app.url') . '/' }}",
                 selector: "textarea.wysiwyg",
-                min_height:300,
+                min_height: 300,
                 plugins: [
                     "advlist autolink lists link image charmap print preview hr anchor pagebreak",
                     "searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -290,5 +299,5 @@
                 this.submit();
             }
         });
-</script>
+    </script>
 @endsection

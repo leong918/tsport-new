@@ -52,10 +52,10 @@ class BlogRepository extends BaseRepository
 
     public function getBlogByCategory($blog_category_id)
     {
-        return Blog::where('status', 1)
-            ->whereHas('blogCategory', function($query) use ($blog_category_id) {
-                $query->where('id', $blog_category_id);
-            })
+        return Blog::where([
+            'status' => 1,
+            'blog_category_name' => $blog_category_id
+            ])
             ->orderBy('sort', 'desc')
             ->orderBy('published_at', 'desc')
             ->get();
@@ -63,10 +63,10 @@ class BlogRepository extends BaseRepository
 
     public function getFirstBlogByCategory($blog_category_id)
     {
-        return Blog::where('status', 1)
-            ->whereHas('blogCategory', function($query) use ($blog_category_id) {
-                $query->where('id', $blog_category_id);
-            })
+        return Blog::where([
+            'status' => 1,
+            'blog_category_name' => $blog_category_id
+            ])
             ->orderBy('sort', 'desc')
             ->orderBy('published_at', 'desc')
             ->first();

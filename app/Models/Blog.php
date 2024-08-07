@@ -34,7 +34,7 @@ class Blog extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'blog_category_id',
+        'blog_category_name',
         'name',
         'image',
         'status',
