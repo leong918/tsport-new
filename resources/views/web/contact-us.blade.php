@@ -26,13 +26,13 @@
             <div class="row contact-row">
                 <div class="col-sm-12 col-lg-5">
                     <div class="contact-list-section">
-                        <a href="tel:(852) 2868 3808">
+                        <a href="tel:(852) 3853 9672">
                             <div class="contact-list-item">
                                 <div class="contact-icon">
                                     <img src="{{ asset('assets/web/assets/img/contact-us/phone-icon.png') }}" alt="">
                                 </div>
                                 <div class="contact-content">
-                                    <p class="p2">(852) 2868 3808</p>
+                                    <p class="p2">(852) 3853 9672</p>
                                 </div>
                             </div>
                         </a>
@@ -56,10 +56,10 @@
                                 <div class="contact-content">
                                     <div class="p2">
                                         <p>
-                                            (T.O.P Dental by family smile)
+                                            ({{ __('T.O.P Dental by family smile') }})
                                             <br/>
                                             <u>
-                                                1901-1906 T.O.P, 700 Nathan<br/>Road, Mongkok, Kowloon
+                                                {!! __('Clinic Address') !!}
                                             </u>
                                         </p>
                                     </div>

@@ -33,7 +33,7 @@
                     </a>
                 </div>
                 <div class="col-12 col-lg">
-                    <p class="p4 mb-0 text-start text-lg-end mt-2 mt-lg-0">© hellosmile HK {{ date('Y') }}. All right reserved.</p>
+                    <p class="p4 mb-0 text-start text-lg-end mt-2 mt-lg-0">© hellosmile HK {{ date('Y') }}. {{ __('All right reserved.') }}</p>
                 </div>
             </div>
         </div>

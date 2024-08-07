@@ -16,7 +16,7 @@
                     <h2 class="banner-title h2">
                         {!! __('EVERYONE DESERVES A HEALTHY "SMILE"') !!}
                     </h2>
-                    <a href="#" class="button p2 d-flex align-items-center btn-more">
+                    <a href="{{ route('web.mission') }}" class="button p2 d-flex align-items-center btn-more">
                         {{ __('Read More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
@@ -31,7 +31,7 @@
                     <h2 class="banner-title h2">
                         {!! __('WE CAN ALL DO SMALL THINGS WITH GREAT LOVE') !!}
                     </h2>
-                    <a href="#" class="button p2 d-flex align-items-center btn-more">
+                    <a href="{{ route('web.about-us') }}" class="button p2 d-flex align-items-center btn-more">
                         {{ __('Read More') }}
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
@@ -260,8 +260,7 @@
                                     <div>
                                         <h3 class="h3">{{ __('Healthy Teeth Collaboration') }}</h3>
                                         <p class="p2">
-                                            Aenean sed nisl quis nisl pulvinar porttitor dui nunc dapibus justo, quis ornare purus ante eget mi, Henean sed nisl quis nisl pulvinar 
-                                            porttitor dui nunc dapibus justo, quis ornare purus ante egetmi. Enean sed nisl quiorttitor dui nunc dapibus justo, quis ornare purus ante eget mi
+                                            {{ __('Healthy Teeth Collaboration Elaboration') }}
                                         </p>
                                     </div>
                                     <div class="d-flex justify-content-end">
