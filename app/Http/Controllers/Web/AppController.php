@@ -9,21 +9,24 @@ use Illuminate\Support\Facades\File;
 use App\Http\Requests\Form\ContactUs\CreateContactRequest;
 use App\Models\Event;
 use App\Repositories\BlogRepository;
+use App\Repositories\EventRepository;
 use App\Mail\ContactMail;
 
 class AppController extends BaseController
 {
     private BlogRepository $blogRepository;
+    private EventRepository $eventRepository;
 
-    public function __construct(BlogRepository $blogRepository)
+    public function __construct(BlogRepository $blogRepository, EventRepository $eventRepository)
     {
         $this->blogRepository = $blogRepository;
+        $this->eventRepository = $eventRepository;
     }
 
     public function index()
     {
-        $news = Event::getLatestEvents(3, 'news');
-        $events = Event::getLatestEvents(3, 'event');
+        $news = $this->eventRepository->getLatestEvent('news');
+        $events = $this->eventRepository->getLatestEvent('events');
 
         return $this->view('index', compact('news', 'events'));
     }
@@ -55,33 +58,33 @@ class AppController extends BaseController
 
     public function event()
     {
-        $events = Event::getAllEvents();
+        $events = $this->eventRepository->getListing()->get();
 
         return $this->view('event', compact('events'));
     }
 
-    public function eventDetails($slug)
+    public function eventDetails($id)
     {
 
-        $event = Event::getEventBySlug($slug);
-        $path = public_path('assets/web/assets/img/event-details/' . $slug);
+        $event = $this->eventRepository->getById($id);
+        // $path = public_path('assets/web/assets/img/event-details/' . $slug);
 
-        if (!$event) {
-            abort(404);
-        }
+        // if (!$event) {
+        //     abort(404);
+        // }
 
-        if(!is_dir($path)){
-            abort(404);
-        }
+        // if(!is_dir($path)){
+        //     abort(404);
+        // }
 
-        $files = File::files($path);
-        $images = [];
+        // $files = File::files($path);
+        // $images = [];
 
-        foreach ($files as $file) {
-            $images[] = asset('assets/web/assets/img/event-details/' . $slug . '/' . $file->getRelativePathname());
-        }
+        // foreach ($files as $file) {
+        //     $images[] = asset('assets/web/assets/img/event-details/' . $slug . '/' . $file->getRelativePathname());
+        // }
 
-        return $this->view('event_details', compact('event', 'images'));
+        return $this->view('event_details', compact('event'));
     }
 
     public function contactUs()

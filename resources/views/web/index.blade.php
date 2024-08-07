@@ -174,17 +174,17 @@
                 </div>
                 <div class="news-list">
                     @foreach($news as $new)
-                    <a href="{{ route('web.event_details', $new['slug']) }}" class="news-detail">
+                    <a href="{{ route('web.event_details', ['id' => $new->id]) }}" class="news-detail">
                         <div class="row">
                             <div class="col-5 col-md-4">
                                 <div class="img-wrapper">
-                                    <img src="{{ $new['banner'] }}" alt="news-1" class="img img-fluid">
+                                    <img src="{{ $new->eventGallery[0]->url }}" alt="news-1" class="img img-fluid">
                                 </div>
                             </div>
                             <div class="col-7 col-md-8">
-                                <p class="p3">{{ $new['date']->format('Y/m/d') }}</p>
+                                <p class="p3">{{ $new->publishedDate() }}</p>
                                 <h5 class="h5">
-                                    {{ $new['name'] }}
+                                    {{ $new->getParameters(app()->getLocale(), 'name') }}
                                 </h5>
                             </div>
                         </div>
@@ -208,14 +208,14 @@
                     <div class="swiper-wrapper">
                         @foreach($events as $event)
                         <div class="swiper-slide">
-                            <a href="{{ route('web.event_details', $event['slug']) }}">
+                            <a href="{{ route('web.event_details', ['id' => $event->id]) }}">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="img-wrapper d-flex justify-content-center">
-                                        <img src="{{ $event['banner'] }}" alt="" class="img img-fluid event-img">
+                                        <img src="{{ $event->eventGallery[0]->url }}" alt="" class="img img-fluid event-img">
                                     </div>
-                                    <p class="p3">{{ $event['date']->format('Y/m/d') }}</p>
-                                    <h5 class="h5">{{ $event['name'] }}</h5>
+                                    <p class="p3">{{ $event->publishedDate() }}</p>
+                                    <h5 class="h5">{{ $event->getParameters(app()->getLocale(), 'name') }}</h5>
                                     <div class="d-flex justify-content-end">
                                         <a class="event-arrow-wrapper" href="#">
                                             <img src="{{ asset('assets/web/assets/img/home/event-arrow.png') }}" alt="" class="img img-fluid event-arrow">

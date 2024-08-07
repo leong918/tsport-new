@@ -19,13 +19,13 @@
 <x-alert />
 <div class="col-sm-12">
     <div class="card mb-3">
-        <div class="card-header"><strong>Blog</strong> </div>
+        <div class="card-header"><strong>Event</strong> </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Blog Category') }}
-                        {{ html()->select('blog_category_name')->options(renderSelect(Blog::CATEGORY))->class('form-control') }}
+                        {{ html()->label('Event Type') }}
+                        {{ html()->select('type')->options(renderSelect(Event::TYPE))->class('form-control') }}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -38,7 +38,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Status') }}
-                        {{ html()->select('status')->options(renderSelect(Blog::STATUS))->class('form-control') }}
+                        {{ html()->select('status')->options(renderSelect(Event::STATUS))->class('form-control') }}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -56,19 +56,20 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        {{ html()->label('Image <b>(Below 300kb, Recommended Size: 324px X 215px)</b>') }}
-                        {{ html()->file('image')->accept('image/*')->class('form-control image-uploader' . (isset($model) && $model->image ? '' : ' requiredInput')) }}
-                        <small class="text-danger errorMessage"></small>
-                        {{ html()->hidden('original_image')->value(isset($model) && $model->image ? $model->image : '') }}
-                        <div class="my-3">
-                            <div id="image-preview-container"></div>
-                        </div>
-                        @if (isset($model) && $model->image)
-                            <div class="mb-3">
+                        {{-- {{ html()->label('Image <b>(Below 300kb, Recommended Size: 324px X 215px)</b>') }} --}}
+                        {{ html()->label('Image') }}
+                        {{ html()->file('image[]')->accept('image/*')->multiple()->class('form-control image-uploader form-control-file') }}
+                        <small class="text-danger errorMessage" id="imageError"></small>
+                        <div id="image-preview-container" class="row"></div>
+                        <br />
+                        @if (isset($model) && $model->eventGallery->count() > 0)
+                            <div class="row">
                                 <label>Original Image Preview</label>
-                                <div class="col-3 d-flex justify-content-center">
-                                    <img class="img-fluid" {{ $model->image ? 'src=' . $model->image : '' }} />
-                                </div>
+                                @foreach ($model->eventGallery as $gallery)
+                                    <div class="col-3 d-flex justify-content-center">
+                                        <img class="img-fluid object-fit-contain" src={{ $gallery->url }} />
+                                    </div>
+                                @endforeach
                             </div>
                         @endif
                     </div>
@@ -93,18 +94,6 @@
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                {{ html()->label('Content') }}
-                                {{ html()->textarea('language[en][content]')->value(
-                                        old(
-                                            'language.en.content',
-                                            isset($model) && $model->getParameters('en') ? e($model->getParameters('en')->content) : '',
-                                        ),
-                                    )->id('en_content')->class('form-control wysiwyg requiredInput') }}
-                                <small class="text-danger errorMessage"></small>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -123,18 +112,6 @@
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                {{ html()->label('Content') }}
-                                {{ html()->textarea('language[sc][content]')->value(
-                                        old(
-                                            'language.sc.content',
-                                            isset($model) && $model->getParameters('sc') ? e($model->getParameters('sc')->content) : '',
-                                        ),
-                                    )->class('form-control wysiwyg requiredInput') }}
-                                <small class="text-danger errorMessage"></small>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -150,18 +127,6 @@
                                 {{ html()->text('language[tc][name]')->placeholder('Enter name')->value(
                                         old('language.tc.name', isset($model) && $model->getParameters('tc') ? $model->getParameters('tc')->name : ''),
                                     )->class('form-control requiredInput') }}
-                                <small class="text-danger errorMessage"></small>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                {{ html()->label('Content') }}
-                                {{ html()->textarea('language[tc][content]')->value(
-                                        old(
-                                            'language.tc.content',
-                                            isset($model) && $model->getParameters('tc') ? e($model->getParameters('tc')->content) : '',
-                                        ),
-                                    )->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>
@@ -260,15 +225,26 @@
             tinymce.init(editor_config);
         });
 
-        $("#blog-form").submit(function(e) {
+        $("#event-form").submit(function(e) {
             e.preventDefault();
             tinymce.triggerSave();
             var url = $(this).attr('action');
             let formData = new FormData(this);
-            $(".form-control-file").each(function() {
-                formData.append($(this).attr("name"), $(this)[0].files[0]);
-            })
             var can_submit = true;
+
+            $(".form-control-file").each(function() {
+                var file = $(this)[0].files[0];
+
+                if (!file) {
+                    @if (!isset($model) || (isset($model) && $model->eventGallery->count() <= 0))
+                        can_submit = false;
+                        $('#imageError').text('Field is required');
+                    @endif
+                } else {
+                    formData.append($(this).attr("name"), file);
+                }
+            })
+
             var publishedErrMsgElement = $('input[name="published_at"]').closest('.mb-3').find('.errorMessage');
             publishedErrMsgElement.text('');
 
