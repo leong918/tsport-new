@@ -107,9 +107,9 @@ class AppController extends BaseController
 
     public function blog()
     {
-        $knowledges = $this->blogRepository->getBlogByCategory(1);
-        $interviews = $this->blogRepository->getBlogByCategory(2);
-        $first_interview = $this->blogRepository->getFirstBlogByCategory(2);
+        $knowledges = $this->blogRepository->getBlogByCategory('knowledge');
+        $interviews = $this->blogRepository->getBlogByCategory('interviews');
+        $first_interview = $this->blogRepository->getFirstBlogByCategory('interviews');
         return $this->view('blog.blog', compact('knowledges', 'interviews', 'first_interview'));
     }
 
