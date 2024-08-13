@@ -33,27 +33,29 @@
                         </p>
                         <h4 class="h4">{{ __('Service') }}:</h4>
                         <ul class="ul">
-                            <li><p class="p2">{!! __('Oral health promotion and education to caregivers') !!}</p></li>
-                            <li><p class="p2">{!! __('Annual dental checkup and preventive treatment for PID') !!}</p></li>
-                            <li><p class="p2">{!! __('Dental treatment necessary for PID by behavioral management, conscious sedation, MAC or general anaesthesia') !!}</p></li>
-                            <li><p class="p2">{!! __('Rehabilitation service including dentures where indicated for PID') !!}</p></li>
+                            <li><p class="p2">{!! __('Oral health promotion and education to PID and/ASD and caregivers') !!}</p></li>
+                            <li><p class="p2">{!! __('Annual dental checkup and preventive treatment for PID and/ASD') !!}</p></li>
+                            <li><p class="p2">{!! __('Dental treatment necessary for PID and/ASD by behavioral management, conscious sedation, MAC or general anaesthesia') !!}</p></li>
+                            <li><p class="p2">{!! __('Rehabilitation service including dentures where indicated for PID and/ASD') !!}</p></li>
                         </ul>
                         <h4 class="h4">{{ __('Service period') }}:</h4>
                         <ul class="ul">
-                            <li><p class="p2">{!! __('16 July 2024 – 15 July 2027') !!}</p></li>
+                            <li><p class="p2">{!! __('16 July 2024 — 31 March 2027') !!}</p></li>
                         </ul>
-                        <h4 class="h4">{{ __('Service period') }}:</h4>
-                        <ul class="ul">
-                            <li><p class="p2">{!! __('Adults aged 18 and above; AND') !!}</p></li>
-                            <li><p class="p2">{!! __('Proof of intellectual disability by way of:') !!}</p></li>
-                            <li><p class="p2">{!! __('Registration Card for People with Disabilities issued by the Labour and Welfare Bureau Medical certification') !!}</p></li>
-                            <li><p class="p2">{!! __('Medical certification') !!}</p></li>
-                            <li><p class="p2">{!! __('Rehabilitation service certification') !!}</p></li>
-                        </ul>
+                        <h4 class="h4">{{ __('Target Beneficiaries') }}:</h4>
+                        <ol class="ol">
+                            <li><p class="p2">{!! __('Adults aged 18 or above; AND,') !!}</p></li>
+                            <li><p class="p2">{!! __("Hold one of the following documents certifying the disability category as 'intellectual disability', 'mental handicap' or 'autism spectrum disability' :") !!}</p></li>
+                            <ul class="ul">
+                                <li><p class="p2">{!! __('a valid Registration Card for People with Disabilities issued by the Labour and Welfare Bureau; or') !!}</p></li>
+                                <li><p class="p2">{!! __('a medical certificate issued by a doctor registered in Hong Kong; or') !!}</p></li>
+                                <li><p class="p2">{!! __('a certificate issued by the person-in-charge of a rehabilitation service unit under the designated types of rehabilitation services.') !!}</p></li>
+                            </ul>
+                        </ol>
                         <h4 class="h4">{{ __('Escort and transport subsidies') }}:</h4>
                         <ul class="ul">
-                            <li><p class="p2">{!! __('Escort subsidy – actual expense with a maximum of $350 per dental visit and up to 6 visits per service year') !!}</p></li>
-                            <li><p class="p2">{!! __('Transport subsidy – actual expense of no more than $300 per dental visit, and up to 6 visits per service year') !!}</p></li>
+                            <li><p class="p2">{!! __('Escort subsidy per user: Actual expense with a cumulative ceiling of $5,800 per service period.') !!}</p></li>
+                            <li><p class="p2">{!! __('Transport subsidy per user: Actual expense with a cumulative ceiling of $5,000 per service period.') !!}</p></li>
                         </ul>
                         <h4 class="h4">{{ __('Booking / Enquiries') }}:</h4>
                         <ul class="ul">
@@ -64,7 +66,7 @@
                         <ul class="ul">
                             <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC Application Form(C)_202107 (hello smile logo).pdf') }}" target="_blank">{!! __('Application Form (not required for existing patient)') !!}</a></p></li>
                             <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC Application Form(Appendix)(C)_202407.pdf') }}" target="_blank">{!! __('Appendices to Application Form') !!}</a></p></li>
-                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/護齒同行申請人評估表 (30-7-24).pdf') }}" target="_blank">{!! __('Assessment Form (required for every patient every service year, i.e. 16 July – 15 July)') !!}</a></p></li>
+                            <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/護齒同行申請人評估表 (30-7-24).pdf') }}" target="_blank">{!! __('Assessment Form (required for every patient every service year)') !!}</a></p></li>
                             <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC01C-Certificate of Disability Type_202407.pdf') }}" target="_blank">{!! __('Certificate of Disability Type') !!}</a></p></li>
                             <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/護齒同行陪診&交通資助申請書.pdf') }}" target="_blank">{!! __('Escort / Transport Fee Claim Form') !!}</a></p></li>
                             <li><p class="p2"><a style="color:black" href="{{ asset('assets/web/assets/pdf/HTC08-申請交通津貼聲明書_202407.pdf') }}" target="_blank">{!! __('Declaration by Claimant on Transport Fee (e.g. taxi receipt)') !!}</a></p></li>
