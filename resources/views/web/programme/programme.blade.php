@@ -52,7 +52,7 @@
                                 <li><p class="p2">{!! __('a certificate issued by the person-in-charge of a rehabilitation service unit under the designated types of rehabilitation services.') !!}</p></li>
                             </ul>
                         </ol>
-                        <h4 class="h4">{{ __('Escort and transport subsidies') }}:</h4>
+                        <h4 class="h4">{{ __('Escort and transport subsidies') }}</h4>
                         <ul class="ul">
                             <li><p class="p2">{!! __('Escort subsidy per user: Actual expense with a cumulative ceiling of $5,800 per service period.') !!}</p></li>
                             <li><p class="p2">{!! __('Transport subsidy per user: Actual expense with a cumulative ceiling of $5,000 per service period.') !!}</p></li>
