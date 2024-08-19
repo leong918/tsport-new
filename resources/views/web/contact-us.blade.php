@@ -47,13 +47,12 @@
                                 </div>
                             </div>
                         </a>
-
-                        <a href="https://maps.app.goo.gl/AfaUt929wKPkKSeT7" target="_blank">
-                            <div class="contact-list-item">
-                                <div class="contact-icon">
-                                    <img src="{{ asset('assets/web/assets/img/contact-us/location-icon.png') }}" alt="">
-                                </div>
-                                <div class="d-flex row">
+                        <div class="contact-list-item d-flex">
+                            <div class="contact-icon">
+                                <img src="{{ asset('assets/web/assets/img/contact-us/location-icon.png') }}" alt="">
+                            </div>
+                            <div class="d-flex row mx-1">
+                                <a class="mb-3" href="https://maps.app.goo.gl/AfaUt929wKPkKSeT7" target="_blank">
                                     <div class="contact-content">
                                         <div class="h6">
                                             {{__('Clinic Area1')}}
@@ -68,7 +67,9 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="contact-content">
+                                </a>
+                                <a class="mb-3" href="https://maps.app.goo.gl/r488ySxrNVo5ZeKv8" target="_blank">
+                                    <div class="contact-content col-">
                                         <div class="h6">
                                             {{__('Clinic Area2')}}
                                         </div>
@@ -80,9 +81,9 @@
                                             </p>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-7">
