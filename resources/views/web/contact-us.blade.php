@@ -53,15 +53,32 @@
                                 <div class="contact-icon">
                                     <img src="{{ asset('assets/web/assets/img/contact-us/location-icon.png') }}" alt="">
                                 </div>
-                                <div class="contact-content">
-                                    <div class="p2">
-                                        <p>
-                                            ({{ __('T.O.P Dental by family smile') }})
-                                            <br/>
-                                            <u>
-                                                {!! __('Clinic Address') !!}
-                                            </u>
-                                        </p>
+                                <div class="d-flex row">
+                                    <div class="contact-content">
+                                        <div class="h6">
+                                            {{__('Clinic Area1')}}
+                                        </div>
+                                        <div class="p2">
+                                            <p>
+                                                ({{ __('T.O.P Dental by family smile') }})
+                                                <br/>
+                                                <u>
+                                                    {!! __('Clinic Address1') !!}
+                                                </u>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-content">
+                                        <div class="h6">
+                                            {{__('Clinic Area2')}}
+                                        </div>
+                                        <div class="p2">
+                                            <p>
+                                                <u>
+                                                    {!! __('Clinic Address2') !!}
+                                                </u>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
