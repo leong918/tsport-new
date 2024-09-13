@@ -1,4 +1,11 @@
 @extends('web.layout.app')
+
+@section('u_meta')
+    <meta name="url" content="{{ route('web.blog_details', $blog->id) }}">
+    <meta name="content" content="{{ $blog->getParameters(app()->getLocale(), 'content') }}">
+    <title>{{ $blog->getParameters(app()->getLocale(), 'name') . ' | ' . 'Hello Smile' }}</title>
+@endsection
+
 @section('content')
 <div id="blog-details">
     <div class="section-header">

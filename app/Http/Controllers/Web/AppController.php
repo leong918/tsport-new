@@ -25,10 +25,11 @@ class AppController extends BaseController
 
     public function index()
     {
-        $news = $this->eventRepository->getLatestEvent('news');
-        $events = $this->eventRepository->getLatestEvent('events');
+        // $news = $this->eventRepository->getLatestEvent('news');
+        // $events = $this->eventRepository->getLatestEvent('events');
 
-        return $this->view('index', compact('news', 'events'));
+        // return $this->view('index', compact('news', 'events'));
+        return $this->view('index');
     }
 
     public function aboutUs()
