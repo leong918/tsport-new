@@ -46,11 +46,11 @@ class EventRepository extends BaseRepository
         return Event::findOrFail($id);
     }
 
-    public function getLatestEvent($type){
-        $limit_num = $type === 'news' ? 3 : 1;
+    // public function getLatestEvent($type){
+    //     $limit_num = $type === 'news' ? 3 : 1;
 
-        return Event::where(['type' => $type, 'status' => 1])->orderBy('published_at', 'desc')->limit($limit_num)->get();
-    }
+    //     return Event::where(['type' => $type, 'status' => 1])->orderBy('published_at', 'desc')->limit($limit_num)->get();
+    // }
 
     public function createEvent($data)
     {
