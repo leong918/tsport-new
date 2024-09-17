@@ -172,7 +172,7 @@
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
                 </div>
-                {{-- <div class="news-list">
+                <div class="news-list">
                     @foreach($news as $new)
                     <a href="{{ route('web.event_details', ['id' => $new->id]) }}" class="news-detail">
                         <div class="row">
@@ -190,7 +190,7 @@
                         </div>
                     </a>
                     @endforeach
-                </div> --}}
+                </div>
                 <a href="{{ route('web.event', ['type' => 'news']) }}" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
                     {{ __('More') }}
                     <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
