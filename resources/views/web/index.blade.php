@@ -204,7 +204,7 @@
                         <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
                     </a>
                 </div>
-                {{-- <div class="event-swiper" id="event-swiper">
+                <div class="event-swiper" id="event-swiper">
                     <div class="swiper-wrapper">
                         @foreach($events as $event)
                         <div class="swiper-slide">
@@ -233,7 +233,7 @@
                         <div class="swiper-pagination p2"></div>
                         <img src="{{ asset('assets/web/assets/img/home/event-right.png') }}" alt="" class="img img-fluid" id="event-right">
                     </div>
-                </div> --}}
+                </div>
                 <a href="{{ route('web.event', ['type' => 'event']) }}" class="button p2 d-flex d-lg-none align-items-center btn-more mt-5 m-auto">
                     {{ __('More') }}
                     <img src="{{ asset('assets/web/assets/img/home/right-arrow.png') }}" alt="" class="img img-fluid arrow">
