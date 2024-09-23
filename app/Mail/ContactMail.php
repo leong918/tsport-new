@@ -26,7 +26,7 @@ class ContactMail extends Mailable
         $this->email = $email;
         $this->message = $message;
 
-        $this->from($email, $first_name);
+        $this->from(env('MAIL_FROM_ADDRESS'), $first_name);
     }
 
     /**
