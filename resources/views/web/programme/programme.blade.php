@@ -59,8 +59,8 @@
                         </ul>
                         <h4 class="h4">{{ __('Booking / Enquiries') }}:</h4>
                         <ul class="ul">
-                            <li><p class="p2">{!! __('Call 38539672 (at 9:00am to 6:00pm, Mon to Sat)') !!}</p></li>
-                            <li><p class="p2">{!! __('WhatsApp 59313940') !!}</p></li>
+                            <li><p class="p2">{!! __('Mongkok<br />(T.O.P Dental by family smile)<br />1901-1906 T.O.P, 700 Nathan Road, Mongkok, Kowloon<br />Call 38539672 (at 9:00am to 6:00pm, Mon to Sat)<br />WhatsApp 59313940') !!}</p></li>
+                            <li><p class="p2">{!! __('701-702, 8 Jordan Road, Hong Kong (MRT Jordan Station, Exit B2)<br />Call 37071148 (at 9:00am to 6:00pm, Mon to Sat)<br />WhatsApp 93333241') !!}</p></li>
                         </ul>
                         <h4 class="h4">{{ __('Forms Download') }}:</h4>
                         <ul class="ul">
