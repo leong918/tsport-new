@@ -103,7 +103,6 @@ class BlogRepository extends BaseRepository
     public function updateBlog(array $input, int $id)
     {
         $input['published_at'] = $input['published_at'] ? Carbon::createFromFormat('Y-m-d', $input['published_at'])->startOfDay()->format('Y-m-d H:i:s') : null;
-
         $model = Blog::findOrFail($id);
 
         if (isset($input['image'])) {

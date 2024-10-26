@@ -95,6 +95,18 @@
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
+                                {{ html()->label('Description') }}
+                                {{ html()->text('language[en][description]')->value(
+                                        old(
+                                            'language.en.description',
+                                            isset($model) && $model->getParameters('en') ? e($model->getParameters('en')->description) : '',
+                                        ),
+                                    )->id('en_content')->class('form-control wysiwyg requiredInput') }}
+                                <small class="text-danger errorMessage"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
                                 {{ html()->label('Content') }}
                                 {{ html()->textarea('language[en][content]')->value(
                                         old(
@@ -125,6 +137,18 @@
                         </div>
                         <div class="col-md-12">
                             <div class="mb-3">
+                                {{ html()->label('Description') }}
+                                {{ html()->text('language[sc][description]')->value(
+                                        old(
+                                            'language.sc.description',
+                                            isset($model) && $model->getParameters('sc') ? e($model->getParameters('sc')->description) : '',
+                                        ),
+                                    )->id('sc_content')->class('form-control wysiwyg requiredInput') }}
+                                <small class="text-danger errorMessage"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
                                 {{ html()->label('Content') }}
                                 {{ html()->textarea('language[sc][content]')->value(
                                         old(
@@ -150,6 +174,18 @@
                                 {{ html()->text('language[tc][name]')->placeholder('Enter name')->value(
                                         old('language.tc.name', isset($model) && $model->getParameters('tc') ? $model->getParameters('tc')->name : ''),
                                     )->class('form-control requiredInput') }}
+                                <small class="text-danger errorMessage"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                {{ html()->label('Description') }}
+                                {{ html()->text('language[tc][description]')->value(
+                                        old(
+                                            'language.tc.description',
+                                            isset($model) && $model->getParameters('tc') ? e($model->getParameters('tc')->description) : '',
+                                        ),
+                                    )->id('tc_content')->class('form-control wysiwyg requiredInput') }}
                                 <small class="text-danger errorMessage"></small>
                             </div>
                         </div>

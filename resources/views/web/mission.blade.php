@@ -1,4 +1,9 @@
 @extends('web.layout.app')
+@section('u_meta')
+    <meta name="url" content="https://www.hellosmilehk.org/tc/mission-vision-value">
+    <meta name="content" content={{ __('MissionVisionValueDesc')}}>
+    <title>{{'Hello Smile Hong Kong'.' | ' .  __('MissionVisionValue')  }}</title>
+@endsection
 @section('content')
 <div id="mission">
     <!-- header -->

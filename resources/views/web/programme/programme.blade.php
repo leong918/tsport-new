@@ -1,4 +1,9 @@
 @extends('web.layout.app')
+@section('u_meta')
+    <meta name="url" content="https://www.hellosmilehk.org/tc/programme/healthy-teeth-collaboration">
+    <meta name="content" content={{ __('HealthyTeethCollaborationDesc')}}>
+    <title>{{'Hello Smile Hong Kong'.' | ' .  __('HealthyTeethCollaboration')  }}</title>
+@endsection
 @section('content')
 <div id="programme">
     <div class="section-header">

@@ -1,4 +1,9 @@
 @extends('web.layout.app')
+@section('u_meta')
+    <meta name="url" content="https://www.hellosmilehk.org/tc/what-do-we-do">
+    <meta name="content" content={{ __('WhatDoWeDoDesc')}}>
+    <title>{{'Hello Smile Hong Kong'.' | ' .  __('WhatDoWeDo')  }}</title>
+@endsection
 @section('content')
 <div id="what-do-we-do">
     <!-- header -->

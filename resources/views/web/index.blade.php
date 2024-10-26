@@ -2,6 +2,12 @@
 
 <x-alert />
 
+@section('u_meta')
+    <meta name="url" content="https://www.hellosmilehk.org/tc">
+    <meta name="content" content={{ __('IndexDesc')}}>
+    <title>{{'Hello Smile Hong Kong'.' | ' .  __('IndexHeadLine')  }}</title>
+@endsection
+
 @section('content')
 
 <div id="home" class="overflow-x-hidden">
