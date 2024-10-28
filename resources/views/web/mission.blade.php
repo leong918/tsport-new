@@ -1,4 +1,9 @@
 @extends('web.layout.app')
+@section('u_meta')
+    <meta name="url" content="{{ route('web.mission') }}">
+    <meta name="description" content={{ __('MissionVisionValueDesc')}}>
+    <title>{{'Hello Smile Hong Kong | ' .  __('MissionVisionValue')  }}</title>
+@endsection
 @section('content')
 <div id="mission">
     <!-- header -->

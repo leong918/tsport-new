@@ -1,4 +1,9 @@
 @extends('web.layout.app')
+@section('u_meta')
+    <meta name="url" content="{{ route('web.programme') }}">
+    <meta name="description" content={{ __('HealthyTeethCollaborationDesc')}}>
+    <title>{{'Hello Smile Hong Kong | ' .  __('HealthyTeethCollaboration')  }}</title>
+@endsection
 @section('content')
 <div id="programme">
     <div class="section-header">

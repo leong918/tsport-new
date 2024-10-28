@@ -1,4 +1,8 @@
     @extends('web.layout.app')
+    @section('u_meta')
+    <meta name="url" content="{{ route('web.event') }}">
+    <title>{{'Hello Smile Hong Kong | ' .  __('Events')  }}</title>
+    @endsection
     @section('content')
     <div id="event">
         <div class="section-header">

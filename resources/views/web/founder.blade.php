@@ -1,4 +1,8 @@
 @extends('web.layout.app')
+@section('u_meta')
+    <meta name="url" content="{{ route('web.founder') }}">
+    <title>{{'Hello Smile Hong Kong | ' .  __('Founder')  }}</title>
+@endsection
 @section('content')
 <div id="founder">
     <!-- header -->
