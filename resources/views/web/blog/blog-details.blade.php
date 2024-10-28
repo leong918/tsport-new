@@ -3,7 +3,7 @@
 @section('u_meta')
     <meta name="url" content="{{ route('web.blog_details', $blog->id) }}">
     <meta name="content" content="{{ $blog->getParameters(app()->getLocale(), 'description') }}">
-    <title>{{'Hello Smile Hong Kong'.' | ' . $blog->getParameters(app()->getLocale(), 'name') }}</title>
+    <title>{{'Hello Smile Hong Kong | ' . $blog->getParameters(app()->getLocale(), 'name') }}</title>
 @endsection
 
 @section('content')

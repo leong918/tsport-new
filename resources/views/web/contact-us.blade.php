@@ -1,8 +1,8 @@
 @extends('web.layout.app')
 @section('u_meta')
-    <meta name="url" content="https://www.hellosmilehk.org/tc/contact-us">
+    <meta name="url" content="{{ route('web.contact-us') }}">
     <meta name="content" content={{ __('ContactUsDesc')}}>
-    <title>{{'Hello Smile Hong Kong'.' | ' .  __('Contact Us')  }}</title>
+    <title>{{'Hello Smile Hong Kong | ' .  __('Contact Us')  }}</title>
 @endsection
 @section('content')
 <div id="contact-us">

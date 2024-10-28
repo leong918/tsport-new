@@ -3,9 +3,9 @@
 <x-alert />
 
 @section('u_meta')
-    <meta name="url" content="https://www.hellosmilehk.org/tc">
+    <meta name="url" content="{{ route('web.home') }}">
     <meta name="content" content={{ __('IndexDesc')}}>
-    <title>{{'Hello Smile Hong Kong'.' | ' .  __('IndexHeadLine')  }}</title>
+    <title>{{'Hello Smile Hong Kong | ' .  __('IndexHeadLine')  }}</title>
 @endsection
 
 @section('content')

@@ -1,7 +1,7 @@
 @extends('web.layout.app')
 @section('u_meta')
-<meta name="url" content="https://www.hellosmilehk.org/tc/blog">
-<title>{{'Hello Smile Hong Kong'.' | ' .  __('DentalKnowledge')  }}</title>
+<meta name="url" content="{{ route('web.blog') }}">
+<title>{{'Hello Smile Hong Kong | ' .  __('DentalKnowledge')  }}</title>
 @endsection
 @section('content')
 <div id="blog">
