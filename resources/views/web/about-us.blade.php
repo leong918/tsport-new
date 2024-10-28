@@ -1,7 +1,7 @@
 @extends('web.layout.app')
 @section('u_meta')
     <meta name="url" content="{{ route('web.about-us') }}">
-    <meta name="content" content={{ __('AboutUsDesc')}}>
+    <meta name="description" content={{ __('AboutUsDesc')}}>
     <title>{{'Hello Smile Hong Kong | ' .  __('AboutUs')  }}</title>
 @endsection
 @section('content')
