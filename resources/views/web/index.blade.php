@@ -4,7 +4,7 @@
 
 @section('u_meta')
     <meta name="url" content="{{ route('web.home') }}">
-    <meta name="description" content={{ __('IndexDesc')}}>
+    <meta name="description" content="{{ __('IndexDesc') }}">
     <title>{{'Hello Smile Hong Kong | ' .  __('IndexHeadLine')  }}</title>
 @endsection
 
