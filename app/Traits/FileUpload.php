@@ -70,8 +70,8 @@ trait FileUpload
         }
 
         if ((bool) $path) {
-            $generated_file = $dir.'/'.basename($path);
-            $this->uploaded_filename = $this->formatUploadedPath($generated_file);
+            $generated_file = $dir . '/' . basename($path);
+            $this->uploaded_filename = env('FILESYSTEM_DRIVER') != 's3' ? $generated_file : $this->formatUploadedPath($generated_file);
 
             if ($this->isValidImage($file)) {
                 $this->generateThumbnail($file, $path);
@@ -100,9 +100,9 @@ trait FileUpload
         $dir = $this->getUploadPath() . '/thumb';
         $this->makeDirectory($dir);
         // upload thumbnail
-        Storage::put($dir.'/'.basename($path), $resized_image);
+        Storage::put($dir . '/' . basename($path), $resized_image);
 
-        $generated_file = $dir.'/'.basename($path);
+        $generated_file = $dir . '/' . basename($path);
 
         $this->uploaded_thumb_filename = $this->formatUploadedPath($generated_file);
     }

@@ -3,7 +3,7 @@
 
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            <img src="{{asset('assets/web/assets/img/header/logo.png')}}" style="width:auto" class="logo" alt="Hellosmile Logo">
+            <img src="{{asset('assets/web/assets/img/header/logo.png')}}" style="width:auto" class="logo" alt="Logo">
         @endcomponent
     @endslot
 

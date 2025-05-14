@@ -95,3 +95,11 @@ function generateRandomString($length = 10, $number_only = null)
     }
     return $randomString;
 }
+
+function renderImage($path)
+{
+    if (Str::startsWith($path, 'https')) {
+        return $path;
+    }
+    return Storage::url($path);
+}
