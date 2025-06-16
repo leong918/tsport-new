@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends BaseController
 {
@@ -48,8 +49,16 @@ class AdminController extends BaseController
 
     public function store(CreateAdminRequest $request)
     {
-        $this->adminRepository->createAccount($request->all());
-        return redirect(route('admin.admin.index'))->with('success', "Successfully create admin {$request->name}");
+        DB::beginTransaction();
+        try {
+            $this->adminRepository->createAccount($request->all());
+            
+            DB::commit();
+            return redirect(route('admin.admin.index'))->with('success', "Successfully create admin {$request->name}");
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Something Went Wrong! ' . $e->getMessage());
+        }
     }
 
     public function edit(int $id)
@@ -61,56 +70,84 @@ class AdminController extends BaseController
 
     public function update(UpdateAdminRequest $request, int $id)
     {
-        $this->adminRepository->updateAccount($request->all(), $id);
-        return redirect(route('admin.admin.index'))->with('success', "Successfully update admin {$request->name}");
+        DB::beginTransaction();
+        try {
+            $this->adminRepository->updateAccount($request->all(), $id);
+
+            DB::commit();
+            return redirect(route('admin.admin.index'))->with('success', "Successfully update admin {$request->name}");
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Something Went Wrong! ' . $e->getMessage());
+        }
     }
 
     public function destroy(int $id)
     {
-        $this->authorizeForUser(Auth::guard('admin')->user(), 'self-deny', $id);
-        $this->adminRepository->delete($id);
-        return $this->response();
+        DB::beginTransaction();
+        try {
+            $this->authorizeForUser(Auth::guard('admin')->user(), 'self-deny', $id);
+            $this->adminRepository->delete($id);
+
+            DB::commit();
+            return $this->response();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $this->response($e->getMessage(), 'ERROR');
+        }
     }
 
     public function toggleStatus(int $id)
     {
-        $this->authorizeForUser(Auth::guard('admin')->user(), 'self-deny', $id);
-        $this->adminRepository->toggleStatus($id);
+        DB::beginTransaction();
+        try {
+            $this->authorizeForUser(Auth::guard('admin')->user(), 'self-deny', $id);
+            $this->adminRepository->toggleStatus($id);
+
+            DB::commit();
+            return $this->response();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $this->response($e->getMessage(), 'ERROR');
+        }
     }
 
-    public function profile(Request $request)
+    public function profile()
     {
-        if ($request->isMethod('post')) {
-            if ($request->password !== $request->password_confirmation) {
-                throw new GeneralException('Password not match');
-            }
-
-            // update password
-            $id = Auth::guard('admin')->user()->id;
-            $input = $request->only(['password']);
-            $this->adminRepository->update($input, $id);
-
-            return redirect()->back()->with('success', 'Successfully logged out');
-        }
-
         return $this->view('admin.profile');
     }
 
     public function updateProfile(UpdateAdminRequest $request)
     {
-        $id = auth('admin')->user()->id;
-        $this->adminRepository->updateAccount($request->all(), $id);
-        return redirect(route('admin.admin.profile'))->with('success', "Successfully update profile");
+        DB::beginTransaction();
+        try {
+            $id = auth('admin')->user()->id;
+            $this->adminRepository->updateAccount($request->all(), $id);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Profile updated successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Something Went Wrong! ' . $e->getMessage());
+        }
     }
 
     public function updatePassword(UpdatePasswordRequest $request)
     {
-        if (Hash::check($request->password, auth('admin')->user()->password)) {
+        DB::beginTransaction();
+        try {
+            if (!Hash::check($request->password, auth('admin')->user()->password)) {
+                throw new \Exception('Wrong Current Password!');
+            }
+
             $id = auth('admin')->user()->id;
             $this->adminRepository->updateAccount($request->all(), $id);
-            return redirect(route('admin.admin.profile'))->with('success', "Successfully update password");
-        }
 
-        return redirect(route('admin.admin.profile'))->with('error', "Wrong Current Password");
+            DB::commit();
+            return redirect()->back()->with('success', 'Password updated successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Something Went Wrong! ' . $e->getMessage());
+        }
     }
 }

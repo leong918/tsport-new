@@ -97,40 +97,5 @@
                 </div>
             </div>
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="confirmPasswordModal" tabindex="-1" aria-labelledby="confirmPasswordModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="text-dark">
-                            <h5>Confirm Password</h5>
-                            <p>For your security, please confirm your password to continue.</p>
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    {{ html()->password('two_fa_password')->class('form-control')->required() }}
-                                    <small id="two_fa_password_error" class="text-danger"></small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="btn-close-modal" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" id="btn-submit-modal" class="btn btn-primary">Confirm</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
-@endsection
-
-@section('script')
-@parent
-<script src="{{ asset('assets/admin/js/password-meter.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#btn-close-modal').on('click', function() {
-            $('#confirmPasswordModal').modal('hide');
-        })
-    })
-</script>
 @endsection
