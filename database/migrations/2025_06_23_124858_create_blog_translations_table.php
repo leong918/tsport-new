@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('blog_id')->unsigned();
             $table->string('locale')->index();
             $table->string('title');
-            $table->string('content');
+            $table->longText('content');
             $table->softDeletes();
 
             $table->unique(['blog_id', 'locale']);
