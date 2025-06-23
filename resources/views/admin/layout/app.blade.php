@@ -42,7 +42,7 @@
 
             function readURL(input) {
                 if (input && input.files) {
-                    var previewContainer = $(input).closest('form').find('#image-preview-container');;
+                    var previewContainer = $(input).parent().find('.image-preview-container');;
                     // Clear previous previews
                     previewContainer.empty();
 

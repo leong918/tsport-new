@@ -13,6 +13,12 @@
             </a>
         </li>
         <li class="nav-title">Administration</li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.blog.index') }}">
+                <i class="fa-solid fa-newspaper nav-icon"></i>
+                Blog
+            </a>
+        </li>
         <li class="nav-group">
             <a class="nav-link" href="{{ route('admin.admin.index') }}">
                 <i class="fa-solid fa-user-gear nav-icon"></i>
