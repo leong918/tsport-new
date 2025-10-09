@@ -46,9 +46,11 @@
                                 
                                 <div class="submit-btn-wrapper col-12 text-center">
                                     @auth('user')
-                                        <button class="btn btn-primary px-4" type="submit">更改密码</button>
+                                        <input type="image" src="{{ asset('assets/web/images/button/btn-save.png') }}" 
+                                               alt="更改密码" class="img-button" style="max-width: 200px; cursor: pointer;" />
                                     @else
-                                        <button class="btn btn-primary px-4" type="submit">重置密码</button>
+                                        <input type="image" src="{{ asset('assets/web/images/button/btn-save.png') }}" 
+                                               alt="重置密码" class="img-button" style="max-width: 200px; cursor: pointer;" />
                                     @endauth
                                 </div>
                                 <div class="register-btn">

@@ -179,7 +179,9 @@
                                 <h6 class="mb-3">球衣姓名</h6>
                                 <x-text-input name="jersey_name" label="姓名" placeholder="输入姓名" required="true" />
                                 <div class="mt-3">
-                                    <button type="button" class="btn btn-primary save-profile-btn">保存更改</button>
+                                    <img src="{{ asset('assets/web/images/button/btn-save.png') }}" 
+                                         alt="保存更改" class="img-button save-profile-btn" 
+                                         style="max-width: 150px; cursor: pointer;" />
                                 </div>
                             </div>
                         </div>
