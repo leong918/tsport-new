@@ -11,17 +11,18 @@
                                 <div class="text-center">
                                     <h1 class="text-brown">登入</h1>
                                 </div>
-                                
+
                                 {{-- Display alerts for success/error messages --}}
                                 <x-alert />
-                                
+
                                 {{ html()->form('POST', route('web.do-login'))->open() }}
                                 @csrf
                                 <x-text-input name="username" label="用户名" placeholder="Username" required="true" />
                                 <x-password-input name="password" label="密码" placeholder="Password" :showForgotPassword="true"
                                     required="true" />
                                 <div class="submit-btn-wrapper col-12 text-center">
-                                    <button class="btn btn-primary px-4" type="submit">登入</button>
+                                    <input type="image" src="{{ asset('assets/web/images/button/btn-login.png') }}"
+                                        alt="登入" class="img-button" style="max-width: 200px; cursor: pointer;" />
                                 </div>
                                 <div class="register-btn">还没有账户？马上
                                     <a href="{{ route('web.register') }}">

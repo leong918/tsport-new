@@ -52,7 +52,8 @@
                                 </div>
 
                                 <div class="submit-btn-wrapper col-12 text-center">
-                                    <button class="btn btn-primary px-4" type="submit">创建账户</button>
+                                    <input type="image" src="{{ asset('assets/web/images/button/btn-signup.png') }}" 
+                                           alt="创建账户" class="img-button" style="max-width: 200px; cursor: pointer;" />
                                 </div>
 
                                 <div class="login-btn">已有账户？马上

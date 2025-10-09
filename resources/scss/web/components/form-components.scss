@@ -22,6 +22,35 @@
       margin-top: 50px;
       text-align: center;
 
+      // Image button styles
+      .img-button {
+        transition: all 0.2s ease;
+        border: none;
+        background: none;
+        max-width: 200px;
+        height: auto;
+        
+        &:hover {
+          transform: scale(1.05);
+          filter: brightness(1.1);
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+
+        &:focus {
+          outline: 2px solid var(--main-green);
+          outline-offset: 2px;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+
       .btn-primary {
         box-shadow: 0 4px 1px var(--main-dark-green);
         padding: 18px 15px;
@@ -56,30 +85,6 @@
           opacity: 0.6;
           cursor: not-allowed;
           transform: none;
-        }
-      }
-    }
-
-    .register-btn,
-    .login-btn {
-      text-align: center;
-      font-weight: 600;
-      margin-top: 10px;
-      color: var(--dark-brown);
-
-      a {
-        color: var(--main-green);
-        text-decoration: none;
-        transition: color 0.2s ease;
-
-        &:hover {
-          color: var(--main-dark-green);
-          text-decoration: underline;
-        }
-
-        &:focus {
-          outline: 2px solid var(--main-green);
-          outline-offset: 2px;
         }
       }
     }

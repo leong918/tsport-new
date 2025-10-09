@@ -67,7 +67,8 @@
                                 </x-text-input>
 
                                 <div class="submit-btn-wrapper col-12 text-center">
-                                    <button class="btn btn-primary px-4" type="submit">保存</button>
+                                    <input type="image" src="{{ asset('assets/web/images/button/btn-save.png') }}" 
+                                           alt="保存" class="img-button" style="max-width: 200px; cursor: pointer;" />
                                 </div>
 
                                 {{ html()->form()->close() }}
