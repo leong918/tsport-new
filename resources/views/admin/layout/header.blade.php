@@ -4,8 +4,8 @@
             <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <a class="header-brand d-md-none" href="#">
-                <img src="{{asset('assets/web/assets/img/sidebar/logo.png')}}" alt="logo" class="img-fluid sidebar-brand-narrow" width="118" height="46" >
+            <a class="header-brand d-md-none" href="#" style="text-decoration: none;">
+                <h4 class="mb-0 text-primary fw-bold">TSports</h4>
             </a>
             <ul class="header-nav d-none d-md-flex">
                 <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
