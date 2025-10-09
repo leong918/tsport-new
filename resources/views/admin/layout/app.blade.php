@@ -13,11 +13,14 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/admin/css/tempus-dominus.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/select2.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/select2-bootstrap-5-theme.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/dataTables.bootstrap5.min.css') }}" />
     @yield('style')
 </head>
 
 <body class="mb-0" id="admin-body">
-    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+    @vite(['resources/scss/admin/app.scss', 'resources/js/admin/app.js'])
     @include('admin.layout.sidebar')
     <div class="wrapper d-flex flex-column min-vh-100 bg-light dark:bg-transparent">
         @include('admin.layout.header')
@@ -34,6 +37,12 @@
     <script src="{{ asset('assets/admin/js/popper.min.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/admin/js/tempus-dominus.js') }}"></script>
     <script src="{{ asset('assets/admin/js/jQuery-provider.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
     <script>
         $(document).ready(function() {
             $("form .image-uploader").change(function() {

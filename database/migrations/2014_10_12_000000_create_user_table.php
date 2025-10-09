@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique()->nullable();
+            $table->string('username')->unique();
+            $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->string('phone_no');
             $table->string('status');
-            $table->string('referral_code')->unique()->nullable();
+            $table->string('referral_code')->unique();
             $table->foreignId('referred_user_id')->nullable()->constrained('user')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();

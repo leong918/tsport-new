@@ -1,0 +1,68 @@
+// Primary Colors
+$color-primary: #1f7747; // Green
+$color-secondary: #dd0d27; // Red
+$color-brown: #61341b; // Brown
+$color-white: #ffffff; // White
+
+// Grayscale Colors
+$color-gray-dark: #505050; // Dark gray
+$color-gray-medium: #707070; // Medium gray
+$color-gray-light: #ffffff; // Light gray/White
+
+// classes
+.text-primary {
+  color: $color-primary;
+}
+
+.text-secondary {
+  color: $color-secondary;
+}
+
+.text-brown {
+  color: $color-brown;
+}
+
+.text-white {
+  color: $color-white;
+}
+
+.bg-primary {
+  background-color: $color-primary;
+}
+
+.bg-secondary {
+  background-color: $color-secondary;
+}
+
+.bg-brown {
+  background-color: $color-brown;
+}
+
+.bg-white {
+  background-color: $color-white;
+}
+
+// grayscales color
+.text-gray-dark {
+  color: $color-gray-dark;
+}
+
+.text-gray-medium {
+  color: $color-gray-medium;
+}
+
+.text-gray-light {
+  color: $color-gray-light;
+}
+
+.bg-gray-dark {
+  background-color: $color-gray-dark;
+}
+
+.bg-gray-medium {
+  background-color: $color-gray-medium;
+}
+
+.bg-gray-light {
+  background-color: $color-gray-light;
+}

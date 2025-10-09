@@ -1,8 +1,10 @@
 <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
         <a class="navbar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
-            <img src="{{asset('assets/web/assets/img/sidebar/logo.png')}}" alt="logo" class="img-fluid sidebar-brand-full w-50">
-            <img src="{{asset('assets/web/assets/img/sidebar/logo.png')}}" alt="logo" class="img-fluid sidebar-brand-narrow">
+            <img src="{{ asset('assets/web/assets/img/sidebar/logo.png') }}" alt="logo"
+                class="img-fluid sidebar-brand-full w-50">
+            <img src="{{ asset('assets/web/assets/img/sidebar/logo.png') }}" alt="logo"
+                class="img-fluid sidebar-brand-narrow">
         </a>
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
@@ -14,9 +16,27 @@
         </li>
         <li class="nav-title">Administration</li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.blog.index') }}">
+            <a class="nav-link" href="{{ route('admin.topic.index') }}">
                 <i class="fa-solid fa-newspaper nav-icon"></i>
-                Blog
+                Topic
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.match.index') }}">
+                <i class="fa-solid fa-newspaper nav-icon"></i>
+                Match
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.predict.index') }}">
+                <i class="fa-solid fa-newspaper nav-icon"></i>
+                Prediction
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.event.index') }}">
+                <i class="fa-solid fa-newspaper nav-icon"></i>
+                Event
             </a>
         </li>
         <li class="nav-group">

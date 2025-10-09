@@ -1,5 +1,33 @@
-@import "layout/fonts.scss";
+@import "plugins";
 
-html {
+// Global
+@import "global";
+@import "root";
 
-}
+// Layout
+@import "layout/fonts";
+@import "layout/typography";
+@import "layout/buttons";
+@import "layout/colors";
+@import "layout/header";
+@import "layout/sidebar";
+@import "layout/footer";
+@import "layout/base";
+@import "layout/swiper";
+
+// Components
+@import "components/event-card";
+@import "components/form-components";
+@import "components/text-input";
+@import "components/password-input";
+@import "components/profile-components";
+@import "components/match-item";
+@import "components/match-slide";
+@import "components/pagination";
+
+// Pages
+@import "pages/auth";
+@import "pages/profile";
+@import "pages/live-matches";
+@import "pages/events";
+@import "pages/ordering";

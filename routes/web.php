@@ -17,7 +17,6 @@ Route::get('get_captcha', function (\Mews\Captcha\Captcha $captcha) {
     return $captcha->src('flat');
 })->name('captcha');
 
-Route::group(['middleware' => ['web']], function () {
-    require_once 'web/app.php';
-    require_once 'admin/app.php';
-});
+// Remove the duplicate web middleware - routes are already in web group
+require_once 'web/app.php';
+require_once 'admin/app.php';

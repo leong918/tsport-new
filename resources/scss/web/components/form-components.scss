@@ -1,0 +1,147 @@
+// Form Components - Shared Styles
+.form-main-wrapper {
+  max-width: 350px;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  .form-wrapper {
+    left: 0;
+    right: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    .input-field-title {
+      color: var(--dark-brown);
+      font-size: 36px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .submit-btn-wrapper {
+      margin-top: 50px;
+      text-align: center;
+
+      .btn-primary {
+        box-shadow: 0 4px 1px var(--main-dark-green);
+        padding: 18px 15px;
+        width: 50%;
+        border-radius: 50px;
+        background-color: var(--main-green);
+        border: none;
+        outline: none;
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: var(--main-dark-green);
+          transform: translateY(1px);
+          box-shadow: 0 3px 1px var(--main-dark-green);
+        }
+
+        &:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 1px var(--main-dark-green);
+        }
+
+        &:focus {
+          outline: 2px solid white;
+          outline-offset: 2px;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+    }
+
+    .register-btn,
+    .login-btn {
+      text-align: center;
+      font-weight: 600;
+      margin-top: 10px;
+      color: var(--dark-brown);
+
+      a {
+        color: var(--main-green);
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: var(--main-dark-green);
+          text-decoration: underline;
+        }
+
+        &:focus {
+          outline: 2px solid var(--main-green);
+          outline-offset: 2px;
+        }
+      }
+    }
+  }
+}
+
+// Form validation styles
+.form-group {
+  margin-bottom: 1rem;
+
+  &.has-error {
+    .input-field-wrapper {
+      border-color: var(--danger, #dc3545);
+    }
+  }
+
+  &.has-success {
+    .input-field-wrapper {
+      border-color: var(--success, #28a745);
+    }
+  }
+}
+
+// Loading state for forms
+.form-loading {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+  }
+}
+
+// Responsive form styles
+@include media-breakpoint-down(md) {
+  .form-main-wrapper {
+    max-width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+
+    .form-wrapper {
+      margin-left: 5px;
+      margin-right: 5px;
+
+      .input-field-title {
+        font-size: 28px;
+      }
+
+      .submit-btn-wrapper .btn-primary {
+        width: 70%;
+        padding: 16px 12px;
+        font-size: 14px;
+      }
+    }
+  }
+}

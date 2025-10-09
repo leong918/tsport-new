@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('topic', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('image');
-            $table->tinyInteger("status")->default(0);
+            $table->string('description');
+            $table->tinyInteger("status")->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
