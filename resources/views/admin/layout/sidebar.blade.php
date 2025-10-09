@@ -1,10 +1,8 @@
 <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
     <div class="sidebar-brand d-none d-md-flex">
-        <a class="navbar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
-            <img src="{{ asset('assets/web/assets/img/sidebar/logo.png') }}" alt="logo"
-                class="img-fluid sidebar-brand-full w-50">
-            <img src="{{ asset('assets/web/assets/img/sidebar/logo.png') }}" alt="logo"
-                class="img-fluid sidebar-brand-narrow">
+        <a class="navbar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}" style="text-decoration: none;">
+            <h3 class="mb-0 text-white fw-bold sidebar-brand-full">TSports</h3>
+            <h5 class="mb-0 text-white fw-bold sidebar-brand-narrow">TS</h5>
         </a>
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>

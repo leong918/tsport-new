@@ -1,3 +1,3 @@
 <footer class="footer">
-    <div>Ecommerce Boilerplate &copy; {{ date('Y') }} VVinners.</div>
+    <div>TSports &copy; {{ date('Y') }} - All rights reserved.</div>
 </footer>
