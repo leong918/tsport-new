@@ -1,0 +1,23 @@
+body {
+  font-family: 'Han Sans SC', sans-serif;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+body.bg-1 {
+  background-image: url('/public/assets/web/images/global/background-1.png');
+}
+
+body.bg-2 {
+  background-image: url('/public/assets/web/images/global/background-2.png');
+}
+
+.screen {
+  padding-top: var(--header-height);
+}
+
+.container {
+  --bs-gutter-x: 2rem;
+}

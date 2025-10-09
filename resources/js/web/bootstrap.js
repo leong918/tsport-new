@@ -4,13 +4,18 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 import axios from 'axios';
+import $ from 'jquery';
+
+// Attach axios to window object for global access
 window.axios = axios;
+
+// Attach jQuery to window object for global access
+window.$ = window.jQuery = $;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Import all of CoreUI's JS
 // import * as coreui from '@coreui/coreui-pro';
-
 // window.coreui = coreui;
 
 /**
@@ -20,7 +25,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 // import Echo from 'laravel-echo';
-
 // import Pusher from 'pusher-js';
 // window.Pusher = Pusher;
 

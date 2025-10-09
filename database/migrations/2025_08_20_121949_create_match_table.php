@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('match', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger("status")->default(0);
+            $table->string('match_title');
+            $table->text('short_content')->nullable();
+            $table->string('banner');
+            $table->tinyInteger("status")->default(1);
+            $table->boolean('is_top')->default(false);
+            $table->timestamp('start_at');
             $table->timestamps();
             $table->softDeletes();
         });

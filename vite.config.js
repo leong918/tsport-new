@@ -5,10 +5,18 @@ export default defineConfig({
   plugins: [
     laravel({
       input: [
-        "resources/scss/app.scss", "resources/js/app.js",
-        "resources/scss/web/app.scss", "resources/js/web/app.js"
-    ],
+        "resources/scss/admin/app.scss", "resources/js/admin/app.js",
+        "resources/scss/web/app.scss", "resources/js/web/app.js",
+      ],
       refresh: true,
     }),
   ],
+  resolve: {
+    alias: {
+      '@': '/resources/js',
+      '@web': '/resources/js/web',
+      '@admin': '/resources/js/admin',
+      '@scss': '/resources/scss'
+    }
+  }
 });

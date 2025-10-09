@@ -21,6 +21,7 @@ class LogoutIfUserInactive
     public function handle(Request $request, Closure $next)
     {
         if (auth()->user()->status !== User::STATUS['ACTIVE']) {
+
             auth()->logout();
             return redirect(route('web.login'))->with('error', 'You have been logout due to inactive');
         }

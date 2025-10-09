@@ -1,0 +1,24 @@
+@import "coreui/coreui.scss";
+
+body {
+    color: white;
+
+    .test {
+        color: red;
+    }
+}
+
+html,
+body {
+    margin: 0 auto;
+    overflow-x: hidden;
+}
+
+.btn-success,
+.btn-danger {
+    color: #fff;
+}
+
+.btn-status {
+    cursor: pointer;
+}

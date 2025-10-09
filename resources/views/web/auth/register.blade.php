@@ -1,0 +1,75 @@
+@extends('web.layout.app')
+
+@section('content')
+    <div id="page-auth" class="screen">
+        <section class="section-form">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="frame frame__signup">
+                            <div class="frame__content">
+                                <div class="text-center">
+                                    <h1 class="text-brown">创建账户</h1>
+                                </div>
+                                
+                                {{-- Display alerts for success/error messages --}}
+                                <x-alert />
+                                
+                                {{ html()->form('POST', route('web.do-register'))->open() }}
+                                @csrf
+
+                                <x-text-input name="username" label="用户名" placeholder="Username" required="true" />
+
+                                <div class="col-12 mb-3 input-field-section">
+                                    <div class="col-12 label">电话号码</div>
+                                    <div class="phone-wrapper">
+                                        <div class="input-field-wrapper region">
+                                            <input class="input-field" name="phone_region" type="text" placeholder="+60">
+                                        </div>
+                                        <div class="input-field-wrapper number">
+                                            <input class="input-field" name="phone_no" type="text"
+                                                placeholder="123456789">
+                                        </div>
+                                    </div>
+                                    @error('phone_no')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+                                <x-text-input name="email" label="邮件" placeholder="Email" type="email"
+                                    required="true" />
+
+                                <x-password-input name="password" label="密码" placeholder="Password" required="true" />
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <x-text-input name="referral_code" label="推荐码" placeholder="Referral Code" />
+                                    </div>
+                                    <div class="col-6">
+                                        <x-text-input name="verification_code" label="认证码"
+                                            placeholder="Verification Code" />
+                                    </div>
+                                </div>
+
+                                <div class="submit-btn-wrapper col-12 text-center">
+                                    <button class="btn btn-primary px-4" type="submit">创建账户</button>
+                                </div>
+
+                                <div class="login-btn">已有账户？马上
+                                    <a href="{{ route('web.login') }}">
+                                        登入
+                                    </a>
+                                </div>
+
+                                {{ html()->form()->close() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+@endsection
+
+{{-- Page-specific scripts now loaded via app.js imports --}}

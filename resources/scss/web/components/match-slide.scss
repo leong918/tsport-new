@@ -1,0 +1,73 @@
+.match-slide {
+    .slide {
+        &__content {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        &__img {
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+
+            img {
+                width: 100%;
+                height: auto;
+                transition: transform 0.3s ease;
+            }
+
+            &:hover img {
+                transform: scale(1.03);
+            }
+        }
+
+        &__info {
+            display: none;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #000000;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 15px 0px 5px 0px;
+
+            .match-details {
+                flex: 1;
+
+                .match-teams {
+                    font-weight: bold;
+                }
+
+                .match-league {
+                }
+            }
+
+            .match-status {
+                background: #dd0d27;
+                color: #ffffff;
+                padding: 5px 15px;
+                border-radius: 20px;
+
+                p {
+                    position: relative;
+                    top: 3px;
+                }
+            }
+        }
+    }
+
+    // Show info overlay - controlled by JavaScript for active slides
+    &.swiper-slide-active {
+        .slide__info {
+            display: flex !important;
+        }
+    }
+
+    // Optional: Show on hover for non-active slides
+    &:hover:not(.swiper-slide-active) {
+        .slide__info {
+            display: flex;
+            opacity: 0.8;
+        }
+    }
+}

@@ -1,0 +1,16 @@
+:root {
+    // Color variables
+    --brown: #91532c;
+    --dark-brown: #5e3219;
+    --main-green: #1f7849;
+    --main-dark-green: #155530;
+    
+    // Header height variables (fallback values - will be overridden by JavaScript)
+    --header-height: 85px; // Dynamic: calculated header height + 10px
+    --header-height-mobile: 75px; // Dynamic: calculated mobile header height + 10px
+    --header-actual-height: 75px; // Dynamic: actual measured header height
+    
+    // Header padding variables
+    --header-padding-y: 20px;
+    --header-padding-x: 10px;
+}

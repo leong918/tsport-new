@@ -1,0 +1,96 @@
+// Text Input Component Styles
+.input-field-section {
+  margin-bottom: 1rem;
+
+  .label {
+    color: var(--dark-brown);
+    font-size: clamp(16px, 1.5vw, 18px);
+    font-weight: bold;
+    margin-left: 25px;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .input-field-wrapper {
+    height: 60px;
+    color: white;
+    background-color: var(--brown);
+    padding: 0px 20px;
+    border-radius: 50px;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    box-shadow: inset 0 5px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+
+    // Focus state
+    &.focused {
+      box-shadow: inset 0 5px 4px rgba(0, 0, 0, 0.3), 
+                  0 0 0 2px var(--main-green);
+    }
+
+    .input-field {
+      width: 100%;
+      box-shadow: none;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      color: white;
+      font-size: clamp(16px, 1.5vw, 18px);
+
+      &::placeholder {
+        color: var(--dark-brown);
+        opacity: 0.8;
+      }
+
+      &:focus {
+        outline: none;
+        border: none;
+      }
+
+      // Validation states
+      &.is-invalid {
+        border: 1px solid var(--danger, #dc3545);
+      }
+
+      &.is-valid {
+        border: 1px solid var(--success, #28a745);
+      }
+    }
+  }
+
+  // Error message styling
+  .text-danger {
+    font-size: 12px;
+    margin-left: 25px;
+    margin-top: 5px;
+    display: block;
+  }
+
+  // Success message styling
+  .text-success {
+    font-size: 12px;
+    margin-left: 25px;
+    margin-top: 5px;
+    display: block;
+    color: var(--success, #28a745);
+  }
+}
+
+// Special styling for phone number inputs
+.phone-wrapper {
+  display: flex;
+  gap: 5px;
+
+  .region {
+    width: 90px;
+  }
+
+  .number {
+    width: 100%;
+  }
+}

@@ -1,0 +1,24 @@
+// Custom swiper navigation buttons
+.swiper-button-next,
+.swiper-button-prev {
+    width: clamp(25px, 5vw, 35px) !important;
+    height: clamp(25px, 5vw, 35px) !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-color: transparent !important;
+    
+    // Hide the default arrow
+    &:after {
+        display: none !important;
+        content: '' !important;
+    }
+}
+
+.swiper-button-next {
+    right: -3px !important;
+}
+
+.swiper-button-prev {
+    left: -3px !important;
+}

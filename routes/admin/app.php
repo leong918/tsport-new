@@ -17,5 +17,11 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
 
         require_once 'admin.php';
         require_once 'blog.php';
+        require_once 'topic.php';
+        require_once 'topic-comment.php';
+        require_once 'match.php';
+        require_once 'predict.php';
+        require_once 'predict-comment.php';
+        require_once 'event.php';
     });
 });

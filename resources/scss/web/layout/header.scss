@@ -1,0 +1,96 @@
+#header {
+    width: 100%;
+    // Height will be calculated dynamically by JavaScript
+    min-height: 60px; // Minimum height fallback
+    padding: var(--header-padding-y) var(--header-padding-x);
+    z-index: 1000;
+    position: relative;
+    
+    .header-items {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .header-btn {
+            outline: none;
+            border: none;
+            background-color: transparent;
+            width: 75px;
+            height: auto;
+            cursor: pointer;
+
+            // Add hover effect for buttons
+            &:hover {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+
+            &:active {
+                transform: scale(0.95);
+            }
+
+            // Improve button accessibility
+            &:focus {
+                outline: 2px solid rgba(0, 123, 255, 0.5);
+                outline-offset: 2px;
+                border-radius: 4px;
+            }
+
+            // Ensure images in buttons are responsive
+            img {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+            }
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+
+            .header-nav-link {
+                color: #333;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 8px 12px;
+                border-radius: 6px;
+                position: relative;
+
+                &:hover {
+                    background-color: #f5f5f5;
+                    color: #007bff;
+                    transform: translateY(-1px);
+                }
+
+                &:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+                }
+
+                &:active {
+                    transform: translateY(0);
+                }
+
+                // Active state indicator
+                &.active {
+                    color: #007bff;
+                    background-color: rgba(0, 123, 255, 0.1);
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: -2px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 20px;
+                        height: 2px;
+                        background-color: #007bff;
+                        border-radius: 1px;
+                    }
+                }
+            }
+        }
+    }
+}
