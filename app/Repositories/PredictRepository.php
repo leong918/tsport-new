@@ -78,7 +78,7 @@ class PredictRepository extends BaseRepository
         
         // Delete associated image file if exists
         if ($model->image) {
-            $this->upload_path = 'predict';
+            $this->upload_path = 'predicts';
             $this->deleteFile($model->image);
         }
         
