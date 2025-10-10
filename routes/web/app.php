@@ -9,6 +9,8 @@ Route::group(['as' => 'web.', 'namespace' => 'Web'], function () {
     Route::get('', [AppController::class, 'index'])->name('home');
     Route::get('live-matches', [AppController::class, 'liveMatches'])->name('live-matches');
     Route::get('event', [AppController::class, 'events'])->name('events');
+    Route::get('predict', [AppController::class, 'predict'])->name('predict');
+    Route::get('predict/{id}', [AppController::class, 'predictDetail'])->name('predict.detail');
 
     Route::get('ordering', [AppController::class, 'ordering'])->name('ordering');
 

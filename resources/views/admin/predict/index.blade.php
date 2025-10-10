@@ -3,6 +3,26 @@
 @section('style')
     @parent
     <link rel="stylesheet" href="{{ asset('assets/admin/css/dataTables.bootstrap5.min.css') }}" />
+    <style>
+        .predict-table .img-thumbnail {
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 2px;
+            background-color: #fff;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .predict-table .img-thumbnail:hover {
+            transform: scale(1.2);
+            z-index: 1000;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .predict-table td {
+            vertical-align: middle;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb')
@@ -28,6 +48,7 @@
                                     <thead>
                                         <tr>
                                             <th>Character Name</th>
+                                            <th>Image</th>
                                             <th>Match Title</th>
                                             <th>Comment</th>
                                             <th>Like</th>
@@ -75,7 +96,14 @@
                     columns: [{
                             data: 'character_name',
                             name: 'character_name',
-                            width: '30%'
+                            width: '20%'
+                        },
+                        {
+                            data: 'image',
+                            name: 'image',
+                            width: '15%',
+                            orderable: false,
+                            searchable: false
                         },
                         {
                             data: 'match_title',

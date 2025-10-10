@@ -37,13 +37,27 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Character') }}
-                        {{ html()->select('character_name')->options(renderSelect(Predict::CHARACTER))->class('form-control') }}
+                        {{ html()->select('character_name')->options(renderSelect(Predict::CHARACTER))->class('form-control')->id('character-select') }}
+                    </div>
+                    <!-- Character Image Preview -->
+                    <div class="mb-3" id="character-preview" style="display: none;">
+                        <label class="form-label">Character Preview</label>
+                        <div class="character-image-container">
+                            <img id="character-image" src="" alt="Character Preview" class="img-fluid rounded" style="max-width: 150px; max-height: 150px;">
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
                         {{ html()->label('Status') }}
                         {{ html()->select('status')->options(renderSelect(Predict::STATUS))->class('form-control') }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        {{ html()->label('Prediction Box Image') }}
+                        {{ html()->file('image')->class('form-control')->accept('image/*') }}
+                        <small class="text-muted">Upload prediction box image (JPG, PNG, etc.)</small>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -144,6 +158,27 @@
             };
 
             tinymce.init(editor_config);
+
+            // Character image preview functionality
+            $('#character-select').on('change', function() {
+                const selectedCharacter = $(this).val();
+                const characterImages = {
+                    'Expert 1': '{{ asset("assets/web/images/predict/ip-active-1.png") }}',
+                    'Expert 2': '{{ asset("assets/web/images/predict/ip-active-2.png") }}',
+                    'Expert 3': '{{ asset("assets/web/images/predict/ip-active-3.png") }}'
+                };
+
+                if (selectedCharacter && characterImages[selectedCharacter]) {
+                    $('#character-image').attr('src', characterImages[selectedCharacter]);
+                    $('#character-image').attr('alt', selectedCharacter);
+                    $('#character-preview').show();
+                } else {
+                    $('#character-preview').hide();
+                }
+            });
+
+            // Trigger change event if there's a pre-selected value
+            $('#character-select').trigger('change');
         });
 
         $("#topic-form").submit(function(e) {

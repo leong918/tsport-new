@@ -98,4 +98,46 @@ class MatchRepository extends BaseRepository
         
         return $model;
     }
+
+    /**
+     * Get all active matches
+     */
+    public function getActiveMatches()
+    {
+        return Matches::active()->get();
+    }
+
+    /**
+     * Get top matches for display
+     */
+    public function getTopMatches()
+    {
+        return Matches::active()->where('is_top', true)->get();
+    }
+
+    /**
+     * Get regular (non-top) matches for display
+     */
+    public function getRegularMatches()
+    {
+        return Matches::active()->where('is_top', false)->get();
+    }
+
+    /**
+     * Format matches for frontend display
+     */
+    public function formatMatchesForDisplay($matches)
+    {
+        return $matches->map(function ($match) {
+            return [
+                'id' => $match->id,
+                'title' => $match->match_title,
+                'league' => $match->short_content ?? 'Sports League',
+                'status' => $match->status == 1 ? '直播中' : '已结束',
+                'image' => $match->banner_url ?? '/assets/web/assets/img/matches/default.jpg',
+                'time' => $match->start_at ? $match->start_at->format('Y/m/d H:i') : 'TBD',
+                'is_top' => $match->is_top
+            ];
+        })->values()->toArray();
+    }
 }

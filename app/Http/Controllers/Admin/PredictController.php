@@ -26,8 +26,14 @@ class PredictController extends BaseController
                 ->addColumn('character_name', function ($model) {
                     return $model->character_name;
                 })
+                ->addColumn('image', function ($model) {
+                    if ($model->image) {
+                        return '<img src="' . asset('storage/' . $model->image) . '" alt="Prediction Image" class="img-thumbnail" style="max-width: 80px; max-height: 80px;">';
+                    }
+                    return '<span class="text-muted">No image</span>';
+                })
                 ->addColumn('match_title', function ($model) {
-                    return $model->matches->match_title;
+                    return $model->matches ? $model->matches->match_title : 'No Match';
                 })
                 ->addColumn('comment', function ($model) {
                     return $model->comment->count();
@@ -43,6 +49,7 @@ class PredictController extends BaseController
                 ->addColumn('action', function ($model) {
                     return $this->view('predict.action', compact('model'));
                 })
+                ->rawColumns(['image', 'status', 'action'])
                 ->make(true);
         }
 

@@ -18,9 +18,9 @@ class Predict extends Model
     ];
 
     public const CHARACTER = [
-        'Kar Jun' => 'Kar Jun',
-        'Horng Ping' => 'Horng Ping',
-        'Felix' => 'Felix',
+        'Expert 1' => 'Expert 1',
+        'Expert 2' => 'Expert 2',
+        'Expert 3' => 'Expert 3',
     ];
     /**
      * Validation rules
@@ -43,6 +43,7 @@ class Predict extends Model
     protected $fillable = [
         'match_id',
         'character_name',
+        'image',
         'description',
         'status'
     ];

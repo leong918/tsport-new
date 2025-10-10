@@ -33,7 +33,7 @@
                         <img src="{{ asset('assets/web/images/sidebar/btn-events.png') }}" alt="活动专区"></a></li>
                 <li><a href="{{ route('web.live-matches') }}" class="sidebar-link">
                         <img src="{{ asset('assets/web/images/sidebar/btn-live-matches.png') }}" alt="直播区"></a></li>
-                <li><a href="#" class="sidebar-link">
+                <li><a href="{{ route('web.predict') }}" class="sidebar-link">
                         <img src="{{ asset('assets/web/images/sidebar/btn-prediction-home.png') }}" alt="预测专业"></a>
                 </li>
                 @auth

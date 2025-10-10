@@ -34,6 +34,7 @@ import { ProfileService } from './services/ProfileService.js';
 import './pages/live-matches.js';
 import './pages/events.js';
 import './pages/ordering.js';
+import './pages/predict.js';
 
 // Auth pages - import for global availability
 import { initLoginPage } from './pages/login.js';

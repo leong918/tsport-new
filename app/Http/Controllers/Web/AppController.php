@@ -5,19 +5,39 @@ namespace App\Http\Controllers\Web;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
-use App\Models\Event;
 use App\Models\Matches;
+use App\Models\Predict;
 use App\Repositories\EventRepository;
+use App\Repositories\PredictRepository;
+use App\Repositories\MatchRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 
 class AppController extends BaseController
 {
     protected $eventRepository;
+    protected $predictRepository;
+    protected $matchRepository;
 
-    public function __construct(EventRepository $eventRepository)
-    {
+    public function __construct(
+        EventRepository $eventRepository, 
+        PredictRepository $predictRepository, 
+        MatchRepository $matchRepository
+    ) {
         $this->eventRepository = $eventRepository;
+        $this->predictRepository = $predictRepository;
+        $this->matchRepository = $matchRepository;
+    }
+
+    /**
+     * Get character display name mapping
+     */
+    private function getCharacterDisplayNames()
+    {
+        return [
+            'Expert 1' => 'Expert 1',
+            'Expert 2' => 'Expert 2',
+            'Expert 3' => 'Expert 3'
+        ];
     }
 
     public function index()
@@ -27,55 +47,19 @@ class AppController extends BaseController
 
     public function liveMatches(Request $request)
     {
-        // Get all active matches from database
-        $allMatches = Matches::active()->get();
-        
-        // Separate top matches for swiper and regular matches for bottom content
-        $topMatches = $allMatches->where('is_top', true);
-        $regularMatches = $allMatches->where('is_top', false);
-        
-        // Format top matches data for the swiper
-        $swiperMatches = $topMatches->map(function ($match) {
-            return [
-                'id' => $match->id,
-                'title' => $match->match_title,
-                'league' => $match->short_content ?? 'Sports League',
-                'status' => $match->status == 1 ? '直播中' : '已结束',
-                'image' => $match->banner_url ?? '/assets/web/assets/img/matches/default.jpg',
-                'time' => $match->start_at ? $match->start_at->format('Y/m/d H:i') : 'TBD',
-                'is_top' => true
-            ];
-        })->values()->toArray();
-        
-        // Format regular matches data for the bottom content
-        $allContentMatches = $regularMatches->map(function ($match) {
-            return [
-                'id' => $match->id,
-                'title' => $match->match_title,
-                'league' => $match->short_content ?? 'Sports League',
-                'status' => $match->status == 1 ? '直播中' : '已结束',
-                'image' => $match->banner_url ?? '/assets/web/assets/img/matches/default.jpg',
-                'time' => $match->start_at ? $match->start_at->format('Y/m/d H:i') : 'TBD',
-                'is_top' => false
-            ];
-        })->values()->toArray();
+        // Get matches using repository
+        $topMatches = $this->matchRepository->getTopMatches();
+        $regularMatches = $this->matchRepository->getRegularMatches();
 
-        // If no matches in database, fall back to mock data
-        if (empty($swiperMatches) && empty($allContentMatches)) {
-            $fallbackMatches = $this->getFallbackMatches();
-            $swiperMatches = array_values(array_filter($fallbackMatches, function($match) {
-                return $match['is_top'] === true;
-            }));
-            $allContentMatches = array_values(array_filter($fallbackMatches, function($match) {
-                return $match['is_top'] === false;
-            }));
-        }
+        // Format matches data for display
+        $swiperMatches = $this->matchRepository->formatMatchesForDisplay($topMatches);
+        $allContentMatches = $this->matchRepository->formatMatchesForDisplay($regularMatches);
 
         // Pagination for content matches (4 per page)
         $perPage = 4;
         $currentPage = $request->get('page', 1);
         $currentPath = $request->url();
-        
+
         // Create paginator for content matches
         $contentMatchesPaginated = new LengthAwarePaginator(
             array_slice($allContentMatches, ($currentPage - 1) * $perPage, $perPage),
@@ -99,12 +83,128 @@ class AppController extends BaseController
         // Get formatted active events from repository
         $events = $this->eventRepository->getFormattedActiveEvents();
 
-        // If no events in database, fall back to static data
-        if (empty($events)) {
-            $events = $this->getFallbackEvents();
+        return $this->view('events', compact('events'));
+    }
+
+    public function predict()
+    {
+        // Get character display names
+        $characterDisplayNames = $this->getCharacterDisplayNames();
+
+        // Get active predictions using repository
+        $predictions = $this->predictRepository->getActivePredictions(10);
+
+        // Format predictions data for the view
+        $formattedPredictions = $predictions->map(function ($prediction) use ($characterDisplayNames) {
+            return [
+                'id' => $prediction->id,
+                'character_name' => $prediction->character_name,
+                'character_display_name' => $characterDisplayNames[$prediction->character_name] ?? $prediction->character_name,
+                'description' => $prediction->description,
+                'image' => $prediction->image,
+                'created_at' => $prediction->created_at,
+                'match' => $prediction->matches ? [
+                    'id' => $prediction->matches->id,
+                    'title' => $prediction->matches->match_title,
+                    'short_content' => $prediction->matches->short_content,
+                    'start_at' => $prediction->matches->start_at,
+                    'banner_url' => $prediction->matches->banner_url,
+                ] : null,
+                'comments_count' => $prediction->comment->count(),
+                'likes_count' => $prediction->like->count(),
+                'recent_comments' => $prediction->comment->take(3)->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'comment' => $comment->comment,
+                        'user_name' => $comment->user->name ?? 'Anonymous',
+                        'created_at' => $comment->created_at,
+                    ];
+                })
+            ];
+        });
+
+        // Get featured predictions using repository
+        $featuredPredictions = $this->predictRepository->getFeaturedPredictions(3)
+            ->map(function ($prediction) use ($characterDisplayNames) {
+                return [
+                    'id' => $prediction->id,
+                    'character_name' => $prediction->character_name,
+                    'character_display_name' => $characterDisplayNames[$prediction->character_name] ?? $prediction->character_name,
+                    'description' => $prediction->description,
+                    'match_title' => $prediction->matches->match_title ?? 'Unknown Match',
+                    'likes_count' => $prediction->like_count,
+                ];
+            });
+
+        // Get prediction statistics using repository
+        $stats = $this->predictRepository->getPredictionStats();
+
+        return $this->view('predict', [
+            'predictions' => $predictions,
+            'formattedPredictions' => $formattedPredictions,
+            'featuredPredictions' => $featuredPredictions,
+            'stats' => $stats,
+            'characters' => Predict::CHARACTER
+        ]);
+    }
+
+    public function predictDetail($id)
+    {
+        // Get character display names
+        $characterDisplayNames = $this->getCharacterDisplayNames();
+
+        // Get the specific prediction using repository
+        $prediction = $this->predictRepository->getActivePredictionById($id);
+
+        if (!$prediction) {
+            abort(404);
         }
 
-        return $this->view('events', compact('events'));
+        // Format prediction data
+        $formattedPrediction = [
+            'id' => $prediction->id,
+            'character_name' => $prediction->character_name,
+            'character_display_name' => $characterDisplayNames[$prediction->character_name] ?? $prediction->character_name,
+            'description' => $prediction->description,
+            'image' => $prediction->image,
+            'created_at' => $prediction->created_at,
+            'match' => $prediction->matches ? [
+                'id' => $prediction->matches->id,
+                'title' => $prediction->matches->match_title,
+                'short_content' => $prediction->matches->short_content,
+                'start_at' => $prediction->matches->start_at,
+                'banner_url' => $prediction->matches->banner_url,
+            ] : null,
+            'comments_count' => $prediction->comment->count(),
+            'likes_count' => $prediction->like->count(),
+            'comments' => $prediction->comment->map(function ($comment) {
+                return [
+                    'id' => $comment->id,
+                    'comment' => $comment->comment,
+                    'user_name' => $comment->user->name ?? 'Anonymous',
+                    'created_at' => $comment->created_at,
+                ];
+            })
+        ];
+
+        // Get related predictions using repository
+        $relatedPredictions = $this->predictRepository->getRelatedPredictions($prediction, 3)
+            ->map(function ($relatedPrediction) use ($characterDisplayNames) {
+                return [
+                    'id' => $relatedPrediction->id,
+                    'character_name' => $relatedPrediction->character_name,
+                    'character_display_name' => $characterDisplayNames[$relatedPrediction->character_name] ?? $relatedPrediction->character_name,
+                    'description' => $relatedPrediction->description,
+                    'image' => $relatedPrediction->image,
+                    'match_title' => $relatedPrediction->matches->match_title ?? 'Unknown Match',
+                    'likes_count' => $relatedPrediction->like_count,
+                ];
+            });
+
+        return $this->view('predict-detail', [
+            'prediction' => $formattedPrediction,
+            'relatedPredictions' => $relatedPredictions,
+        ]);
     }
 
     public function ordering()
@@ -168,131 +268,6 @@ class AppController extends BaseController
         ];
 
         return $this->view('ordering', compact('categories', 'recommendations'));
-    }
-
-    private function getFallbackEvents()
-    {
-        return [
-            [
-                'id' => 1,
-                'title' => '猜胜负赢奖金',
-                'status' => '进行中',
-                'image' => asset('assets/web/images/events/title.png'),
-                'timer' => '03天04小时57分钟',
-            ],
-            [
-                'id' => 2,
-                'title' => '波神来啦-季节赛',
-                'status' => '即将开始',
-                'image' => asset('assets/web/images/events/title.png'),
-                'timer' => '03天04小时57分钟',
-            ],
-            [
-                'id' => 3,
-                'title' => 'FIFA世界杯预选赛',
-                'status' => '即将开始',
-                'image' => asset('assets/web/images/events/title.png'),
-                'timer' => '05天12小时30分钟',
-            ]
-        ];
-    }
-
-    private function getFallbackMatches()
-    {
-        return [
-            // Top matches for swiper
-            [
-                'id' => 1,
-                'title' => '曼市 vs 曼联',
-                'league' => '英超联赛 2024/25 第2轮',
-                'status' => '直播中',
-                'image' => '/assets/web/assets/img/matches/match1.jpg',
-                'time' => '2024/25 第2轮',
-                'is_top' => true
-            ],
-            [
-                'id' => 3,
-                'title' => '切尔西 vs 托特纳姆',
-                'league' => '英超联赛 2024/25 第2轮',
-                'status' => '已结束',
-                'image' => '/assets/web/assets/img/matches/match3.jpg',
-                'time' => '2024/25 第2轮',
-                'is_top' => true
-            ],
-            // Regular matches for content area (more than 4 to show pagination)
-            [
-                'id' => 2,
-                'title' => '阿森纳 vs 利物浦',
-                'league' => '英超联赛 2024/25 第2轮',
-                'status' => '即将开始',
-                'image' => '/assets/web/assets/img/matches/match2.jpg',
-                'time' => '2024/25 第2轮',
-                'is_top' => false
-            ],
-            [
-                'id' => 4,
-                'title' => '莱斯特城 vs 布莱顿',
-                'league' => '英超联赛 2024/25 第2轮',
-                'status' => '即将开始',
-                'image' => '/assets/web/assets/img/matches/match4.jpg',
-                'time' => '2024/25 第2轮',
-                'is_top' => false
-            ],
-            [
-                'id' => 5,
-                'title' => '狼队 vs 水晶宫',
-                'league' => '英超联赛 2024/25 第2轮',
-                'status' => '已结束',
-                'image' => '/assets/web/assets/img/matches/match5.jpg',
-                'time' => '2024/25 第2轮',
-                'is_top' => false
-            ],
-            [
-                'id' => 6,
-                'title' => '埃弗顿 vs 南安普顿',
-                'league' => '英超联赛 2024/25 第2轮',
-                'status' => '即将开始',
-                'image' => '/assets/web/assets/img/matches/match6.jpg',
-                'time' => '2024/25 第2轮',
-                'is_top' => false
-            ],
-            [
-                'id' => 7,
-                'title' => '诺丁汉森林 vs 富勒姆',
-                'league' => '英超联赛 2024/25 第3轮',
-                'status' => '即将开始',
-                'image' => '/assets/web/assets/img/matches/match7.jpg',
-                'time' => '2024/25 第3轮',
-                'is_top' => false
-            ],
-            [
-                'id' => 8,
-                'title' => '伯恩茅斯 vs 西汉姆',
-                'league' => '英超联赛 2024/25 第3轮',
-                'status' => '已结束',
-                'image' => '/assets/web/assets/img/matches/match8.jpg',
-                'time' => '2024/25 第3轮',
-                'is_top' => false
-            ],
-            [
-                'id' => 9,
-                'title' => '纽卡斯尔 vs 阿斯顿维拉',
-                'league' => '英超联赛 2024/25 第3轮',
-                'status' => '即将开始',
-                'image' => '/assets/web/assets/img/matches/match9.jpg',
-                'time' => '2024/25 第3轮',
-                'is_top' => false
-            ],
-            [
-                'id' => 10,
-                'title' => '布伦特福德 vs 伊普斯维奇',
-                'league' => '英超联赛 2024/25 第3轮',
-                'status' => '即将开始',
-                'image' => '/assets/web/assets/img/matches/match10.jpg',
-                'time' => '2024/25 第3轮',
-                'is_top' => false
-            ]
-        ];
     }
 
     public function sendContact(Request $request)
