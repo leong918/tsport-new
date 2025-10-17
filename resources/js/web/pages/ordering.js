@@ -1,21 +1,55 @@
 /**
  * Ordering Page JavaScript
- * Handles ordering page specific functionality including cart management
+ * Handles ordering page functionality including cart management
  */
 
-export class OrderingService {
+import $ from 'jquery';
+import BasePage from './BasePage.js';
+
+class OrderingPage extends BasePage {
     constructor() {
+        super();
+        this.pageName = 'ordering';
+        this.pageSelector = '#ordering, [body-id="ordering"]';
         this.cart = [];
         this.cartTotal = 0;
         this.isCartOpen = false;
-        this.init();
+        
+        // Auto-initialize if page elements are present
+        if (this.shouldInitialize() || this.isOrderingPage()) {
+            this.init();
+        }
     }
 
+    /**
+     * Check if we're on the ordering page
+     */
+    isOrderingPage() {
+        return document.body.id === 'ordering' || 
+               window.location.pathname.includes('/ordering');
+    }
+
+    /**
+     * Initialize page
+     */
     init() {
-        this.bindEvents();
+        // Set body id and class for specific styling
+        document.body.id = 'ordering';
+        document.body.classList.add('ordering-page');
+
+        // Call parent init
+        super.init();
+
+        // Initialize cart display
         this.updateCartDisplay();
+
+        // Make ordering service globally available
+        window.orderingService = this;
     }
 
+    /**
+     * Bind event listeners
+     */
     bindEvents() {
         // Category selection
         $(document).on('click', '.category-card', (e) => {
@@ -63,7 +97,6 @@ export class OrderingService {
 
         // Recommendation card clicks
         $(document).on('click', '.recommendation-card', (e) => {
-            // Add visual feedback for recommendation selection
             $(e.currentTarget).addClass('selected');
             setTimeout(() => {
                 $(e.currentTarget).removeClass('selected');
@@ -71,37 +104,68 @@ export class OrderingService {
         });
     }
 
+    /**
+     * Setup visual effects and animations
+     */
+    setupEffects() {
+        this.initScrollAnimations();
+    }
+
+    /**
+     * Initialize scroll-triggered animations
+     */
+    initScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe category cards and recommendation cards
+        document.querySelectorAll('.category-card, .recommendation-card, .item-card').forEach(card => {
+            observer.observe(card);
+        });
+    }
+
+    /**
+     * Show items for specific category
+     */
     showCategoryItems(categoryId) {
-        // Hide all category items
         $('.category-items').hide();
-        
-        // Show selected category items
         $(`.category-items[data-category="${categoryId}"]`).show();
         
-        // Scroll to items section
         $('html, body').animate({
             scrollTop: $('#items-section').offset().top - 100
         }, 500);
 
-        // Add visual feedback to category
         $('.category-card').removeClass('active');
         $(`.category-card[data-category="${categoryId}"]`).addClass('active');
     }
 
+    /**
+     * Show all items
+     */
     showAllItems() {
         $('.category-items').show();
         
-        // Scroll to items section
         $('html, body').animate({
             scrollTop: $('#items-section').offset().top - 100
         }, 500);
 
-        // Remove active state from categories
         $('.category-card').removeClass('active');
     }
 
+    /**
+     * Add item to cart
+     */
     addToCart(item) {
-        // Check if item already exists in cart
         const existingItem = this.cart.find(cartItem => cartItem.id === item.id);
         
         if (existingItem) {
@@ -118,31 +182,36 @@ export class OrderingService {
         this.showAddToCartFeedback(item.name);
     }
 
+    /**
+     * Remove item from cart
+     */
     removeFromCart(itemId) {
         this.cart = this.cart.filter(item => item.id !== itemId);
         this.updateCartTotal();
         this.updateCartDisplay();
     }
 
+    /**
+     * Update cart total
+     */
     updateCartTotal() {
         this.cartTotal = this.cart.reduce((total, item) => {
             return total + (item.price * item.quantity);
         }, 0);
     }
 
+    /**
+     * Update cart display
+     */
     updateCartDisplay() {
         const cartItemsContainer = $('#cart-items');
         const cartCount = $('#cart-count');
         const cartTotalDisplay = $('#cart-total');
 
-        // Update cart count
         const totalItems = this.cart.reduce((total, item) => total + item.quantity, 0);
         cartCount.text(totalItems);
-
-        // Update cart total
         cartTotalDisplay.text(this.cartTotal.toFixed(2));
 
-        // Update cart items display
         if (this.cart.length === 0) {
             cartItemsContainer.html('<p class="empty-cart">购物车为空</p>');
         } else {
@@ -165,7 +234,6 @@ export class OrderingService {
             cartItemsContainer.html(cartHTML);
         }
 
-        // Toggle cart count visibility
         if (totalItems > 0) {
             cartCount.show();
         } else {
@@ -173,6 +241,9 @@ export class OrderingService {
         }
     }
 
+    /**
+     * Toggle cart sidebar
+     */
     toggleCart() {
         if (this.isCartOpen) {
             this.closeCart();
@@ -181,18 +252,26 @@ export class OrderingService {
         }
     }
 
+    /**
+     * Open cart sidebar
+     */
     openCart() {
         $('#cart-sidebar').addClass('open');
         this.isCartOpen = true;
     }
 
+    /**
+     * Close cart sidebar
+     */
     closeCart() {
         $('#cart-sidebar').removeClass('open');
         this.isCartOpen = false;
     }
 
+    /**
+     * Show add to cart feedback
+     */
     showAddToCartFeedback(itemName) {
-        // Create temporary notification
         const notification = $(`
             <div class="cart-notification">
                 <i class="fas fa-check-circle"></i>
@@ -202,12 +281,10 @@ export class OrderingService {
 
         $('body').append(notification);
 
-        // Animate notification
         setTimeout(() => {
             notification.addClass('show');
         }, 100);
 
-        // Remove notification after delay
         setTimeout(() => {
             notification.removeClass('show');
             setTimeout(() => {
@@ -216,13 +293,15 @@ export class OrderingService {
         }, 2000);
     }
 
+    /**
+     * Process checkout
+     */
     checkout() {
         if (this.cart.length === 0) {
             alert('购物车为空');
             return;
         }
 
-        // Simple checkout process - you can enhance this
         const orderSummary = this.cart.map(item => 
             `${item.name} x ${item.quantity} = ¥${(item.price * item.quantity).toFixed(2)}`
         ).join('\n');
@@ -232,63 +311,18 @@ export class OrderingService {
         const confirmOrder = confirm(`订单详情:\n\n${orderSummary}\n\n总计: ¥${totalAmount}\n\n确认下单？`);
         
         if (confirmOrder) {
-            // Clear cart
             this.cart = [];
             this.updateCartTotal();
             this.updateCartDisplay();
             this.closeCart();
-
-            // Show success message
             alert('订单已提交！我们会尽快为您处理。');
         }
     }
 }
 
-export function initOrderingPage() {
-    // Only run if we're on the ordering page
-    if (document.body.id !== 'ordering' && !window.location.pathname.includes('/ordering')) {
-        return;
-    }
-
-    // Set body id for specific styling
-    document.body.id = 'ordering';
-    document.body.classList.add('ordering-page');
-
-    // Initialize ordering service
-    const orderingService = new OrderingService();
-
-    // Make ordering service globally available
-    window.orderingService = orderingService;
-
-    // Add scroll-triggered animations
-    initScrollAnimations();
-}
-
-function initScrollAnimations() {
-    // Intersection Observer for category cards
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
-            }
-        });
-    }, observerOptions);
-
-    // Observe category cards and recommendation cards
-    document.querySelectorAll('.category-card, .recommendation-card, .item-card').forEach(card => {
-        observer.observe(card);
-    });
-}
-
-// Auto-initialize when DOM is ready
-$(document).ready(function() {
-    initOrderingPage();
+// Auto-initialize if on ordering page
+$(document).ready(() => {
+    new OrderingPage();
 });
 
-// Export for global access
-window.initOrderingPage = initOrderingPage;
+export default OrderingPage;

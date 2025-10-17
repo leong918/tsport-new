@@ -17,16 +17,16 @@
 
                                 {{ html()->form('POST', route('web.do-login'))->open() }}
                                 @csrf
-                                <x-text-input name="username" label="用户名" placeholder="Username" required="true" />
-                                <x-password-input name="password" label="密码" placeholder="Password" :showForgotPassword="true"
+                                <x-text-input name="username" label="用戶名" placeholder="Username" required="true" />
+                                <x-text-input name="password" label="密碼" type="password" placeholder="Password" :showForgotPassword="true"
                                     required="true" />
                                 <div class="submit-btn-wrapper col-12 text-center">
                                     <input type="image" src="{{ asset('assets/web/images/button/btn-login.png') }}"
                                         alt="登入" class="img-button" style="max-width: 200px; cursor: pointer;" />
                                 </div>
-                                <div class="register-btn">还没有账户？马上
+                                <div class="register-btn">還沒有賬戶？馬上
                                     <a href="{{ route('web.register') }}">
-                                        创建账户
+                                        創建賬戶
                                     </a>
                                 </div>
                                 {{ html()->form()->close() }}

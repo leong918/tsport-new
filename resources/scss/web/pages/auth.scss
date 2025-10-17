@@ -34,10 +34,10 @@
     }
 
     &__reset-password {
-      background-image: url('/public/assets/web/images/auth/wooden-frame-login.png');
+      background-image: url('/public/assets/web/images/auth/wooden-frame-signup.png');
 
       .frame__content {
-        min-height: 800px;
+        min-height: 1120px;
       }
     }
 
@@ -60,9 +60,27 @@
     }
   }
 
+  // Separator line styling
+  .password-separator {
+    border: none;
+    height: 3px;
+    background-color: var(--dark-brown);
+    margin: 40px 0;
+    opacity: 1;
+  }
+
   // Password requirements styling for reset password page
   .password-requirements {
+    padding: 0px 15px;
+
     .info-wrapper {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 10px;
+
       .info {
         margin-bottom: 10px;
         gap: 10px;
@@ -71,6 +89,10 @@
         font-size: 12px;
         font-weight: 600;
         color: var(--dark-brown);
+
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
 
       .fa-check {
@@ -80,41 +102,105 @@
         padding: 3px;
         background-color: var(--brown);
         border-radius: 50%;
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
       }
     }
   }
 
-  // Phone input styling for profile page
-  .phone-input-wrapper {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  // Flatpickr datepicker custom styling
+  .flatpickr-calendar {
+    background: var(--brown) !important;
+    border: 2px solid var(--dark-brown) !important;
+    border-radius: 15px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
 
-    .country-code-wrapper {
-      .country-code {
-        background-color: var(--brown);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        padding: 15px 20px;
-        font-weight: 600;
-        outline: none;
-        box-shadow: inset 0 5px 4px rgba(0, 0, 0, 0.3);
+    .flatpickr-months {
+      background: var(--dark-brown) !important;
+      border-radius: 13px 13px 0 0 !important;
 
-        option {
-          background-color: var(--brown);
-          color: white;
+      .flatpickr-month {
+        color: white !important;
+        fill: white !important;
+      }
+
+      .flatpickr-prev-month,
+      .flatpickr-next-month {
+        color: white !important;
+        fill: white !important;
+
+        &:hover {
+          color: var(--main-green) !important;
+          fill: var(--main-green) !important;
         }
       }
     }
 
-    .flex-1 {
-      flex: 1;
+    .flatpickr-weekdays {
+      background: var(--brown) !important;
+
+      .flatpickr-weekday {
+        color: var(--dark-brown) !important;
+        font-weight: bold !important;
+      }
+    }
+
+    .flatpickr-days {
+      .flatpickr-day {
+        color: white !important;
+        font-size: 13px !important;
+        
+        &:hover {
+          background: var(--main-green) !important;
+          border-color: var(--main-green) !important;
+          transform: scale(1.05);
+        }
+
+        &.selected {
+          background: var(--main-green) !important;
+          border-color: var(--main-green) !important;
+          color: white !important;
+          font-weight: bold !important;
+        }
+
+        &.today {
+          border-color: var(--main-green) !important;
+          color: var(--main-green) !important;
+          font-weight: bold !important;
+        }
+
+        &.flatpickr-disabled {
+          color: rgba(255, 255, 255, 0.3) !important;
+          cursor: not-allowed !important;
+        }
+
+        &.inRange {
+          background: rgba(76, 175, 80, 0.2) !important;
+          border-color: var(--main-green) !important;
+        }
+      }
+    }
+
+  }
+
+  // Year dropdown styling for birthdate picker  
+  .flatpickr-current-month {
+    .flatpickr-monthDropdown-months {
+      background: var(--dark-brown) !important;
+      color: white !important;
+      border: 1px solid var(--brown) !important;
+    }
+    
+    .numInputWrapper {
+      input.cur-year {
+        background: var(--dark-brown) !important;
+        color: white !important;
+        border: 1px solid var(--brown) !important;
+      }
     }
   }
 
@@ -124,18 +210,35 @@
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--dark-brown);
-    font-size: 16px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+
+    .edit-icon-img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      transition: all 0.2s ease;
+    }
+
+    &:hover .edit-icon-img {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+
+    // Legacy FontAwesome support (if still needed elsewhere)
+    i {
+      color: var(--dark-brown);
+      font-size: 16px;
+    }
 
     .icon {
       width: 20px;
       height: 20px;
       filter: brightness(0) invert(1);
-    }
-
-    i {
-      color: var(--dark-brown);
     }
   }
 

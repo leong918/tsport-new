@@ -8,8 +8,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="header-content text-center">
-                            <h1 class="page-title">点单区</h1>
-                            <p class="page-subtitle">专业推荐，精准预测</p>
+                            <h1 class="page-title">點單區</h1>
+                            <p class="page-subtitle">專業推薦，精準預測</p>
                         </div>
                     </div>
                 </div>
@@ -61,13 +61,13 @@
                                             <div class="recommendation-badge badge-{{ $recommendation['badge'] }}">
                                                 @switch($recommendation['badge'])
                                                     @case('hot')
-                                                        热门
+                                                        熱門
                                                         @break
                                                     @case('recommended')
-                                                        推荐
+                                                        推薦
                                                         @break
                                                     @case('special')
-                                                        特别
+                                                        特別
                                                         @break
                                                 @endswitch
                                             </div>
@@ -92,7 +92,7 @@
                                     <i class="fas fa-user-tie"></i>
                                 </div>
                                 <div class="chef-speech-bubble">
-                                    <p>老板，今天想吃什么好料？</p>
+                                    <p>老闆，今天想吃什麼好料？</p>
                                 </div>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
             <div class="container">
                 @foreach($categories as $category)
                     <div class="category-items" data-category="{{ $category['id'] }}" style="display: none;">
-                        <h3 class="category-title">{{ $category['name'] }}类推荐</h3>
+                        <h3 class="category-title">{{ $category['name'] }}類推薦</h3>
                         <div class="row">
                             @foreach($category['items'] as $item)
                                 <div class="col-md-6 col-lg-4 mb-4">
@@ -130,7 +130,7 @@
                                                     data-item-id="{{ $item['id'] }}"
                                                     data-item-name="{{ $item['name'] }}"
                                                     data-item-price="{{ $item['price'] }}">
-                                                加入购物车
+                                                加入購物車
                                             </button>
                                         </div>
                                     </div>
@@ -158,20 +158,20 @@
         {{-- Cart Sidebar --}}
         <div class="cart-sidebar" id="cart-sidebar">
             <div class="cart-header">
-                <h4>购物车</h4>
+                <h4>購物車</h4>
                 <button class="cart-close" id="cart-close">&times;</button>
             </div>
             
             <div class="cart-items" id="cart-items">
-                <p class="empty-cart">购物车为空</p>
+                <p class="empty-cart">購物車為空</p>
             </div>
             
             <div class="cart-footer">
                 <div class="cart-total">
-                    <span>总计: ¥<span id="cart-total">0.00</span></span>
+                    <span>總計: ¥<span id="cart-total">0.00</span></span>
                 </div>
                 <button class="btn btn-primary btn-checkout" id="checkout-btn">
-                    结算
+                    結算
                 </button>
             </div>
         </div>
@@ -183,7 +183,3 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    {{-- Page-specific scripts will be loaded via app.js imports --}}
-@endpush

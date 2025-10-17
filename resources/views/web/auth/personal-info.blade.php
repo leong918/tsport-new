@@ -9,7 +9,7 @@
                         <div class="frame frame__profile">
                             <div class="frame__content">
                                 <div class="text-center">
-                                    <h1 class="text-brown">个人资料</h1>
+                                    <h1 class="text-brown">個人資料</h1>
                                 </div>
 
                                 {{-- Display alerts for success/error messages --}}
@@ -21,15 +21,15 @@
                                 <x-text-input name="name" label="姓名" placeholder="Full Name"
                                     value="{{ old('name', auth('user')->user()->name ?? '') }}" required="true" />
 
-                                <x-text-input name="username" label="用户名" placeholder="Username"
+                                <x-text-input name="username" label="用戶名" placeholder="Username"
                                     value="{{ old('username', auth('user')->user()->username ?? '') }}" required="true">
                                     <div class="edit-icon">
-                                        <i class="fa-solid fa-pencil"></i>
+                                        <img src="{{ asset('assets/web/images/input/icon-edit.png') }}" alt="Edit" class="edit-icon-img">
                                     </div>
                                 </x-text-input>
 
                                 <div class="input-field-section phone mb-3 col-12">
-                                    <div class="label">电话号码</div>
+                                    <div class="label">電話號碼</div>
                                     <div class="phone-input-wrapper">
                                         <div class="country-code-wrapper">
                                             <select name="phone_region" class="country-code">
@@ -45,24 +45,24 @@
                                                 value="{{ old('phone_no', auth('user')->user()->phone_no ?? '') }}"
                                                 required>
                                             <div class="edit-icon">
-                                                <i class="fa-solid fa-pencil"></i>
+                                                <img src="{{ asset('assets/web/images/input/icon-edit.png') }}" alt="Edit" class="edit-icon-img">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <x-text-input name="email" label="邮件" placeholder="Email"
+                                <x-text-input name="email" label="郵件" placeholder="Email"
                                     value="{{ old('email', auth('user')->user()->email ?? '') }}" required="true"
                                     type="email">
                                     <div class="edit-icon">
-                                        <i class="fa-solid fa-pencil"></i>
+                                        <img src="{{ asset('assets/web/images/input/icon-edit.png') }}" alt="Edit" class="edit-icon-img">
                                     </div>
                                 </x-text-input>
 
                                 <x-text-input name="birthdate" label="生日日期" placeholder="YYYY/MM/DD"
-                                    value="{{ old('birthdate', '1997/10/01') }}" required="true" type="date">
+                                    value="{{ old('birthdate', auth('user')->user()->birthdate ?? '1997/10/01') }}" required="true" class="datepicker birthdate">
                                     <div class="edit-icon">
-                                        <i class="fa-solid fa-pencil"></i>
+                                        <img src="{{ asset('assets/web/images/input/icon-edit.png') }}" alt="Edit" class="edit-icon-img">
                                     </div>
                                 </x-text-input>
 

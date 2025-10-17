@@ -27,13 +27,14 @@ class PredictComment extends Model
      *
      * @var array<int, string>
      */
-    protected $with = ['user', 'like'];
+    protected $with = ['user'];
 
     protected $fillable = [
         'user_id',
         'predict_id',
         'comment',
-        'status'
+        'status',
+        'like_count'
     ];
 
     /**
@@ -48,14 +49,10 @@ class PredictComment extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [];
-
-    protected function createdAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn(string $value) => date('Y-m-d H:i:s', strtotime($value)),
-        );
-    }
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function user(): BelongsTo
     {
@@ -64,6 +61,53 @@ class PredictComment extends Model
 
     public function like(): HasMany
     {
-        return $this->hasMany(PredictLike::class, 'predict_comment_id');
+        return $this->hasMany(PredictCommentLike::class, 'predict_comment_id');
+    }
+
+    /**
+     * Get the total number of likes for this comment
+     */
+    public function getLikeCountAttribute()
+    {
+        // Use the cached like_count if available, otherwise count relationships
+        return $this->attributes['like_count'] ?? $this->like()->count();
+    }
+
+    /**
+     * Check if a user has liked this comment
+     */
+    public function isLikedByUser($userId)
+    {
+        if (!$userId) {
+            return false;
+        }
+        
+        return $this->like()->where('user_id', $userId)->exists();
+    }
+
+    /**
+     * Increment the like count
+     */
+    public function incrementLikeCount()
+    {
+        $this->increment('like_count');
+    }
+
+    /**
+     * Decrement the like count
+     */
+    public function decrementLikeCount()
+    {
+        $this->decrement('like_count');
+    }
+
+    /**
+     * Update like count based on actual likes
+     */
+    public function updateLikeCount()
+    {
+        $count = $this->like()->count();
+        $this->update(['like_count' => $count]);
+        return $count;
     }
 }

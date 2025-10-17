@@ -15,10 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('match_id')->nullable()->constrained('match')->cascadeOnDelete();
             $table->string('character_name');
+            $table->string('image')->nullable();
             $table->longText('description')->nullable();
             $table->tinyInteger("status")->default(1);
+            $table->unsignedInteger('like_count')->default(0);
             $table->timestamps();
             $table->softDeletes();
+            
+            $table->index('like_count');
         });
     }
 

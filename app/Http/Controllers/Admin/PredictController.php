@@ -27,8 +27,8 @@ class PredictController extends BaseController
                     return $model->character_name;
                 })
                 ->addColumn('image', function ($model) {
-                    if ($model->image) {
-                        return '<img src="' . asset('storage/' . $model->image) . '" alt="Prediction Image" class="img-thumbnail" style="max-width: 80px; max-height: 80px;">';
+                    if ($model->image_url) {
+                        return '<img src="' . $model->image_url . '" alt="Prediction Image" class="img-thumbnail" style="max-width: 80px; max-height: 80px;">';
                     }
                     return '<span class="text-muted">No image</span>';
                 })

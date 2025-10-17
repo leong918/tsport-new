@@ -26,10 +26,18 @@ export class AuthService {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': AuthService.getCSRFToken(credentials),
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify(credentials)
             });
+
+            // Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                console.error('Expected JSON but received:', contentType);
+                throw new Error('Server returned non-JSON response');
+            }
 
             const data = await response.json();
             
@@ -40,7 +48,14 @@ export class AuthService {
             }
         } catch (error) {
             console.error('Login error:', error);
-            return { success: false, errors: { general: ['网络错误，请稍后重试'] } };
+            
+            // Check if the error is due to HTML response instead of JSON
+            if (error.message && error.message.includes('Unexpected token')) {
+                console.warn('Received HTML response instead of JSON - possible redirect or server error');
+                return { success: false, errors: { general: ['請刷新頁面重試'] } };
+            }
+            
+            return { success: false, errors: { general: ['網絡錯誤，請稍後重試'] } };
         }
     }
 
@@ -56,10 +71,18 @@ export class AuthService {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': AuthService.getCSRFToken(userData),
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify(userData)
             });
+
+            // Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                console.error('Expected JSON but received:', contentType);
+                throw new Error('Server returned non-JSON response');
+            }
 
             const data = await response.json();
             
@@ -70,7 +93,14 @@ export class AuthService {
             }
         } catch (error) {
             console.error('Registration error:', error);
-            return { success: false, errors: { general: ['网络错误，请稍后重试'] } };
+            
+            // Check if the error is due to HTML response instead of JSON
+            if (error.message && error.message.includes('Unexpected token')) {
+                console.warn('Received HTML response instead of JSON - possible redirect or server error');
+                return { success: false, errors: { general: ['請刷新頁面重試'] } };
+            }
+            
+            return { success: false, errors: { general: ['網絡錯誤，請稍後重試'] } };
         }
     }
 
@@ -100,7 +130,7 @@ export class AuthService {
             }
         } catch (error) {
             console.error('Profile update error:', error);
-            return { success: false, errors: { general: ['网络错误，请稍后重试'] } };
+            return { success: false, errors: { general: ['網絡錯誤，請稍後重試'] } };
         }
     }
 
@@ -130,7 +160,7 @@ export class AuthService {
             }
         } catch (error) {
             console.error('Password change error:', error);
-            return { success: false, errors: { general: ['网络错误，请稍后重试'] } };
+            return { success: false, errors: { general: ['網絡錯誤，請稍後重試'] } };
         }
     }
 
@@ -161,7 +191,7 @@ export class AuthService {
             }
         } catch (error) {
             console.error('Redeem code error:', error);
-            return { success: false, errors: { general: ['网络错误，请稍后重试'] } };
+            return { success: false, errors: { general: ['網絡錯誤，請稍後重試'] } };
         }
     }
 
@@ -171,7 +201,7 @@ export class AuthService {
      * @returns {Promise<boolean>}
      */
     static async logout(logoutUrl) {
-        if (!confirm('确定要登出吗？')) {
+        if (!confirm('確定要登出嗎？')) {
             return false;
         }
 

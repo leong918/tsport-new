@@ -206,7 +206,7 @@ export class ProfileService {
      */
     static getUserAvatarUrl(user) {
         if (user?.avatar) {
-            return `/storage/${user.avatar}`;
+            return `${user.avatar}`;
         }
         return null;
     }

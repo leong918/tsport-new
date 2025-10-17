@@ -1,10 +1,10 @@
 <header id="header">
     <div class="header-items">
-        <button class="header-btn back-btn" onclick="goBack()" type="button" aria-label="Go Back">
+        <button class="header-btn back-btn" type="button" aria-label="Go Back">
             <img src="{{ asset('assets/web/images/global/btn-back.png') }}" class="img img-fluid banner-img">
         </button>
-        <button class="header-btn hamburger-btn" type="button" data-bs-target="#offcanvas-sidebar"
-            data-bs-toggle="offcanvas" aria-controls="offcanvas-sidebar" aria-label="Open Menu">
+        <button class="header-btn hamburger-btn" type="button" data-bs-toggle="offcanvas" 
+            data-bs-target="#offcanvas-sidebar" aria-controls="offcanvas-sidebar" aria-label="Open Menu">
             <img src="{{ asset('assets/web/images/global/hamburger.png') }}" class="img img-fluid banner-img"
                 style="pointer-events: none;" alt="Menu">
         </button>
@@ -16,7 +16,7 @@
     <div class="offcanvas offcanvas-end sidebar" tabindex="-1" id="offcanvas-sidebar"
         aria-labelledby="offcanvasSidebarLabel">
         <div class="offcanvas-header text-center position-relative">
-            <button type="button" class="offcanvas-close" data-bs-dismiss="offcanvas" aria-label="Close">
+            <button type="button" class="offcanvas-close" aria-label="Close" data-bs-dismiss="offcanvas">
                 <img src="{{ asset('assets/web/images/global/btn-right.png') }}" alt="Close" class="img-fluid">
             </button>
             <a href="#" class="offcanvas-title" id="offcanvasSidebarLabel">
@@ -26,19 +26,19 @@
         <div class="offcanvas-body">
             <ul class="sidebar-list main">
                 <li><a href="{{ route('web.home') }}" class="sidebar-link">
-                        <img src="{{ asset('assets/web/images/sidebar/btn-home.png') }}" alt="主页"></a></li>
+                        <img src="{{ asset('assets/web/images/sidebar/btn-home.png') }}" alt="主頁"></a></li>
                 <li><a href="{{ route('web.ordering') }}" class="sidebar-link">
-                        <img src="{{ asset('assets/web/images/sidebar/btn-order-area.png') }}" alt="点单区"></a></li>
+                        <img src="{{ asset('assets/web/images/sidebar/btn-order-area.png') }}" alt="點單區"></a></li>
                 <li><a href="{{ route('web.events') }}" class="sidebar-link">
-                        <img src="{{ asset('assets/web/images/sidebar/btn-events.png') }}" alt="活动专区"></a></li>
-                <li><a href="{{ route('web.live-matches') }}" class="sidebar-link">
-                        <img src="{{ asset('assets/web/images/sidebar/btn-live-matches.png') }}" alt="直播区"></a></li>
+                        <img src="{{ asset('assets/web/images/sidebar/btn-events.png') }}" alt="活動專區"></a></li>
+                <li><a href="{{ route('web.matches') }}" class="sidebar-link">
+                        <img src="{{ asset('assets/web/images/sidebar/btn-matches.png') }}" alt="直播區"></a></li>
                 <li><a href="{{ route('web.predict') }}" class="sidebar-link">
-                        <img src="{{ asset('assets/web/images/sidebar/btn-prediction-home.png') }}" alt="预测专业"></a>
+                        <img src="{{ asset('assets/web/images/sidebar/btn-prediction-home.png') }}" alt="預測專業"></a>
                 </li>
                 @auth
                     <li><a href="{{ route('web.profile') }}" class="sidebar-link">
-                            <img src="{{ asset('assets/web/images/sidebar/btn-personal-home.png') }}" alt="个人主页"></a></li>
+                            <img src="{{ asset('assets/web/images/sidebar/btn-personal-home.png') }}" alt="個人主頁"></a></li>
                 @endauth
             </ul>
 
@@ -47,10 +47,10 @@
             @guest
                 <ul class="sidebar-list secondary">
                     <li><a href="{{ route('web.login') }}" class="sidebar-link">
-                            <img src="{{ asset('assets/web/images/sidebar/btn-login.png') }}" alt="登录"
+                            <img src="{{ asset('assets/web/images/sidebar/btn-login.png') }}" alt="登錄"
                                 class="img-fluid"></a></li>
                     <li><a href="{{ route('web.register') }}" class="sidebar-link">
-                            <img src="{{ asset('assets/web/images/sidebar/btn-signup.png') }}" alt="注册"
+                            <img src="{{ asset('assets/web/images/sidebar/btn-signup.png') }}" alt="註冊"
                                 class="img-fluid"></a></li>
                 </ul>
             @endguest
@@ -70,30 +70,9 @@
     </div>
 @endpush
 
-<script>
-/**
- * Global back button functionality
- * Goes to previous page in browser history, with fallback to home page
- */
-function goBack() {
-    // Check if there's history to go back to
-    if (window.history.length > 1 && document.referrer) {
-        // Check if the referrer is from the same domain to avoid going to external sites
-        const currentDomain = window.location.hostname;
-        const referrerUrl = new URL(document.referrer);
-        
-        if (referrerUrl.hostname === currentDomain) {
-            window.history.back();
-        } else {
-            // If referrer is external, go to home page
-            window.location.href = '{{ route("web.home") }}';
-        }
-    } else {
-        // No history or referrer, go to home page
-        window.location.href = '{{ route("web.home") }}';
-    }
-}
-
-// Make goBack function globally available
-window.goBack = goBack;
-</script>
+@push('scripts')
+    <script>
+        // Set home route for back button functionality
+        window.homeRoute = '{{ route("web.home") }}';
+    </script>
+@endpush

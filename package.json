@@ -6,22 +6,31 @@
     "node": ">=18.0.0 <23.0.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build"
+    "dev": "concurrently \"npm run dev:streaming\" \"npm run rtmp:start\"",
+    "dev:streaming": "vite --mode streaming",
+    "build": "vite build",
+    "rtmp:server": "node rtmp-server.cjs",
+    "rtmp:start": "node rtmp-server.cjs",
+    "streaming": "concurrently \"npm run rtmp:server\" \"npm run dev\""
   },
   "devDependencies": {
     "axios": "^1.6.1",
+    "concurrently": "^9.2.1",
     "laravel-vite-plugin": "^1.0.0",
     "sass": "^1.69.7",
     "vite": "^6.3.5"
   },
   "dependencies": {
     "@coreui/coreui-pro": "^4.6.4",
+    "@fortawesome/fontawesome-free": "^7.1.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
     "chart.js": "^4.4.2",
+    "flatpickr": "^4.6.13",
     "gsap": "^3.13.0",
     "jquery": "^3.7.1",
+    "node-fetch": "^3.3.2",
+    "node-media-server": "^4.1.0",
     "sweetalert2": "^11.6.13",
     "swiper": "^12.0.2"
   }

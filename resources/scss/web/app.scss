@@ -1,3 +1,9 @@
+// FontAwesome
+@import '@fortawesome/fontawesome-free/css/all.css';
+
+// Flatpickr Datepicker
+@import 'flatpickr/dist/flatpickr.min.css';
+
 @import "plugins";
 
 // Global
@@ -16,19 +22,23 @@
 @import "layout/swiper";
 
 // Components
+@import "components/comment-list";
 @import "components/event-card";
 @import "components/form-components";
 @import "components/text-input";
-@import "components/password-input";
 @import "components/profile-components";
 @import "components/match-item";
 @import "components/match-slide";
 @import "components/pagination";
+@import "components/comment-item";
+@import "components/live-chat";
 
 // Pages
 @import "pages/auth";
 @import "pages/profile";
-@import "pages/live-matches";
+@import "pages/matches";
+@import "pages/live";
 @import "pages/events";
 @import "pages/ordering";
 @import "pages/predict";
+@import "pages/predict-detail";

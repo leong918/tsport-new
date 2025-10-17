@@ -1,0 +1,48 @@
+/* Global No-Footer Functionality */
+
+/* Hide footer on pages with no-footer class */
+body.no-footer {
+  #footer,
+  footer {
+    display: none !important;
+  }
+  
+  /* Adjust content area to fill full height */
+  #smooth-content {
+    min-height: 100vh;
+    padding-bottom: 0;
+  }
+  
+  /* Ensure main content takes full height */
+  .screen {
+    min-height: 100vh;
+  }
+}
+
+/* Specific pages that should not show footer */
+body.predict-detail-page.no-footer,
+body.full-screen-page.no-footer,
+body.immersive-page.no-footer {
+  #footer,
+  footer {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Utility classes for footer control */
+.hide-footer {
+  #footer,
+  footer {
+    display: none !important;
+  }
+}
+
+.show-footer {
+  #footer,
+  footer {
+    display: block !important;
+  }
+}

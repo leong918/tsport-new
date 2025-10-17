@@ -1,0 +1,185 @@
+// Comment Item Component Styles
+.comment-item {
+  display: flex;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out;
+  background: transparent;
+  align-items: flex-start;
+
+  .comment-avatar {
+    flex-shrink: 0;
+
+    .avatar-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .comment-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.2rem;
+
+      .comment-author {
+        font-size: clamp(12px, 2.5vw, 14px);
+        font-weight: 700;
+        color: #333;
+      }
+
+      .comment-time {
+        font-size: clamp(11px, 2vw, 13px);
+        font-weight: 300;
+        color: #999;
+      }
+    }
+
+      .comment-bubble {
+        background: #fff;
+        padding: clamp(0.6rem, 2vw, 0.8rem) clamp(0.8rem, 2.5vw, 1rem);
+        border-bottom-left-radius: 18px;
+        border-top-right-radius: 18px;
+        border-bottom-right-radius: 18px;
+        font-size: clamp(0.75rem, 2vw, 0.85rem);
+        line-height: 1.4;
+        color: #333;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+        position: relative;
+        max-width: calc(100% - 60px);
+        display: inline-block;
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        hyphens: auto;      // Chat bubble tail pointing to avatar
+      &::before {
+        content: '';
+        position: absolute;
+        left: -6px;
+        top: 12px;
+        width: 0;
+        height: 0;
+        border: 6px solid transparent;
+        border-right-color: #fff;
+      }
+    }
+  }
+
+  // Like button positioned outside the bubble, on the right
+  .comment-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 0.5rem;
+
+    .like-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 0.3rem 0.5rem;
+      border-radius: 15px;
+      transition: all 0.2s ease;
+
+      i {
+        font-size: 0.9rem;
+        color: #ff4757;
+        transition: all 0.2s ease;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+        transition: all 0.2s ease;
+      }
+
+      .like-count {
+        font-weight: 600;
+        color: #ff4757;
+        font-size: 0.8rem;
+      }
+
+      &:hover {
+        background: rgba(255, 71, 87, 0.1);
+        transform: scale(1.05);
+      }
+
+      &.liked {
+        i {
+          animation: heartPulse 0.6s ease-in-out;
+        }
+
+        img {
+          animation: heartPulse 0.6s ease-in-out;
+        }
+      }
+    }
+  }
+
+  // Special styling for user's own comments (if needed)
+  &.own-comment {
+    .comment-content {
+      .comment-bubble {
+        background: #007bff;
+        color: white;
+
+        &::before {
+          border-right-color: #007bff;
+        }
+      }
+    }
+  }
+
+  // Hover effect for entire comment
+  &:hover {
+    transform: translateY(-1px);
+
+    .comment-bubble {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heartPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

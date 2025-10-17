@@ -21,6 +21,10 @@
     <link rel="stylesheet" href="{{ asset('assets/admin/css/select2.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/admin/css/select2-bootstrap-5-theme.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/admin/css/dataTables.bootstrap5.min.css') }}" />
+    
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     @yield('style')
 </head>
 
@@ -48,6 +52,18 @@
     <script src="{{ asset('assets/admin/js/bootstrap.min.js') }}"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
+    
+    <!-- Setup CSRF token for axios requests -->
+    <script>
+        // Setup axios with CSRF token
+        if (typeof axios !== 'undefined') {
+            let token = document.head.querySelector('meta[name="csrf-token"]');
+            if (token) {
+                axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+            }
+        }
+    </script>
+    
     <script>
         $(document).ready(function() {
             $("form .image-uploader").change(function() {

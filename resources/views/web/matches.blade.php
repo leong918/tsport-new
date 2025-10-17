@@ -1,19 +1,19 @@
 @extends('web.layout.app')
 
 @section('content')
-    <div id="page-live-matches" class="screen">
+    <div id="page-matches" class="screen">
         <!-- title -->
         <section id="section-title">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-10">
-                        <img src="{{ asset('assets/web/images/live-matches/title.png') }}" class="img-fluid" alt="Live Matches Title">
+                        <img src="{{ asset('assets/web/images/matches/title.png') }}" class="img-fluid" alt="Live Matches Title">
                     </div>
                 </div>
             </div>
         </section>
         <!-- swiper section -->
-        <section id="section-live-matches">
+        <section id="section-matches">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -35,7 +35,7 @@
                             </div>
                         @else
                             <div class="text-center py-4">
-                                <p class="text-muted">暂无热门比赛</p>
+                                <p class="text-muted">暫無熱門比賽</p>
                             </div>
                         @endif
                     </div>
@@ -50,7 +50,7 @@
                     <!-- ads banner -->
                     <div class="col-12">
                         <div class="banner">
-                            <img src="{{ asset('assets/web/images/live-matches/ads-banner.png') }}" class="img-fluid" alt="Banner">
+                            <img src="{{ asset('assets/web/images/matches/ads-banner.png') }}" class="img-fluid" alt="Banner">
                         </div>
                     </div>
 
@@ -61,7 +61,7 @@
                     @empty
                         <div class="col-12">
                             <div class="text-center py-4">
-                                <p class="text-muted">暂无其他比赛数据</p>
+                                <p class="text-muted">暫無其他比賽數據</p>
                             </div>
                         </div>
                     @endforelse
@@ -69,7 +69,7 @@
                     @if($contentMatches->hasPages())
                         <div class="col-12">
                             <!-- pagination -->
-                            <nav aria-label="比赛分页导航">
+                            <nav aria-label="比賽分頁導航">
                                 {{ $contentMatches->links('web.pagination.custom') }}
                             </nav>
                         </div>

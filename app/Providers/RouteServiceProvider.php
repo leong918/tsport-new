@@ -33,6 +33,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
+            // Viewer tracking routes - without Sanctum middleware
+            Route::prefix('api')
+                ->middleware(['throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class])
+                ->group(base_path('routes/api-viewer-tracking.php'));
+
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });

@@ -29,19 +29,19 @@
                             <div class="frame__content">
                                 <div class="option-wrapper">
                                     <a href="{{ route('web.personal-info') }}" class="input-field-wrapper">
-                                        <div class="label">个人资料</div>
+                                        <div class="label">個人資料</div>
                                         <div class="arrow">
                                             <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}" class="img img-fluid">
                                         </div>
                                     </a>
                                     <a href="{{ route('web.reset-password') }}" class="input-field-wrapper">
-                                        <div class="label">密码</div>
+                                        <div class="label">密碼</div>
                                         <div class="arrow">
                                             <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}" class="img img-fluid">
                                         </div>
                                     </a>
                                     <div class="input-field-wrapper" data-bs-toggle="modal" data-bs-target="#redeem-code-modal" style="cursor: pointer;">
-                                        <div class="label">兑换码</div>
+                                        <div class="label">兌換碼</div>
                                         <div class="arrow">
                                             <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}" class="img img-fluid">
                                         </div>
@@ -126,7 +126,7 @@
                     <div class="bottom-content">
                         <div id="main-color" style="display: none;">
                             <div class="form-section">
-                                <h6 class="mb-3">选择主色调</h6>
+                                <h6 class="mb-3">選擇主色調</h6>
                                 <div class="color-grid">
                                     <div class="color-option" data-color="#FF0000" style="background-color: #FF0000;">
                                     </div>
@@ -147,7 +147,7 @@
 
                         <div id="sec-color" style="display: none;">
                             <div class="form-section">
-                                <h6 class="mb-3">选择副色调</h6>
+                                <h6 class="mb-3">選擇副色調</h6>
                                 <div class="color-grid">
                                     <div class="color-option" data-color="#800000" style="background-color: #800000;">
                                     </div>
@@ -168,8 +168,8 @@
 
                         <div id="number" style="display: none;">
                             <div class="form-section">
-                                <h6 class="mb-3">球衣号码</h6>
-                                <x-text-input name="jersey_number" label="号码" placeholder="输入1-99" type="number"
+                                <h6 class="mb-3">球衣號碼</h6>
+                                <x-text-input name="jersey_number" label="號碼" placeholder="輸入1-99" type="number"
                                     required="true" />
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                         <div id="name" style="display: none;">
                             <div class="form-section">
                                 <h6 class="mb-3">球衣姓名</h6>
-                                <x-text-input name="jersey_name" label="姓名" placeholder="输入姓名" required="true" />
+                                <x-text-input name="jersey_name" label="姓名" placeholder="輸入姓名" required="true" />
                                 <div class="mt-3">
                                     <img src="{{ asset('assets/web/images/button/btn-save.png') }}" 
                                          alt="保存更改" class="img-button save-profile-btn" 

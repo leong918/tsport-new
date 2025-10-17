@@ -129,6 +129,11 @@ class MatchRepository extends BaseRepository
     public function formatMatchesForDisplay($matches)
     {
         return $matches->map(function ($match) {
+            // Check if this match has an active live stream
+            $liveMatch = \App\Models\LiveMatch::where('match_id', $match->id)
+                ->where('status', 1)
+                ->first();
+            
             return [
                 'id' => $match->id,
                 'title' => $match->match_title,
@@ -136,7 +141,10 @@ class MatchRepository extends BaseRepository
                 'status' => $match->status == 1 ? '直播中' : '已结束',
                 'image' => $match->banner_url ?? '/assets/web/assets/img/matches/default.jpg',
                 'time' => $match->start_at ? $match->start_at->format('Y/m/d H:i') : 'TBD',
-                'is_top' => $match->is_top
+                'is_top' => $match->is_top,
+                'has_live' => $liveMatch ? true : false,
+                'live_match_id' => $liveMatch ? $liveMatch->id : null,
+                'is_streaming' => $liveMatch && $liveMatch->obs_status == 2,
             ];
         })->values()->toArray();
     }

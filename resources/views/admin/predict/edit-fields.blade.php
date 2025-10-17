@@ -63,7 +63,7 @@
                             {{ html()->hidden('original_image', $model->image) }}
                             <div class="mt-2">
                                 <label class="form-label">Current Image:</label><br>
-                                <img src="{{ asset('storage/' . $model->image) }}" alt="Current Prediction Image" class="img-fluid rounded" style="max-width: 200px; max-height: 150px;">
+                                <img src="{{ $model->image_url }}" alt="Current Prediction Image" class="img-fluid rounded" style="max-width: 200px; max-height: 150px;">
                             </div>
                         @endif
                     </div>

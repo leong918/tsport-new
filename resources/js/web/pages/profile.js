@@ -129,7 +129,7 @@ function setupPasswordChangeForm() {
     const validationRules = {
         current_password: (password) => {
             if (!password || !password.trim()) {
-                return { isValid: false, message: '请输入当前密码' };
+                return { isValid: false, message: '請輸入當前密碼' };
             }
             return { isValid: true, message: '' };
         },
@@ -137,10 +137,10 @@ function setupPasswordChangeForm() {
         new_password_confirmation: (confirmation) => {
             const newPassword = $form.find('input[name="new_password"]').val();
             if (!confirmation || !confirmation.trim()) {
-                return { isValid: false, message: '请确认新密码' };
+                return { isValid: false, message: '請確認新密碼' };
             }
             if (confirmation !== newPassword) {
-                return { isValid: false, message: '新密码与确认密码不匹配' };
+                return { isValid: false, message: '新密碼與確認密碼不匹配' };
             }
             return { isValid: true, message: '' };
         }
@@ -197,7 +197,7 @@ async function handleProfileUpdate(formData) {
         const result = await AuthService.updateProfile(formData);
 
         if (result.success) {
-            FormService.showSuccessMessage('个人资料更新成功！');
+            FormService.showSuccessMessage('個人資料更新成功！');
             $('#profile-info-modal').modal('hide');
             
             // Update header user info if needed
@@ -206,12 +206,12 @@ async function handleProfileUpdate(formData) {
             if (result.errors.general) {
                 FormService.showErrorMessage(result.errors.general[0]);
             } else {
-                FormService.showErrorMessage('更新失败，请稍后重试');
+                FormService.showErrorMessage('更新失敗，請稍後重試');
             }
         }
     } catch (error) {
         console.error('Profile update error:', error);
-        FormService.showErrorMessage('更新过程中出现错误');
+        FormService.showErrorMessage('更新過程中出現錯誤');
     } finally {
         const $submitBtn = $('#profile-info-modal button[type="submit"]');
         $submitBtn.prop('disabled', false).text('保存');
@@ -231,7 +231,7 @@ async function handlePasswordChange(formData) {
         const result = await AuthService.changePassword(formData);
 
         if (result.success) {
-            FormService.showSuccessMessage('密码更新成功！');
+            FormService.showSuccessMessage('密碼更新成功！');
             $('#password-change-modal').modal('hide');
         } else {
             if (result.errors.general) {
@@ -299,7 +299,12 @@ export function initializeProfileData(userData) {
 
 // Auto-initialize when DOM is ready
 $(document).ready(function() {
-    initProfilePage();
+    // Only initialize if we're on a profile-related page
+    if (window.location.pathname.includes('/profile') || 
+        window.location.pathname.includes('/personal-info') || 
+        document.body.classList.contains('profile-page')) {
+        initProfilePage();
+    }
 });
 
 // Make logout function globally available (for onclick handlers in templates)

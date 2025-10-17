@@ -36,7 +36,7 @@ class PredictRepository extends BaseRepository
     public function getListing()
     {
         return Predict::query()
-            ->with(['like', 'comment'])
+            ->with(['comment'])
             ->orderBy('created_at', 'desc');
     }
 
@@ -104,11 +104,23 @@ class PredictRepository extends BaseRepository
     }
 
     /**
+     * Get active predictions by specific expert
+     */
+    public function getActivePredictionsByExpert($expert, $perPage = 10)
+    {
+        return Predict::with(['matches', 'comment.user'])
+            ->where('status', Predict::STATUS['ACTIVE'])
+            ->where('character_name', $expert)
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
      * Get active prediction by ID with relationships
      */
     public function getActivePredictionById($id)
     {
-        return Predict::with(['matches', 'comment.user', 'like'])
+        return Predict::with(['matches', 'comment.user'])
             ->where('id', $id)
             ->where('status', Predict::STATUS['ACTIVE'])
             ->first();
@@ -119,16 +131,16 @@ class PredictRepository extends BaseRepository
      */
     public function getRelatedPredictions($prediction, $limit = 3)
     {
-        return Predict::with(['matches', 'like'])
+        return Predict::with(['matches'])
             ->where('status', Predict::STATUS['ACTIVE'])
             ->where('id', '!=', $prediction->id)
             ->where(function($query) use ($prediction) {
                 $query->where('character_name', $prediction->character_name)
                       ->orWhere('match_id', $prediction->match_id);
             })
-            ->withCount('like')
-            ->orderBy('like_count', 'desc')
-            ->take($limit)
+            ->withCount('comment')
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
             ->get();
     }
 
@@ -137,10 +149,10 @@ class PredictRepository extends BaseRepository
      */
     public function getFeaturedPredictions($limit = 3)
     {
-        return Predict::with(['matches', 'like'])
+        return Predict::with(['matches'])
             ->where('status', Predict::STATUS['ACTIVE'])
-            ->withCount('like')
-            ->orderBy('like_count', 'desc')
+            ->withCount('comment')
+            ->orderBy('comment_count', 'desc')
             ->take($limit)
             ->get();
     }
@@ -157,5 +169,13 @@ class PredictRepository extends BaseRepository
                 ->distinct('match_id')
                 ->count('match_id'),
         ];
+    }
+
+    /**
+     * Get character constants
+     */
+    public function getCharacters()
+    {
+        return Predict::CHARACTER;
     }
 }

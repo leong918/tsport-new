@@ -3,3 +3,23 @@
 public/hot
 public/sitemap.xml
 .env
+
+# Laravel Cache Files
+/bootstrap/cache/*.php
+!/bootstrap/cache/.gitkeep
+
+# Storage and Logs
+/storage/logs/*.log
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
+.DS_Store
+Thumbs.db
