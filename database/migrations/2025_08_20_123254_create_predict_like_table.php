@@ -13,13 +13,9 @@ return new class extends Migration
     {
         Schema::create('predict_like', function (Blueprint $table) {
             $table->id();
-            $table->unique(['user_id', 'predict_id']);
-            $table->unique(['user_id', 'predict_comment_id']);
-            $table->foreignId('user_id')->nullable()->constrained('user')->cascadeOnDelete();
-            $table->foreignId('predict_id')->nullable()->constrained('predict')->cascadeOnDelete();
-            $table->foreignId('predict_comment_id')->nullable()->constrained('predict_comment')->cascadeOnDelete();
+            $table->foreignId('user_id');
+            $table->foreignId('predict_id');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

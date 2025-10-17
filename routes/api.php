@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 require_once 'api/auth.php';
+require_once 'api-streams.php';
+
+// Viewer tracking routes - loaded separately without Sanctum middleware
+// These are defined in api-viewer-tracking.php and will be registered below
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

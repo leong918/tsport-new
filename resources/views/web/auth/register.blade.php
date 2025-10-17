@@ -9,7 +9,7 @@
                         <div class="frame frame__signup">
                             <div class="frame__content">
                                 <div class="text-center">
-                                    <h1 class="text-brown">创建账户</h1>
+                                    <h1 class="text-brown">創建賬戶</h1>
                                 </div>
                                 
                                 {{-- Display alerts for success/error messages --}}
@@ -18,10 +18,10 @@
                                 {{ html()->form('POST', route('web.do-register'))->open() }}
                                 @csrf
 
-                                <x-text-input name="username" label="用户名" placeholder="Username" required="true" />
+                                <x-text-input name="username" label="用戶名" placeholder="Username" required="true" />
 
                                 <div class="col-12 mb-3 input-field-section">
-                                    <div class="col-12 label">电话号码</div>
+                                    <div class="col-12 label">電話號碼</div>
                                     <div class="phone-wrapper">
                                         <div class="input-field-wrapper region">
                                             <input class="input-field" name="phone_region" type="text" placeholder="+60">
@@ -36,27 +36,27 @@
                                     @enderror
                                 </div>
 
-                                <x-text-input name="email" label="邮件" placeholder="Email" type="email"
+                                <x-text-input name="email" label="郵件" placeholder="Email" type="email"
                                     required="true" />
 
-                                <x-password-input name="password" label="密码" placeholder="Password" required="true" />
+                                <x-text-input name="password" label="密碼" type="password" placeholder="Password" required="true" />
 
                                 <div class="row">
                                     <div class="col-6">
-                                        <x-text-input name="referral_code" label="推荐码" placeholder="Referral Code" />
+                                        <x-text-input name="referral_code" label="推薦碼" placeholder="Referral Code" />
                                     </div>
                                     <div class="col-6">
-                                        <x-text-input name="verification_code" label="认证码"
+                                        <x-text-input name="verification_code" label="認證碼"
                                             placeholder="Verification Code" />
                                     </div>
                                 </div>
 
                                 <div class="submit-btn-wrapper col-12 text-center">
                                     <input type="image" src="{{ asset('assets/web/images/button/btn-signup.png') }}" 
-                                           alt="创建账户" class="img-button" style="max-width: 200px; cursor: pointer;" />
+                                           alt="創建賬戶" class="img-button" style="max-width: 200px; cursor: pointer;" />
                                 </div>
 
-                                <div class="login-btn">已有账户？马上
+                                <div class="login-btn">已有賬戶？馬上
                                     <a href="{{ route('web.login') }}">
                                         登入
                                     </a>

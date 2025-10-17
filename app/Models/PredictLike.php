@@ -5,12 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PredictLike extends Model
 {
-    use SoftDeletes;
-
     /**
      * Validation rules
      *
@@ -20,7 +17,6 @@ class PredictLike extends Model
 
     protected $table = 'predict_like';
 
-
     /**
      * The attributes that are mass assignable.
      *
@@ -29,8 +25,6 @@ class PredictLike extends Model
     protected $fillable = [
         'user_id',
         'predict_id',
-        'comment',
-        'status'
     ];
 
     /**
@@ -45,7 +39,10 @@ class PredictLike extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [];
+    protected $casts = [
+        'user_id' => 'integer',
+        'predict_id' => 'integer',
+    ];
 
     protected function createdAt(): Attribute
     {
@@ -54,8 +51,19 @@ class PredictLike extends Model
         );
     }
 
-    protected function blog(): BelongsTo
+    /**
+     * Get the user that owns the like
+     */
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Blog::class);
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the prediction that owns the like
+     */
+    public function predict(): BelongsTo
+    {
+        return $this->belongsTo(Predict::class);
     }
 }

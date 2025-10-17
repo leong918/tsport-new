@@ -14,7 +14,57 @@ export class SmoothScrollNavigation {
 
   init() {
     this.setupSmoothScroll();
-    this.setupOffcanvasListeners();
+    this.exposeGlobalMethods();
+  }
+
+  /**
+   * Expose methods globally for other components to use
+   */
+  exposeGlobalMethods() {
+    // Make smooth scroll control available globally
+    window.smoothScrollControl = {
+      pause: () => {
+        console.log('🎯 smoothScrollControl.pause() called');
+        return this.pauseScrolling();
+      },
+      resume: () => {
+        console.log('🎯 smoothScrollControl.resume() called');
+        return this.resumeScrolling();
+      },
+      isPaused: () => this.isPausedState(),
+      refresh: () => this.refresh(),
+      scrollTo: (target, options) => this.scrollTo(target, options),
+      
+      // 手动测试函数
+      test: () => {
+        console.log('🧪 Testing smooth scroll control...');
+        console.log('Current paused state:', this.isPausedState());
+        console.log('Pausing...');
+        this.pauseScrolling();
+        setTimeout(() => {
+          console.log('Resuming...');
+          this.resumeScrolling();
+        }, 2000);
+      }
+    };
+
+    // Also expose directly on window.smoothScroll for backwards compatibility
+    window.smoothScroll = {
+      pauseScrolling: () => {
+        console.log('🎯 window.smoothScroll.pauseScrolling() called');
+        return this.pauseScrolling();
+      },
+      resumeScrolling: () => {
+        console.log('🎯 window.smoothScroll.resumeScrolling() called');
+        return this.resumeScrolling();
+      },
+      isPaused: this.isPaused,  // 直接暴露状态属性
+      refresh: () => this.refresh(),
+      scrollTo: (target) => this.scrollTo(target)
+    };
+    
+    console.log('✅ Smooth scroll control methods exposed globally');
+    console.log('💡 Test with: window.smoothScrollControl.test()');
   }
 
   /**
@@ -45,41 +95,11 @@ export class SmoothScrollNavigation {
   }
 
   /**
-   * Setup event listeners for offcanvas open/close
-   */
-  setupOffcanvasListeners() {
-    // Listen for Bootstrap offcanvas events
-    document.addEventListener('show.bs.offcanvas', () => {
-      this.pauseScrolling();
-    });
-
-    document.addEventListener('hidden.bs.offcanvas', () => {
-      this.resumeScrolling();
-    });
-
-    // Listen for custom offcanvas events (if using custom implementation)
-    document.addEventListener('offcanvas:open', () => {
-      this.pauseScrolling();
-    });
-
-    document.addEventListener('offcanvas:close', () => {
-      this.resumeScrolling();
-    });
-
-    // Listen for custom smooth scroll events
-    document.addEventListener('smoothscroll:pause', () => {
-      this.pauseScrolling();
-    });
-
-    document.addEventListener('smoothscroll:resume', () => {
-      this.resumeScrolling();
-    });
-  }
-
-  /**
    * Pause smooth scrolling when offcanvas is open
    */
   pauseScrolling() {
+    console.log('🔄 pauseScrolling() method called, isPaused:', this.isPaused);
+    
     if (this.isPaused) return;
     
     this.isPaused = true;
@@ -87,26 +107,27 @@ export class SmoothScrollNavigation {
     if (this.smoother) {
       // Disable ScrollSmoother
       this.smoother.paused(true);
+      console.log('✅ ScrollSmoother paused');
     } else {
       // Disable CSS smooth scrolling
       document.documentElement.style.scrollBehavior = 'auto';
+      console.log('✅ CSS smooth scrolling disabled');
     }
 
     // Disable scroll triggers temporarily
     ScrollTrigger.getAll().forEach(trigger => {
       trigger.disable();
     });
-
-    // Dispatch custom event
-    document.dispatchEvent(new CustomEvent('smoothscroll:paused', {
-      detail: { timestamp: Date.now() }
-    }));
+    
+    console.log('🔄 Smooth scroll paused successfully');
   }
 
   /**
    * Resume smooth scrolling when offcanvas is closed
    */
   resumeScrolling() {
+    console.log('▶️ resumeScrolling() method called, isPaused:', this.isPaused);
+    
     if (!this.isPaused) return;
     
     this.isPaused = false;
@@ -114,9 +135,11 @@ export class SmoothScrollNavigation {
     if (this.smoother) {
       // Re-enable ScrollSmoother
       this.smoother.paused(false);
+      console.log('✅ ScrollSmoother resumed');
     } else {
       // Re-enable CSS smooth scrolling
       document.documentElement.style.scrollBehavior = 'smooth';
+      console.log('✅ CSS smooth scrolling enabled');
     }
 
     // Re-enable scroll triggers
@@ -128,11 +151,8 @@ export class SmoothScrollNavigation {
     setTimeout(() => {
       this.refresh();
     }, 100);
-
-    // Dispatch custom event
-    document.dispatchEvent(new CustomEvent('smoothscroll:resumed', {
-      detail: { timestamp: Date.now() }
-    }));
+    
+    console.log('▶️ Smooth scroll resumed successfully');
   }
 
   /**
@@ -196,13 +216,10 @@ export class SmoothScrollNavigation {
    * Destroy smooth scroll functionality
    */
   destroy() {
-    // Remove event listeners
-    document.removeEventListener('show.bs.offcanvas', this.pauseScrolling);
-    document.removeEventListener('hidden.bs.offcanvas', this.resumeScrolling);
-    document.removeEventListener('offcanvas:open', this.pauseScrolling);
-    document.removeEventListener('offcanvas:close', this.resumeScrolling);
-    document.removeEventListener('smoothscroll:pause', this.pauseScrolling);
-    document.removeEventListener('smoothscroll:resume', this.resumeScrolling);
+    // Clean up global methods
+    if (window.smoothScrollControl) {
+      delete window.smoothScrollControl;
+    }
 
     if (this.smoother) {
       this.smoother.kill();

@@ -16,9 +16,12 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('user')->cascadeOnDelete();
             $table->foreignId('predict_id')->nullable()->constrained('predict')->cascadeOnDelete();
             $table->string('comment');
+            $table->unsignedInteger('like_count')->default(0);
             $table->tinyInteger("status")->default(1);
             $table->timestamps();
             $table->softDeletes();
+            
+            $table->index('like_count');
         });
     }
 

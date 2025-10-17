@@ -20,6 +20,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin'], fu
         require_once 'topic.php';
         require_once 'topic-comment.php';
         require_once 'match.php';
+        require_once 'live-match.php';
         require_once 'predict.php';
         require_once 'predict-comment.php';
         require_once 'event.php';

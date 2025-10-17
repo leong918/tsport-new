@@ -7,6 +7,20 @@ import axios from 'axios';
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+// Set up CSRF token for axios requests
+let token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
+
+/**
+ * Load Bootstrap 5 JavaScript components
+ */
+import * as bootstrap from 'bootstrap';
+window.bootstrap = bootstrap;
+
 // Import all of CoreUI's JS
 // import * as coreui from '@coreui/coreui-pro';
 

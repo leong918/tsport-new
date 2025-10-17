@@ -1,6 +1,6 @@
 footer#footer {
   background: #4d4d4d;
-  padding: 40px 0px 100px 0px;
+  padding: 40px 0px 80px 0px;
   width: 100%;
 
   .footer-links {
@@ -19,5 +19,6 @@ footer#footer {
 
   small {
     color: #ffffff;
+    font-size: clamp(12px, 2vw, 14px);
   }
 }

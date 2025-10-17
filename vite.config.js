@@ -18,5 +18,21 @@ export default defineConfig({
       '@admin': '/resources/js/admin',
       '@scss': '/resources/scss'
     }
+  },
+  server: {
+    proxy: {
+      // Proxy HLS streams from RTMP server
+      '/hls': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/hls/, '/live')
+      },
+      // Proxy RTMP API calls
+      '/rtmp-api': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/rtmp-api/, '/api')
+      }
+    }
   }
 });

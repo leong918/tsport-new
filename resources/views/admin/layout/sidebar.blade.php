@@ -26,6 +26,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.live-match.index') }}">
+                <i class="fa-solid fa-video nav-icon"></i>
+                Live Match
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.predict.index') }}">
                 <i class="fa-solid fa-newspaper nav-icon"></i>
                 Prediction

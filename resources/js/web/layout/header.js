@@ -1,61 +1,147 @@
 // Header JavaScript functionality for TSport
-// Handles offcanvas sidebar and smooth scroll integration
+// Handles offcanvas sidebar, smooth scroll integration, and dynamic header height
 
-export class HeaderController {
-  static instance = null;
-  
+/**
+ * Dynamic Header Height Calculator
+ * Calculates the actual header height and sets CSS custom properties
+ */
+class HeaderHeight {
   constructor() {
-    // Prevent multiple instances (singleton pattern)
+    this.header = null;
+    this.initialized = false;
+    this.resizeObserver = null;
+  }
+
+  init() {
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.setup());
+    } else {
+      this.setup();
+    }
+  }
+
+  setup() {
+    this.header = document.getElementById('header');
+    
+    if (!this.header) {
+      return;
+    }
+
+    // Calculate and set initial header height
+    this.calculateAndSetHeight();
+
+    // Set up resize observer for responsive changes
+    this.setupResizeObserver();
+
+    // Listen for font load events (since header might change height when fonts load)
+    this.setupFontLoadListener();
+
+    this.initialized = true;
+  }
+
+  calculateAndSetHeight() {
+    if (!this.header) return;
+
+    // Get the actual computed height of the header
+    const headerRect = this.header.getBoundingClientRect();
+    const headerHeight = Math.ceil(headerRect.height);
+    
+    // Add 10px buffer as requested
+    const totalHeight = headerHeight + 10;
+    
+    // Set CSS custom property
+    document.documentElement.style.setProperty('--header-height', `${totalHeight}px`);
+  }
+
+  setupResizeObserver() {
+    if (!window.ResizeObserver) return;
+
+    this.resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        // Debounce the height calculation
+        clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+          this.calculateAndSetHeight();
+        }, 250);
+      }
+    });
+
+    if (this.header) {
+      this.resizeObserver.observe(this.header);
+    }
+  }
+
+  setupFontLoadListener() {
+    if ('fonts' in document) {
+      document.fonts.ready.then(() => {
+        setTimeout(() => {
+          this.calculateAndSetHeight();
+        }, 100);
+      });
+    } else {
+      // Fallback for browsers without FontFaceSet API
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          this.calculateAndSetHeight();
+        }, 500);
+      });
+    }
+  }
+
+  recalculate() {
+    this.calculateAndSetHeight();
+  }
+
+  destroy() {
+    if (this.resizeObserver && this.header) {
+      this.resizeObserver.unobserve(this.header);
+      this.resizeObserver.disconnect();
+    }
+    clearTimeout(this.resizeTimeout);
+  }
+}
+
+/**
+ * Header Controller Class
+ * Manages the offcanvas sidebar with Bootstrap 5 integration
+ */
+class HeaderController {
+  constructor() {
+    // 单例模式 - 防止重复实例化
     if (HeaderController.instance) {
       return HeaderController.instance;
     }
     
+    HeaderController.instance = this;
+    
+    // Bootstrap 5 offcanvas properties
     this.offcanvasElement = null;
     this.bsOffcanvas = null;
-    this.bootstrapCheckAttempts = 0;
-    this.maxBootstrapCheckAttempts = 50; // 5 seconds max wait
-    this.autoCloseOnNavigation = true; // Flag to control auto-close behavior
-    this.isInitialized = false; // Track initialization status
-    this.lastToggleTime = 0; // Track last toggle time to prevent rapid toggles
-    this.toggleDebounceDelay = 500; // 500ms between toggles
-    
-    HeaderController.instance = this;
-    this.init();
+    this.headerHeight = null;
+    this.isInitialized = false;
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.init());
+    } else {
+      this.init();
+    }
   }
 
   init() {
-    // Wait for DOM to be ready and bootstrap to be available
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.waitForBootstrap());
-    } else {
-      this.waitForBootstrap();
-    }
-  }
+    if (this.isInitialized) return;
 
-  waitForBootstrap() {
-    this.bootstrapCheckAttempts++;
-    
-    // Check if bootstrap is available
-    if (typeof window.bootstrap !== 'undefined') {
-      this.initializeHeader();
-    } else if (this.bootstrapCheckAttempts < this.maxBootstrapCheckAttempts) {
-      // Wait a bit more for bootstrap to load
-      setTimeout(() => this.waitForBootstrap(), 100);
-    }
-  }
+    // Initialize header height calculator
+    this.headerHeight = new HeaderHeight();
+    this.headerHeight.init();
 
-  initializeHeader() {
-    // Prevent multiple initialization
-    if (this.isInitialized) {
-      return;
-    }
-    
     // Initialize Bootstrap 5 Offcanvas
     this.setupOffcanvas();
-    
-    // Setup event listeners
+
+    // Initialize event listeners
     this.setupEventListeners();
-    
+
     // Expose global functions
     this.exposeGlobalFunctions();
     
@@ -64,195 +150,151 @@ export class HeaderController {
 
   setupOffcanvas() {
     this.offcanvasElement = document.getElementById('offcanvas-sidebar');
+    console.log('🎯 Offcanvas element found:', !!this.offcanvasElement);
     
     if (this.offcanvasElement) {
-      // Check if bootstrap is available
-      if (typeof window.bootstrap !== 'undefined' && window.bootstrap.Offcanvas) {
-        // Create Bootstrap offcanvas instance
-        this.bsOffcanvas = new window.bootstrap.Offcanvas(this.offcanvasElement, {
-          backdrop: true,
-          keyboard: true,
-          scroll: false
-        });
+      // Check multiple Bootstrap namespace variations
+      const BootstrapOffcanvas = window.Bootstrap?.Offcanvas || 
+                                 window.bootstrap?.Offcanvas || 
+                                 window.Offcanvas ||
+                                 (window.bootstrap && bootstrap.Offcanvas);
+      
+      console.log('🎯 Bootstrap variations check:');
+      console.log('  - window.Bootstrap:', !!window.Bootstrap);
+      console.log('  - window.bootstrap:', !!window.bootstrap);
+      console.log('  - window.Offcanvas:', !!window.Offcanvas);
+      console.log('  - Final BootstrapOffcanvas:', !!BootstrapOffcanvas);
+      
+      if (BootstrapOffcanvas) {
+        try {
+          this.bsOffcanvas = new BootstrapOffcanvas(this.offcanvasElement, {
+            backdrop: false,
+            keyboard: false,
+            scroll: false
+          });
+          console.log('✅ Bootstrap Offcanvas initialized successfully');
+        } catch (error) {
+          console.log('❌ Bootstrap Offcanvas initialization failed:', error);
+        }
+      } else {
+        // 如果 Bootstrap Offcanvas 不可用，使用自定义实现
+        console.log('⚠️ Bootstrap Offcanvas not available, using custom implementation');
+        this.setupCustomOffcanvas();
       }
     }
+  }
+
+  /**
+   * 自定义 offcanvas 实现（当 Bootstrap 不可用时）
+   */
+  setupCustomOffcanvas() {
+    this.bsOffcanvas = {
+      show: () => {
+        this.offcanvasElement.classList.add('show');
+        this.pauseSmoothScroll();
+        console.log('📱 Custom offcanvas opened');
+      },
+      hide: () => {
+        this.offcanvasElement.classList.remove('show');
+        this.resumeSmoothScroll();
+        console.log('📱 Custom offcanvas closed');
+      },
+      toggle: () => {
+        if (this.offcanvasElement.classList.contains('show')) {
+          this.bsOffcanvas.hide();
+        } else {
+          this.bsOffcanvas.show();
+        }
+      }
+    };
+    
+    // 添加点击触发器的事件监听
+    const triggers = document.querySelectorAll('[data-bs-toggle="offcanvas"][data-bs-target="#offcanvas-sidebar"]');
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.bsOffcanvas.toggle();
+      });
+    });
+    
+    console.log('✅ Custom offcanvas implementation ready');
   }
 
   setupEventListeners() {
+    // 设置返回按钮事件监听
+    this.setupBackButton();
+    
     if (!this.offcanvasElement || !this.bsOffcanvas) return;
 
-    // Prevent duplicate event listeners
-    if (this.offcanvasElement.hasAttribute('data-events-bound')) {
-      return;
-    }
-    this.offcanvasElement.setAttribute('data-events-bound', 'true');
-
-    // Custom event handlers for smooth scroll integration
-    this.offcanvasElement.addEventListener('show.bs.offcanvas', () => {
-      // Dispatch custom event for smooth scroll pause
-      document.dispatchEvent(new CustomEvent('smoothscroll:pause', {
-        detail: { source: 'offcanvas', action: 'open' }
-      }));
-    });
-
-    this.offcanvasElement.addEventListener('shown.bs.offcanvas', () => {
-      // Additional actions after sidebar is fully open
-    });
-
-    this.offcanvasElement.addEventListener('hide.bs.offcanvas', () => {
-      // Prepare for smooth scroll resume
-    });
-
-    this.offcanvasElement.addEventListener('hidden.bs.offcanvas', () => {
-      // Dispatch custom event for smooth scroll resume
-      document.dispatchEvent(new CustomEvent('smoothscroll:resume', {
-        detail: { source: 'offcanvas', action: 'close' }
-      }));
-    });
-
-    // Handle navigation link clicks - only attach to existing nav links
-    const navLinks = this.offcanvasElement.querySelectorAll('.nav-link:not(form .nav-link)');
-    
-    navLinks.forEach((link, index) => {
-      // Prevent duplicate event listeners
-      if (!link.hasAttribute('data-sidebar-listener')) {
-        link.setAttribute('data-sidebar-listener', 'true');
-        
-        const href = link.getAttribute('href');
-        
-        link.addEventListener('click', (e) => {
-          // Only close sidebar for actual navigation (not empty links or # links)
-          if (href && href !== '#' && href !== 'javascript:void(0)' && this.autoCloseOnNavigation) {
-            // Check if it's the same page (no need to close in that case)
-            if (href === window.location.pathname) {
-              return;
-            }
-            
-            // Add a small delay before closing to allow for any click effects
-            setTimeout(() => {
-              if (this.bsOffcanvas && this.isOpen()) {
-                this.bsOffcanvas.hide();
-              }
-            }, 150);
-          }
-        });
-      }
-    });
-
-    // Handle logout form submission
-    const logoutForm = this.offcanvasElement.querySelector('form[action*="logout"]');
-    if (logoutForm) {
-      logoutForm.addEventListener('submit', () => {
-        this.bsOffcanvas.hide();
+    // 只有在使用真正的 Bootstrap Offcanvas 时才添加这些事件监听器
+    if (this.offcanvasElement && typeof this.bsOffcanvas.show === 'function' && this.bsOffcanvas.constructor.name !== 'Object') {
+      // Bootstrap 5 事件监听器
+      this.offcanvasElement.addEventListener('show.bs.offcanvas', (event) => {
+        this.pauseSmoothScroll();
+        console.log('📱 Bootstrap offcanvas opening - smooth scroll paused');
       });
+
+      this.offcanvasElement.addEventListener('shown.bs.offcanvas', (event) => {
+      });
+
+      this.offcanvasElement.addEventListener('hide.bs.offcanvas', (event) => {
+      });
+
+      this.offcanvasElement.addEventListener('hidden.bs.offcanvas', (event) => {
+        this.resumeSmoothScroll();
+        console.log('📱 Bootstrap offcanvas closed - smooth scroll resumed');
+      });
+    } else {
+      console.log('📱 Using custom offcanvas - events handled in custom implementation');
     }
 
-    // Add click listener to hamburger button to handle manual toggle
-    const hamburgerButtons = document.querySelectorAll('[data-bs-target="#offcanvas-sidebar"]');
-    
-    hamburgerButtons.forEach((hamburgerBtn, index) => {
-      if (!hamburgerBtn.hasAttribute('data-debug-listener')) {
-        hamburgerBtn.setAttribute('data-debug-listener', 'true');
-        
-        // Remove Bootstrap's default click behavior to prevent conflicts
-        hamburgerBtn.removeAttribute('data-bs-toggle');
-        hamburgerBtn.removeAttribute('data-bs-target');
-        
-        let lastClickTime = 0;
-        const debounceDelay = 300; // 300ms debounce
-        
-        // Add our controlled click handler
-        hamburgerBtn.addEventListener('click', (e) => {
-          // Always prevent default and stop propagation first
+    // 延迟绑定关闭按钮，避免冲突
+    setTimeout(() => {
+      const closeButton = this.offcanvasElement.querySelector('.offcanvas-close');
+      if (closeButton) {
+        closeButton.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          e.stopImmediatePropagation();
-          
-          const currentTime = Date.now();
-          const timeSinceLastClick = currentTime - lastClickTime;
-          
-          // Debounce rapid clicks
-          if (timeSinceLastClick < debounceDelay) {
-            return false;
-          }
-          
-          lastClickTime = currentTime;
-          
-          // Manually toggle the sidebar
-          if (this.bsOffcanvas) {
-            if (this.isOpen()) {
-              this.bsOffcanvas.hide();
-            } else {
-              this.bsOffcanvas.show();
-            }
-          }
-          
-          return false;
-        }, true); // Use capture phase to intercept early
+          this.close();
+        });
+      }
+    }, 1000);
+  }
+
+  setupBackButton() {
+    // 使用事件委托，处理所有返回按钮（包括动态添加的）
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.back-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.goBack();
       }
     });
+  }
+
+  goBack() {
+    // 检查是否有历史记录可以返回
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      // 如果没有历史记录，检查是否有设定的首页路由
+      const homeUrl = window.homeRoute || window.location.origin + '/';
+      window.location.href = homeUrl;
+    }
   }
 
   exposeGlobalFunctions() {
-    // Expose offcanvas instance globally
-    window.sidebarOffcanvas = this.bsOffcanvas;
-
-    // Global functions for external control with smooth scroll integration
-    window.openSidebar = () => {
-      if (this.bsOffcanvas && !this.isOpen()) {
-        this.bsOffcanvas.show();
-        return true;
-      }
-      return false;
-    };
-
-    window.closeSidebar = () => {
-      if (this.bsOffcanvas && this.isOpen()) {
-        this.bsOffcanvas.hide();
-        return true;
-      }
-      return false;
-    };
-
-    window.toggleSidebar = () => {
-      if (this.bsOffcanvas) {
-        this.bsOffcanvas.toggle();
-        return true;
-      }
-      return false;
-    };
-
-    window.isSidebarOpen = () => {
-      return this.isOpen();
-    };
-
-    window.getSidebarInstance = () => {
-      return this;
-    };
-
-    // Debug functions to control auto-close behavior
-    window.enableSidebarAutoClose = () => {
-      this.enableAutoClose();
-    };
-
-    window.disableSidebarAutoClose = () => {
-      this.disableAutoClose();
-    };
-
-    window.isSidebarAutoCloseEnabled = () => {
-      return this.isAutoCloseEnabled();
-    };
+    window.headerController = this;
+    window.openSidebar = () => this.open();
+    window.closeSidebar = () => this.close();
+    window.toggleSidebar = () => this.toggle();
+    window.isSidebarOpen = () => this.isOpen();
+    window.goBack = () => this.goBack();
   }
 
-  // Public methods for external use
+  // Sidebar control methods
   open() {
-    const currentTime = Date.now();
-    if (currentTime - this.lastToggleTime < this.toggleDebounceDelay) {
-      return false;
-    }
-    
     if (this.bsOffcanvas && !this.isOpen()) {
-      this.lastToggleTime = currentTime;
       this.bsOffcanvas.show();
       return true;
     }
@@ -260,64 +302,90 @@ export class HeaderController {
   }
 
   close() {
-    const currentTime = Date.now();
-    if (currentTime - this.lastToggleTime < this.toggleDebounceDelay) {
-      return false;
-    }
-    
     if (this.bsOffcanvas && this.isOpen()) {
-      this.lastToggleTime = currentTime;
       this.bsOffcanvas.hide();
+      // 恢复 smooth scroll (会在 hidden 事件中调用)
       return true;
     }
     return false;
+  }
+
+  /**
+   * 暂停 smooth scroll 的辅助方法
+   */
+  pauseSmoothScroll() {
+    console.log('🔄 Attempting to pause smooth scroll...');
+    console.log('window.smoothScrollControl available:', !!window.smoothScrollControl);
+    
+    if (window.smoothScrollControl && typeof window.smoothScrollControl.pause === 'function') {
+      window.smoothScrollControl.pause();
+      console.log('✅ Called smoothScrollControl.pause()');
+    } else if (window.smoothScroll && typeof window.smoothScroll.pauseScrolling === 'function') {
+      window.smoothScroll.pauseScrolling();
+      console.log('✅ Called smoothScroll.pauseScrolling()');
+    } else {
+      // 延迟重试机制
+      console.log('⏳ Retrying in 100ms...');
+      setTimeout(() => {
+        if (window.smoothScrollControl && typeof window.smoothScrollControl.pause === 'function') {
+          window.smoothScrollControl.pause();
+          console.log('✅ Delayed call to smoothScrollControl.pause()');
+        } else if (window.smoothScroll && typeof window.smoothScroll.pauseScrolling === 'function') {
+          window.smoothScroll.pauseScrolling();
+          console.log('✅ Delayed call to smoothScroll.pauseScrolling()');
+        } else {
+          console.log('❌ No smooth scroll control method available after retry');
+        }
+      }, 100);
+    }
+  }
+
+  /**
+   * 恢复 smooth scroll 的辅助方法
+   */
+  resumeSmoothScroll() {
+    console.log('▶️ Attempting to resume smooth scroll...');
+    
+    if (window.smoothScrollControl && typeof window.smoothScrollControl.resume === 'function') {
+      window.smoothScrollControl.resume();
+      console.log('✅ Called smoothScrollControl.resume()');
+    } else if (window.smoothScroll && typeof window.smoothScroll.resumeScrolling === 'function') {
+      window.smoothScroll.resumeScrolling();
+      console.log('✅ Called smoothScroll.resumeScrolling()');
+    } else {
+      // 延迟重试机制
+      console.log('⏳ Retrying in 100ms...');
+      setTimeout(() => {
+        if (window.smoothScrollControl && typeof window.smoothScrollControl.resume === 'function') {
+          window.smoothScrollControl.resume();
+          console.log('✅ Delayed call to smoothScrollControl.resume()');
+        } else if (window.smoothScroll && typeof window.smoothScroll.resumeScrolling === 'function') {
+          window.smoothScroll.resumeScrolling();
+          console.log('✅ Delayed call to smoothScroll.resumeScrolling()');
+        } else {
+          console.log('❌ No smooth scroll control method available after retry');
+        }
+      }, 100);
+    }
   }
 
   toggle() {
-    const currentTime = Date.now();
-    if (currentTime - this.lastToggleTime < this.toggleDebounceDelay) {
-      return false;
+    if (this.isOpen()) {
+      this.close();
+    } else {
+      this.open();
     }
-    
-    if (this.bsOffcanvas) {
-      this.lastToggleTime = currentTime;
-      this.bsOffcanvas.toggle();
-      return true;
-    }
-    return false;
   }
 
   isOpen() {
-    return this.offcanvasElement && this.offcanvasElement.classList.contains('show');
-  }
-
-  // Methods to control auto-close behavior
-  enableAutoClose() {
-    this.autoCloseOnNavigation = true;
-  }
-
-  disableAutoClose() {
-    this.autoCloseOnNavigation = false;
-  }
-
-  isAutoCloseEnabled() {
-    return this.autoCloseOnNavigation;
-  }
-
-  // Cleanup method
-  destroy() {
-    if (this.bsOffcanvas) {
-      this.bsOffcanvas.dispose();
-    }
-    
-    // Clean up global references
-    if (window.sidebarOffcanvas === this.bsOffcanvas) {
-      delete window.sidebarOffcanvas;
-      delete window.openSidebar;
-      delete window.closeSidebar;
-      delete window.toggleSidebar;
-    }
+    if (!this.offcanvasElement) return false;
+    return this.offcanvasElement.classList.contains('show');
   }
 }
 
+// Create and export singleton instance - 防止重复实例化
+// const headerController = new HeaderController();
+
+// Export both default and named exports for compatibility
 export default HeaderController;
+export { HeaderController, HeaderHeight };

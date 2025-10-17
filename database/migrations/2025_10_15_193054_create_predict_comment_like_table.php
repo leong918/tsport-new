@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('predict', function (Blueprint $table) {
-            $table->string('image')->nullable()->after('character_name');
+        Schema::create('predict_comment_like', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('predict_comment_id');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('predict', function (Blueprint $table) {
-            $table->dropColumn('image');
-        });
+        Schema::dropIfExists('predict_comment_like');
     }
 };

@@ -1,0 +1,404 @@
+/* Predict Detail Page Styles */
+#page-predict-detail {
+  min-height: 100vh;
+  --header-height: 0px;
+
+  #section-prediction-top {
+    background-image: url('/public/assets/web/images/predict-detail/wooden-frame.png');
+    background-repeat: no-repeat;
+    background-size: 101% auto;
+    background-attachment: fixed;
+    background-position: center -100px;
+    padding: 130px 0px 40px 0px;
+  }
+
+  #section-prediction-detail {
+    background-image: url('/public/assets/web/images/global/background-detail.png');
+    padding: 30px 0px;
+
+    .prediction-description {
+      p {
+        margin-bottom: 0px;
+      }
+    }
+  }
+
+  #section-comments {
+    .comments-header {
+      .stats-bar {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        background: #fff;
+        padding: 0.7rem 1.5rem;
+
+        .stat-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: #666;
+          font-size: 0.9rem;
+
+          i {
+            font-size: 1.1rem;
+            color: #007bff;
+          }
+
+          img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+          }
+
+          &:last-child {
+            margin-left: auto;
+          }
+
+          .share-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 0.3rem 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            position: relative;
+            overflow: hidden;
+
+            i {
+              font-size: 1.1rem;
+              color: #007bff;
+              transition: all 0.3s ease;
+            }
+
+            img {
+              width: 20px;
+              height: 20px;
+              object-fit: contain;
+              transition: all 0.3s ease;
+            }
+
+            &:hover {
+              background: rgba(0, 123, 255, 0.1);
+              color: #007bff;
+              transform: translateY(-1px);
+
+              i {
+                transform: scale(1.1);
+                color: #007bff;
+              }
+
+              img {
+                transform: scale(1.1);
+              }
+            }
+
+            &:active {
+              transform: translateY(0);
+            }
+
+            // Ripple effect on click
+            &::after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 0;
+              height: 0;
+              border-radius: 50%;
+              background: rgba(0, 123, 255, 0.3);
+              transform: translate(-50%, -50%);
+              transition:
+                width 0.3s ease,
+                height 0.3s ease,
+                opacity 0.3s ease;
+              opacity: 0;
+              pointer-events: none;
+            }
+
+            &:active::after {
+              width: 30px;
+              height: 30px;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+
+    .comments-bottom-padding {
+      height: 100px; // Minimal space
+    }
+  }
+}
+
+// Login Prompt Section
+#section-login-prompt {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--main-green);
+  padding: 1rem 0;
+
+  .login-prompt-section {
+    .login-prompt {
+      text-align: center;
+
+      .btn {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 0.8rem 2rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #c82333;
+          transform: translateY(-1px);
+          text-decoration: none;
+          color: white;
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+}
+
+// Comment Input Section - GSAP Sticky Bottom
+#section-input-comment {
+  // Ensure smooth hardware acceleration for GSAP animations
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--main-green);
+  padding: 1rem 0;
+
+  .comment-input-section {
+    .comment-form {
+      .input-group {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-end;
+
+        .comment-input {
+          flex: 1;
+          border-radius: 10px;
+          padding: 0.8rem 1.5rem;
+          font-size: 0.9rem;
+          resize: none;
+          min-height: 44px;
+          max-height: 120px;
+          background: #fff;
+          transition: all 0.2s ease;
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #fff;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+          }
+
+          &::placeholder {
+            color: #999;
+          }
+        }
+
+        .submit-button {
+          background: #dc3545;
+          color: white;
+          border: none;
+          border-radius: 25px;
+          padding: 0.8rem 2rem;
+          font-size: 0.9rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+
+          &:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+
+          &:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Like Buttons Styling */
+.predict-like-btn,
+.comment-like-btn,
+.like-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+
+  i {
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+  }
+
+  .like-count {
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  &.liked {
+    color: #e74c3c;
+
+    i {
+      color: #e74c3c !important;
+      animation: heartBeat 0.6s ease-in-out;
+    }
+
+    img {
+      animation: heartBeat 0.6s ease-in-out;
+    }
+  }
+
+  &.pulse-animation {
+    animation: pulseEffect 0.3s ease-in-out;
+  }
+}
+
+/* Predict Like Button - Larger for main prediction */
+.predict-like-btn {
+  font-size: 0.9rem;
+  padding: 0 !important; // 强制移除 padding，覆盖通用样式
+
+  i {
+    font-size: 1.2rem;
+  }
+
+  img {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.2s ease; // 添加平滑过渡
+  }
+
+  .like-count {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-left: 0.25rem; // 添加与图片的间距
+  }
+
+  // 添加悬停效果
+  &:hover img {
+    transform: scale(1.1);
+  }
+}
+
+/* Animations */
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.3);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Processing State */
+.predict-like-btn.processing,
+.comment-like-btn.processing,
+.like-btn.processing {
+  opacity: 0.6;
+  cursor: not-allowed;
+
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #ccc;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 5px;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Animation for new comments
+@keyframes fadeInComment {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

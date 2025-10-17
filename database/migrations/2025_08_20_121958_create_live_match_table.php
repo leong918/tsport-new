@@ -14,7 +14,14 @@ return new class extends Migration
         Schema::create('live_match', function (Blueprint $table) {
             $table->id();
             $table->foreignId('match_id')->nullable()->constrained('match')->cascadeOnDelete();
-            $table->string('stream_url');
+            $table->string('obs_stream_key')->nullable();
+            $table->string('obs_server_url')->nullable();
+            $table->tinyInteger('obs_status')->default(0)->comment('0=stopped, 1=starting, 2=live, 3=stopping');
+            $table->string('rtmp_url')->nullable()->comment('Generated RTMP URL for OBS');
+            $table->integer('viewer_count')->default(0);
+            $table->timestamp('stream_started_at')->nullable();
+            $table->timestamp('stream_ended_at')->nullable();
+            $table->text('obs_error_log')->nullable()->comment('OBS error messages');
             $table->tinyInteger("status")->default(1);
             $table->timestamps();
             $table->softDeletes();

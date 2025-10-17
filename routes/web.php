@@ -17,6 +17,9 @@ Route::get('get_captcha', function (\Mews\Captcha\Captcha $captcha) {
     return $captcha->src('flat');
 })->name('captcha');
 
-// Remove the duplicate web middleware - routes are already in web group
+// Live streaming helper routes
+require_once 'debug-stream.php';
+
+// Main application routes
 require_once 'web/app.php';
 require_once 'admin/app.php';

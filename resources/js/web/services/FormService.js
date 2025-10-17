@@ -66,7 +66,7 @@ export class FormService {
             if (password.length > 0 && validation.strength > 0) {
                 const strengthInfo = ValidationService.getPasswordStrengthInfo(validation.strength);
                 if (strengthInfo.text) {
-                    $(this).after(`<small class="password-strength ${strengthInfo.class}">密码强度: ${strengthInfo.text}</small>`);
+                    $(this).after(`<small class="password-strength ${strengthInfo.class}">密碼強度: ${strengthInfo.text}</small>`);
                 }
             }
         });
