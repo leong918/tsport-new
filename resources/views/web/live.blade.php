@@ -2,60 +2,8 @@
 
 @section('body-class', 'bg-1 no-footer')
 
-@push('styles')
-    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet">
-    <style>
-        .video-js {
-            width: 100%;
-            height: 100%;
-        }
-
-        .live-indicator-hls {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 0, 0, 0.8);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            z-index: 10;
-        }
-
-        .viewer-count-hls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
-        
-        /* Viewer count animation effects */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .viewer-increase {
-            animation: pulse 0.5s ease-in-out;
-            color: #28a745 !important;
-        }
-        
-        .viewer-decrease {
-            animation: pulse 0.5s ease-in-out;
-            color: #dc3545 !important;
-        }
-    </style>
-@endpush
-
 @section('content')
-    <div id="page-live" class="screen" data-match-id="{{ $match['id'] ?? '' }}">
+    <div id="page-live" class="screen" data-match-id="{{ $match['url_id'] ?? $match['id'] ?? '' }}">
         <!-- Live Video Section -->
         <section id="section-live-video">
             <div class="video-container">
@@ -63,8 +11,11 @@
                 <div class="video-player" style="position: relative;">
                     @if ($match['obs_status'] == 2 && $match['obs_stream_key'])
                         <!-- HLS Video Player for Live Stream -->
-                        <video id="live-stream-player" class="video-js vjs-default-skin" controls preload="auto"
-                            data-setup='{"fluid": true, "responsive": true}'
+                        <video id="live-stream-player" class="video-js vjs-default-skin" 
+                            autoplay muted playsinline preload="auto"
+                            data-setup='{"fluid": true, "responsive": true, "controls": false, "autoplay": true, "muted": true}'
+                            data-stream-key="{{ $match['obs_stream_key'] }}"
+                            data-is-live="{{ $match['obs_status'] == 2 ? 'true' : 'false' }}"
                             poster="{{ asset('assets/web/images/live/sample-video.jpg') }}">
                             <p class="vjs-no-js">
                                 To view this video please enable JavaScript, and consider upgrading to a web browser that
@@ -77,11 +28,11 @@
                             <span style="animation: pulse 2s infinite;">●</span> LIVE
                         </div>
                         <div class="viewer-count-hls">
-                            <span id="live-viewer-count">{{ number_format($match['viewers']) }}</span> viewers
+                            <span id="live-viewer-count">{{ number_format($match['viewers']) }}</span>
                         </div>
                     @elseif (isset($match['video_url']) && $match['video_url'])
                         <!-- Regular Video -->
-                        <video id="live-video" controls autoplay muted>
+                        <video id="live-video" autoplay muted>
                             <source src="{{ $match['video_url'] }}" type="video/mp4">
                             您的浏览器不支持视频播放。
                         </video>
@@ -94,7 +45,7 @@
                         </div>
                     @else
                         <!-- Stream Offline -->
-                        <div style="position: relative; height: 300px;">
+                        <div style="position: relative; height: 250px;">
                             <img src="{{ asset('assets/web/images/live/sample-video.jpg') }}" alt="Live Video Placeholder"
                                 class="img-fluid w-100" style="height: 100%; object-fit: cover;">
                             <div
@@ -108,7 +59,6 @@
                                 @else
                                     <i class="fas fa-video-slash fa-3x mb-3 opacity-50"></i>
                                     <p class="h5 mb-2">Stream Offline</p>
-                                    <p class="mb-0 opacity-75">The stream will appear here when live</p>
                                 @endif
                             </div>
                         </div>
@@ -116,7 +66,10 @@
 
                     <!-- Video Controls Overlay -->
                     <div class="video-controls">
-                        <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                        <button class="mute-btn" onclick="toggleMute()" title="点击取消静音">
+                            <i class="fas fa-volume-mute"></i>
+                        </button>
+                        <button class="fullscreen-btn" onclick="toggleFullscreen()" title="全屏">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
@@ -235,9 +188,10 @@
                         <!-- Action Buttons with Images -->
                         <div class="action-buttons">
                             <div class="action-button">
-                                <button class="action-btn other-events-btn" data-action="other-events">
+                                <button class="action-btn other-events-btn" data-action="other-events" 
+                                        data-matches-url="{{ route('web.matches') }}">
                                     <img src="{{ asset('assets/web/images/live/more/button-otherevents-live.png') }}"
-                                        alt="其他活动" class="action-btn-image no-styling">
+                                        alt="其他赛事直播" class="action-btn-image no-styling">
                                 </button>
                             </div>
                             <div class="action-button">
@@ -247,9 +201,10 @@
                                 </button>
                             </div>
                             <div class="action-button">
-                                <button class="action-btn" data-action="goto-activity">
+                                <button class="action-btn" data-action="goto-activity"
+                                        data-events-url="{{ route('web.events') }}">
                                     <img src="{{ asset('assets/web/images/live/more/button-gotoactivity.png') }}"
-                                        alt="进入活动" class="action-btn-image">
+                                        alt="前往活动" class="action-btn-image">
                                 </button>
                             </div>
                         </div>
@@ -260,181 +215,32 @@
     </div>
 @endsection
 
-@push('scripts')
-    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flv.js/dist/flv.min.js"></script>
-    <!-- Live Viewer Tracker -->
-    <script src="{{ asset('assets/web/js/live-viewer-tracker.js') }}"></script>
-    <script>
-        let player = null;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            initializePlayer();
-            initializeStatusUpdates();
-        });
-
-        function initializePlayer() {
-            const streamKey = '{{ $match['obs_stream_key'] ?? '' }}';
-            const isLive = {{ $match['obs_status'] == 2 ? 'true' : 'false' }};
-
-            if (isLive && streamKey) {
-                // Use FLV stream for live broadcasting
-                const flvUrl = `http://localhost:8889/live/${streamKey}.flv`;
-
-                if (typeof videojs !== 'undefined' && document.getElementById('live-stream-player')) {
-                    player = videojs('live-stream-player', {
-                        controls: true,
-                        fluid: true,
-                        responsive: true,
-                        liveui: true,
-                        html5: {
-                            vhs: {
-                                overrideNative: true
-                            }
-                        }
-                    });
-
-                    // Try to load FLV stream first
-                    console.log('Attempting to load FLV stream:', flvUrl);
-                    
-                    // Use FLV.js for better FLV support
-                    if (typeof flvjs !== 'undefined' && flvjs.isSupported()) {
-                        console.log('Using FLV.js for stream playback');
-                        
-                        const videoElement = player.tech().el();
-                        const flvPlayer = flvjs.createPlayer({
-                            type: 'flv',
-                            url: flvUrl,
-                            isLive: true
-                        });
-                        
-                        flvPlayer.attachMediaElement(videoElement);
-                        flvPlayer.load();
-                        
-                        flvPlayer.on(flvjs.Events.LOADING_COMPLETE, () => {
-                            console.log('FLV stream loaded successfully');
-                            flvPlayer.play().catch(e => console.log('Auto-play prevented:', e));
-                        });
-                        
-                        flvPlayer.on(flvjs.Events.ERROR, (errorType, errorDetail) => {
-                            console.error('FLV player error:', errorType, errorDetail);
-                            // Show error message to user
-                            showStreamError('Stream connection failed. Please refresh the page.');
-                        });
-                        
-                        // Store flv player for cleanup
-                        player.flvPlayer = flvPlayer;
-                    } else {
-                        // Fallback: Test if stream is available via fetch
-                        console.log('FLV.js not supported, testing stream availability...');
-                        fetch(flvUrl, { method: 'HEAD' })
-                            .then(response => {
-                                if (response.ok) {
-                                    console.log('FLV stream available, trying direct video source...');
-                                    player.src({
-                                        src: flvUrl,
-                                        type: 'video/x-flv'
-                                    });
-                                    player.play().catch(e => console.log('Auto-play prevented:', e));
-                                } else {
-                                    console.log('FLV stream not available');
-                                    showStreamError('Stream is currently offline.');
-                                }
-                            })
-                            .catch(error => {
-                                console.log('FLV test failed:', error);
-                                showStreamError('Unable to connect to stream.');
-                            });
-                    }
-
-                    player.on('error', function(e) {
-                        console.error('Player error:', e);
-                        setTimeout(function() {
-                            console.log('Attempting to reload stream...');
-                            location.reload();
-                        }, 5000);
-                    });
-                }
-            }
-        }
-
-        function showStreamError(message) {
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'alert alert-warning mt-3';
-            errorDiv.innerHTML = `
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                ${message}
-                <button class="btn btn-sm btn-outline-primary ms-3" onclick="location.reload()">
-                    Refresh Page
-                </button>
-            `;
-            
-            const videoContainer = document.querySelector('.video-player');
-            if (videoContainer) {
-                videoContainer.appendChild(errorDiv);
-            }
-        }
-
-        function initializeStatusUpdates() {
-            const matchId = '{{ $match['id'] ?? '' }}';
-            if (matchId) {
-                // Poll for status updates every 15 seconds
-                setInterval(function() {
-                    updateViewerCount(matchId);
-                }, 15000);
-            }
-        }
-
-        function updateViewerCount(matchId) {
-            if (!matchId) return;
-
-            fetch(`/live/${matchId}/viewer-count`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const viewerCountElement = document.getElementById('live-viewer-count');
-                        if (viewerCountElement) {
-                            viewerCountElement.textContent = data.viewer_count.toLocaleString();
-                        }
-                    }
-                })
-                .catch(error => console.error('Error updating viewer count:', error));
-        }
-
-        function toggleFullscreen() {
-            if (player) {
-                if (player.isFullscreen()) {
-                    player.exitFullscreen();
-                } else {
-                    player.requestFullscreen();
-                }
-            }
-        }
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', function() {
-            if (player && player.flvPlayer) {
-                player.flvPlayer.destroy();
-            }
-        });
-    </script>
-@endpush
-
 @push('fixed-bottom')
     @auth('user')
         <section id="section-input-comment">
             <!-- Comment Input Section -->
             <div class="comment-input-section">
-                <div class="container">
-                    <form class="comment-form">
-                        @csrf
-                        <div class="input-group">
-                            <textarea class="form-control comment-input" name="content" placeholder="留言" rows="1" required></textarea>
-                            <button type="submit" class="btn btn-follow submit-button">
-                                发表评论
-                            </button>
-                        </div>
-                    </form>
+                <div class="container-fluid px-3">
+                    <div class="live-comment-wrapper">
+                        <!-- Left: Comment Form with Icon -->
+                        <form class="comment-form">
+                            @csrf
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    <img src="{{ asset('assets/web/images/chat/icon-comment.png') }}" alt="Comment">
+                                </span>
+                                <textarea class="form-control comment-input" name="content" placeholder="留言" rows="1" required></textarea>
+                                <button type="submit" class="btn-send">
+                                    <img src="{{ asset('assets/web/images/chat/button-send.png') }}" alt="Send">
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <!-- Right: Bet Button -->
+                        <button type="button" class="btn-bet">
+                            <img src="{{ asset('assets/web/images/chat/btn-bet.png') }}" alt="去下注">
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

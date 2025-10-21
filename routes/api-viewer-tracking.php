@@ -27,24 +27,39 @@ Route::post('/live/{id}/join', function (Request $request, $id) {
             $viewerId = 'user_' . auth('user')->id();
         }
         
-        // Store viewer in cache with 5 minute expiration
+        // Check if viewer already exists
         $cacheKey = "live_match_{$id}_viewer_{$viewerId}";
+        $alreadyViewing = Cache::has($cacheKey);
+        
+        // Store viewer in cache with 5 minute expiration
         Cache::put($cacheKey, true, now()->addMinutes(5));
         
-        // Update viewer count
-        $viewerCount = Cache::get("live_match_{$id}_viewer_count", 0);
-        $viewerCount++;
-        Cache::put("live_match_{$id}_viewer_count", $viewerCount, now()->addMinutes(10));
-        
-        // Update database (use direct assignment since viewer_count is protected)
-        $liveMatch->viewer_count = $viewerCount;
-        $liveMatch->save();
-        
-        Log::info("Viewer joined live match {$id}: {$viewerId}, total: {$viewerCount}");
+        // Only increment count if this is a new viewer
+        if (!$alreadyViewing) {
+            // Get all active viewers for accurate count
+            $pattern = "live_match_{$id}_viewer_*";
+            $activeViewers = collect(Cache::get($pattern, []))->count();
+            
+            // Update viewer count
+            $viewerCount = Cache::get("live_match_{$id}_viewer_count", 0);
+            $viewerCount++;
+            Cache::put("live_match_{$id}_viewer_count", $viewerCount, now()->addMinutes(10));
+            
+            // Update database (use direct assignment since viewer_count is protected)
+            $liveMatch->viewer_count = $viewerCount;
+            $liveMatch->save();
+            
+            Log::info("New viewer joined live match {$id}: {$viewerId}, total: {$viewerCount}");
+        } else {
+            // Viewer already exists, just refresh their session
+            $viewerCount = Cache::get("live_match_{$id}_viewer_count", $liveMatch->viewer_count);
+            Log::info("Existing viewer refreshed live match {$id}: {$viewerId}");
+        }
         
         return response()->json([
             'success' => true,
-            'viewer_count' => $viewerCount
+            'viewer_count' => $viewerCount,
+            'is_new' => !$alreadyViewing
         ]);
     } catch (\Exception $e) {
         Log::error("Error joining live match: " . $e->getMessage());

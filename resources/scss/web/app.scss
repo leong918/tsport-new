@@ -23,6 +23,8 @@
 
 // Components
 @import "components/comment-list";
+@import "components/comment-item";
+@import "components/comment-input";
 @import "components/event-card";
 @import "components/form-components";
 @import "components/text-input";
@@ -30,8 +32,8 @@
 @import "components/match-item";
 @import "components/match-slide";
 @import "components/pagination";
-@import "components/comment-item";
 @import "components/live-chat";
+@import "components/horizontal-scroll";
 
 // Pages
 @import "pages/auth";

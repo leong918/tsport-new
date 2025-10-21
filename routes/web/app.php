@@ -33,6 +33,11 @@ Route::group(['as' => 'web.', 'namespace' => 'Web'], function () {
     // Live streaming API routes
     Route::get('live/{id}/viewer-count', [AppController::class, 'getLiveViewerCount'])->name('live.viewer-count');
     Route::get('live/{id}/status', [AppController::class, 'getLiveStatus'])->name('live.status');
+    
+    // Live match comment routes (require authentication)
+    Route::group(['middleware' => ['auth.user', 'auth.user.inactive.logout']], function () {
+        Route::post('live/{id}/comment', [AppController::class, 'addLiveComment'])->name('live.comment.add');
+    });
 
     Route::get('ordering', [AppController::class, 'ordering'])->name('ordering');
 

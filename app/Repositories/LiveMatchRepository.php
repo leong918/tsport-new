@@ -60,7 +60,7 @@ class LiveMatchRepository extends BaseRepository
      */
     public function getCurrentlyStreamingMatches(): Collection
     {
-        return $this->model->with(['match'])
+        return $this->model->with(['match', 'comments.user'])
             ->where('obs_status', 2) // Live status
             ->where('status', 1)
             ->orderBy('viewer_count', 'desc')

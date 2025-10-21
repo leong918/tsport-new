@@ -1,3 +1,6 @@
+/* Import Video.js styles */
+@import 'video.js/dist/video-js.css';
+
 /* Live Page Styles */
 #page-live {
   min-height: 100dvh;
@@ -7,21 +10,123 @@
 
   #section-live-video {
     position: relative;
+    width: 100%;
 
     .video-container {
       width: 100%;
-      aspect-ratio: 16 / 12;
       position: relative;
       background-image: url('/public/assets/web/images/live/board-frame.png');
-      background-size: 110% 100%;
+      background-size: 105% 100%;
       background-position: center;
       background-repeat: no-repeat;
+      padding-top: 25px;
+      // Using aspect ratio that matches the frame + video
 
       .video-player {
+        aspect-ratio: 16 / 10;
         width: 100%;
         height: 100%;
-        position: relative;
-        top: 40px;
+        background: #000;
+
+        // Fullscreen mode styles
+        &:fullscreen,
+        &:-webkit-full-screen,
+        &:-moz-full-screen,
+        &:-ms-fullscreen {
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          transform: none;
+          padding: 0;
+
+          .video-js {
+            border-radius: 0;
+          }
+        }
+
+        // Video.js player styles
+        .video-js {
+          width: 100%;
+          height: 100%;
+          border-radius: 4px;
+
+          // Hide all Video.js controls
+          .vjs-control-bar {
+            display: none !important;
+          }
+
+          .vjs-big-play-button {
+            display: none !important;
+          }
+
+          // Hide loading spinner
+          .vjs-loading-spinner {
+            display: none !important;
+          }
+
+          // Auto-play without showing controls
+          &:hover .vjs-control-bar {
+            display: none !important;
+          }
+        }
+
+        // Hide native video controls
+        #live-video {
+          &::-webkit-media-controls {
+            display: none !important;
+          }
+
+          &::-webkit-media-controls-enclosure {
+            display: none !important;
+          }
+        }
+
+        // HLS live stream indicators
+        .live-indicator-hls {
+          display: none; // Hide LIVE text
+        }
+
+        .viewer-count-hls {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: rgba(220, 53, 69, 0.9); // Red background
+          color: white;
+          padding: 6px 12px;
+          border-radius: 20px; // Pill-shaped with full rounded corners
+          font-size: 13px;
+          font-weight: 600;
+          z-index: 10;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          backdrop-filter: blur(4px);
+          box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+
+          &:before {
+            content: '\f007'; // FontAwesome user icon
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 14px;
+          }
+
+          #live-viewer-count {
+            font-weight: 600;
+          }
+        }
+
+        // Viewer count animation effects
+        .viewer-increase {
+          animation: pulse 0.5s ease-in-out;
+          color: #28a745 !important;
+        }
+
+        .viewer-decrease {
+          animation: pulse 0.5s ease-in-out;
+          color: #dc3545 !important;
+        }
 
         #live-video,
         .video-placeholder {
@@ -87,29 +192,36 @@
         // Video Controls
         .video-controls {
           position: absolute;
-          bottom: 80px;
+          bottom: 0px;
           right: 15px;
-          z-index: 10;
+          z-index: 20;
+          display: flex;
+          gap: 10px;
 
+          .mute-btn,
           .fullscreen-btn {
             border: none;
             color: white;
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
 
-            &:hover {
-              background: rgba(0, 0, 0, 0.8);
-              transform: scale(1.1);
-            }
-
             i {
-              font-size: 16px;
+              font-size: 18px;
+            }
+          }
+
+          .mute-btn {
+            &.unmuted i {
+              // When unmuted, show volume-up icon
+              &:before {
+                content: '\f028'; // fa-volume-up
+              }
             }
           }
         }
@@ -135,6 +247,11 @@
           font-size: 13px;
           opacity: 0.8;
           margin: 0;
+
+          // Hide match status badges
+          .badge {
+            display: none !important;
+          }
         }
       }
 
@@ -142,19 +259,19 @@
         display: flex;
         gap: 8px;
         align-items: center;
-        
+
         // Hide the standard Bootstrap nav-tabs (we use them for functionality only)
         .nav-tabs {
           display: none !important;
         }
-        
+
         // Bootstrap Nav Pills Styling
         .nav-pills {
           display: flex;
           gap: 8px;
           align-items: center;
           border: none;
-          
+
           .nav-item {
             .nav-link {
               background: transparent;
@@ -166,7 +283,7 @@
               width: 30px;
               height: 30px;
               border-radius: 0;
-              
+
               &:hover {
                 transform: scale(1.05);
                 background: transparent;
@@ -195,7 +312,7 @@
               // Active state - show active image, hide inactive
               &.active {
                 background: transparent;
-                
+
                 .btn-active {
                   opacity: 1;
                 }
@@ -286,15 +403,15 @@
       .tab-pane {
         height: 100%;
         overflow-y: auto; // 确保tab-pane本身可以滚动
-        
+
         // Bootstrap 5 fade transition support
         &.fade {
           transition: opacity 0.15s linear;
-          
+
           &:not(.show) {
             opacity: 0;
           }
-          
+
           &.show {
             opacity: 1;
           }
@@ -507,17 +624,26 @@
       }
     }
   }
+
+  // Hide comment actions (like button) on live page only
+  .comment-item {
+    .comment-actions {
+      display: none !important;
+    }
+  }
 }
 
 // Chat Input Visibility Control
 #section-input-comment,
 #section-login-prompt {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   will-change: transform, opacity;
   opacity: 1;
   transform: translateY(0);
   pointer-events: all;
-  
+
   &.hidden {
     opacity: 0;
     transform: translateY(100%);
@@ -538,5 +664,15 @@
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
   }
 }

@@ -90,16 +90,27 @@
         <section id="section-input-comment">
             <!-- Comment Input Section -->
             <div class="comment-input-section">
-                <div class="container">
-                    <form class="comment-form" data-predict-id="{{ $prediction['id'] }}">
-                        @csrf
-                        <div class="input-group">
-                            <textarea class="form-control comment-input" name="content" placeholder="留言" rows="1" required></textarea>
-                            <button type="submit" class="btn btn-follow submit-button">
-                                发表评论
-                            </button>
-                        </div>
-                    </form>
+                <div class="container-fluid px-3">
+                    <div class="live-comment-wrapper">
+                        <!-- Left: Comment Form with Icon -->
+                        <form class="comment-form" data-predict-id="{{ $prediction['id'] }}">
+                            @csrf
+                            <div class="input-wrapper">
+                                <span class="input-icon">
+                                    <img src="{{ asset('assets/web/images/chat/icon-comment.png') }}" alt="Comment">
+                                </span>
+                                <textarea class="form-control comment-input" name="content" placeholder="留言" rows="1" required></textarea>
+                                <button type="submit" class="btn-send">
+                                    <img src="{{ asset('assets/web/images/chat/button-send.png') }}" alt="Send">
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <!-- Right: Bet Button -->
+                        <button type="button" class="btn-bet">
+                            <img src="{{ asset('assets/web/images/chat/btn-bet.png') }}" alt="去下注">
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

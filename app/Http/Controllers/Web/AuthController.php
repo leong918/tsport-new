@@ -199,16 +199,21 @@ class AuthController extends BaseController
                 'email' => 'required|email|max:255|unique:user,email,' . $user->id,
                 'phone_no' => 'required|string|max:20',
                 'phone_region' => 'nullable|string|max:10',
-                'birthdate' => 'nullable|date',
+                'dob' => 'nullable|date',
             ]);
+
+            // Combine phone_region and phone_no
+            $phoneNumber = $request->phone_no;
+            if ($request->phone_region) {
+                $phoneNumber = $request->phone_region . $request->phone_no;
+            }
 
             $user->update([
                 'name' => $request->name,
                 'username' => $request->username,
                 'email' => $request->email,
-                'phone_no' => $request->phone_no,
-                'phone_region' => $request->phone_region,
-                'birthdate' => $request->birthdate,
+                'phone_no' => $phoneNumber,
+                'dob' => $request->dob,
             ]);
 
             // If it's an AJAX request, return JSON
@@ -219,7 +224,7 @@ class AuthController extends BaseController
                 ]);
             }
 
-            return redirect()->back()->with('success', '个人资料更新成功！');
+            return redirect()->route('web.profile')->with('success', '个人资料更新成功！');
         } catch (\Exception $e) {
             // If it's an AJAX request, return JSON error
             if ($request->expectsJson()) {

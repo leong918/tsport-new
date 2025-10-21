@@ -30,6 +30,21 @@ function initProfileModals() {
                 // Use SafeModal wrapper to avoid backdrop errors
                 const safeModal = new SafeModal(modalElement);
                 console.log(`SafeModal initialized for ${modalId}`);
+                
+                // Add event listener for when modal is shown
+                if (modalId === '#edit-profile-modal') {
+                    modalElement.addEventListener('shown.bs.modal', function () {
+                        console.log('✨ Edit profile modal shown, initializing tabs...');
+                        // Small delay to ensure DOM is ready
+                        setTimeout(() => {
+                            initAvatarEditorTabs();
+                        }, 100);
+                    });
+                    
+                    // Also initialize once immediately
+                    console.log('📦 Pre-initializing tabs for edit-profile-modal');
+                    initAvatarEditorTabs();
+                }
             } catch (error) {
                 console.error(`Error initializing SafeModal ${modalId}:`, error);
             }
@@ -39,6 +54,219 @@ function initProfileModals() {
     });
     
     console.log('Profile modals initialized with SafeModal wrapper');
+}
+
+/**
+ * Initialize avatar editor modal tabs
+ */
+function initAvatarEditorTabs() {
+    const modal = document.getElementById('edit-profile-modal');
+    if (!modal) {
+        console.warn('Edit profile modal not found');
+        return;
+    }
+    
+    console.log('🎨 Initializing avatar editor tabs...');
+    
+    const jerseyData = {
+        name: 'E神',
+        number: 10,
+        mainColor: '#DC143C',
+        secColor: '#228B22'
+    };
+    
+    // Tab switching
+    const tabButtons = modal.querySelectorAll('.tab-button');
+    console.log('Found tab buttons:', tabButtons.length);
+    
+    tabButtons.forEach((button, index) => {
+        const targetTab = button.dataset.tab;
+        console.log(`Tab button ${index}:`, targetTab);
+        
+        // Remove any existing event listeners
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Add click event listener
+        newButton.addEventListener('click', function(e) {
+            console.log('🖱️ Tab button clicked:', targetTab);
+            console.log('Event target:', e.target);
+            console.log('Current button:', this);
+            switchTab(targetTab, newButton, modal);
+        });
+        
+        // Also add a test attribute
+        newButton.setAttribute('onclick', `console.log('Direct onclick works for: ${targetTab}')`);
+    });
+    
+    // Color selection
+    initColorSelection(modal, jerseyData);
+    
+    // Number picker
+    initNumberPicker(modal, jerseyData);
+    
+    // Name input
+    initNameInput(modal, jerseyData);
+    
+    // Save button
+    initSaveButton(modal, jerseyData);
+    
+    console.log('✅ Avatar editor tabs initialized');
+}
+
+/**
+ * Switch between tabs in avatar editor
+ */
+function switchTab(tabId, clickedButton, modal) {
+    console.log('🔄 Switching to tab:', tabId);
+    
+    // Hide all tab panes
+    const allPanes = modal.querySelectorAll('.tab-pane');
+    console.log('Found tab panes:', allPanes.length);
+    
+    allPanes.forEach(pane => {
+        pane.style.display = 'none';
+        pane.classList.remove('active');
+        console.log('Hiding pane:', pane.id);
+    });
+
+    // Show target tab pane
+    const targetPane = modal.querySelector(`#${tabId}`);
+    if (targetPane) {
+        targetPane.style.display = 'block';
+        targetPane.classList.add('active');
+        console.log('✅ Showing pane:', tabId);
+    } else {
+        console.error('❌ Target pane not found:', tabId);
+    }
+
+    // Update tab button images
+    modal.querySelectorAll('.tab-button').forEach(btn => {
+        const img = btn.querySelector('.tab-img');
+        const tab = btn.dataset.tab;
+        
+        // Determine image name from tab id
+        let imageName = '';
+        if (tab === 'name-tab') imageName = 'Name';
+        else if (tab === 'number-tab') imageName = 'Number';
+        else if (tab === 'main-color-tab') imageName = 'Main_Color';
+        else if (tab === 'sec-color-tab') imageName = 'Sec_Color';
+        
+        // Set active/inactive image
+        if (btn === clickedButton) {
+            img.src = `/assets/web/images/profile/${imageName}_Active.png`;
+            img.classList.add('active');
+            console.log('✅ Active tab:', imageName);
+        } else {
+            img.src = `/assets/web/images/profile/${imageName}_Inactive.png`;
+            img.classList.remove('active');
+        }
+    });
+}
+
+/**
+ * Initialize color selection
+ */
+function initColorSelection(modal, jerseyData) {
+    // Main color selection
+    const mainColorOptions = modal.querySelectorAll('#main-color-tab .color-option');
+    mainColorOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            mainColorOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            const color = option.dataset.color;
+            modal.querySelector('.main-color-input').value = color;
+            jerseyData.mainColor = color;
+            console.log('Main color selected:', color);
+        });
+    });
+
+    // Secondary color selection
+    const secColorOptions = modal.querySelectorAll('#sec-color-tab .color-option');
+    secColorOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            secColorOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            const color = option.dataset.color;
+            modal.querySelector('.sec-color-input').value = color;
+            jerseyData.secColor = color;
+            console.log('Secondary color selected:', color);
+        });
+    });
+}
+
+/**
+ * Initialize number picker
+ */
+function initNumberPicker(modal, jerseyData) {
+    const digits = modal.querySelectorAll('.number-digit');
+    
+    digits.forEach((digit, index) => {
+        const display = digit.querySelector('.digit-display');
+        const upBtn = digit.querySelector('.number-up');
+        const downBtn = digit.querySelector('.number-down');
+        
+        upBtn.addEventListener('click', () => {
+            let current = parseInt(display.textContent);
+            current = (current + 1) % 10;
+            display.textContent = current;
+            updateJerseyNumber(modal, jerseyData);
+        });
+        
+        downBtn.addEventListener('click', () => {
+            let current = parseInt(display.textContent);
+            current = (current - 1 + 10) % 10;
+            display.textContent = current;
+            updateJerseyNumber(modal, jerseyData);
+        });
+    });
+}
+
+/**
+ * Update jersey number from digit displays
+ */
+function updateJerseyNumber(modal, jerseyData) {
+    const digits = modal.querySelectorAll('.digit-display');
+    const number = Array.from(digits).map(d => d.textContent).join('');
+    modal.querySelector('.jersey-number-input').value = number;
+    jerseyData.number = parseInt(number);
+    console.log('Jersey number:', number);
+}
+
+/**
+ * Initialize name input
+ */
+function initNameInput(modal, jerseyData) {
+    const nameInput = modal.querySelector('.jersey-name-input');
+    if (nameInput) {
+        nameInput.addEventListener('input', (e) => {
+            jerseyData.name = e.target.value;
+            console.log('Jersey name:', e.target.value);
+        });
+    }
+}
+
+/**
+ * Initialize save button
+ */
+function initSaveButton(modal, jerseyData) {
+    const saveBtn = modal.querySelector('.btn-save');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            console.log('Saving jersey customization:', jerseyData);
+            
+            // Close modal
+            const bsModal = bootstrap.Modal.getInstance(modal);
+            if (bsModal) {
+                bsModal.hide();
+            }
+            
+            // Show success message
+            FormService.showSuccessMessage('球衣設定已保存！');
+        });
+    }
 }
 
 export function initProfilePage() {
@@ -309,3 +537,21 @@ $(document).ready(function() {
 
 // Make logout function globally available (for onclick handlers in templates)
 window.logout = logout;
+
+// Make tab switch function globally available
+window.switchProfileTab = function(tabId) {
+    console.log('🌍 Global switchProfileTab called:', tabId);
+    const modal = document.getElementById('edit-profile-modal');
+    if (!modal) {
+        console.error('Modal not found');
+        return;
+    }
+    
+    // Find the button
+    const button = modal.querySelector(`[data-tab="${tabId}"]`);
+    if (button) {
+        switchTab(tabId, button, modal);
+    } else {
+        console.error('Button not found for tab:', tabId);
+    }
+};

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->string('phone_no');
+            $table->date('dob')->nullable();
             $table->string('status');
             $table->string('referral_code')->unique();
             $table->foreignId('referred_user_id')->nullable()->constrained('user')->nullOnDelete();

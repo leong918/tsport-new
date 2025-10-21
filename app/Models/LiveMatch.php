@@ -81,7 +81,9 @@ class LiveMatch extends Model
      */
     public function comments()
     {
-        return $this->hasMany(LiveMatchComment::class, 'live_match_id');
+        return $this->hasMany(LiveMatchComment::class, 'live_match_id')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'asc'); // Oldest first (chat style)
     }
 
     /**

@@ -45,17 +45,30 @@ class LiveMatchComment extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [];
-
-    protected function createdAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn(string $value) => date('Y-m-d H:i:s', strtotime($value)),
-        );
-    }
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
 
     protected function blog(): BelongsTo
     {
         return $this->belongsTo(Blog::class);
+    }
+
+    /**
+     * Get the user that owns the comment
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the live match that the comment belongs to
+     */
+    public function liveMatch(): BelongsTo
+    {
+        return $this->belongsTo(LiveMatch::class);
     }
 }
