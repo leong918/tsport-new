@@ -262,16 +262,20 @@ class AppController extends BaseController
                 }
                 $streamingMatches = collect([$specificMatch]);
                 $currentMatch = $specificMatch;
+                // Store the URL ID for later use
+                $urlId = $id;
             } else {
                 // Get currently streaming matches
                 $streamingMatches = $this->liveMatchRepository->getCurrentlyStreamingMatches();
                 $currentMatch = $streamingMatches->first();
+                $urlId = $currentMatch ? $currentMatch->id : null;
             }
             
             // Format match data
             if ($currentMatch) {
                 $matchData = [
                     'id' => $currentMatch->id,
+                    'url_id' => $urlId, // Add URL ID for JavaScript to use
                     'match_id' => $currentMatch->match_id,
                     'home_team' => $currentMatch->match->home_team ?? '曼联',
                     'away_team' => $currentMatch->match->away_team ?? '曼市',
@@ -325,6 +329,7 @@ class AppController extends BaseController
 
             return $this->view('live', [
                 'match' => $matchData,
+                'comments' => $matchData['comments'] ?? [],
                 'streamingMatches' => $streamingMatches,
                 'stats' => $stats
             ]);
@@ -743,6 +748,80 @@ class AppController extends BaseController
             return response()->json([
                 'success' => false,
                 'message' => 'Error getting live status'
+            ], 500);
+        }
+    }
+
+    /**
+     * Add comment to live match
+     */
+    public function addLiveComment(Request $request, $id)
+    {
+        // Check if user is authenticated
+        if (!auth('user')->check()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Authentication required'
+            ], 401);
+        }
+
+        $request->validate([
+            'content' => 'required|string|max:500',
+        ]);
+
+        try {
+            $user = auth('user')->user();
+            
+            // Check if live match exists
+            $liveMatch = $this->liveMatchRepository->find($id);
+            
+            if (!$liveMatch) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Live match not found'
+                ], 404);
+            }
+
+            // Create comment using repository
+            $comment = $this->liveMatchRepository->addComment(
+                $id,
+                $user->id,
+                $request->input('content')
+            );
+
+            if (!$comment) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to add comment'
+                ], 500);
+            }
+
+            // Load user relationship for response
+            $comment->load('user');
+            
+            // Refresh the model to get the actual Carbon instance before attribute casting
+            $comment->refresh();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Comment added successfully',
+                'comment' => [
+                    'id' => $comment->id,
+                    'comment' => $comment->comment,
+                    'user_name' => $comment->user->name ?? 'Anonymous',
+                    'user_id' => $comment->user_id,
+                    'avatar' => $comment->user->avatar ?? '/assets/web/images/chat/avatar-default.png',
+                    'created_at' => $comment->getOriginal('created_at'),
+                    'created_at_human' => \Carbon\Carbon::parse($comment->getOriginal('created_at'))->diffForHumans(),
+                    'likes_count' => 0
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error adding live comment: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to add comment. Please try again.'
             ], 500);
         }
     }

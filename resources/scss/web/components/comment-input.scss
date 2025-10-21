@@ -1,0 +1,228 @@
+/**
+ * Comment Input Component
+ * Unified styles for comment input across live and predict pages
+ */
+
+#section-input-comment {
+  .comment-input-section {
+    background: #2d5a3d;
+    padding: 10px 0;
+  }
+
+  // New unified structure with icon and send button
+  .live-comment-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .comment-form {
+      flex: 1;
+      
+      .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 10px;
+        padding: 10px 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        height: 48px;
+
+        .input-icon {
+          margin-right: 10px;
+          flex-shrink: 0;
+          line-height: 1;
+          display: flex;
+          align-items: center;
+
+          img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+          }
+        }
+
+        .comment-input {
+          flex: 1;
+          border: none;
+          background: transparent;
+          padding: 0;
+          margin: 0;
+          resize: none;
+          font-size: 14px;
+          line-height: 28px;
+          height: 28px;
+          max-height: 80px;
+          outline: none;
+          box-shadow: none;
+          overflow-y: hidden;
+          vertical-align: middle;
+
+          &::placeholder {
+            color: #999;
+            line-height: 28px;
+            vertical-align: middle;
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+        }
+
+        .btn-send {
+          background: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          flex-shrink: 0;
+          margin-left: 10px;
+          display: flex;
+          align-items: center;
+
+          img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+          }
+
+          &:hover {
+            transform: scale(1.1);
+          }
+
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+      }
+    }
+
+    .btn-bet {
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+
+      img {
+        height: 48px;
+        width: auto;
+        object-fit: contain;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  // Legacy structure for backward compatibility (predict-detail)
+  .comment-form {
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-end;
+
+      .comment-input {
+        flex: 1;
+        border-radius: 10px;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        resize: none;
+        min-height: 44px;
+        max-height: 120px;
+        background: #fff;
+        transition: all 0.2s ease;
+        border: 1px solid #ddd;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #fff;
+          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        &::placeholder {
+          color: #999;
+        }
+      }
+
+      .submit-button {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 0.8rem 2rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+
+        &:hover {
+          background: #c82333;
+          transform: translateY(-1px);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        &:disabled {
+          background: #6c757d;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+    }
+  }
+}
+
+// Login Prompt Section
+#section-login-prompt {
+  .login-prompt-section {
+    background: #2d5a3d;
+    padding: 15px 0;
+
+    .login-prompt {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .btn-follow {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        border: none;
+        color: white;
+        padding: 12px 32px;
+        border-radius: 25px;
+        font-size: 15px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        display: inline-block;
+
+        &:hover {
+          background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
+          color: white;
+          text-decoration: none;
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+}

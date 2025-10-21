@@ -265,6 +265,7 @@ class HeaderController {
     // 使用事件委托，处理所有返回按钮（包括动态添加的）
     document.addEventListener('click', (e) => {
       if (e.target.closest('.back-btn')) {
+        console.log('🔙 Back button clicked');
         e.preventDefault();
         e.stopPropagation();
         this.goBack();
@@ -273,12 +274,15 @@ class HeaderController {
   }
 
   goBack() {
+    console.log('🔙 goBack() called, history.length:', window.history.length);
     // 检查是否有历史记录可以返回
     if (window.history.length > 1) {
+      console.log('✅ Going back in history');
       window.history.back();
     } else {
       // 如果没有历史记录，检查是否有设定的首页路由
       const homeUrl = window.homeRoute || window.location.origin + '/';
+      console.log('✅ Redirecting to home:', homeUrl);
       window.location.href = homeUrl;
     }
   }

@@ -28,21 +28,40 @@
                                     </div>
                                 </x-text-input>
 
+                                @php
+                                    $phoneNo = old('phone_no', auth('user')->user()->phone_no ?? '');
+                                    $phoneRegion = '+60'; // Default
+                                    $phoneNumber = $phoneNo;
+                                    
+                                    // Split phone code and number if phone starts with +
+                                    if (str_starts_with($phoneNo, '+')) {
+                                        // Try to match common country codes
+                                        $codes = ['+60', '+86', '+65', '+1'];
+                                        foreach ($codes as $code) {
+                                            if (str_starts_with($phoneNo, $code)) {
+                                                $phoneRegion = $code;
+                                                $phoneNumber = substr($phoneNo, strlen($code));
+                                                break;
+                                            }
+                                        }
+                                    }
+                                @endphp
+                                
                                 <div class="input-field-section phone mb-3 col-12">
                                     <div class="label">電話號碼</div>
                                     <div class="phone-input-wrapper">
                                         <div class="country-code-wrapper">
                                             <select name="phone_region" class="country-code">
-                                                <option value="+60">+60</option>
-                                                <option value="+86">+86</option>
-                                                <option value="+65">+65</option>
-                                                <option value="+1">+1</option>
+                                                <option value="+60" {{ $phoneRegion === '+60' ? 'selected' : '' }}>+60</option>
+                                                <option value="+86" {{ $phoneRegion === '+86' ? 'selected' : '' }}>+86</option>
+                                                <option value="+65" {{ $phoneRegion === '+65' ? 'selected' : '' }}>+65</option>
+                                                <option value="+1" {{ $phoneRegion === '+1' ? 'selected' : '' }}>+1</option>
                                             </select>
                                         </div>
                                         <div class="input-field-wrapper flex-1">
                                             <input class="input-field" name="phone_no" type="tel"
                                                 placeholder="Phone Number"
-                                                value="{{ old('phone_no', auth('user')->user()->phone_no ?? '') }}"
+                                                value="{{ $phoneNumber }}"
                                                 required>
                                             <div class="edit-icon">
                                                 <img src="{{ asset('assets/web/images/input/icon-edit.png') }}" alt="Edit" class="edit-icon-img">
@@ -59,8 +78,8 @@
                                     </div>
                                 </x-text-input>
 
-                                <x-text-input name="birthdate" label="生日日期" placeholder="YYYY/MM/DD"
-                                    value="{{ old('birthdate', auth('user')->user()->birthdate ?? '1997/10/01') }}" required="true" class="datepicker birthdate">
+                                <x-text-input name="dob" label="生日日期" placeholder="YYYY/MM/DD"
+                                    value="{{ old('dob', auth('user')->user()->dob ?? '1997/10/01') }}" required="true" class="datepicker dob">
                                     <div class="edit-icon">
                                         <img src="{{ asset('assets/web/images/input/icon-edit.png') }}" alt="Edit" class="edit-icon-img">
                                     </div>

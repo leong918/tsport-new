@@ -69,43 +69,36 @@
     </div>
 @endsection
 
-@section('modal')
+@push('modals')
     <!-- Avatar/Jersey Editor Modal -->
     <div class="modal fade" id="edit-profile-modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content position-relative">
-                <div class="background-img">
-                    <img src="{{ asset('assets/web/images/profile/Wooden_Frame.png') }}" class="img img-fluid">
-                </div>
-                <div class="content-wrapper position-absolute">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="{{ asset('assets/web/images/profile/icon-close.png') }}" alt="Close">
+                </button>
+                
+                <div class="content-wrapper">
                     <div class="top-content">
                         <div class="left">
-                            <div class="tab-content">
-                                <img src="{{ asset('assets/web/images/profile/Main_Color_Inactive.png') }}"
-                                    class="img img-fluid tab-img" id="main-color"
-                                    data-active="{{ asset('assets/web/images/profile/Main_Color_Active.png') }}"
-                                    data-inactive="{{ asset('assets/web/images/profile/Main_Color_Inactive.png') }}">
+                            <div class="tab-button" data-tab="name-tab" onclick="switchProfileTab('name-tab')" style="cursor: pointer;">
+                                <img src="{{ asset('assets/web/images/profile/name-active.png') }}"
+                                    class="img img-fluid tab-img active" style="pointer-events: none;">
                             </div>
 
-                            <div class="tab-content">
-                                <img src="{{ asset('assets/web/images/profile/Sec_Color_Inactive.png') }}"
-                                    class="img img-fluid tab-img" id="sec-color"
-                                    data-active="{{ asset('assets/web/images/profile/Sec_Color_Active.png') }}"
-                                    data-inactive="{{ asset('assets/web/images/profile/Sec_Color_Inactive.png') }}">
+                            <div class="tab-button" data-tab="number-tab" onclick="switchProfileTab('number-tab')" style="cursor: pointer;">
+                                <img src="{{ asset('assets/web/images/profile/number-inactive.png') }}"
+                                    class="img img-fluid tab-img" style="pointer-events: none;">
                             </div>
 
-                            <div class="tab-content">
-                                <img src="{{ asset('assets/web/images/profile/Number_Inactive.png') }}"
-                                    class="img img-fluid tab-img" id="number"
-                                    data-active="{{ asset('assets/web/images/profile/Number_Active.png') }}"
-                                    data-inactive="{{ asset('assets/web/images/profile/Number_Inactive.png') }}">
+                            <div class="tab-button" data-tab="main-color-tab" onclick="switchProfileTab('main-color-tab')" style="cursor: pointer;">
+                                <img src="{{ asset('assets/web/images/profile/main-color-inactive.png') }}"
+                                    class="img img-fluid tab-img" style="pointer-events: none;">
                             </div>
 
-                            <div class="tab-content">
-                                <img src="{{ asset('assets/web/images/profile/Name_Inactive.png') }}"
-                                    class="img img-fluid tab-img" id="name"
-                                    data-active="{{ asset('assets/web/images/profile/Name_Active.png') }}"
-                                    data-inactive="{{ asset('assets/web/images/profile/Name_Inactive.png') }}">
+                            <div class="tab-button" data-tab="sec-color-tab" onclick="switchProfileTab('sec-color-tab')" style="cursor: pointer;">
+                                <img src="{{ asset('assets/web/images/profile/sec-color-inactive.png') }}"
+                                    class="img img-fluid tab-img" style="pointer-events: none;">
                             </div>
                         </div>
                         <div class="right">
@@ -123,79 +116,182 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="bottom-content">
-                        <div id="main-color" style="display: none;">
+                        <!-- Name Tab -->
+                        <div class="tab-pane active" id="name-tab">
                             <div class="form-section">
-                                <h6 class="mb-3">選擇主色調</h6>
+                                <input type="text" class="form-control jersey-name-input" 
+                                       placeholder="E神" value="E神" maxlength="10">
+                            </div>
+                        </div>
+
+                        <!-- Number Tab -->
+                        <div class="tab-pane" id="number-tab" style="display: none;">
+                            <div class="form-section number-picker">
+                                <div class="number-controls">
+                                    <div class="number-digit">
+                                        <button type="button" class="number-up">
+                                            <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
+                                        </button>
+                                        <div class="digit-display">1</div>
+                                        <button type="button" class="number-down">
+                                            <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
+                                        </button>
+                                    </div>
+                                    <div class="number-digit">
+                                        <button type="button" class="number-up">
+                                            <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
+                                        </button>
+                                        <div class="digit-display">0</div>
+                                        <button type="button" class="number-down">
+                                            <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="hidden" class="jersey-number-input" value="10">
+                            </div>
+                        </div>
+
+                        <!-- Main Color Tab -->
+                        <div class="tab-pane" id="main-color-tab" style="display: none;">
+                            <div class="form-section">
                                 <div class="color-grid">
-                                    <div class="color-option" data-color="#FF0000" style="background-color: #FF0000;">
-                                    </div>
-                                    <div class="color-option" data-color="#00FF00" style="background-color: #00FF00;">
-                                    </div>
-                                    <div class="color-option" data-color="#0000FF" style="background-color: #0000FF;">
-                                    </div>
-                                    <div class="color-option" data-color="#FFFF00" style="background-color: #FFFF00;">
-                                    </div>
-                                    <div class="color-option" data-color="#FF00FF" style="background-color: #FF00FF;">
-                                    </div>
-                                    <div class="color-option" data-color="#00FFFF" style="background-color: #00FFFF;">
-                                    </div>
+                                    <div class="color-option selected" data-color="#DC143C" style="background-color: #DC143C;"></div>
+                                    <div class="color-option" data-color="#FFA500" style="background-color: #FFA500;"></div>
+                                    <div class="color-option" data-color="#228B22" style="background-color: #228B22;"></div>
+                                    <div class="color-option" data-color="#00CED1" style="background-color: #00CED1;"></div>
+                                    <div class="color-option" data-color="#FF1493" style="background-color: #FF1493;"></div>
+                                    <div class="color-option" data-color="#FF8C00" style="background-color: #FF8C00;"></div>
+                                    <div class="color-option" data-color="#1E90FF" style="background-color: #1E90FF;"></div>
+                                    <div class="color-option" data-color="#9370DB" style="background-color: #9370DB;"></div>
+                                    <div class="color-option" data-color="#8B4513" style="background-color: #8B4513;"></div>
+                                    <div class="color-option" data-color="#00FF00" style="background-color: #00FF00;"></div>
+                                    <div class="color-option" data-color="#FFFFFF" style="background-color: #FFFFFF; border: 2px solid #ccc;"></div>
+                                    <div class="color-option" data-color="#000000" style="background-color: #000000;"></div>
                                 </div>
-                                <input type="hidden" id="main-color-input" name="main_color" value="">
+                                <input type="hidden" class="main-color-input" value="#DC143C">
                             </div>
                         </div>
 
-                        <div id="sec-color" style="display: none;">
+                        <!-- Secondary Color Tab -->
+                        <div class="tab-pane" id="sec-color-tab" style="display: none;">
                             <div class="form-section">
-                                <h6 class="mb-3">選擇副色調</h6>
                                 <div class="color-grid">
-                                    <div class="color-option" data-color="#800000" style="background-color: #800000;">
-                                    </div>
-                                    <div class="color-option" data-color="#008000" style="background-color: #008000;">
-                                    </div>
-                                    <div class="color-option" data-color="#000080" style="background-color: #000080;">
-                                    </div>
-                                    <div class="color-option" data-color="#808000" style="background-color: #808000;">
-                                    </div>
-                                    <div class="color-option" data-color="#800080" style="background-color: #800080;">
-                                    </div>
-                                    <div class="color-option" data-color="#008080" style="background-color: #008080;">
-                                    </div>
+                                    <div class="color-option selected" data-color="#DC143C" style="background-color: #DC143C;"></div>
+                                    <div class="color-option" data-color="#FFA500" style="background-color: #FFA500;"></div>
+                                    <div class="color-option" data-color="#228B22" style="background-color: #228B22;"></div>
+                                    <div class="color-option" data-color="#00CED1" style="background-color: #00CED1;"></div>
+                                    <div class="color-option" data-color="#FF1493" style="background-color: #FF1493;"></div>
+                                    <div class="color-option" data-color="#FF8C00" style="background-color: #FF8C00;"></div>
+                                    <div class="color-option" data-color="#1E90FF" style="background-color: #1E90FF;"></div>
+                                    <div class="color-option" data-color="#9370DB" style="background-color: #9370DB;"></div>
+                                    <div class="color-option" data-color="#8B4513" style="background-color: #8B4513;"></div>
+                                    <div class="color-option" data-color="#00FF00" style="background-color: #00FF00;"></div>
+                                    <div class="color-option" data-color="#FFFFFF" style="background-color: #FFFFFF; border: 2px solid #ccc;"></div>
+                                    <div class="color-option" data-color="#000000" style="background-color: #000000;"></div>
                                 </div>
-                                <input type="hidden" id="sec-color-input" name="sec_color" value="">
+                                <input type="hidden" class="sec-color-input" value="#228B22">
                             </div>
                         </div>
-
-                        <div id="number" style="display: none;">
-                            <div class="form-section">
-                                <h6 class="mb-3">球衣號碼</h6>
-                                <x-text-input name="jersey_number" label="號碼" placeholder="輸入1-99" type="number"
-                                    required="true" />
-                            </div>
-                        </div>
-
-                        <div id="name" style="display: none;">
-                            <div class="form-section">
-                                <h6 class="mb-3">球衣姓名</h6>
-                                <x-text-input name="jersey_name" label="姓名" placeholder="輸入姓名" required="true" />
-                                <div class="mt-3">
-                                    <img src="{{ asset('assets/web/images/button/btn-save.png') }}" 
-                                         alt="保存更改" class="img-button save-profile-btn" 
-                                         style="max-width: 150px; cursor: pointer;" />
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    
+                    <!-- Save Button -->
+                    <div class="save-button-wrapper">
+                        <button type="button" class="btn-save-image">
+                            <img src="{{ asset('assets/web/images/profile/btn-save.png') }}" alt="保存">
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
+@endpush
 
 @push('scripts')
     <script>
         // Set logout route for use in external JS
         window.logoutRoute = '{{ route('web.logout') }}';
+        
+        // Define tab switching function immediately
+        window.switchProfileTab = function(tabId) {
+            console.log('🔄 Switching to tab:', tabId);
+            const modal = document.getElementById('edit-profile-modal');
+            if (!modal) {
+                console.error('Modal not found');
+                return;
+            }
+            
+            // Hide all tab panes
+            const allPanes = modal.querySelectorAll('.tab-pane');
+            allPanes.forEach(pane => {
+                pane.style.display = 'none';
+                pane.classList.remove('active');
+            });
+
+            // Show target tab pane
+            const targetPane = modal.querySelector('#' + tabId);
+            if (targetPane) {
+                targetPane.style.display = 'block';
+                targetPane.classList.add('active');
+                console.log('✅ Showing pane:', tabId);
+            }
+
+            // Update tab button images
+            const clickedButton = modal.querySelector('[data-tab="' + tabId + '"]');
+            modal.querySelectorAll('.tab-button').forEach(btn => {
+                const img = btn.querySelector('.tab-img');
+                const tab = btn.dataset.tab;
+                
+                // Determine image name from tab id (lowercase with dash)
+                let imageName = '';
+                if (tab === 'name-tab') imageName = 'name';
+                else if (tab === 'number-tab') imageName = 'number';
+                else if (tab === 'main-color-tab') imageName = 'main-color';
+                else if (tab === 'sec-color-tab') imageName = 'sec-color';
+                
+                // Set active/inactive image
+                if (btn === clickedButton) {
+                    img.src = '/assets/web/images/profile/' + imageName + '-active.png';
+                    img.classList.add('active');
+                } else {
+                    img.src = '/assets/web/images/profile/' + imageName + '-inactive.png';
+                    img.classList.remove('active');
+                }
+            });
+        };
+        
+        // Initialize color selection when modal is shown
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('edit-profile-modal');
+            if (modal) {
+                modal.addEventListener('shown.bs.modal', function() {
+                    console.log('✨ Modal shown, initializing color selection...');
+                    
+                    // Main color selection
+                    const mainColorOptions = modal.querySelectorAll('#main-color-tab .color-option');
+                    mainColorOptions.forEach(option => {
+                        option.addEventListener('click', function() {
+                            console.log('Main color clicked:', this.dataset.color);
+                            mainColorOptions.forEach(opt => opt.classList.remove('selected'));
+                            this.classList.add('selected');
+                        });
+                    });
+
+                    // Secondary color selection
+                    const secColorOptions = modal.querySelectorAll('#sec-color-tab .color-option');
+                    secColorOptions.forEach(option => {
+                        option.addEventListener('click', function() {
+                            console.log('Secondary color clicked:', this.dataset.color);
+                            secColorOptions.forEach(opt => opt.classList.remove('selected'));
+                            this.classList.add('selected');
+                        });
+                    });
+                    
+                    console.log('✅ Color selection initialized');
+                });
+            }
+        });
     </script>
     {{-- Page-specific scripts now loaded via app.js imports --}}
 @endpush
