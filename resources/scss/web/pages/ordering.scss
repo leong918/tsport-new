@@ -46,6 +46,29 @@
         gap: 10px;
         position: relative;
         z-index: 2;
+
+        .recommendation-item {
+          flex: 1;
+          cursor: pointer;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+          text-decoration: none;
+          display: block;
+
+          &:hover {
+            transform: translateY(-5px);
+            opacity: 0.9;
+          }
+
+          &:active {
+            transform: translateY(-2px);
+          }
+
+          img {
+            width: 100%;
+            height: auto;
+            display: block;
+          }
+        }
       }
     }
   }

@@ -31,19 +31,19 @@
                 <!-- Main Characters Display -->
                 <div class="characters-showcase">
                     <div class="characters-row">
-                        <div class="character-expert active" data-expert="Expert 1">
+                        <div class="character-expert active" data-expert="Expert 1" data-tab="ip1">
                             <div class="character-avatar character-left">
                                 <img src="{{ asset('assets/web/images/predict/ip-active-1.png') }}" alt="IP 1" class="img-fluid">
                             </div>
                         </div>
 
-                        <div class="character-expert" data-expert="Expert 2">
+                        <div class="character-expert" data-expert="Expert 2" data-tab="ip2">
                             <div class="character-avatar character-center">
                                 <img src="{{ asset('assets/web/images/predict/ip-active-2.png') }}" alt="IP 2" class="img-fluid">
                             </div>
                         </div>
 
-                        <div class="character-expert" data-expert="Expert 3">
+                        <div class="character-expert" data-expert="Expert 3" data-tab="ip3">
                             <div class="character-avatar character-right">
                                 <img src="{{ asset('assets/web/images/predict/ip-active-3.png') }}" alt="IP 3" class="img-fluid">
                             </div>

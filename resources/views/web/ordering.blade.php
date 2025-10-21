@@ -27,18 +27,18 @@
                                     alt="Prediction Border" class="img-fluid">
                             </div>
                             <div class="recommendations-wrapper">
-                                <div class="recommendation-item">
+                                <a href="{{ route('web.predict') }}?tab=ip1" class="recommendation-item">
                                     <img src="{{ asset('assets/web/images/ordering/prediction-ip1.png') }}"
                                         alt="Prediction 1" class="img-fluid">
-                                </div>
-                                <div class="recommendation-item">
+                                </a>
+                                <a href="{{ route('web.predict') }}?tab=ip2" class="recommendation-item">
                                     <img src="{{ asset('assets/web/images/ordering/prediction-ip2.png') }}"
                                         alt="Prediction 2" class="img-fluid">
-                                </div>
-                                <div class="recommendation-item">
+                                </a>
+                                <a href="{{ route('web.predict') }}?tab=ip3" class="recommendation-item">
                                     <img src="{{ asset('assets/web/images/ordering/prediction-ip3.png') }}"
                                         alt="Prediction 3" class="img-fluid">
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>

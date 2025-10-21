@@ -32,6 +32,33 @@ class PredictPage {
     init() {
         this.bindEvents();
         this.initializeCharacters();
+        this.handleTabParameter();
+    }
+
+    /**
+     * Handle tab parameter from URL (e.g., ?tab=ip1)
+     */
+    handleTabParameter() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        
+        if (tabParam) {
+            // Map tab parameter to expert index
+            const tabMapping = {
+                'ip1': 0,
+                'ip2': 1,
+                'ip3': 2
+            };
+            
+            const expertIndex = tabMapping[tabParam.toLowerCase()];
+            
+            if (expertIndex !== undefined && this.characters[expertIndex]) {
+                // Select the corresponding character
+                setTimeout(() => {
+                    this.handleCharacterClick(this.characters[expertIndex].element);
+                }, 100);
+            }
+        }
     }
 
     /**
@@ -194,8 +221,23 @@ class PredictPage {
         character.isActive = true;
         this.activeCharacter = character;
 
+        // Update URL with tab parameter
+        this.updateURLWithTab(character);
+
         // Update speech bubble based on character selection
         this.updateSpeechBubbleForCharacter(character);
+    }
+
+    /**
+     * Update URL with tab parameter without reloading the page
+     */
+    updateURLWithTab(character) {
+        const tabParam = character.element.getAttribute('data-tab');
+        if (tabParam) {
+            const url = new URL(window.location);
+            url.searchParams.set('tab', tabParam);
+            window.history.pushState({}, '', url);
+        }
     }
 
     /**
