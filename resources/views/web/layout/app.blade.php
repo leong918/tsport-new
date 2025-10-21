@@ -20,13 +20,17 @@
 
 <body id="app" class="@yield('body-class', 'bg-1')">
     {{-- Header outside ScrollSmoother to ensure it's always visible --}}
+    @if(Route::currentRouteName() != 'web.ordering')
     @include('web.layout.header')
+    @endif
 
     <div id="smooth-wrapper">
         <div id="smooth-content">
             @yield('content')
             
+            @if(Route::currentRouteName() != 'web.ordering')
             @include('web.layout.footer')
+            @endif
         </div>
     </div>
     @stack('fixed-bottom')

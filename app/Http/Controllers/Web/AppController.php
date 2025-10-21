@@ -456,65 +456,7 @@ class AppController extends BaseController
 
     public function ordering()
     {
-        // Mock ordering data - replace with actual database queries
-        $categories = [
-            [
-                'id' => 1,
-                'name' => '点',
-                'icon' => 'dian',
-                'items' => [
-                    ['id' => 1, 'name' => '大推小荐球', 'price' => 28.00, 'description' => '酷然君加料推荐', 'image' => null],
-                    ['id' => 2, 'name' => '热门推荐', 'price' => 35.00, 'description' => '今日热门选择', 'image' => null],
-                    ['id' => 3, 'name' => '精选推荐', 'price' => 42.00, 'description' => '专家精选', 'image' => null],
-                ]
-            ],
-            [
-                'id' => 2,
-                'name' => '单',
-                'icon' => 'dan',
-                'items' => [
-                    ['id' => 4, 'name' => '盘推口荐', 'price' => 25.00, 'description' => '国哥君推荐', 'image' => null],
-                    ['id' => 5, 'name' => '单场分析', 'price' => 30.00, 'description' => '深度分析', 'image' => null],
-                    ['id' => 6, 'name' => '专业预测', 'price' => 38.00, 'description' => '专业团队预测', 'image' => null],
-                ]
-            ],
-            [
-                'id' => 3,
-                'name' => '区',
-                'icon' => 'qu',
-                'items' => [
-                    ['id' => 7, 'name' => '串推单荐', 'price' => 45.00, 'description' => '摩洛Special推荐', 'image' => null],
-                    ['id' => 8, 'name' => '组合推荐', 'price' => 50.00, 'description' => '多场组合', 'image' => null],
-                    ['id' => 9, 'name' => '高级套餐', 'price' => 68.00, 'description' => '全场覆盖', 'image' => null],
-                ]
-            ]
-        ];
-
-        $recommendations = [
-            [
-                'expert' => '酷然君',
-                'avatar' => '/assets/web/assets/img/experts/expert1.jpg',
-                'title' => '大推小荐球',
-                'description' => '今日热门推荐',
-                'badge' => 'hot'
-            ],
-            [
-                'expert' => '国哥君',
-                'avatar' => '/assets/web/assets/img/experts/expert2.jpg',
-                'title' => '盘推口荐',
-                'description' => '专业分析推荐',
-                'badge' => 'recommended'
-            ],
-            [
-                'expert' => '摩洛Special',
-                'avatar' => '/assets/web/assets/img/experts/expert3.jpg',
-                'title' => '串推单荐',
-                'description' => '高胜率组合',
-                'badge' => 'special'
-            ]
-        ];
-
-        return $this->view('ordering', compact('categories', 'recommendations'));
+        return $this->view('ordering');
     }
 
     public function sendContact(Request $request)
