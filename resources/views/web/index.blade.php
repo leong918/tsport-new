@@ -1,9 +1,5 @@
 @extends('web.layout.app')
 
-@push('styles')
-    @vite(['resources/scss/web/components/horizontal-scroll.scss'])
-@endpush
-
 @section('content')
     <div id="page-home" class="screen">
         <!-- Example 1: Simple Horizontal Scroll Section -->
@@ -47,7 +43,3 @@
         </section>
     </div>
 @endsection
-
-@push('scripts')
-    @vite(['resources/js/web/pages/index.js'])
-@endpush
