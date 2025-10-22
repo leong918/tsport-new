@@ -77,6 +77,7 @@ class ProfilePage extends BasePage {
             // Wait for modal to be fully shown before initializing tabs
             editModal.addEventListener('shown.bs.modal', () => {
                 console.log('✨ Edit profile modal shown');
+                this.loadCurrentJerseySettings(editModal);
                 this.initializeTabImageSwitching(editModal);
                 this.initializeColorSelection(editModal);
                 this.initializeNumberPicker(editModal);
@@ -89,6 +90,84 @@ class ProfilePage extends BasePage {
         }
         
         console.log('Profile modals initialized');
+    }
+
+    /**
+     * Load current jersey settings from server
+     */
+    loadCurrentJerseySettings(modal) {
+        console.log('📥 Loading current jersey settings...');
+        
+        fetch('/jersey-settings', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data) {
+                const settings = data.data;
+                console.log('Loaded jersey settings:', settings);
+                
+                // Update name input
+                const nameInput = modal.querySelector('.jersey-name-input');
+                if (nameInput) {
+                    nameInput.value = settings.jersey_name;
+                    // Update preview
+                    const previewName = modal.querySelector('#preview-name');
+                    if (previewName) {
+                        previewName.textContent = settings.jersey_name;
+                    }
+                }
+                
+                // Update number displays
+                const jerseyNumber = settings.jersey_number.toString().padStart(2, '0');
+                const digitTexts = modal.querySelectorAll('.digit-text');
+                if (digitTexts.length >= 2) {
+                    digitTexts[0].textContent = jerseyNumber[0];
+                    digitTexts[1].textContent = jerseyNumber[1];
+                    // Update preview
+                    const previewNumber = modal.querySelector('#preview-number');
+                    if (previewNumber) {
+                        previewNumber.textContent = jerseyNumber;
+                    }
+                }
+                
+                // Update color selections
+                this.setColorSelection(modal, '#main-color-pane', settings.jersey_main_color);
+                this.setColorSelection(modal, '#sec-color-pane', settings.jersey_sec_color);
+                
+                // Update selected colors for shirt image
+                this.selectedMainColor = settings.jersey_main_color;
+                this.selectedSecColor = settings.jersey_sec_color;
+            }
+        })
+        .catch(error => {
+            console.error('Error loading jersey settings:', error);
+            // Continue with defaults if loading fails
+        });
+    }
+
+    /**
+     * Set color selection in color grid
+     */
+    setColorSelection(modal, paneSelector, colorNumber) {
+        const pane = modal.querySelector(paneSelector);
+        if (pane) {
+            // Remove previous selection
+            const prevSelected = pane.querySelector('.color-option.selected');
+            if (prevSelected) {
+                prevSelected.classList.remove('selected');
+            }
+            
+            // Add new selection
+            const newSelected = pane.querySelector(`[data-color-number="${colorNumber}"]`);
+            if (newSelected) {
+                newSelected.classList.add('selected');
+            }
+        }
     }
 
     /**
@@ -340,22 +419,84 @@ class ProfilePage extends BasePage {
         const secColor = modal.querySelector('#sec-color-pane .color-option.selected');
         
         const profileData = {
-            name: nameInput ? nameInput.value : '',
-            number: Array.from(digits).map(d => d.textContent).join(''),
-            mainColor: mainColor ? mainColor.dataset.colorNumber : '',
-            secColor: secColor ? secColor.dataset.colorNumber : ''
+            jersey_name: nameInput ? nameInput.value.trim() : '',
+            jersey_number: Array.from(digits).map(d => d.textContent).join(''),
+            jersey_main_color: mainColor ? parseInt(mainColor.dataset.colorNumber) : 10,
+            jersey_sec_color: secColor ? parseInt(secColor.dataset.colorNumber) : 0
         };
         
         console.log('Saving profile data:', profileData);
         
-        // TODO: Send to backend API
-        // For now, just close modal and show success
-        const bsModal = bootstrap.Modal.getInstance(modal);
-        if (bsModal) {
-            bsModal.hide();
+        // Show loading state
+        const saveBtn = modal.querySelector('.btn-save-image');
+        if (saveBtn) {
+            saveBtn.style.opacity = '0.5';
+            saveBtn.style.pointerEvents = 'none';
         }
         
-        this.showSuccess('球衣設定已保存！');
+        // Send to backend API
+        fetch('/update-jersey', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(profileData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Profile saved successfully:', data);
+            
+            if (data.success) {
+                // Close modal
+                const bsModal = bootstrap.Modal.getInstance(modal);
+                if (bsModal) {
+                    bsModal.hide();
+                }
+                
+                // Update main page avatar if needed
+                this.updateMainPageAvatar(profileData);
+                
+                this.showSuccess(data.message || '球衣設定已保存！');
+            } else {
+                throw new Error(data.message || '保存失敗');
+            }
+        })
+        .catch(error => {
+            console.error('Error saving profile:', error);
+            this.showError('保存失敗，請稍後再試');
+        })
+        .finally(() => {
+            // Restore button state
+            if (saveBtn) {
+                saveBtn.style.opacity = '1';
+                saveBtn.style.pointerEvents = 'auto';
+            }
+        });
+    }
+
+    /**
+     * Update main page avatar with new data
+     */
+    updateMainPageAvatar(profileData) {
+        // Update main page name if exists
+        const mainPageName = document.querySelector('#page-profile .name');
+        if (mainPageName && profileData.jersey_name) {
+            mainPageName.textContent = profileData.jersey_name;
+        }
+        
+        // Update main page shirt image
+        const mainPageShirt = document.querySelector('#page-profile .shirt');
+        if (mainPageShirt) {
+            const imageName = `${profileData.jersey_main_color}-${profileData.jersey_sec_color}.png`;
+            mainPageShirt.src = `/assets/web/images/profile/${imageName}`;
+        }
     }
 
     /**

@@ -288,4 +288,80 @@ class AuthController extends BaseController
             return redirect()->back()->with('error', '兑换失败：' . $e->getMessage());
         }
     }
+
+    /**
+     * Get current user jersey settings
+     */
+    public function getJerseySettings()
+    {
+        try {
+            /** @var User $user */
+            $user = Auth::user();
+            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'jersey_name' => $user->jersey_name ?? 'E神',
+                    'jersey_number' => $user->jersey_number ?? '10',
+                    'jersey_main_color' => $user->jersey_main_color ?? 10,
+                    'jersey_sec_color' => $user->jersey_sec_color ?? 0
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '獲取設定失敗：' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update user jersey customization
+     */
+    public function updateJersey(Request $request)
+    {
+        try {
+            /** @var User $user */
+            $user = Auth::user();
+            
+            $request->validate([
+                'jersey_name' => 'required|string|max:3',
+                'jersey_number' => 'required|string|size:2|regex:/^[0-9]{2}$/',
+                'jersey_main_color' => 'required|integer|between:0,11',
+                'jersey_sec_color' => 'required|integer|between:0,11'
+            ]);
+
+            // Update user jersey data
+            $user->update([
+                'jersey_name' => $request->jersey_name,
+                'jersey_number' => $request->jersey_number,
+                'jersey_main_color' => $request->jersey_main_color,
+                'jersey_sec_color' => $request->jersey_sec_color
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => '球衣設定已保存！',
+                'data' => [
+                    'jersey_name' => $user->jersey_name,
+                    'jersey_number' => $user->jersey_number,
+                    'jersey_main_color' => $user->jersey_main_color,
+                    'jersey_sec_color' => $user->jersey_sec_color
+                ]
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '驗證失敗',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '保存失敗：' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

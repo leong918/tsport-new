@@ -59,6 +59,8 @@ Route::group(['as' => 'web.', 'namespace' => 'Web'], function () {
         Route::get('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
         Route::post('do-reset-password', [AuthController::class, 'doResetPassword'])->name('do-reset-password');
         Route::post('redeem-code', [AuthController::class, 'redeemCode'])->name('redeem-code');
+        Route::get('jersey-settings', [AuthController::class, 'getJerseySettings'])->name('jersey-settings');
+        Route::post('update-jersey', [AuthController::class, 'updateJersey'])->name('update-jersey');
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     });
 });
