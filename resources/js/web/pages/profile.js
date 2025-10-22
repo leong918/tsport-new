@@ -445,8 +445,11 @@ class ProfilePage extends BasePage {
             body: JSON.stringify(profileData)
         })
         .then(response => {
+            console.log('Response status:', response.status);
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json().then(data => {
+                    throw { response: data, status: response.status };
+                });
             }
             return response.json();
         })
@@ -455,9 +458,18 @@ class ProfilePage extends BasePage {
             
             if (data.success) {
                 // Close modal
-                const bsModal = bootstrap.Modal.getInstance(modal);
-                if (bsModal) {
-                    bsModal.hide();
+                try {
+                    const bsModal = window.bootstrap?.Modal?.getInstance(modal) || 
+                                   Bootstrap?.Modal?.getInstance(modal);
+                    if (bsModal) {
+                        bsModal.hide();
+                    } else {
+                        // Fallback - trigger close button
+                        const closeBtn = modal.querySelector('[data-bs-dismiss="modal"]');
+                        if (closeBtn) closeBtn.click();
+                    }
+                } catch (e) {
+                    console.warn('Could not close modal:', e);
                 }
                 
                 // Update main page avatar if needed
@@ -465,12 +477,28 @@ class ProfilePage extends BasePage {
                 
                 this.showSuccess(data.message || '球衣設定已保存！');
             } else {
-                throw new Error(data.message || '保存失敗');
+                throw { response: data };
             }
         })
         .catch(error => {
             console.error('Error saving profile:', error);
-            this.showError('保存失敗，請稍後再試');
+            
+            // Handle different types of errors
+            if (error.response) {
+                console.error('Server response:', error.response);
+                const errorMessage = error.response.message || '保存失敗，請稍後再試';
+                if (error.response.errors) {
+                    console.error('Validation errors:', error.response.errors);
+                    const errorDetails = Object.values(error.response.errors).flat().join(', ');
+                    this.showError(`${errorMessage}: ${errorDetails}`);
+                } else {
+                    this.showError(errorMessage);
+                }
+            } else if (error.status) {
+                this.showError(`服務器錯誤 (${error.status})`);
+            } else {
+                this.showError('網絡錯誤，請檢查連接');
+            }
         })
         .finally(() => {
             // Restore button state
@@ -494,7 +522,7 @@ class ProfilePage extends BasePage {
         // Update main page shirt image
         const mainPageShirt = document.querySelector('#page-profile .shirt');
         if (mainPageShirt) {
-            const imageName = `${profileData.jersey_main_color}-${profileData.jersey_sec_color}.png`;
+            const imageName = `shirt/${profileData.jersey_main_color}/${profileData.jersey_sec_color}.png`;
             mainPageShirt.src = `/assets/web/images/profile/${imageName}`;
         }
     }

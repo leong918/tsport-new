@@ -10,6 +10,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends BaseController
 {
@@ -325,6 +326,12 @@ class AuthController extends BaseController
             /** @var User $user */
             $user = Auth::user();
             
+            // Add debug logging
+            Log::info('Update Jersey Request', [
+                'user_id' => $user ? $user->id : 'null',
+                'request_data' => $request->all()
+            ]);
+            
             $request->validate([
                 'jersey_name' => 'required|string|max:3',
                 'jersey_number' => 'required|string|size:2|regex:/^[0-9]{2}$/',
@@ -340,6 +347,8 @@ class AuthController extends BaseController
                 'jersey_sec_color' => $request->jersey_sec_color
             ]);
 
+            Log::info('Jersey updated successfully', ['user_id' => $user->id]);
+
             return response()->json([
                 'success' => true,
                 'message' => '球衣設定已保存！',
@@ -352,12 +361,14 @@ class AuthController extends BaseController
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::warning('Jersey validation failed', ['errors' => $e->errors()]);
             return response()->json([
                 'success' => false,
                 'message' => '驗證失敗',
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
+            Log::error('Jersey update failed', ['error' => $e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => '保存失敗：' . $e->getMessage()
