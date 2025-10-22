@@ -229,23 +229,24 @@ class ProfilePage extends BasePage {
         
         digits.forEach((digit) => {
             const display = digit.querySelector('.digit-display');
+            const digitText = display.querySelector('.digit-text');
             const upBtn = digit.querySelector('.number-up');
             const downBtn = digit.querySelector('.number-down');
             
             if (upBtn) {
                 upBtn.addEventListener('click', () => {
-                    let current = parseInt(display.textContent);
+                    let current = parseInt(digitText.textContent);
                     current = (current + 1) % 10;
-                    display.textContent = current;
+                    digitText.textContent = current;
                     console.log('Number up:', current);
                 });
             }
             
             if (downBtn) {
                 downBtn.addEventListener('click', () => {
-                    let current = parseInt(display.textContent);
+                    let current = parseInt(digitText.textContent);
                     current = (current - 1 + 10) % 10;
-                    display.textContent = current;
+                    digitText.textContent = current;
                     console.log('Number down:', current);
                 });
             }
@@ -321,15 +322,15 @@ class ProfilePage extends BasePage {
      */
     saveProfileChanges(modal) {
         const nameInput = modal.querySelector('.jersey-name-input');
-        const digits = modal.querySelectorAll('.digit-display');
+        const digits = modal.querySelectorAll('.digit-display .digit-text');
         const mainColor = modal.querySelector('#main-color-pane .color-option.selected');
         const secColor = modal.querySelector('#sec-color-pane .color-option.selected');
         
         const profileData = {
             name: nameInput ? nameInput.value : '',
             number: Array.from(digits).map(d => d.textContent).join(''),
-            mainColor: mainColor ? mainColor.dataset.color : '',
-            secColor: secColor ? secColor.dataset.color : ''
+            mainColor: mainColor ? mainColor.dataset.colorNumber : '',
+            secColor: secColor ? secColor.dataset.colorNumber : ''
         };
         
         console.log('Saving profile data:', profileData);

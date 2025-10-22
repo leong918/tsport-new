@@ -164,7 +164,9 @@
                                         <button type="button" class="number-up">
                                             <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
                                         </button>
-                                        <div class="digit-display">1</div>
+                                        <div class="digit-display">
+                                            <span class="digit-text">1</span>
+                                        </div>
                                         <button type="button" class="number-down">
                                             <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
                                         </button>
@@ -173,7 +175,9 @@
                                         <button type="button" class="number-up">
                                             <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
                                         </button>
-                                        <div class="digit-display">0</div>
+                                        <div class="digit-display">
+                                            <span class="digit-text">0</span>
+                                        </div>
                                         <button type="button" class="number-down">
                                             <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
                                         </button>
