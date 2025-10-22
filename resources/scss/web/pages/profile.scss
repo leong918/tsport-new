@@ -270,6 +270,32 @@
                     z-index: 2;
                     max-width: 200px;
                 }
+
+                .jersey-info {
+                    z-index: 3;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    text-align: center;
+                    pointer-events: none;
+
+                    .jersey-name {
+                        font-size: 14px;
+                        font-weight: 700;
+                        color: white;
+                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+                        margin-bottom: 5px;
+                        letter-spacing: 1px;
+                    }
+
+                    .jersey-number {
+                        font-size: 36px;
+                        font-weight: 700;
+                        color: white;
+                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+                        line-height: 1;
+                    }
+                }
             }
 
             .bottom-content {

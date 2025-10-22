@@ -226,6 +226,15 @@ class ProfilePage extends BasePage {
         console.log('🔢 Initializing number picker...');
         
         const digits = modal.querySelectorAll('.number-digit');
+        const previewNumber = modal.querySelector('#preview-number');
+        
+        const updatePreviewNumber = () => {
+            const digitTexts = modal.querySelectorAll('.digit-text');
+            const number = Array.from(digitTexts).map(d => d.textContent).join('');
+            if (previewNumber) {
+                previewNumber.textContent = number;
+            }
+        };
         
         digits.forEach((digit) => {
             const display = digit.querySelector('.digit-display');
@@ -238,6 +247,7 @@ class ProfilePage extends BasePage {
                     let current = parseInt(digitText.textContent);
                     current = (current + 1) % 10;
                     digitText.textContent = current;
+                    updatePreviewNumber();
                     console.log('Number up:', current);
                 });
             }
@@ -247,6 +257,7 @@ class ProfilePage extends BasePage {
                     let current = parseInt(digitText.textContent);
                     current = (current - 1 + 10) % 10;
                     digitText.textContent = current;
+                    updatePreviewNumber();
                     console.log('Number down:', current);
                 });
             }
@@ -262,10 +273,12 @@ class ProfilePage extends BasePage {
         console.log('✏️ Initializing name input...');
         
         const nameInput = modal.querySelector('.jersey-name-input');
+        const previewName = modal.querySelector('#preview-name');
         
-        if (nameInput) {
+        if (nameInput && previewName) {
             nameInput.addEventListener('input', (e) => {
                 const value = e.target.value;
+                previewName.textContent = value || 'E神';
                 console.log('Name changed:', value);
             });
         }

@@ -136,6 +136,11 @@
                                     <img src="{{ asset('assets/web/images/profile/User_Avatar.png') }}"
                                         class="img img-fluid shirt">
                                 </div>
+                                <!-- Jersey Info Overlay -->
+                                <div class="jersey-info position-absolute">
+                                    <div class="jersey-name" id="preview-name">E神</div>
+                                    <div class="jersey-number" id="preview-number">10</div>
+                                </div>
                             </div>
                         </div>
                     </div>
