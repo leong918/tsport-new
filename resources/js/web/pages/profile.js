@@ -3,555 +3,368 @@
  * Handles profile page specific functionality including avatar editor and modals
  */
 
-import { SafeModal } from '../utils/bootstrap-wrapper.js';
-import { ValidationService } from '../services/ValidationService.js';
-import { FormService } from '../services/FormService.js';
-import { AuthService } from '../services/AuthService.js';
-import { ProfileService } from '../services/ProfileService.js';
+import $ from 'jquery';
+import BasePage from './BasePage.js';
 
-/**
- * Initialize Bootstrap modals for profile page using SafeModal wrapper
- */
-function initProfileModals() {
-    console.log('Initializing profile modals with SafeModal wrapper');
+class ProfilePage extends BasePage {
+    constructor() {
+        super();
+        this.pageName = 'profile';
+        this.pageSelector = '#page-profile';
+        
+        // Auto-initialize if page elements are present
+        if (this.shouldInitialize()) {
+            this.init();
+        }
+    }
 
-    // Initialize all modals on the profile page using SafeModal wrapper
-    const modalIds = [
-        '#edit-profile-modal',
-        '#profile-info-modal', 
-        '#password-change-modal',
-        '#redeem-code-modal'
-    ];
+    /**
+     * Check if page should be initialized
+     */
+    shouldInitialize() {
+        return $(this.pageSelector).length > 0 || 
+               window.location.pathname.includes('/profile') ||
+               document.body.classList.contains('profile-page');
+    }
 
-    modalIds.forEach(modalId => {
-        const modalElement = document.querySelector(modalId);
-        if (modalElement) {
-            try {
-                // Use SafeModal wrapper to avoid backdrop errors
-                const safeModal = new SafeModal(modalElement);
-                console.log(`SafeModal initialized for ${modalId}`);
+    /**
+     * Initialize page functionality
+     */
+    init() {
+        document.body.classList.add('profile-page');
+        super.init();
+
+        // Make service globally available
+        window.ProfilePage = this;
+        
+        console.log('ProfilePage initialized successfully');
+    }
+
+    /**
+     * Initialize page components
+     */
+    initializeComponents() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.initializeAllComponents();
+            });
+        } else {
+            this.initializeAllComponents();
+        }
+    }
+
+    /**
+     * Initialize all components after DOM is ready
+     */
+    initializeAllComponents() {
+        console.log('Initializing profile page components...');
+        
+        this.initializeModals();
+        this.setupLogoutButton();
+        
+        console.log('Profile page components initialized');
+    }
+
+    /**
+     * Initialize Bootstrap modals
+     */
+    initializeModals() {
+        console.log('Initializing profile modals...');
+
+        const editModal = document.getElementById('edit-profile-modal');
+        
+        if (editModal) {
+            // Wait for modal to be fully shown before initializing tabs
+            editModal.addEventListener('shown.bs.modal', () => {
+                console.log('✨ Edit profile modal shown');
+                this.initializeTabImageSwitching(editModal);
+                this.initializeColorSelection(editModal);
+                this.initializeNumberPicker(editModal);
+                this.initializeNameInput(editModal);
+                this.initializeSaveButton(editModal);
+            });
+        }
+        
+        console.log('Profile modals initialized');
+    }
+
+    /**
+     * Initialize Bootstrap tab image switching
+     */
+    initializeTabImageSwitching(modal) {
+        console.log('🎨 Initializing tab image switching...');
+        
+        const tabButtons = modal.querySelectorAll('button[data-bs-toggle="pill"]');
+        console.log('Found tab buttons:', tabButtons.length);
+        
+        if (tabButtons.length === 0) {
+            console.warn('No tab buttons found!');
+            return;
+        }
+        
+        // Function to update all tab images
+        const updateTabImages = (activeButton) => {
+            tabButtons.forEach(btn => {
+                const img = btn.querySelector('.tab-img');
+                if (!img) return;
                 
-                // Add event listener for when modal is shown
-                if (modalId === '#edit-profile-modal') {
-                    modalElement.addEventListener('shown.bs.modal', function () {
-                        console.log('✨ Edit profile modal shown, initializing tabs...');
-                        // Small delay to ensure DOM is ready
-                        setTimeout(() => {
-                            initAvatarEditorTabs();
-                        }, 100);
-                    });
-                    
-                    // Also initialize once immediately
-                    console.log('📦 Pre-initializing tabs for edit-profile-modal');
-                    initAvatarEditorTabs();
+                const btnId = btn.id;
+                let imageName = '';
+                
+                if (btnId === 'name-tab') imageName = 'name';
+                else if (btnId === 'number-tab') imageName = 'number';
+                else if (btnId === 'main-color-tab') imageName = 'main-color';
+                else if (btnId === 'sec-color-tab') imageName = 'sec-color';
+                
+                if (btn === activeButton || btn.classList.contains('active')) {
+                    img.src = '/assets/web/images/profile/' + imageName + '-active.png';
+                    console.log('✅ Set active:', imageName);
+                } else {
+                    img.src = '/assets/web/images/profile/' + imageName + '-inactive.png';
+                    console.log('⚪ Set inactive:', imageName);
                 }
-            } catch (error) {
-                console.error(`Error initializing SafeModal ${modalId}:`, error);
-            }
-        } else {
-            console.warn(`Modal element ${modalId} not found in DOM`);
+            });
+        };
+        
+        // Listen to Bootstrap tab events
+        tabButtons.forEach(button => {
+            button.addEventListener('shown.bs.tab', function(event) {
+                console.log('✨ Tab shown:', this.id);
+                updateTabImages(this);
+            });
+        });
+        
+        // Set initial state
+        const activeButton = modal.querySelector('button[data-bs-toggle="pill"].active');
+        if (activeButton) {
+            updateTabImages(activeButton);
         }
-    });
-    
-    console.log('Profile modals initialized with SafeModal wrapper');
-}
-
-/**
- * Initialize avatar editor modal tabs
- */
-function initAvatarEditorTabs() {
-    const modal = document.getElementById('edit-profile-modal');
-    if (!modal) {
-        console.warn('Edit profile modal not found');
-        return;
+        
+        console.log('✅ Tab image switching initialized');
     }
-    
-    console.log('🎨 Initializing avatar editor tabs...');
-    
-    const jerseyData = {
-        name: 'E神',
-        number: 10,
-        mainColor: '#DC143C',
-        secColor: '#228B22'
-    };
-    
-    // Tab switching
-    const tabButtons = modal.querySelectorAll('.tab-button');
-    console.log('Found tab buttons:', tabButtons.length);
-    
-    tabButtons.forEach((button, index) => {
-        const targetTab = button.dataset.tab;
-        console.log(`Tab button ${index}:`, targetTab);
+
+    /**
+     * Initialize color selection handlers
+     */
+    initializeColorSelection(modal) {
+        console.log('🎨 Initializing color selection...');
         
-        // Remove any existing event listeners
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
+        // Get shirt image in modal
+        const shirtImg = modal.querySelector('.shirt-wrapper .shirt');
         
-        // Add click event listener
-        newButton.addEventListener('click', function(e) {
-            console.log('🖱️ Tab button clicked:', targetTab);
-            console.log('Event target:', e.target);
-            console.log('Current button:', this);
-            switchTab(targetTab, newButton, modal);
+        // Get default selected colors from HTML
+        const defaultMainColor = modal.querySelector('#main-color-pane .color-option.selected');
+        const defaultSecColor = modal.querySelector('#sec-color-pane .color-option.selected');
+        
+        // Track selected colors
+        this.selectedMainColor = defaultMainColor ? parseInt(defaultMainColor.dataset.colorNumber) : 11;
+        this.selectedSecColor = defaultSecColor ? parseInt(defaultSecColor.dataset.colorNumber) : 1;
+        
+        console.log('Initial colors - Main:', this.selectedMainColor, 'Secondary:', this.selectedSecColor);
+        
+        // Main color selection
+        const mainColorOptions = modal.querySelectorAll('#main-color-pane .color-option');
+        mainColorOptions.forEach((option) => {
+            option.addEventListener('click', () => {
+                this.selectedMainColor = parseInt(option.dataset.colorNumber);
+                console.log('🎨 Main color selected:', this.selectedMainColor);
+                
+                // Update selected state
+                mainColorOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                // Update shirt image
+                this.updateShirtImage(shirtImg);
+            });
+        });
+
+        // Secondary color selection
+        const secColorOptions = modal.querySelectorAll('#sec-color-pane .color-option');
+        secColorOptions.forEach((option) => {
+            option.addEventListener('click', () => {
+                this.selectedSecColor = parseInt(option.dataset.colorNumber);
+                console.log('🎨 Secondary color selected:', this.selectedSecColor);
+                
+                // Update selected state
+                secColorOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                // Update shirt image
+                this.updateShirtImage(shirtImg);
+            });
         });
         
-        // Also add a test attribute
-        newButton.setAttribute('onclick', `console.log('Direct onclick works for: ${targetTab}')`);
-    });
-    
-    // Color selection
-    initColorSelection(modal, jerseyData);
-    
-    // Number picker
-    initNumberPicker(modal, jerseyData);
-    
-    // Name input
-    initNameInput(modal, jerseyData);
-    
-    // Save button
-    initSaveButton(modal, jerseyData);
-    
-    console.log('✅ Avatar editor tabs initialized');
-}
-
-/**
- * Switch between tabs in avatar editor
- */
-function switchTab(tabId, clickedButton, modal) {
-    console.log('🔄 Switching to tab:', tabId);
-    
-    // Hide all tab panes
-    const allPanes = modal.querySelectorAll('.tab-pane');
-    console.log('Found tab panes:', allPanes.length);
-    
-    allPanes.forEach(pane => {
-        pane.style.display = 'none';
-        pane.classList.remove('active');
-        console.log('Hiding pane:', pane.id);
-    });
-
-    // Show target tab pane
-    const targetPane = modal.querySelector(`#${tabId}`);
-    if (targetPane) {
-        targetPane.style.display = 'block';
-        targetPane.classList.add('active');
-        console.log('✅ Showing pane:', tabId);
-    } else {
-        console.error('❌ Target pane not found:', tabId);
+        console.log('✅ Color selection initialized');
     }
 
-    // Update tab button images
-    modal.querySelectorAll('.tab-button').forEach(btn => {
-        const img = btn.querySelector('.tab-img');
-        const tab = btn.dataset.tab;
-        
-        // Determine image name from tab id
-        let imageName = '';
-        if (tab === 'name-tab') imageName = 'Name';
-        else if (tab === 'number-tab') imageName = 'Number';
-        else if (tab === 'main-color-tab') imageName = 'Main_Color';
-        else if (tab === 'sec-color-tab') imageName = 'Sec_Color';
-        
-        // Set active/inactive image
-        if (btn === clickedButton) {
-            img.src = `/assets/web/images/profile/${imageName}_Active.png`;
-            img.classList.add('active');
-            console.log('✅ Active tab:', imageName);
-        } else {
-            img.src = `/assets/web/images/profile/${imageName}_Inactive.png`;
-            img.classList.remove('active');
+    /**
+     * Update shirt image based on color selection
+     * Image format: {mainColor}-{secColor}.png (e.g., 11-1.png)
+     */
+    updateShirtImage(shirtImg) {
+        if (!shirtImg) {
+            console.warn('Shirt image not found');
+            return;
         }
-    });
-}
-
-/**
- * Initialize color selection
- */
-function initColorSelection(modal, jerseyData) {
-    // Main color selection
-    const mainColorOptions = modal.querySelectorAll('#main-color-tab .color-option');
-    mainColorOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            mainColorOptions.forEach(opt => opt.classList.remove('selected'));
-            option.classList.add('selected');
-            
-            const color = option.dataset.color;
-            modal.querySelector('.main-color-input').value = color;
-            jerseyData.mainColor = color;
-            console.log('Main color selected:', color);
-        });
-    });
-
-    // Secondary color selection
-    const secColorOptions = modal.querySelectorAll('#sec-color-tab .color-option');
-    secColorOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            secColorOptions.forEach(opt => opt.classList.remove('selected'));
-            option.classList.add('selected');
-            
-            const color = option.dataset.color;
-            modal.querySelector('.sec-color-input').value = color;
-            jerseyData.secColor = color;
-            console.log('Secondary color selected:', color);
-        });
-    });
-}
-
-/**
- * Initialize number picker
- */
-function initNumberPicker(modal, jerseyData) {
-    const digits = modal.querySelectorAll('.number-digit');
-    
-    digits.forEach((digit, index) => {
-        const display = digit.querySelector('.digit-display');
-        const upBtn = digit.querySelector('.number-up');
-        const downBtn = digit.querySelector('.number-down');
         
-        upBtn.addEventListener('click', () => {
-            let current = parseInt(display.textContent);
-            current = (current + 1) % 10;
-            display.textContent = current;
-            updateJerseyNumber(modal, jerseyData);
-        });
+        // Build image filename: mainColor-secColor.png
+        const filename = `/${this.selectedMainColor}/${this.selectedMainColor}-${this.selectedSecColor}.png`;
+        const newSrc = `/assets/web/images/profile/shirt/${filename}`;
         
-        downBtn.addEventListener('click', () => {
-            let current = parseInt(display.textContent);
-            current = (current - 1 + 10) % 10;
-            display.textContent = current;
-            updateJerseyNumber(modal, jerseyData);
-        });
-    });
-}
-
-/**
- * Update jersey number from digit displays
- */
-function updateJerseyNumber(modal, jerseyData) {
-    const digits = modal.querySelectorAll('.digit-display');
-    const number = Array.from(digits).map(d => d.textContent).join('');
-    modal.querySelector('.jersey-number-input').value = number;
-    jerseyData.number = parseInt(number);
-    console.log('Jersey number:', number);
-}
-
-/**
- * Initialize name input
- */
-function initNameInput(modal, jerseyData) {
-    const nameInput = modal.querySelector('.jersey-name-input');
-    if (nameInput) {
-        nameInput.addEventListener('input', (e) => {
-            jerseyData.name = e.target.value;
-            console.log('Jersey name:', e.target.value);
-        });
+        console.log('🎽 Updating shirt image to:', newSrc);
+        console.log('   Main color:', this.selectedMainColor, 'Secondary color:', this.selectedSecColor);
+        
+        shirtImg.src = newSrc;
     }
-}
 
-/**
- * Initialize save button
- */
-function initSaveButton(modal, jerseyData) {
-    const saveBtn = modal.querySelector('.btn-save');
-    if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-            console.log('Saving jersey customization:', jerseyData);
+    /**
+     * Initialize number picker
+     */
+    initializeNumberPicker(modal) {
+        console.log('🔢 Initializing number picker...');
+        
+        const digits = modal.querySelectorAll('.number-digit');
+        
+        digits.forEach((digit) => {
+            const display = digit.querySelector('.digit-display');
+            const upBtn = digit.querySelector('.number-up');
+            const downBtn = digit.querySelector('.number-down');
             
-            // Close modal
-            const bsModal = bootstrap.Modal.getInstance(modal);
-            if (bsModal) {
-                bsModal.hide();
+            if (upBtn) {
+                upBtn.addEventListener('click', () => {
+                    let current = parseInt(display.textContent);
+                    current = (current + 1) % 10;
+                    display.textContent = current;
+                    console.log('Number up:', current);
+                });
             }
             
-            // Show success message
-            FormService.showSuccessMessage('球衣設定已保存！');
+            if (downBtn) {
+                downBtn.addEventListener('click', () => {
+                    let current = parseInt(display.textContent);
+                    current = (current - 1 + 10) % 10;
+                    display.textContent = current;
+                    console.log('Number down:', current);
+                });
+            }
         });
+        
+        console.log('✅ Number picker initialized');
+    }
+
+    /**
+     * Initialize name input
+     */
+    initializeNameInput(modal) {
+        console.log('✏️ Initializing name input...');
+        
+        const nameInput = modal.querySelector('.jersey-name-input');
+        if (nameInput) {
+            nameInput.addEventListener('input', (e) => {
+                console.log('Name changed:', e.target.value);
+            });
+        }
+        
+        console.log('✅ Name input initialized');
+    }
+
+    /**
+     * Initialize save button
+     */
+    initializeSaveButton(modal) {
+        console.log('💾 Initializing save button...');
+        
+        const saveBtn = modal.querySelector('.btn-save-image');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                console.log('Save button clicked');
+                this.saveProfileChanges(modal);
+            });
+        }
+        
+        console.log('✅ Save button initialized');
+    }
+
+    /**
+     * Save profile changes
+     */
+    saveProfileChanges(modal) {
+        const nameInput = modal.querySelector('.jersey-name-input');
+        const digits = modal.querySelectorAll('.digit-display');
+        const mainColor = modal.querySelector('#main-color-pane .color-option.selected');
+        const secColor = modal.querySelector('#sec-color-pane .color-option.selected');
+        
+        const profileData = {
+            name: nameInput ? nameInput.value : '',
+            number: Array.from(digits).map(d => d.textContent).join(''),
+            mainColor: mainColor ? mainColor.dataset.color : '',
+            secColor: secColor ? secColor.dataset.color : ''
+        };
+        
+        console.log('Saving profile data:', profileData);
+        
+        // TODO: Send to backend API
+        // For now, just close modal and show success
+        const bsModal = bootstrap.Modal.getInstance(modal);
+        if (bsModal) {
+            bsModal.hide();
+        }
+        
+        this.showSuccess('球衣設定已保存！');
+    }
+
+    /**
+     * Setup logout button
+     */
+    setupLogoutButton() {
+        window.logout = () => {
+            const logoutUrl = window.logoutRoute || '/logout';
+            console.log('Logging out:', logoutUrl);
+            window.location.href = logoutUrl;
+        };
+    }
+
+    /**
+     * Bind event listeners
+     */
+    bindEvents() {
+        // Events are bound in initializeComponents
+    }
+
+    /**
+     * Setup visual effects and animations
+     */
+    setupEffects() {
+        // No special effects for profile page
+    }
+
+    /**
+     * Show success message
+     */
+    showSuccess(message) {
+        super.showSuccess(message);
+    }
+
+    /**
+     * Show error message
+     */
+    showError(message) {
+        super.showError(message);
+    }
+
+    /**
+     * Cleanup when page is destroyed
+     */
+    destroy() {
+        delete window.ProfilePage;
+        delete window.logout;
+        super.destroy();
     }
 }
 
-export function initProfilePage() {
-    // Only run if we're on the profile page
-    if (document.body.id !== 'profile' && !window.location.pathname.includes('/profile')) {
-        return;
-    }
-
-    // Set body id for specific styling
-    document.body.id = 'profile';
-    
-    // Initialize Bootstrap modals specifically for profile page
-    initProfileModals();
-    
-    // Setup CSRF token
-    AuthService.setupCSRFToken();
-
-    // Initialize avatar editor
-    ProfileService.initAvatarEditor();
-    
-    // Setup modal management
-    ProfileService.setupModalManagement();
-    
-    // Setup jersey number validation
-    ProfileService.setupJerseyNumberValidation();
-    
-    // Setup form handlers
-    setupProfileForms();
-    
-    // Initialize profile data if available
-    const currentUser = AuthService.getCurrentUser();
-    if (currentUser) {
-        ProfileService.initializeProfileData(currentUser);
-    }
-}
-
-/**
- * Setup all profile-related forms
- */
-function setupProfileForms() {
-    // Profile info form
-    setupProfileInfoForm();
-    
-    // Password change form
-    setupPasswordChangeForm();
-    
-    // Redeem code form
-    setupRedeemCodeForm();
-}
-
-/**
- * Setup profile information form
- */
-function setupProfileInfoForm() {
-    const $form = $('#profile-info-modal form');
-    if (!$form.length) return;
-
-    const validationRules = {
-        username: ValidationService.validateUsername,
-        email: ValidationService.validateEmail,
-        phone: (phone) => {
-            if (phone && phone.trim()) {
-                return ValidationService.validatePhoneNumber(phone);
-            }
-            return { isValid: true, message: '' };
-        }
-    };
-
-    FormService.handleFormSubmission(
-        $form,
-        validationRules,
-        async (formData) => {
-            await handleProfileUpdate(formData);
-        },
-        (errors) => {
-            console.log('Profile form validation errors:', errors);
-        }
-    );
-}
-
-/**
- * Setup password change form
- */
-function setupPasswordChangeForm() {
-    const $form = $('#password-change-modal form');
-    if (!$form.length) return;
-
-    const validationRules = {
-        current_password: (password) => {
-            if (!password || !password.trim()) {
-                return { isValid: false, message: '請輸入當前密碼' };
-            }
-            return { isValid: true, message: '' };
-        },
-        new_password: ValidationService.validatePassword,
-        new_password_confirmation: (confirmation) => {
-            const newPassword = $form.find('input[name="new_password"]').val();
-            if (!confirmation || !confirmation.trim()) {
-                return { isValid: false, message: '請確認新密碼' };
-            }
-            if (confirmation !== newPassword) {
-                return { isValid: false, message: '新密碼與確認密碼不匹配' };
-            }
-            return { isValid: true, message: '' };
-        }
-    };
-
-    FormService.handleFormSubmission(
-        $form,
-        validationRules,
-        async (formData) => {
-            await handlePasswordChange(formData);
-        },
-        (errors) => {
-            console.log('Password change validation errors:', errors);
-        }
-    );
-
-    // Setup password strength indicator for new password
-    FormService.setupPasswordStrengthIndicator($form.find('input[name="new_password"]'));
-}
-
-/**
- * Setup redeem code form
- */
-function setupRedeemCodeForm() {
-    const $form = $('#redeem-code-modal form');
-    if (!$form.length) return;
-
-    const validationRules = {
-        redeem_code: ValidationService.validateRedeemCode
-    };
-
-    FormService.handleFormSubmission(
-        $form,
-        validationRules,
-        async (formData) => {
-            await handleRedeemCode(formData.redeem_code);
-        },
-        (errors) => {
-            console.log('Redeem code validation errors:', errors);
-        }
-    );
-}
-
-/**
- * Handle profile update
- * @param {object} formData 
- */
-async function handleProfileUpdate(formData) {
-    try {
-        const $submitBtn = $('#profile-info-modal button[type="submit"]');
-        const originalText = $submitBtn.text();
-        $submitBtn.prop('disabled', true).text('保存中...');
-
-        const result = await AuthService.updateProfile(formData);
-
-        if (result.success) {
-            FormService.showSuccessMessage('個人資料更新成功！');
-            $('#profile-info-modal').modal('hide');
-            
-            // Update header user info if needed
-            ProfileService.updateHeaderUserInfo(result.data.user || formData);
-        } else {
-            if (result.errors.general) {
-                FormService.showErrorMessage(result.errors.general[0]);
-            } else {
-                FormService.showErrorMessage('更新失敗，請稍後重試');
-            }
-        }
-    } catch (error) {
-        console.error('Profile update error:', error);
-        FormService.showErrorMessage('更新過程中出現錯誤');
-    } finally {
-        const $submitBtn = $('#profile-info-modal button[type="submit"]');
-        $submitBtn.prop('disabled', false).text('保存');
-    }
-}
-
-/**
- * Handle password change
- * @param {object} formData 
- */
-async function handlePasswordChange(formData) {
-    try {
-        const $submitBtn = $('#password-change-modal button[type="submit"]');
-        const originalText = $submitBtn.text();
-        $submitBtn.prop('disabled', true).text('更新中...');
-
-        const result = await AuthService.changePassword(formData);
-
-        if (result.success) {
-            FormService.showSuccessMessage('密碼更新成功！');
-            $('#password-change-modal').modal('hide');
-        } else {
-            if (result.errors.general) {
-                FormService.showErrorMessage(result.errors.general[0]);
-            } else {
-                FormService.showErrorMessage('密码更新失败，请稍后重试');
-            }
-        }
-    } catch (error) {
-        console.error('Password change error:', error);
-        FormService.showErrorMessage('密码更新过程中出现错误');
-    } finally {
-        const $submitBtn = $('#password-change-modal button[type="submit"]');
-        $submitBtn.prop('disabled', false).text('更新密码');
-    }
-}
-
-/**
- * Handle redeem code
- * @param {string} code 
- */
-async function handleRedeemCode(code) {
-    try {
-        const $submitBtn = $('#redeem-code-modal button[type="submit"]');
-        const originalText = $submitBtn.text();
-        $submitBtn.prop('disabled', true).text('兑换中...');
-
-        const result = await AuthService.redeemCode(code);
-
-        if (result.success) {
-            FormService.showSuccessMessage('兑换码使用成功！');
-            $('#redeem-code-modal').modal('hide');
-        } else {
-            if (result.errors.general) {
-                FormService.showErrorMessage(result.errors.general[0]);
-            } else {
-                FormService.showErrorMessage('兑换失败，请检查兑换码');
-            }
-        }
-    } catch (error) {
-        console.error('Redeem code error:', error);
-        FormService.showErrorMessage('兑换过程中出现错误');
-    } finally {
-        const $submitBtn = $('#redeem-code-modal button[type="submit"]');
-        $submitBtn.prop('disabled', false).text('兑换');
-    }
-}
-
-/**
- * Logout function (legacy export - now handled by AuthService)
- * @deprecated Use AuthService.logout() instead
- */
-export function logout() {
-    const logoutUrl = window.logoutRoute || '/logout';
-    AuthService.logout(logoutUrl);
-}
-
-/**
- * Initialize profile data (legacy export - now handled by ProfileService)
- * @deprecated Use ProfileService.initializeProfileData() instead
- */
-export function initializeProfileData(userData) {
-    ProfileService.initializeProfileData(userData);
-}
-
-// Auto-initialize when DOM is ready
-$(document).ready(function() {
-    // Only initialize if we're on a profile-related page
-    if (window.location.pathname.includes('/profile') || 
-        window.location.pathname.includes('/personal-info') || 
-        document.body.classList.contains('profile-page')) {
-        initProfilePage();
-    }
+// Auto-initialize if on profile page
+$(document).ready(() => {
+    new ProfilePage();
 });
 
-// Make logout function globally available (for onclick handlers in templates)
-window.logout = logout;
-
-// Make tab switch function globally available
-window.switchProfileTab = function(tabId) {
-    console.log('🌍 Global switchProfileTab called:', tabId);
-    const modal = document.getElementById('edit-profile-modal');
-    if (!modal) {
-        console.error('Modal not found');
-        return;
-    }
-    
-    // Find the button
-    const button = modal.querySelector(`[data-tab="${tabId}"]`);
-    if (button) {
-        switchTab(tabId, button, modal);
-    } else {
-        console.error('Button not found for tab:', tabId);
-    }
-};
+export default ProfilePage;

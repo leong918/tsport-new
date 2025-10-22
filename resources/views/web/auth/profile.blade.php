@@ -9,13 +9,16 @@
                         <div class="avatar-wrapper position-relative">
                             <div class="background-wrapper position-absolute">
                                 <div class="background-inner-wrapper">
-                                    <img src="{{ asset('assets/web/images/profile/Background_Shirt.png') }}" class="img img-fluid background">
-                                    <img src="{{ asset('assets/web/images/profile/Icon_Edit.png') }}" class="img img-fluid edit"
-                                        data-bs-toggle="modal" data-bs-target="#edit-profile-modal" style="cursor: pointer;">
+                                    <img src="{{ asset('assets/web/images/profile/Background_Shirt.png') }}"
+                                        class="img img-fluid background">
+                                    <img src="{{ asset('assets/web/images/profile/Icon_Edit.png') }}"
+                                        class="img img-fluid edit" data-bs-toggle="modal"
+                                        data-bs-target="#edit-profile-modal" style="cursor: pointer;">
                                 </div>
                             </div>
                             <div class="shirt-wrapper position-absolute">
-                                <img src="{{ asset('assets/web/images/profile/User_Avatar.png') }}" class="img img-fluid shirt">
+                                <img src="{{ asset('assets/web/images/profile/User_Avatar.png') }}"
+                                    class="img img-fluid shirt">
                             </div>
                         </div>
                     </div>
@@ -31,31 +34,37 @@
                                     <a href="{{ route('web.personal-info') }}" class="input-field-wrapper">
                                         <div class="label">個人資料</div>
                                         <div class="arrow">
-                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}" class="img img-fluid">
+                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}"
+                                                class="img img-fluid">
                                         </div>
                                     </a>
                                     <a href="{{ route('web.reset-password') }}" class="input-field-wrapper">
                                         <div class="label">密碼</div>
                                         <div class="arrow">
-                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}" class="img img-fluid">
+                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}"
+                                                class="img img-fluid">
                                         </div>
                                     </a>
-                                    <div class="input-field-wrapper" data-bs-toggle="modal" data-bs-target="#redeem-code-modal" style="cursor: pointer;">
+                                    <div class="input-field-wrapper" data-bs-toggle="modal"
+                                        data-bs-target="#redeem-code-modal" style="cursor: pointer;">
                                         <div class="label">兌換碼</div>
                                         <div class="arrow">
-                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}" class="img img-fluid">
+                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}"
+                                                class="img img-fluid">
                                         </div>
                                     </div>
                                     <div class="input-field-wrapper">
                                         <div class="label">客服</div>
                                         <div class="arrow">
-                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}" class="img img-fluid">
+                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}"
+                                                class="img img-fluid">
                                         </div>
                                     </div>
                                     <div class="input-field-wrapper" onclick="logout()" style="cursor: pointer;">
                                         <div class="label">登出</div>
                                         <div class="arrow">
-                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}" class="img img-fluid">
+                                            <img src="{{ asset('assets/web/images/profile/Button_Enter.png') }}"
+                                                class="img img-fluid">
                                         </div>
                                     </div>
                                 </div>
@@ -77,31 +86,45 @@
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close">
                     <img src="{{ asset('assets/web/images/profile/icon-close.png') }}" alt="Close">
                 </button>
-                
-                <div class="content-wrapper">
-                    <div class="top-content">
-                        <div class="left">
-                            <div class="tab-button" data-tab="name-tab" onclick="switchProfileTab('name-tab')" style="cursor: pointer;">
-                                <img src="{{ asset('assets/web/images/profile/name-active.png') }}"
-                                    class="img img-fluid tab-img active" style="pointer-events: none;">
-                            </div>
 
-                            <div class="tab-button" data-tab="number-tab" onclick="switchProfileTab('number-tab')" style="cursor: pointer;">
-                                <img src="{{ asset('assets/web/images/profile/number-inactive.png') }}"
-                                    class="img img-fluid tab-img" style="pointer-events: none;">
-                            </div>
-
-                            <div class="tab-button" data-tab="main-color-tab" onclick="switchProfileTab('main-color-tab')" style="cursor: pointer;">
-                                <img src="{{ asset('assets/web/images/profile/main-color-inactive.png') }}"
-                                    class="img img-fluid tab-img" style="pointer-events: none;">
-                            </div>
-
-                            <div class="tab-button" data-tab="sec-color-tab" onclick="switchProfileTab('sec-color-tab')" style="cursor: pointer;">
-                                <img src="{{ asset('assets/web/images/profile/sec-color-inactive.png') }}"
-                                    class="img img-fluid tab-img" style="pointer-events: none;">
-                            </div>
+                <div class="container-fluid px-0">
+                    <div class="row">
+                        <div class="col-4">
+                            <ul class="nav nav-pills flex-column" id="profileTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="name-tab" data-bs-toggle="pill"
+                                        data-bs-target="#name-pane" type="button" role="tab" aria-controls="name-pane"
+                                        aria-selected="true">
+                                        <img src="{{ asset('assets/web/images/profile/name-active.png') }}" class="tab-img img-fluid" alt="名称">
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="number-tab" data-bs-toggle="pill"
+                                        data-bs-target="#number-pane" type="button" role="tab"
+                                        aria-controls="number-pane" aria-selected="false">
+                                        <img src="{{ asset('assets/web/images/profile/number-inactive.png') }}"
+                                            class="tab-img img-fluid" alt="号码">
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="main-color-tab" data-bs-toggle="pill"
+                                        data-bs-target="#main-color-pane" type="button" role="tab"
+                                        aria-controls="main-color-pane" aria-selected="false">
+                                        <img src="{{ asset('assets/web/images/profile/main-color-inactive.png') }}"
+                                            class="tab-img img-fluid" alt="主色">
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="sec-color-tab" data-bs-toggle="pill"
+                                        data-bs-target="#sec-color-pane" type="button" role="tab"
+                                        aria-controls="sec-color-pane" aria-selected="false">
+                                        <img src="{{ asset('assets/web/images/profile/sec-color-inactive.png') }}"
+                                            class="tab-img img-fluid" alt="副色">
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="right">
+                        <div class="col-8">
                             <div class="avatar-wrapper position-relative">
                                 <div class="background-wrapper position-absolute">
                                     <div class="background-inner-wrapper">
@@ -116,92 +139,120 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="bottom-content">
-                        <!-- Name Tab -->
-                        <div class="tab-pane active" id="name-tab">
-                            <div class="form-section">
-                                <input type="text" class="form-control jersey-name-input" 
-                                       placeholder="E神" value="E神" maxlength="10">
-                            </div>
-                        </div>
+                </div>
 
-                        <!-- Number Tab -->
-                        <div class="tab-pane" id="number-tab" style="display: none;">
-                            <div class="form-section number-picker">
-                                <div class="number-controls">
-                                    <div class="number-digit">
-                                        <button type="button" class="number-up">
-                                            <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
-                                        </button>
-                                        <div class="digit-display">1</div>
-                                        <button type="button" class="number-down">
-                                            <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
-                                        </button>
-                                    </div>
-                                    <div class="number-digit">
-                                        <button type="button" class="number-up">
-                                            <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
-                                        </button>
-                                        <div class="digit-display">0</div>
-                                        <button type="button" class="number-down">
-                                            <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
-                                        </button>
-                                    </div>
-                                </div>
-                                <input type="hidden" class="jersey-number-input" value="10">
-                            </div>
-                        </div>
-
-                        <!-- Main Color Tab -->
-                        <div class="tab-pane" id="main-color-tab" style="display: none;">
-                            <div class="form-section">
-                                <div class="color-grid">
-                                    <div class="color-option selected" data-color="#DC143C" style="background-color: #DC143C;"></div>
-                                    <div class="color-option" data-color="#FFA500" style="background-color: #FFA500;"></div>
-                                    <div class="color-option" data-color="#228B22" style="background-color: #228B22;"></div>
-                                    <div class="color-option" data-color="#00CED1" style="background-color: #00CED1;"></div>
-                                    <div class="color-option" data-color="#FF1493" style="background-color: #FF1493;"></div>
-                                    <div class="color-option" data-color="#FF8C00" style="background-color: #FF8C00;"></div>
-                                    <div class="color-option" data-color="#1E90FF" style="background-color: #1E90FF;"></div>
-                                    <div class="color-option" data-color="#9370DB" style="background-color: #9370DB;"></div>
-                                    <div class="color-option" data-color="#8B4513" style="background-color: #8B4513;"></div>
-                                    <div class="color-option" data-color="#00FF00" style="background-color: #00FF00;"></div>
-                                    <div class="color-option" data-color="#FFFFFF" style="background-color: #FFFFFF; border: 2px solid #ccc;"></div>
-                                    <div class="color-option" data-color="#000000" style="background-color: #000000;"></div>
-                                </div>
-                                <input type="hidden" class="main-color-input" value="#DC143C">
-                            </div>
-                        </div>
-
-                        <!-- Secondary Color Tab -->
-                        <div class="tab-pane" id="sec-color-tab" style="display: none;">
-                            <div class="form-section">
-                                <div class="color-grid">
-                                    <div class="color-option selected" data-color="#DC143C" style="background-color: #DC143C;"></div>
-                                    <div class="color-option" data-color="#FFA500" style="background-color: #FFA500;"></div>
-                                    <div class="color-option" data-color="#228B22" style="background-color: #228B22;"></div>
-                                    <div class="color-option" data-color="#00CED1" style="background-color: #00CED1;"></div>
-                                    <div class="color-option" data-color="#FF1493" style="background-color: #FF1493;"></div>
-                                    <div class="color-option" data-color="#FF8C00" style="background-color: #FF8C00;"></div>
-                                    <div class="color-option" data-color="#1E90FF" style="background-color: #1E90FF;"></div>
-                                    <div class="color-option" data-color="#9370DB" style="background-color: #9370DB;"></div>
-                                    <div class="color-option" data-color="#8B4513" style="background-color: #8B4513;"></div>
-                                    <div class="color-option" data-color="#00FF00" style="background-color: #00FF00;"></div>
-                                    <div class="color-option" data-color="#FFFFFF" style="background-color: #FFFFFF; border: 2px solid #ccc;"></div>
-                                    <div class="color-option" data-color="#000000" style="background-color: #000000;"></div>
-                                </div>
-                                <input type="hidden" class="sec-color-input" value="#228B22">
-                            </div>
+                <div class="tab-content bottom-content" id="profileTabContent">
+                    <!-- Name Tab -->
+                    <div class="tab-pane fade show active" id="name-pane" role="tabpanel" aria-labelledby="name-tab"
+                        tabindex="0">
+                        <div class="form-section">
+                            <input type="text" class="form-control jersey-name-input" placeholder="E神" value="E神"
+                                maxlength="10">
                         </div>
                     </div>
-                    
-                    <!-- Save Button -->
-                    <div class="save-button-wrapper">
-                        <button type="button" class="btn-save-image">
-                            <img src="{{ asset('assets/web/images/profile/btn-save.png') }}" alt="保存">
-                        </button>
+
+                    <!-- Number Tab -->
+                    <div class="tab-pane fade" id="number-pane" role="tabpanel" aria-labelledby="number-tab"
+                        tabindex="0">
+                        <div class="form-section number-picker">
+                            <div class="number-controls">
+                                <div class="number-digit">
+                                    <button type="button" class="number-up">
+                                        <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
+                                    </button>
+                                    <div class="digit-display">1</div>
+                                    <button type="button" class="number-down">
+                                        <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
+                                    </button>
+                                </div>
+                                <div class="number-digit">
+                                    <button type="button" class="number-up">
+                                        <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
+                                    </button>
+                                    <div class="digit-display">0</div>
+                                    <button type="button" class="number-down">
+                                        <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" class="jersey-number-input" value="10">
+                        </div>
                     </div>
+
+                    <!-- Main Color Tab -->
+                    <div class="tab-pane fade" id="main-color-pane" role="tabpanel" aria-labelledby="main-color-tab"
+                        tabindex="0">
+                        <div class="form-section">
+                            <div class="color-grid">
+                                <div class="color-option" data-color-number="0"
+                                    style="background-color: #DC143C;"></div>
+                                <div class="color-option" data-color-number="1" 
+                                    style="background-color: #FFA500;"></div>
+                                <div class="color-option" data-color-number="2"
+                                    style="background-color: #228B22;"></div>
+                                <div class="color-option" data-color-number="3"
+                                    style="background-color: #00CED1;"></div>
+                                <div class="color-option" data-color-number="4"
+                                    style="background-color: #FF1493;"></div>
+                                <div class="color-option" data-color-number="5"
+                                    style="background-color: #FF8C00;"></div>
+                                <div class="color-option" data-color-number="6"
+                                    style="background-color: #1E90FF;"></div>
+                                <div class="color-option" data-color-number="7"
+                                    style="background-color: #9370DB;"></div>
+                                <div class="color-option" data-color-number="8"
+                                    style="background-color: #8B4513;"></div>
+                                <div class="color-option" data-color-number="9"
+                                    style="background-color: #00FF00;"></div>
+                                <div class="color-option selected" data-color-number="10"
+                                    style="background-color: #FFFFFF; border: 2px solid #ccc;"></div>
+                                <div class="color-option" data-color-number="11"
+                                    style="background-color: #000000;"></div>
+                            </div>
+                            <input type="hidden" class="main-color-input" value="10">
+                        </div>
+                    </div>
+
+                    <!-- Secondary Color Tab -->
+                    <div class="tab-pane fade" id="sec-color-pane" role="tabpanel" aria-labelledby="sec-color-tab"
+                        tabindex="0">
+                        <div class="form-section">
+                            <div class="color-grid">
+                                <div class="color-option selected" data-color-number="0"
+                                    style="background-color: #DC143C;"></div>
+                                <div class="color-option" data-color-number="1"
+                                    style="background-color: #FFA500;"></div>
+                                <div class="color-option" data-color-number="2"
+                                    style="background-color: #228B22;"></div>
+                                <div class="color-option" data-color-number="3"
+                                    style="background-color: #00CED1;"></div>
+                                <div class="color-option" data-color-number="4"
+                                    style="background-color: #FF1493;"></div>
+                                <div class="color-option" data-color-number="5"
+                                    style="background-color: #FF8C00;"></div>
+                                <div class="color-option" data-color-number="6"
+                                    style="background-color: #1E90FF;"></div>
+                                <div class="color-option" data-color-number="7"
+                                    style="background-color: #9370DB;"></div>
+                                <div class="color-option" data-color-number="8"
+                                    style="background-color: #8B4513;"></div>
+                                <div class="color-option" data-color-number="9"
+                                    style="background-color: #00FF00;"></div>
+                                <div class="color-option" data-color-number="10"
+                                    style="background-color: #FFFFFF; border: 2px solid #ccc;"></div>
+                                <div class="color-option" data-color-number="11"
+                                    style="background-color: #000000;"></div>
+                            </div>
+                            <input type="hidden" class="sec-color-input" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="save-button-wrapper">
+                    <button type="button" class="btn-save-image">
+                        <img src="{{ asset('assets/web/images/profile/btn-save.png') }}" alt="保存">
+                    </button>
                 </div>
             </div>
         </div>
@@ -293,5 +344,4 @@
             }
         });
     </script>
-    {{-- Page-specific scripts now loaded via app.js imports --}}
 @endpush

@@ -42,6 +42,7 @@ import './pages/predict-detail.js';
 import './pages/live.js';
 import './pages/login.js';
 import './pages/register.js';
+import './pages/profile.js';
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
