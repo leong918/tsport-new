@@ -88,7 +88,7 @@
                 </button>
 
                 <div class="container-fluid px-0">
-                    <div class="row">
+                    <div class="row gx-0">
                         <div class="col-4">
                             <ul class="nav nav-pills flex-column" id="profileTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
