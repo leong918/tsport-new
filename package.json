@@ -6,7 +6,7 @@
     "node": ">=18.0.0 <23.0.0"
   },
   "scripts": {
-    "dev": "concurrently \"npm run dev:streaming\" \"npm run rtmp:start\"",
+    "dev": "vite",
     "dev:streaming": "vite --mode streaming",
     "build": "vite build",
     "rtmp:server": "node rtmp-server.cjs",

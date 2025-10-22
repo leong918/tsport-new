@@ -43,6 +43,10 @@ class User extends Authenticatable
         'status',
         'referral_code',
         'referral_user_id',
+        'jersey_name',
+        'jersey_number',
+        'jersey_main_color',
+        'jersey_sec_color',
     ];
 
     /**

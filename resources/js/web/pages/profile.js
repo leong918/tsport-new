@@ -82,6 +82,9 @@ class ProfilePage extends BasePage {
                 this.initializeNumberPicker(editModal);
                 this.initializeNameInput(editModal);
                 this.initializeSaveButton(editModal);
+                
+                // Set initial avatar image based on selected colors
+                this.setInitialAvatar(editModal);
             });
         }
         
@@ -206,13 +209,12 @@ class ProfilePage extends BasePage {
             console.warn('Shirt image not found');
             return;
         }
+
+        console.log('🎽 Updating shirt image with Main color:', this.selectedMainColor, 'Secondary color:', this.selectedSecColor);
         
         // Build image filename: mainColor-secColor.png
-        const filename = `/${this.selectedMainColor}/${this.selectedMainColor}-${this.selectedSecColor}.png`;
+        const filename = `${this.selectedMainColor}/${this.selectedSecColor}.png`;
         const newSrc = `/assets/web/images/profile/shirt/${filename}`;
-        
-        console.log('🎽 Updating shirt image to:', newSrc);
-        console.log('   Main color:', this.selectedMainColor, 'Secondary color:', this.selectedSecColor);
         
         shirtImg.src = newSrc;
     }
@@ -283,6 +285,33 @@ class ProfilePage extends BasePage {
         }
         
         console.log('✅ Save button initialized');
+    }
+
+    /**
+     * Set initial avatar based on selected colors
+     */
+    setInitialAvatar(modal) {
+        console.log('🎽 Setting initial avatar...');
+        
+        // Get shirt image in modal
+        const shirtImg = modal.querySelector('.shirt-wrapper .shirt');
+        if (!shirtImg) {
+            console.warn('Shirt image not found');
+            return;
+        }
+        
+        // Get default selected colors from HTML
+        const defaultMainColor = modal.querySelector('#main-color-pane .color-option.selected');
+        const defaultSecColor = modal.querySelector('#sec-color-pane .color-option.selected');
+        
+        // Set initial color values
+        this.selectedMainColor = defaultMainColor ? parseInt(defaultMainColor.dataset.colorNumber) : 10;
+        this.selectedSecColor = defaultSecColor ? parseInt(defaultSecColor.dataset.colorNumber) : 0;
+        
+        console.log('Initial colors - Main:', this.selectedMainColor, 'Secondary:', this.selectedSecColor);
+        
+        // Update shirt image
+        this.updateShirtImage(shirtImg);
     }
 
     /**
