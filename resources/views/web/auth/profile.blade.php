@@ -145,9 +145,12 @@
                     <!-- Name Tab -->
                     <div class="tab-pane fade show active" id="name-pane" role="tabpanel" aria-labelledby="name-tab"
                         tabindex="0">
-                        <div class="form-section">
-                            <input type="text" class="form-control jersey-name-input" placeholder="E神" value="E神"
-                                maxlength="10">
+                        <div class="form-section name-input-section">
+                            <div class="name-frame-wrapper position-relative">
+                                <div class="name-frame-bg"></div>
+                                <input type="text" class="form-control jersey-name-input" placeholder="E神" value="E神"
+                                    maxlength="3">
+                            </div>
                         </div>
                     </div>
 
@@ -155,24 +158,26 @@
                     <div class="tab-pane fade" id="number-pane" role="tabpanel" aria-labelledby="number-tab"
                         tabindex="0">
                         <div class="form-section number-picker">
-                            <div class="number-controls">
-                                <div class="number-digit">
-                                    <button type="button" class="number-up">
-                                        <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
-                                    </button>
-                                    <div class="digit-display">1</div>
-                                    <button type="button" class="number-down">
-                                        <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
-                                    </button>
-                                </div>
-                                <div class="number-digit">
-                                    <button type="button" class="number-up">
-                                        <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
-                                    </button>
-                                    <div class="digit-display">0</div>
-                                    <button type="button" class="number-down">
-                                        <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
-                                    </button>
+                            <div class="number-frame-wrapper position-relative">
+                                <div class="number-controls">
+                                    <div class="number-digit">
+                                        <button type="button" class="number-up">
+                                            <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
+                                        </button>
+                                        <div class="digit-display">1</div>
+                                        <button type="button" class="number-down">
+                                            <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
+                                        </button>
+                                    </div>
+                                    <div class="number-digit">
+                                        <button type="button" class="number-up">
+                                            <img src="{{ asset('assets/web/images/profile/icon-up.png') }}" alt="Up">
+                                        </button>
+                                        <div class="digit-display">0</div>
+                                        <button type="button" class="number-down">
+                                            <img src="{{ asset('assets/web/images/profile/icon-down.png') }}" alt="Down">
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <input type="hidden" class="jersey-number-input" value="10">
@@ -251,8 +256,8 @@
                 <!-- Save Button -->
                 <div class="save-button-wrapper">
                     <button type="button" class="btn-save-image">
-                        <img src="{{ asset('assets/web/images/profile/btn-save.png') }}" alt="保存">
-                    </button>
+                        <img src="{{ asset('assets/web/images/profile/btn-save.png') }}" alt="保存" class="img-fluid">
+                    </button> 
                 </div>
             </div>
         </div>

@@ -261,9 +261,11 @@ class ProfilePage extends BasePage {
         console.log('✏️ Initializing name input...');
         
         const nameInput = modal.querySelector('.jersey-name-input');
+        
         if (nameInput) {
             nameInput.addEventListener('input', (e) => {
-                console.log('Name changed:', e.target.value);
+                const value = e.target.value;
+                console.log('Name changed:', value);
             });
         }
         
