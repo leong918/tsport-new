@@ -388,4 +388,56 @@ class LiveMatchRepository extends BaseRepository
 
         return $comment->delete();
     }
+
+    /**
+     * Get top live matches for display
+     */
+    public function getTopLiveMatches(): Collection
+    {
+        return $this->model->with('match')
+            ->whereHas('match', function($query) {
+                $query->where('status', 1)->where('is_top', true);
+            })
+            ->where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Get regular (non-top) live matches for display
+     */
+    public function getRegularLiveMatches(): Collection
+    {
+        return $this->model->with('match')
+            ->whereHas('match', function($query) {
+                $query->where('status', 1)->where('is_top', false);
+            })
+            ->where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Format live matches for frontend display
+     */
+    public function formatLiveMatchesForDisplay($liveMatches): array
+    {
+        return $liveMatches->map(function ($liveMatch) {
+            $match = $liveMatch->match;
+            
+            return [
+                'id' => $match->id,
+                'title' => $match->match_title,
+                'league' => $match->short_content ?? 'Sports League',
+                'status' => $liveMatch->isLive() ? '直播中' : ($liveMatch->isStarting() ? '準備中' : '已结束'),
+                'image' => $match->banner_url ?? '/assets/web/assets/img/matches/default.jpg',
+                'time' => $match->start_at ? $match->start_at->format('Y/m/d H:i') : 'TBD',
+                'is_top' => $match->is_top,
+                'has_live' => true,
+                'live_match_id' => $liveMatch->id,
+                'is_streaming' => $liveMatch->isLive(),
+                'viewer_count' => $liveMatch->viewer_count ?? 0,
+            ];
+        })->values()->toArray();
+    }
 }

@@ -62,13 +62,13 @@ class AppController extends BaseController
 
     public function matches(Request $request)
     {
-        // Get matches using repository
-        $topMatches = $this->matchRepository->getTopMatches();
-        $regularMatches = $this->matchRepository->getRegularMatches();
+        // Get live matches using repository
+        $topLiveMatches = $this->liveMatchRepository->getTopLiveMatches();
+        $regularLiveMatches = $this->liveMatchRepository->getRegularLiveMatches();
 
-        // Format matches data for display
-        $swiperMatches = $this->matchRepository->formatMatchesForDisplay($topMatches);
-        $allContentMatches = $this->matchRepository->formatMatchesForDisplay($regularMatches);
+        // Format live matches data for display using repository
+        $swiperMatches = $this->liveMatchRepository->formatLiveMatchesForDisplay($topLiveMatches);
+        $allContentMatches = $this->liveMatchRepository->formatLiveMatchesForDisplay($regularLiveMatches);
 
         // Pagination for content matches (4 per page)
         $perPage = 4;
