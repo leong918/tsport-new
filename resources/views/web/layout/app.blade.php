@@ -20,9 +20,9 @@
 
 <body id="app" class="@yield('body-class', 'bg-1')">
     {{-- Header outside ScrollSmoother to ensure it's always visible --}}
-    @if(Route::currentRouteName() != 'web.ordering')
+    {{-- @if(Route::currentRouteName() != 'web.ordering') --}}
     @include('web.layout.header')
-    @endif
+    {{-- @endif --}}
 
     <div id="smooth-wrapper">
         <div id="smooth-content">

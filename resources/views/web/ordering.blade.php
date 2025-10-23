@@ -73,9 +73,9 @@
                 </div>
             </div>
 
-            <button class="btn-view-all">
+            <a href="{{ route('web.matches') }}" class="btn-view-all">
                 <img src="{{ asset('assets/web/images/button/btn-more.png') }}" alt="View All" class="img-fluid">
-            </button>
+            </a>
         </section>
     </div>
 @endsection
