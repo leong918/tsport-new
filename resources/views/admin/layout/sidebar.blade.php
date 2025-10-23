@@ -43,6 +43,13 @@
                 Event
             </a>
         </li>
+        <li class="nav-title">System</li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.user.index') }}">
+                <i class="fa-solid fa-users nav-icon"></i>
+                Users
+            </a>
+        </li>
         <li class="nav-group">
             <a class="nav-link" href="{{ route('admin.admin.index') }}">
                 <i class="fa-solid fa-user-gear nav-icon"></i>
