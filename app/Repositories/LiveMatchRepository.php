@@ -425,12 +425,18 @@ class LiveMatchRepository extends BaseRepository
         return $liveMatches->map(function ($liveMatch) {
             $match = $liveMatch->match;
             
+            // Use thumbnail if live is not started yet, otherwise use match banner
+            $displayImage = $liveMatch->isLive() 
+                ? ($match->banner_url ?? $liveMatch->thumbnail_url)
+                : ($liveMatch->thumbnail_url ?? $match->banner_url);
+            
             return [
                 'id' => $match->id,
                 'title' => $match->match_title,
                 'league' => $match->short_content ?? 'Sports League',
                 'status' => $liveMatch->isLive() ? '直播中' : ($liveMatch->isStarting() ? '準備中' : '已结束'),
-                'image' => $match->banner_url ?? '/assets/web/assets/img/matches/default.jpg',
+                'image' => $displayImage ?? '/assets/web/assets/img/matches/default.jpg',
+                'thumbnail' => $liveMatch->thumbnail_url,
                 'time' => $match->start_at ? $match->start_at->format('Y/m/d H:i') : 'TBD',
                 'is_top' => $match->is_top,
                 'has_live' => true,

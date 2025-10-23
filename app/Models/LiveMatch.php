@@ -29,6 +29,7 @@ class LiveMatch extends Model
     protected $fillable = [
         'match_id',
         'status',
+        'thumbnail',
         'obs_stream_key',
         'obs_server_url',
         'obs_status',
@@ -122,6 +123,23 @@ class LiveMatch extends Model
             3 => 'Stopping',
             default => 'Unknown'
         };
+    }
+
+    /**
+     * Get thumbnail URL attribute
+     */
+    public function getThumbnailUrlAttribute(): string
+    {
+        if ($this->thumbnail) {
+            return asset('storage/streams/' . $this->thumbnail);
+        }
+        
+        // Fallback to match banner if available
+        if ($this->match && $this->match->banner_url) {
+            return $this->match->banner_url;
+        }
+        
+        return asset('assets/web/images/live/default-thumbnail.jpg');
     }
 
     /**

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('live_match', function (Blueprint $table) {
             $table->id();
             $table->foreignId('match_id')->nullable()->constrained('match')->cascadeOnDelete();
+            $table->string('thumbnail')->nullable()->comment('Thumbnail image for live match before streaming');
             $table->string('obs_stream_key')->nullable();
             $table->string('obs_server_url')->nullable();
             $table->tinyInteger('obs_status')->default(0)->comment('0=stopped, 1=starting, 2=live, 3=stopping');
