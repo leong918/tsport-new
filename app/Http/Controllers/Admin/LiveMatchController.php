@@ -89,6 +89,8 @@ class LiveMatchController extends BaseController
     {
         $request->validate([
             'match_id' => 'required|exists:match,id',
+            'start_at' => 'nullable|date',
+            'end_at' => 'nullable|date|after:start_at',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'stream_url' => 'nullable|url',
             'obs_server_url' => 'nullable|string|max:255',
@@ -156,6 +158,8 @@ class LiveMatchController extends BaseController
     {
         $request->validate([
             'match_id' => 'required|exists:match,id',
+            'start_at' => 'nullable|date',
+            'end_at' => 'nullable|date|after:start_at',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'stream_url' => 'nullable|url',
             'obs_server_url' => 'nullable|string|max:255',

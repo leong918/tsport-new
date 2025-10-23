@@ -1,5 +1,90 @@
 @extends('admin.layout.app')
 
+@section('style')
+    @parent
+    <link rel="stylesheet" href="{{ asset('assets/admin/css/daterangepicker.css') }}" />
+    <style>
+        /* Daterangepicker color enhancements */
+        .daterangepicker {
+            z-index: 9999 !important;
+        }
+        
+        .daterangepicker .calendar-table {
+            background-color: white !important;
+        }
+        
+        .daterangepicker td.active, 
+        .daterangepicker td.active:hover,
+        .daterangepicker td.start-date,
+        .daterangepicker td.end-date {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+        }
+        
+        .daterangepicker td.in-range {
+            background-color: #cfe2ff !important;
+            border-color: transparent !important;
+            color: #000000 !important;
+        }
+        
+        .daterangepicker td.available:hover {
+            background-color: #f8f9fa !important;
+            border-color: #dee2e6 !important;
+            color: #000000 !important;
+        }
+        
+        .daterangepicker td.off {
+            background-color: #ffffff !important;
+            color: #cccccc !important;
+        }
+        
+        .daterangepicker th.month {
+            color: #000000 !important;
+            font-weight: 600 !important;
+        }
+        
+        .daterangepicker .calendar-table th {
+            background-color: #f8f9fa !important;
+            color: #6c757d !important;
+            font-weight: 600 !important;
+            border: none !important;
+        }
+        
+        .daterangepicker .calendar-table td {
+            color: #000000 !important;
+        }
+        
+        .daterangepicker select.hourselect, 
+        .daterangepicker select.minuteselect, 
+        .daterangepicker select.secondselect {
+            background-color: #f8f9fa !important;
+            border: 1px solid #ced4da !important;
+            color: #000000 !important;
+        }
+        
+        .daterangepicker .drp-buttons .btn {
+            padding: 6px 12px !important;
+            font-size: 14px !important;
+        }
+        
+        .daterangepicker .drp-buttons .btn-primary,
+        .daterangepicker .drp-buttons button.applyBtn {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+            color: #ffffff !important;
+        }
+        
+        .daterangepicker .drp-buttons .btn-default,
+        .daterangepicker .drp-buttons button.cancelBtn {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+            color: #ffffff !important;
+        }
+    </style>
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin.live-match.index') }}">Live Match</a></li>
     <li class="breadcrumb-item active"><span>Edit</span></li>
@@ -37,6 +122,26 @@
                                                         @endforeach
                                                     </select>
                                                     @error('match_id')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
+                                                <label for="daterange" class="col-md-3 col-form-label">Schedule Time</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                        <input type="text" class="form-control" id="daterange" name="daterange" 
+                                                               autocomplete="off" placeholder="Select start and end time" />
+                                                    </div>
+                                                    <input type="hidden" name="start_at" id="start_at" value="{{ old('start_at', $model->start_at) }}">
+                                                    <input type="hidden" name="end_at" id="end_at" value="{{ old('end_at', $model->end_at) }}">
+                                                    <div class="form-text">Select start and end time for the live match</div>
+                                                    @error('start_at')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                    @error('end_at')
                                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror
                                                 </div>
@@ -208,7 +313,48 @@
 
 @section('script')
     @parent
+    <script src="{{ asset('assets/admin/js/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/daterangepicker.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            // Get existing values or use defaults
+            var startDate = $('#start_at').val() ? moment($('#start_at').val()) : moment();
+            var endDate = $('#end_at').val() ? moment($('#end_at').val()) : moment().add(1, 'hours');
+
+            // Initialize daterangepicker
+            $('#daterange').daterangepicker({
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerSeconds: true,
+                startDate: startDate,
+                endDate: endDate,
+                locale: {
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                    separator: ' to ',
+                    applyLabel: 'Apply',
+                    cancelLabel: 'Cancel',
+                    fromLabel: 'From',
+                    toLabel: 'To',
+                    customRangeLabel: 'Custom',
+                    weekLabel: 'W',
+                    daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    firstDay: 1
+                }
+            }, function(start, end, label) {
+                // Update hidden fields when date range is selected
+                $('#start_at').val(start.format('YYYY-MM-DD HH:mm:ss'));
+                $('#end_at').val(end.format('YYYY-MM-DD HH:mm:ss'));
+            });
+
+            // Set initial display value if dates exist
+            if ($('#start_at').val() && $('#end_at').val()) {
+                var initialStart = moment($('#start_at').val());
+                var initialEnd = moment($('#end_at').val());
+                $('#daterange').val(initialStart.format('YYYY-MM-DD HH:mm:ss') + ' to ' + initialEnd.format('YYYY-MM-DD HH:mm:ss'));
+            }
+        });
+
         // Thumbnail preview
         document.getElementById('thumbnail').addEventListener('change', function(e) {
             const file = e.target.files[0];

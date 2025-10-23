@@ -13,12 +13,12 @@
             </a>
         </li>
         <li class="nav-title">Administration</li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.topic.index') }}">
                 <i class="fa-solid fa-newspaper nav-icon"></i>
                 Topic
             </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.match.index') }}">
                 <i class="fa-solid fa-newspaper nav-icon"></i>

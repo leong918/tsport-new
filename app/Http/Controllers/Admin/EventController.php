@@ -39,6 +39,15 @@ class EventController extends BaseController
                 ->addColumn('time_remaining', function ($event) {
                     return $event->time_remaining ?? 'N/A';
                 })
+                ->editColumn('start_time', function ($event) {
+                    return $event->start_time ? $event->start_time->format('Y-m-d H:i:s') : 'N/A';
+                })
+                ->editColumn('end_time', function ($event) {
+                    return $event->end_time ? $event->end_time->format('Y-m-d H:i:s') : 'N/A';
+                })
+                ->editColumn('created_at', function ($event) {
+                    return $event->created_at->format('Y-m-d H:i:s');
+                })
                 ->addColumn('action', function ($event) {
                     return $this->view('event.action', compact('event'));
                 })

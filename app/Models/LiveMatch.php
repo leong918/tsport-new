@@ -35,6 +35,8 @@ class LiveMatch extends Model
         'obs_status',
         'rtmp_url',
         'viewer_count',
+        'start_at',
+        'end_at',
         'stream_started_at',
         'stream_ended_at',
         'obs_error_log'
@@ -53,6 +55,8 @@ class LiveMatch extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'start_at' => 'datetime',
+        'end_at' => 'datetime',
         'stream_started_at' => 'datetime',
         'stream_ended_at' => 'datetime',
     ];

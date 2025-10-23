@@ -57,29 +57,22 @@
     @enderror
 </div>
 
-<!-- Start Time Field -->
+<!-- Event Schedule Time -->
 <div class="mb-3">
-    <label for="start_time" class="form-label">Start Time</label>
-    <input type="datetime-local" 
-           class="form-control @error('start_time') is-invalid @enderror" 
-           id="start_time" 
-           name="start_time" 
-           value="{{ old('start_time', isset($event) && $event->start_time ? $event->start_time->format('Y-m-d\TH:i') : '') }}">
+    <label for="daterange" class="form-label">Event Schedule</label>
+    <div class="input-group">
+        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+        <input type="text" class="form-control" id="daterange" name="daterange" 
+               autocomplete="off" placeholder="Select start and end time" />
+    </div>
+    <input type="hidden" name="start_time" id="start_time" value="{{ old('start_time', isset($event) && $event->start_time ? $event->start_time->format('Y-m-d H:i:s') : '') }}">
+    <input type="hidden" name="end_time" id="end_time" value="{{ old('end_time', isset($event) && $event->end_time ? $event->end_time->format('Y-m-d H:i:s') : '') }}">
+    <div class="form-text">Select start and end time for the event</div>
     @error('start_time')
-        <div class="invalid-feedback">{{ $message }}</div>
+        <div class="invalid-feedback d-block">{{ $message }}</div>
     @enderror
-</div>
-
-<!-- End Time Field -->
-<div class="mb-3">
-    <label for="end_time" class="form-label">End Time</label>
-    <input type="datetime-local" 
-           class="form-control @error('end_time') is-invalid @enderror" 
-           id="end_time" 
-           name="end_time" 
-           value="{{ old('end_time', isset($event) && $event->end_time ? $event->end_time->format('Y-m-d\TH:i') : '') }}">
     @error('end_time')
-        <div class="invalid-feedback">{{ $message }}</div>
+        <div class="invalid-feedback d-block">{{ $message }}</div>
     @enderror
 </div>
 
