@@ -181,6 +181,39 @@
                                             </div>
 
                                             <div class="row mb-3">
+                                                <label for="fixture_image" class="col-md-3 col-form-label">Fixture Image</label>
+                                                <div class="col-md-9">
+                                                    <input type="file" class="form-control" id="fixture_image" name="fixture_image" accept="image/*">
+                                                    <div class="form-text">Image displayed when match has not started yet (未开赛状态)</div>
+                                                    @error('fixture_image')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                    
+                                                    @if($model->fixture_image)
+                                                        <div class="mt-3">
+                                                            <label>Current Fixture Image</label>
+                                                            <div class="fixture-preview-container" style="max-width: 400px;">
+                                                                <div style="position: relative; width: 100%; padding-bottom: 56.25%; background: #f0f0f0; overflow: hidden; border-radius: 4px;">
+                                                                    <img src="{{ $model->fixture_image_url }}" alt="Current fixture image" 
+                                                                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    
+                                                    <div id="fixture-preview" class="mt-3" style="display: none;">
+                                                        <label>New Preview</label>
+                                                        <div class="fixture-preview-container" style="max-width: 400px;">
+                                                            <div style="position: relative; width: 100%; padding-bottom: 56.25%; background: #f0f0f0; overflow: hidden; border-radius: 4px;">
+                                                                <img id="fixture-preview-img" src="" alt="Fixture preview" 
+                                                                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
                                                 <label for="obs_server_url" class="col-md-3 col-form-label">OBS Server URL</label>
                                                 <div class="col-md-9">
                                                     <input type="text" class="form-control" id="obs_server_url" name="obs_server_url" 
@@ -367,6 +400,21 @@
                 reader.readAsDataURL(file);
             } else {
                 document.getElementById('thumbnail-preview').style.display = 'none';
+            }
+        });
+
+        // Fixture image preview
+        document.getElementById('fixture_image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('fixture-preview-img').src = e.target.result;
+                    document.getElementById('fixture-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('fixture-preview').style.display = 'none';
             }
         });
 

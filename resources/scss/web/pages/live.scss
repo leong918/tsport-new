@@ -1,12 +1,27 @@
 /* Import Video.js styles */
 @import 'video.js/dist/video-js.css';
 
+/* Hide header for upcoming matches */
+body.live-upcoming {
+  --header-height: 0px;
+}
+
 /* Live Page Styles */
 #page-live {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   padding-bottom: 80px; // 为底部固定输入区域预留空间
+
+  // Fixture section styling (when match not started yet)
+  #section-prediction-top {
+    background-image: url('/public/assets/web/images/predict-detail/wooden-frame.png');
+    background-repeat: no-repeat;
+    background-size: 101% auto;
+    background-attachment: fixed;
+    background-position: center -100px;
+    padding: 130px 0px 16px 0px;
+  }
 
   #section-live-video {
     position: relative;

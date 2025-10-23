@@ -30,6 +30,7 @@ class LiveMatch extends Model
         'match_id',
         'status',
         'thumbnail',
+        'fixture_image',
         'obs_stream_key',
         'obs_server_url',
         'obs_status',
@@ -134,16 +135,35 @@ class LiveMatch extends Model
      */
     public function getThumbnailUrlAttribute(): string
     {
-        if ($this->thumbnail) {
-            return asset('storage/streams/' . $this->thumbnail);
+        if (!$this->thumbnail) {
+            return asset('images/default-thumbnail.jpg');
         }
-        
-        // Fallback to match banner if available
-        if ($this->match && $this->match->banner_url) {
-            return $this->match->banner_url;
+
+        // If thumbnail starts with http, return as-is (external URL)
+        if (str_starts_with($this->thumbnail, 'http')) {
+            return $this->thumbnail;
         }
-        
-        return asset('assets/web/images/live/default-thumbnail.jpg');
+
+        // Otherwise, return storage URL
+        return asset('storage/' . $this->thumbnail);
+    }
+
+    /**
+     * Get fixture image URL attribute
+     */
+    public function getFixtureImageUrlAttribute(): ?string
+    {
+        if (!$this->fixture_image) {
+            return null;
+        }
+
+        // If fixture_image starts with http, return as-is (external URL)
+        if (str_starts_with($this->fixture_image, 'http')) {
+            return $this->fixture_image;
+        }
+
+        // Otherwise, return storage URL
+        return asset('storage/' . $this->fixture_image);
     }
 
     /**

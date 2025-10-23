@@ -100,7 +100,14 @@ class LiveMatchRepository extends BaseRepository
         if (isset($data['thumbnail']) && $data['thumbnail']) {
             $this->upload_path = 'streams';
             $this->uploadFile($data['thumbnail']);
-            $data['thumbnail'] = basename($this->uploaded_filename);
+            $data['thumbnail'] = $this->uploaded_filename;
+        }
+
+        // Handle fixture image upload
+        if (isset($data['fixture_image']) && $data['fixture_image']) {
+            $this->upload_path = 'streams/fixtures';
+            $this->uploadFile($data['fixture_image']);
+            $data['fixture_image'] = $this->uploaded_filename;
         }
 
         // Generate stream key if not provided
@@ -138,10 +145,28 @@ class LiveMatchRepository extends BaseRepository
             
             // Upload new thumbnail
             $this->uploadFile($input['thumbnail']);
-            $input['thumbnail'] = basename($this->uploaded_filename);
+            $input['thumbnail'] = $this->uploaded_filename;
         } else {
             // Remove thumbnail from input if not uploading
             unset($input['thumbnail']);
+        }
+
+        // Handle fixture image upload
+        if (isset($input['fixture_image']) && $input['fixture_image']) {
+            $this->upload_path = 'streams/fixtures';
+            
+            // Delete old fixture image if exists
+            if ($liveMatch->fixture_image) {
+                $oldFixturePath = 'streams/fixtures/' . $liveMatch->fixture_image;
+                $this->deleteFile($oldFixturePath);
+            }
+            
+            // Upload new fixture image
+            $this->uploadFile($input['fixture_image']);
+            $input['fixture_image'] = $this->uploaded_filename;
+        } else {
+            // Remove fixture_image from input if not uploading
+            unset($input['fixture_image']);
         }
 
         $liveMatch->fill($input);

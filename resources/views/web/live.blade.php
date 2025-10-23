@@ -1,81 +1,113 @@
 @extends('web.layout.app')
 
-@section('body-class', 'bg-1 no-footer')
+@php
+    $isUpcoming = isset($match['start_at']) && \Carbon\Carbon::parse($match['start_at'])->isFuture();
+    $bodyClass = 'bg-1 no-footer' . ($isUpcoming ? ' live-upcoming' : '');
+@endphp
+
+@section('body-class', $bodyClass)
 
 @section('content')
-    <div id="page-live" class="screen" data-match-id="{{ $match['url_id'] ?? $match['id'] ?? '' }}">
-        <!-- Live Video Section -->
-        <section id="section-live-video">
-            <div class="video-container">
-                <!-- Video Player -->
-                <div class="video-player" style="position: relative;">
-                    @if ($match['obs_status'] == 2 && $match['obs_stream_key'])
-                        <!-- HLS Video Player for Live Stream -->
-                        <video id="live-stream-player" class="video-js vjs-default-skin" 
-                            autoplay muted playsinline preload="auto"
-                            data-setup='{"fluid": true, "responsive": true, "controls": false, "autoplay": true, "muted": true}'
-                            data-stream-key="{{ $match['obs_stream_key'] }}"
-                            data-is-live="{{ $match['obs_status'] == 2 ? 'true' : 'false' }}"
-                            poster="{{ asset('assets/web/images/live/sample-video.jpg') }}">
-                            <p class="vjs-no-js">
-                                To view this video please enable JavaScript, and consider upgrading to a web browser that
-                                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>.
-                            </p>
-                        </video>
+    <div id="page-live" class="screen" data-match-id="{{ $match['url_id'] ?? ($match['id'] ?? '') }}">
 
-                        <!-- Live Stream Indicators -->
-                        <div class="live-indicator-hls">
-                            <span style="animation: pulse 2s infinite;">●</span> LIVE
+        @if ($isUpcoming)
+            <!-- Match Fixture Section (Before Match Starts) -->
+            <section id="section-prediction-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Fixture Image -->
+                            @if (isset($match['fixture_image']) && $match['fixture_image'])
+                                <img src="{{ $match['fixture_image'] }}" alt="Match Fixture"
+                                    class="img-fluid">
+                            @elseif(isset($match['thumbnail']) && $match['thumbnail'])
+                                <img src="{{ $match['thumbnail'] }}" alt="Match Thumbnail"
+                                    class="img-fluid">
+                            @else
+                                <img src="{{ asset('assets/web/images/live/sample-video.jpg') }}" alt="Placeholder"
+                                    class="img-fluid">
+                            @endif
                         </div>
-                        <div class="viewer-count-hls">
-                            <span id="live-viewer-count">{{ number_format($match['viewers']) }}</span>
-                        </div>
-                    @elseif (isset($match['video_url']) && $match['video_url'])
-                        <!-- Regular Video -->
-                        <video id="live-video" autoplay muted>
-                            <source src="{{ $match['video_url'] }}" type="video/mp4">
-                            您的浏览器不支持视频播放。
-                        </video>
-
-                        <!-- Live Badge -->
-                        <div class="live-badge">
-                            <span class="live-indicator"></span>
-                            <span class="live-text">LIVE</span>
-                            <span class="viewer-count">{{ $match['viewers'] ?? '292' }}</span>
-                        </div>
-                    @else
-                        <!-- Stream Offline -->
-                        <div style="position: relative; height: 250px;">
-                            <img src="{{ asset('assets/web/images/live/sample-video.jpg') }}" alt="Live Video Placeholder"
-                                class="img-fluid w-100" style="height: 100%; object-fit: cover;">
-                            <div
-                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 8px;">
-                                @if ($match['obs_status'] == 1)
-                                    <div class="spinner-border mb-3" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                    <p class="h5 mb-2">Stream Starting...</p>
-                                    <p class="mb-0 opacity-75">Please wait while the stream initializes</p>
-                                @else
-                                    <i class="fas fa-video-slash fa-3x mb-3 opacity-50"></i>
-                                    <p class="h5 mb-2">Stream Offline</p>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Video Controls Overlay -->
-                    <div class="video-controls">
-                        <button class="mute-btn" onclick="toggleMute()" title="点击取消静音">
-                            <i class="fas fa-volume-mute"></i>
-                        </button>
-                        <button class="fullscreen-btn" onclick="toggleFullscreen()" title="全屏">
-                            <i class="fas fa-expand"></i>
-                        </button>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @else
+            <!-- Live Video Section -->
+            <section id="section-live-video">
+                <div class="video-container">
+                    <!-- Video Player -->
+                    <div class="video-player" style="position: relative;">
+                        @if ($match['obs_status'] == 2 && $match['obs_stream_key'])
+                            <!-- HLS Video Player for Live Stream -->
+                            <video id="live-stream-player" class="video-js vjs-default-skin" autoplay muted playsinline
+                                preload="auto"
+                                data-setup='{"fluid": true, "responsive": true, "controls": false, "autoplay": true, "muted": true}'
+                                data-stream-key="{{ $match['obs_stream_key'] }}"
+                                data-is-live="{{ $match['obs_status'] == 2 ? 'true' : 'false' }}"
+                                poster="{{ asset('assets/web/images/live/sample-video.jpg') }}">
+                                <p class="vjs-no-js">
+                                    To view this video please enable JavaScript, and consider upgrading to a web browser
+                                    that
+                                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5
+                                        video</a>.
+                                </p>
+                            </video>
+
+                            <!-- Live Stream Indicators -->
+                            <div class="live-indicator-hls">
+                                <span style="animation: pulse 2s infinite;">●</span> LIVE
+                            </div>
+                            <div class="viewer-count-hls">
+                                <span id="live-viewer-count">{{ number_format($match['viewers']) }}</span>
+                            </div>
+                        @elseif (isset($match['video_url']) && $match['video_url'])
+                            <!-- Regular Video -->
+                            <video id="live-video" autoplay muted>
+                                <source src="{{ $match['video_url'] }}" type="video/mp4">
+                                您的浏览器不支持视频播放。
+                            </video>
+
+                            <!-- Live Badge -->
+                            <div class="live-badge">
+                                <span class="live-indicator"></span>
+                                <span class="live-text">LIVE</span>
+                                <span class="viewer-count">{{ $match['viewers'] ?? '292' }}</span>
+                            </div>
+                        @else
+                            <!-- Stream Offline -->
+                            <div style="position: relative; height: 250px;">
+                                <img src="{{ asset('assets/web/images/live/sample-video.jpg') }}"
+                                    alt="Live Video Placeholder" class="img-fluid w-100"
+                                    style="height: 100%; object-fit: cover;">
+                                <div
+                                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 8px;">
+                                    @if ($match['obs_status'] == 1)
+                                        <div class="spinner-border mb-3" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p class="h5 mb-2">Stream Starting...</p>
+                                        <p class="mb-0 opacity-75">Please wait while the stream initializes</p>
+                                    @else
+                                        <i class="fas fa-video-slash fa-3x mb-3 opacity-50"></i>
+                                        <p class="h5 mb-2">Stream Offline</p>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
+                        <!-- Video Controls Overlay -->
+                        <div class="video-controls">
+                            <button class="mute-btn" onclick="toggleMute()" title="点击取消静音">
+                                <i class="fas fa-volume-mute"></i>
+                            </button>
+                            <button class="fullscreen-btn" onclick="toggleFullscreen()" title="全屏">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        @endif
 
         <!-- Match Info Section -->
         <section id="section-match-info">
@@ -103,6 +135,8 @@
                                 <span class="badge bg-warning ms-2">STARTING</span>
                             @elseif($match['obs_status'] == 3)
                                 <span class="badge bg-secondary ms-2">STOPPING</span>
+                            @elseif(isset($match['start_at']) && \Carbon\Carbon::parse($match['start_at'])->isFuture())
+                                <span class="badge bg-info ms-2">未开赛</span>
                             @else
                                 <span class="badge bg-dark ms-2">OFFLINE</span>
                             @endif
@@ -133,8 +167,9 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="more-tab" data-bs-toggle="pill" data-bs-target="#tab-betting"
-                                    type="button" role="tab" aria-controls="tab-betting" aria-selected="false">
+                                <button class="nav-link" id="more-tab" data-bs-toggle="pill"
+                                    data-bs-target="#tab-betting" type="button" role="tab"
+                                    aria-controls="tab-betting" aria-selected="false">
                                     <img src="{{ asset('assets/web/images/live/actions/btn-more-active.png') }}"
                                         alt="更多" class="btn-active">
                                     <img src="{{ asset('assets/web/images/live/actions/btn-more-inactive.png') }}"
@@ -159,13 +194,14 @@
                     <div class="upcoming-matches-container">
                         <div class="container">
                             <div class="row g-3">
-                                @if(isset($predictions) && $predictions->count() > 0)
-                                    @foreach($predictions as $prediction)
+                                @if (isset($predictions) && $predictions->count() > 0)
+                                    @foreach ($predictions as $prediction)
                                         <div class="col-12">
-                                            <a href="{{ route('web.predict.detail', ['id' => $prediction['id']]) }}" class="upcoming-match-item">
-                                                <img src="{{ $prediction['image'] }}" 
-                                                     alt="{{ $prediction['character_display_name'] }} - 预测"
-                                                     class="img-fluid w-100">
+                                            <a href="{{ route('web.predict.detail', ['id' => $prediction['id']]) }}"
+                                                class="upcoming-match-item">
+                                                <img src="{{ $prediction['image'] }}"
+                                                    alt="{{ $prediction['character_display_name'] }} - 预测"
+                                                    class="img-fluid w-100">
                                             </a>
                                         </div>
                                     @endforeach
@@ -189,8 +225,8 @@
                         <!-- Action Buttons with Images -->
                         <div class="action-buttons">
                             <div class="action-button">
-                                <button class="action-btn other-events-btn" data-action="other-events" 
-                                        data-matches-url="{{ route('web.matches') }}">
+                                <button class="action-btn other-events-btn" data-action="other-events"
+                                    data-matches-url="{{ route('web.matches') }}">
                                     <img src="{{ asset('assets/web/images/live/more/button-otherevents-live.png') }}"
                                         alt="其他赛事直播" class="action-btn-image no-styling">
                                 </button>
@@ -203,7 +239,7 @@
                             </div>
                             <div class="action-button">
                                 <button class="action-btn" data-action="goto-activity"
-                                        data-events-url="{{ route('web.events') }}">
+                                    data-events-url="{{ route('web.events') }}">
                                     <img src="{{ asset('assets/web/images/live/more/button-gotoactivity.png') }}"
                                         alt="前往活动" class="action-btn-image">
                                 </button>
@@ -236,7 +272,7 @@
                                 </button>
                             </div>
                         </form>
-                        
+
                         <!-- Right: Bet Button -->
                         <button type="button" class="btn-bet">
                             <img src="{{ asset('assets/web/images/chat/btn-bet.png') }}" alt="去下注">
