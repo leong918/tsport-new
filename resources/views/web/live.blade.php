@@ -60,6 +60,32 @@
                             <div class="viewer-count-hls">
                                 <span id="live-viewer-count">{{ number_format($match['viewers']) }}</span>
                             </div>
+                        @elseif ($match['obs_status'] == 0 && !empty($match['dvr_recordings']))
+                            <!-- Replay Video Player (Stream Ended with Recordings) -->
+                            <video id="replay-player" class="video-js vjs-default-skin" controls playsinline
+                                preload="auto"
+                                data-setup='{"fluid": true, "responsive": true, "controls": true}'
+                                data-recordings="{{ json_encode($match['dvr_recordings']) }}"
+                                poster="{{ asset('assets/web/images/live/sample-video.jpg') }}">
+                                <p class="vjs-no-js">
+                                    To view this video please enable JavaScript, and consider upgrading to a web browser
+                                    that
+                                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5
+                                        video</a>.
+                                </p>
+                            </video>
+
+                            <!-- Replay Badge -->
+                            <div class="live-indicator-hls" style="background: rgba(108, 117, 125, 0.9);">
+                                <i class="fas fa-history me-1"></i> REPLAY
+                            </div>
+                            
+                            <!-- Recording Info -->
+                            @if (count($match['dvr_recordings']) > 1)
+                                <div class="viewer-count-hls" style="background: rgba(108, 117, 125, 0.9);">
+                                    {{ count($match['dvr_recordings']) }} 段录制
+                                </div>
+                            @endif
                         @elseif (isset($match['video_url']) && $match['video_url'])
                             <!-- Regular Video -->
                             <video id="live-video" autoplay muted>

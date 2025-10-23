@@ -177,12 +177,20 @@ class LivePage extends BasePage {
     }
 
     /**
-     * Setup video player (FLV/HLS streaming)
+     * Setup video player (FLV/HLS streaming or Replay)
      */
     setupVideoPlayer() {
+        // Check for replay player first
+        const replayElement = document.getElementById('replay-player');
+        if (replayElement) {
+            this.setupReplayPlayer(replayElement);
+            return;
+        }
+        
+        // Check for live stream player
         const playerElement = document.getElementById('live-stream-player');
         if (!playerElement) {
-            console.log('No live stream player element found');
+            console.log('No video player element found');
             return;
         }
 
@@ -191,7 +199,7 @@ class LivePage extends BasePage {
 
         if (isLive && streamKey) {
             // Use FLV stream for live broadcasting
-            const flvUrl = `http://localhost:8889/live/${streamKey}.flv`;
+            const flvUrl = `http://localhost:8080/live/${streamKey}.flv`;
 
             if (typeof videojs !== 'undefined') {
                 this.player = videojs('live-stream-player', {
@@ -284,6 +292,175 @@ class LivePage extends BasePage {
                 });
             }
         }
+    }
+
+    /**
+     * Setup replay player for recorded streams
+     */
+    setupReplayPlayer(replayElement) {
+        const recordingsData = replayElement.getAttribute('data-recordings');
+        
+        if (!recordingsData) {
+            console.log('No recordings data found');
+            return;
+        }
+
+        try {
+            const recordings = JSON.parse(recordingsData);
+            
+            if (!recordings || recordings.length === 0) {
+                console.log('No recordings available');
+                return;
+            }
+
+            console.log('Setting up replay player with', recordings.length, 'recordings');
+
+            if (typeof videojs !== 'undefined') {
+                this.player = videojs('replay-player', {
+                    controls: true,
+                    autoplay: false,
+                    fluid: true,
+                    responsive: true,
+                    controlBar: {
+                        children: [
+                            'playToggle',
+                            'volumePanel',
+                            'currentTimeDisplay',
+                            'timeDivider',
+                            'durationDisplay',
+                            'progressControl',
+                            'remainingTimeDisplay',
+                            'fullscreenToggle'
+                        ]
+                    }
+                });
+
+                // Create playlist from recordings
+                const playlist = recordings.map((recording, index) => ({
+                    sources: [{
+                        src: recording.file_url,
+                        type: 'video/x-flv'
+                    }],
+                    name: `录制 ${index + 1}`,
+                    sequence: recording.sequence || (index + 1)
+                }));
+
+                // Load first recording
+                if (playlist.length > 0) {
+                    this.player.src(playlist[0].sources);
+                    this.currentRecordingIndex = 0;
+                    this.playlist = playlist;
+
+                    // Auto-play next recording when current ends
+                    this.player.on('ended', () => {
+                        this.playNextRecording();
+                    });
+
+                    console.log('Replay player initialized with', playlist.length, 'recordings');
+                }
+
+                // Add playlist controls if multiple recordings
+                if (recordings.length > 1) {
+                    this.addPlaylistControls(recordings);
+                }
+            }
+        } catch (e) {
+            console.error('Error setting up replay player:', e);
+        }
+    }
+
+    /**
+     * Play next recording in playlist
+     */
+    playNextRecording() {
+        if (!this.playlist || this.currentRecordingIndex >= this.playlist.length - 1) {
+            console.log('No more recordings to play');
+            return;
+        }
+
+        this.currentRecordingIndex++;
+        const nextRecording = this.playlist[this.currentRecordingIndex];
+        
+        console.log('Playing next recording:', nextRecording.name);
+        this.player.src(nextRecording.sources);
+        this.player.play();
+    }
+
+    /**
+     * Add playlist controls for multiple recordings
+     */
+    addPlaylistControls(recordings) {
+        const videoContainer = document.querySelector('.video-player');
+        if (!videoContainer) return;
+
+        const playlistDiv = document.createElement('div');
+        playlistDiv.className = 'replay-playlist mt-2';
+        playlistDiv.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-2" style="padding: 0 10px;">
+                <h6 class="mb-0" style="color: #666;">录制片段 (${recordings.length})</h6>
+            </div>
+            <div class="playlist-items" style="max-height: 150px; overflow-y: auto;">
+                ${recordings.map((rec, index) => `
+                    <div class="playlist-item ${index === 0 ? 'active' : ''}" data-index="${index}" 
+                         style="padding: 8px 10px; cursor: pointer; border-left: 3px solid ${index === 0 ? '#007bff' : 'transparent'};">
+                        <div class="d-flex justify-content-between">
+                            <span style="font-weight: ${index === 0 ? 'bold' : 'normal'};">
+                                <i class="fas fa-play-circle me-1"></i>
+                                录制 ${index + 1}
+                            </span>
+                            <span style="color: #888; font-size: 0.85em;">
+                                ${this.formatFileSize(rec.file_size)}
+                            </span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        videoContainer.parentElement.appendChild(playlistDiv);
+
+        // Add click handlers for playlist items
+        playlistDiv.querySelectorAll('.playlist-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const index = parseInt(item.getAttribute('data-index'));
+                this.playRecording(index);
+                
+                // Update active state
+                playlistDiv.querySelectorAll('.playlist-item').forEach(i => {
+                    i.classList.remove('active');
+                    i.style.borderLeftColor = 'transparent';
+                    i.querySelector('span').style.fontWeight = 'normal';
+                });
+                item.classList.add('active');
+                item.style.borderLeftColor = '#007bff';
+                item.querySelector('span').style.fontWeight = 'bold';
+            });
+        });
+    }
+
+    /**
+     * Play specific recording by index
+     */
+    playRecording(index) {
+        if (!this.playlist || index < 0 || index >= this.playlist.length) return;
+
+        this.currentRecordingIndex = index;
+        const recording = this.playlist[index];
+        
+        console.log('Playing recording:', recording.name);
+        this.player.src(recording.sources);
+        this.player.play();
+    }
+
+    /**
+     * Format file size for display
+     */
+    formatFileSize(bytes) {
+        if (!bytes) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
     }
 
     /**

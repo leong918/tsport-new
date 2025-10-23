@@ -40,7 +40,9 @@ class LiveMatch extends Model
         'end_at',
         'stream_started_at',
         'stream_ended_at',
-        'obs_error_log'
+        'obs_error_log',
+        'dvr_recordings',
+        'dvr_last_uploaded_at'
     ];
 
     /**
@@ -60,6 +62,8 @@ class LiveMatch extends Model
         'end_at' => 'datetime',
         'stream_started_at' => 'datetime',
         'stream_ended_at' => 'datetime',
+        'dvr_recordings' => 'array',
+        'dvr_last_uploaded_at' => 'datetime',
     ];
 
     protected function createdAt(): Attribute
@@ -240,5 +244,70 @@ class LiveMatch extends Model
         return $this->update([
             'obs_error_log' => json_encode(array_slice($existingErrors, -10)) // Keep last 10 errors
         ]);
+    }
+
+    /**
+     * Add a new DVR recording to the recordings array
+     */
+    public function addDvrRecording(array $recordingData): bool
+    {
+        $recordings = $this->dvr_recordings ?? [];
+        
+        // Add new recording with sequence number
+        $recordings[] = [
+            'filename' => $recordingData['filename'],
+            'file_url' => $recordingData['file_url'],
+            'file_size' => $recordingData['file_size'],
+            'recording_started_at' => $recordingData['recording_started_at'],
+            'uploaded_at' => now()->toISOString(),
+            'sequence' => count($recordings) + 1, // Auto-increment sequence
+        ];
+
+        return $this->update([
+            'dvr_recordings' => $recordings,
+            'dvr_last_uploaded_at' => now()
+        ]);
+    }
+
+    /**
+     * Get all DVR recordings
+     */
+    public function getDvrRecordingsAttribute($value)
+    {
+        return $value ? json_decode($value, true) : [];
+    }
+
+    /**
+     * Get total number of recordings
+     */
+    public function getDvrRecordingCountAttribute(): int
+    {
+        return count($this->dvr_recordings ?? []);
+    }
+
+    /**
+     * Get latest DVR recording
+     */
+    public function getLatestDvrRecordingAttribute(): ?array
+    {
+        $recordings = $this->dvr_recordings ?? [];
+        return !empty($recordings) ? end($recordings) : null;
+    }
+
+    /**
+     * Get total DVR file size (all recordings combined)
+     */
+    public function getTotalDvrSizeAttribute(): int
+    {
+        $recordings = $this->dvr_recordings ?? [];
+        return array_sum(array_column($recordings, 'file_size'));
+    }
+
+    /**
+     * Check if has DVR recordings
+     */
+    public function hasDvrRecordings(): bool
+    {
+        return !empty($this->dvr_recordings);
     }
 }

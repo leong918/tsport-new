@@ -31,7 +31,7 @@ Route::get('/create-stream/{streamKey}', function ($streamKey) {
         return response()->json([
             'success' => true,
             'live_match' => $liveMatch,
-            'flv_url' => "http://localhost:8889/live/{$streamKey}.flv",
+            'flv_url' => "http://localhost:8080/live/{$streamKey}.flv",
             'view_url' => "http://127.0.0.1:8000/live/{$liveMatch->id}"
         ], 200, [], JSON_PRETTY_PRINT);
         
