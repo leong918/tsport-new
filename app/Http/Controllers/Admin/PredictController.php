@@ -24,7 +24,7 @@ class PredictController extends BaseController
 
             return DataTables::of($model)
                 ->addColumn('character_name', function ($model) {
-                    return $model->character_name;
+                    return $model->getCharacterDisplayName();
                 })
                 ->addColumn('image', function ($model) {
                     if ($model->image_url) {

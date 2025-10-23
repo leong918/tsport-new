@@ -61,7 +61,7 @@ class PredictSeeder extends Seeder
             return;
         }
         
-        $expertNames = ['Expert 1', 'Expert 2', 'Expert 3', 'Analyst A', 'Analyst B'];
+        $expertNames = ['Expert1', 'Expert2', 'Expert3', 'Analyst A', 'Analyst B'];
         $sampleImages = [
             'predicts/sample1.png',
             'predicts/sample2.png',

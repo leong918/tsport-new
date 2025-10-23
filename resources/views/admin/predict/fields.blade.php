@@ -163,9 +163,9 @@
             $('#character-select').on('change', function() {
                 const selectedCharacter = $(this).val();
                 const characterImages = {
-                    'Expert 1': '{{ asset("assets/web/images/predict/ip-active-1.png") }}',
-                    'Expert 2': '{{ asset("assets/web/images/predict/ip-active-2.png") }}',
-                    'Expert 3': '{{ asset("assets/web/images/predict/ip-active-3.png") }}'
+                    'Expert1': '{{ asset("assets/web/images/predict/ip-active-1.png") }}',
+                    'Expert2': '{{ asset("assets/web/images/predict/ip-active-2.png") }}',
+                    'Expert3': '{{ asset("assets/web/images/predict/ip-active-3.png") }}'
                 };
 
                 if (selectedCharacter && characterImages[selectedCharacter]) {

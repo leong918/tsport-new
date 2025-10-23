@@ -36,6 +36,9 @@ class EventController extends BaseController
                     $class = $event->status === 'active' ? 'success' : ($event->status === 'upcoming' ? 'warning' : 'secondary');
                     return '<span class="badge bg-' . $class . '">' . ucfirst($event->status) . '</span>';
                 })
+                ->addColumn('is_active_display', function ($event) {
+                    return $event->is_active ? '1' : '0';
+                })
                 ->addColumn('time_remaining', function ($event) {
                     return $event->time_remaining ?? 'N/A';
                 })

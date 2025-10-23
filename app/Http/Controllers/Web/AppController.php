@@ -49,9 +49,9 @@ class AppController extends BaseController
     private function getCharacterDisplayNames()
     {
         return [
-            'Expert 1' => 'Expert 1',
-            'Expert 2' => 'Expert 2',
-            'Expert 3' => 'Expert 3'
+            'Expert1' => '摩漆Special',
+            'Expert2' => '黯然雲加',
+            'Expert3' => '回魂普'
         ];
     }
 
@@ -106,8 +106,8 @@ class AppController extends BaseController
         // Get character display names
         $characterDisplayNames = $this->getCharacterDisplayNames();
 
-        // 默认显示Expert 1的预测，而不是所有预测
-        $defaultExpert = 'Expert 1';
+        // 默认显示Expert1的预测，而不是所有预测
+        $defaultExpert = 'Expert1';
         $predictions = $this->predictRepository->getActivePredictionsByExpert($defaultExpert, 10);
 
         // Format predictions data for the view
@@ -370,7 +370,7 @@ class AppController extends BaseController
     public function predictByExpert(Request $request, $expert)
     {
         // 验证专家参数
-        $validExperts = ['Expert 1', 'Expert 2', 'Expert 3'];
+        $validExperts = ['Expert1', 'Expert2', 'Expert3'];
         if (!in_array($expert, $validExperts)) {
             return response()->json([
                 'success' => false,

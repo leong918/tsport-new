@@ -65,13 +65,7 @@
                     { data: 'time_remaining', name: 'time_remaining', orderable: false },
                     { data: 'start_time', name: 'start_time' },
                     { data: 'end_time', name: 'end_time' },
-                    { 
-                        data: 'is_active', 
-                        name: 'is_active',
-                        render: function(data) {
-                            return data ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';
-                        }
-                    },
+                    { data: 'is_active_display', name: 'is_active' },
                     { data: 'created_at', name: 'created_at' },
                     { data: 'action', name: 'action', orderable: false, searchable: false, className: 'text-center' }
                 ],

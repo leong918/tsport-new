@@ -24,7 +24,7 @@ class PredictPage {
         ];
         this.currentBubbleIndex = 0;
         this.activeCharacter = null;
-        this.expertNames = ['Expert 1', 'Expert 2', 'Expert 3'];
+        this.expertNames = ['Expert1', 'Expert2', 'Expert3'];
         
         this.init();
     }
@@ -129,11 +129,11 @@ class PredictPage {
         const bubbleText = document.getElementById('bubbleText');
         if (bubbleText && this.activeCharacter) {
             const expertTexts = {
-                'Expert 1': '球停停车，实时停球时，预测他一样，实收早场才能靠大钱！',
-                'Expert 2': '巨球比赛管做得生意，顾客多少看生意预期',
-                'Expert 3': '数据不会说谎，只要你足够细心，想赢就赢在细节！'
+                'Expert1': '球停停车，实时停球时，预测他一样，实收早场才能靠大钱！',
+                'Expert2': '巨球比赛管做得生意，顾客多少看生意预期',
+                'Expert3': '数据不会说谎，只要你足够细心，想赢就赢在细节！'
             };
-            const initialText = expertTexts[this.activeCharacter.expertName] || expertTexts['Expert 1'];
+            const initialText = expertTexts[this.activeCharacter.expertName] || expertTexts['Expert1'];
             bubbleText.textContent = initialText;
         }
     }
@@ -366,7 +366,7 @@ class PredictPage {
             }
             
             // 确保专家名称在有效列表中
-            const validExperts = ['Expert 1', 'Expert 2', 'Expert 3'];
+            const validExperts = ['Expert1', 'Expert2', 'Expert3'];
             if (!validExperts.includes(expertName)) {
                 this.showErrorState(`无效的专家名称: ${expertName}`);
                 return;

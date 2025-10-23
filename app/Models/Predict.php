@@ -18,9 +18,9 @@ class Predict extends Model
     ];
 
     public const CHARACTER = [
-        'Expert 1' => 'Expert 1',
-        'Expert 2' => 'Expert 2',
-        'Expert 3' => 'Expert 3',
+        '摩漆Special' => 'Expert1',
+        '黯然雲加' => 'Expert2',
+        '回魂普' => 'Expert3',
     ];
     /**
      * Validation rules
@@ -150,5 +150,10 @@ class Predict extends Model
         $count = $this->like()->count();
         $this->update(['like_count' => $count]);
         return $count;
+    }
+
+    public function getCharacterDisplayName()
+    {
+        return array_search($this->character_name, self::CHARACTER) ?? $this->character_name;
     }
 }
