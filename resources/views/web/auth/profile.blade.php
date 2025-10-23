@@ -47,7 +47,7 @@
                                     <a href="{{ route('web.personal-info') }}" class="input-field-wrapper">
                                         <div class="label">個人資料</div>
                                         <div class="arrow">
-                                            <img src="{{ asset('assets/web/images/profile/bbtn-arrow.png') }}"
+                                            <img src="{{ asset('assets/web/images/profile/btn-arrow.png') }}"
                                                 class="img img-fluid">
                                         </div>
                                     </a>
