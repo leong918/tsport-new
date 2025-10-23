@@ -675,7 +675,7 @@ class LivePage extends BasePage {
     setupDummyChat() {
         const commentForm = document.querySelector('.comment-form');
         const commentInput = document.querySelector('.comment-input');
-        const submitButton = document.querySelector('.submit-button');
+        const submitButton = document.querySelector('.btn-send');
         const chatContainer = document.querySelector('.live-chat-comments');
         
         if (!commentForm) {
@@ -683,8 +683,13 @@ class LivePage extends BasePage {
             return;
         }
 
-        if (!commentInput || !submitButton) {
-            console.warn('Comment input or submit button not found');
+        if (!commentInput) {
+            console.warn('Comment input not found');
+            return;
+        }
+        
+        if (!submitButton) {
+            console.warn('Submit button not found');
             return;
         }
         
@@ -749,9 +754,11 @@ class LivePage extends BasePage {
         
         // Disable input while submitting
         input.disabled = true;
-        const submitButton = document.querySelector('.submit-button');
+        const submitButton = document.querySelector('.btn-send');
         if (submitButton) {
             submitButton.disabled = true;
+            const originalHTML = submitButton.innerHTML;
+            submitButton.setAttribute('data-original-html', originalHTML);
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         }
         
@@ -813,9 +820,15 @@ class LivePage extends BasePage {
         .finally(() => {
             // Re-enable input
             input.disabled = false;
+            const submitButton = document.querySelector('.btn-send');
             if (submitButton) {
                 submitButton.disabled = false;
-                submitButton.innerHTML = '发表评论';
+                const originalHTML = submitButton.getAttribute('data-original-html');
+                if (originalHTML) {
+                    submitButton.innerHTML = originalHTML;
+                } else {
+                    submitButton.innerHTML = '<img src="/assets/web/images/chat/button-send.png" alt="Send">';
+                }
             }
         });
     }

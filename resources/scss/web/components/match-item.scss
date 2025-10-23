@@ -4,6 +4,15 @@
     overflow: hidden;
     cursor: pointer;
 
+    .match-item-link {
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
     &__img {
         position: relative;
         overflow: hidden;
