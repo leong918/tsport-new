@@ -4,12 +4,14 @@ namespace App\Repositories;
 
 use App\Models\LiveMatch;
 use App\Models\Matches;
+use App\Traits\FileUpload;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Container\Container as Application;
 
 class LiveMatchRepository extends BaseRepository
 {
+    use FileUpload;
     /**
      * @var array
      */
@@ -94,6 +96,13 @@ class LiveMatchRepository extends BaseRepository
      */
     public function createLiveMatch(array $data): LiveMatch
     {
+        // Handle thumbnail upload
+        if (isset($data['thumbnail']) && $data['thumbnail']) {
+            $this->upload_path = 'streams';
+            $this->uploadFile($data['thumbnail']);
+            $data['thumbnail'] = basename($this->uploaded_filename);
+        }
+
         // Generate stream key if not provided
         if (empty($data['obs_stream_key'])) {
             $data['obs_stream_key'] = $this->generateStreamKey();
@@ -110,7 +119,36 @@ class LiveMatchRepository extends BaseRepository
         return $this->model->create($data);
     }
 
+    /**
+     * Update live match with thumbnail handling
+     */
+    public function update($input, $id)
+    {
+        $liveMatch = $this->model->findOrFail($id);
 
+        // Handle thumbnail upload
+        if (isset($input['thumbnail']) && $input['thumbnail']) {
+            $this->upload_path = 'streams';
+            
+            // Delete old thumbnail if exists
+            if ($liveMatch->thumbnail) {
+                $oldThumbnailPath = 'streams/' . $liveMatch->thumbnail;
+                $this->deleteFile($oldThumbnailPath);
+            }
+            
+            // Upload new thumbnail
+            $this->uploadFile($input['thumbnail']);
+            $input['thumbnail'] = basename($this->uploaded_filename);
+        } else {
+            // Remove thumbnail from input if not uploading
+            unset($input['thumbnail']);
+        }
+
+        $liveMatch->fill($input);
+        $liveMatch->save();
+
+        return $liveMatch;
+    }
 
     /**
      * Start streaming for a live match

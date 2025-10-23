@@ -43,6 +43,39 @@
                                             </div>
 
                                             <div class="row mb-3">
+                                                <label for="thumbnail" class="col-md-3 col-form-label">Thumbnail</label>
+                                                <div class="col-md-9">
+                                                    <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*">
+                                                    <div class="form-text">Thumbnail image displayed before live stream starts (16:9 ratio recommended)</div>
+                                                    @error('thumbnail')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                    
+                                                    @if($model->thumbnail)
+                                                        <div class="mt-3">
+                                                            <label>Current Thumbnail</label>
+                                                            <div class="thumbnail-preview-container" style="max-width: 400px;">
+                                                                <div style="position: relative; width: 100%; padding-bottom: 56.25%; background: #f0f0f0; overflow: hidden; border-radius: 4px;">
+                                                                    <img src="{{ $model->thumbnail_url }}" alt="Current thumbnail" 
+                                                                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    
+                                                    <div id="thumbnail-preview" class="mt-3" style="display: none;">
+                                                        <label>New Preview</label>
+                                                        <div class="thumbnail-preview-container" style="max-width: 400px;">
+                                                            <div style="position: relative; width: 100%; padding-bottom: 56.25%; background: #f0f0f0; overflow: hidden; border-radius: 4px;">
+                                                                <img id="thumbnail-preview-img" src="" alt="Thumbnail preview" 
+                                                                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-3">
                                                 <label for="obs_server_url" class="col-md-3 col-form-label">OBS Server URL</label>
                                                 <div class="col-md-9">
                                                     <input type="text" class="form-control" id="obs_server_url" name="obs_server_url" 
@@ -56,33 +89,29 @@
                                             </div>
 
                                             <div class="row mb-3">
-                                                <label for="obs_stream_key" class="col-md-3 col-form-label">Stream Key</label>
+                                                <label for="rtmp_url" class="col-md-3 col-form-label">Stream Key & RTMP URL</label>
                                                 <div class="col-md-9">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="obs_stream_key" name="obs_stream_key" 
-                                                               value="{{ old('obs_stream_key', $model->obs_stream_key) }}" readonly>
-                                                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('obs_stream_key')">
-                                                            <i class="fa fa-copy"></i>
-                                                        </button>
+                                                    <div class="mb-2">
+                                                        <label class="form-label small">Stream Key</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="obs_stream_key" 
+                                                                   value="{{ $model->obs_stream_key }}" readonly>
+                                                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('obs_stream_key')">
+                                                                <i class="fa fa-copy"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-text">Stream key for OBS configuration</div>
-                                                    @error('obs_stream_key')
-                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
-                                            <div class="row mb-3">
-                                                <label for="rtmp_url" class="col-md-3 col-form-label">RTMP URL</label>
-                                                <div class="col-md-9">
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control" id="rtmp_url" 
-                                                               value="{{ $model->rtmp_url ?: $model->generateRtmpUrl() }}" readonly>
-                                                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('rtmp_url')">
-                                                            <i class="fa fa-copy"></i>
-                                                        </button>
+                                                    <div>
+                                                        <label class="form-label small">Complete RTMP URL</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="rtmp_url" 
+                                                                   value="{{ $model->rtmp_url ?: $model->generateRtmpUrl() }}" readonly>
+                                                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('rtmp_url')">
+                                                                <i class="fa fa-copy"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-text">Complete RTMP URL for OBS</div>
+                                                    <div class="form-text">Stream key is auto-generated and cannot be modified</div>
                                                 </div>
                                             </div>
 
@@ -180,18 +209,18 @@
 @section('script')
     @parent
     <script>
-        document.getElementById('quality_preset').addEventListener('change', function() {
-            const quality = this.value;
-            const presets = {
-                'low': { resolution: '854x480', fps: 30, bitrate: 1000 },
-                'medium': { resolution: '1280x720', fps: 30, bitrate: 2500 },
-                'high': { resolution: '1920x1080', fps: 60, bitrate: 6000 }
-            };
-            
-            if (presets[quality]) {
-                document.getElementById('resolution').value = presets[quality].resolution;
-                document.getElementById('fps').value = presets[quality].fps;
-                document.getElementById('bitrate').value = presets[quality].bitrate;
+        // Thumbnail preview
+        document.getElementById('thumbnail').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('thumbnail-preview-img').src = e.target.result;
+                    document.getElementById('thumbnail-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('thumbnail-preview').style.display = 'none';
             }
         });
 
