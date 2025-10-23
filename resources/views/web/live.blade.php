@@ -154,29 +154,30 @@
                         container-class="comments-list live-chat-comments" container-id="live-chat-comments" />
                 </div>
 
-                <!-- Tab 2: Upcoming Matches -->
+                <!-- Tab 2: Match Predictions -->
                 <div class="tab-pane fade" id="tab-matches" role="tabpanel" aria-labelledby="prediction-tab">
                     <div class="upcoming-matches-container">
                         <div class="container">
                             <div class="row g-3">
-                                <div class="col-12">
-                                    <a href="#" class="upcoming-match-item">
-                                        <img src="{{ asset('assets/web/images/live/sample.png') }}" alt="Sample Image"
-                                            class="img-fluid w-100">
-                                    </a>
-                                </div>
-                                <div class="col-12">
-                                    <a href="#" class="upcoming-match-item">
-                                        <img src="{{ asset('assets/web/images/live/sample.png') }}" alt="Sample Image"
-                                            class="img-fluid w-100">
-                                    </a>
-                                </div>
-                                <div class="col-12">
-                                    <a href="#" class="upcoming-match-item">
-                                        <img src="{{ asset('assets/web/images/live/sample.png') }}" alt="Sample Image"
-                                            class="img-fluid w-100">
-                                    </a>
-                                </div>
+                                @if(isset($predictions) && $predictions->count() > 0)
+                                    @foreach($predictions as $prediction)
+                                        <div class="col-12">
+                                            <a href="{{ route('web.predict.detail', ['id' => $prediction['id']]) }}" class="upcoming-match-item">
+                                                <img src="{{ $prediction['image'] }}" 
+                                                     alt="{{ $prediction['character_display_name'] }} - 预测"
+                                                     class="img-fluid w-100">
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="col-12">
+                                        <div class="text-center py-5" style="color: #666;">
+                                            <i class="fas fa-chart-line fa-3x mb-3 opacity-50"></i>
+                                            <p class="h5 mb-2">暂无预测</p>
+                                            <p class="mb-0 opacity-75">这场比赛还没有专家预测</p>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

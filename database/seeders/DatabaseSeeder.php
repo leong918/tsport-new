@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             MatchSeeder::class,
             EventSeeder::class,
             PredictSeeder::class,
+            LiveMatchSeeder::class,
         ]);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Repositories\LiveMatchRepository;
-use App\Repositories\MatchRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,14 +12,11 @@ use Exception;
 class LiveMatchController extends BaseController
 {
     private LiveMatchRepository $liveMatchRepository;
-    private MatchRepository $matchRepository;
 
     public function __construct(
-        LiveMatchRepository $liveMatchRepository,
-        MatchRepository $matchRepository
+        LiveMatchRepository $liveMatchRepository
     ) {
         $this->liveMatchRepository = $liveMatchRepository;
-        $this->matchRepository = $matchRepository;
     }
 
     public function index(Request $request)

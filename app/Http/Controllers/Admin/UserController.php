@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends BaseController
 {
+    private UserRepository $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $users = User::query()->orderBy('created_at', 'desc');
+            $users = $this->userRepository->getListing();
             
             return DataTables::of($users)
                 ->addColumn('status', function ($user) {
@@ -35,13 +42,13 @@ class UserController extends BaseController
 
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->userRepository->find($id);
         return $this->view('user.show', compact('user'));
     }
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user = $this->userRepository->find($id);
         return $this->view('user.edit', compact('user'));
     }
 
@@ -56,8 +63,8 @@ class UserController extends BaseController
 
         DB::beginTransaction();
         try {
-            $user = User::findOrFail($id);
-            $user->update($request->only(['name', 'email', 'phone_no', 'status']));
+            $data = $request->only(['name', 'email', 'phone_no', 'status']);
+            $this->userRepository->updateAccount($data, $id);
 
             DB::commit();
             return redirect()->route('admin.user.index')
@@ -73,8 +80,7 @@ class UserController extends BaseController
     {
         DB::beginTransaction();
         try {
-            $user = User::findOrFail($id);
-            $user->delete();
+            $this->userRepository->delete($id);
 
             DB::commit();
             return response()->json(['success' => 'User deleted successfully!']);
@@ -88,9 +94,7 @@ class UserController extends BaseController
     {
         DB::beginTransaction();
         try {
-            $user = User::findOrFail($id);
-            $user->status = $user->status == 1 ? 0 : 1;
-            $user->save();
+            $this->userRepository->toggleStatus($id);
 
             DB::commit();
             return response()->json(['success' => 'User status updated successfully!']);

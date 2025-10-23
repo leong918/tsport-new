@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Matches;
+use App\Repositories\MatchRepository;
 use App\Repositories\PredictRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,10 +11,14 @@ use Yajra\DataTables\Facades\DataTables;
 class PredictController extends BaseController
 {
     private PredictRepository $predictRepository;
+    private MatchRepository $matchRepository;
 
-    public function __construct(PredictRepository $predictRepository)
-    {
+    public function __construct(
+        PredictRepository $predictRepository,
+        MatchRepository $matchRepository
+    ) {
         $this->predictRepository = $predictRepository;
+        $this->matchRepository = $matchRepository;
     }
 
     public function index(Request $request)
@@ -58,7 +62,7 @@ class PredictController extends BaseController
 
     public function create()
     {
-        $match = Matches::all();
+        $match = $this->matchRepository->all();
         return $this->view('predict.create', compact('match'));
     }
 
@@ -68,6 +72,14 @@ class PredictController extends BaseController
 
         try {
             $data = $request->all();
+            
+            // Check for duplicate using repository
+            if ($this->predictRepository->isDuplicate($data['match_id'], $data['character_name'])) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', '这个比赛已经有该专家的预测，不能重复创建。');
+            }
+            
             $this->predictRepository->createPredict($data);
 
             DB::commit();
@@ -109,7 +121,7 @@ class PredictController extends BaseController
                 ->make(true);
         }
 
-        $match = Matches::all();
+        $match = $this->matchRepository->all();
         $model = $this->predictRepository->find($id);
 
         return $this->view('predict.update', compact('model', 'match'));
@@ -121,6 +133,14 @@ class PredictController extends BaseController
 
         try {
             $data = $request->all();
+            
+            // Check for duplicate using repository (excluding current record)
+            if ($this->predictRepository->isDuplicate($data['match_id'], $data['character_name'], $id)) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', '这个比赛已经有该专家的预测，不能重复。');
+            }
+            
             $this->predictRepository->updatePredict($data, $id);
 
             DB::commit();

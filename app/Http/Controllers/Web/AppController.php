@@ -327,11 +327,32 @@ class AppController extends BaseController
             // Get streaming statistics
             $stats = $this->liveMatchRepository->getStreamingStatistics();
 
+            // Get character display names
+            $characterDisplayNames = $this->getCharacterDisplayNames();
+
+            // Get predictions related to this match (limit to 3 for Tab 2)
+            $matchPredictions = collect();
+            if ($currentMatch && isset($currentMatch->match_id)) {
+                $matchPredictions = $this->predictRepository->getPredictionsByMatchId($currentMatch->match_id, 3)
+                    ->map(function ($prediction) use ($characterDisplayNames) {
+                        return [
+                            'id' => $prediction->id,
+                            'character_name' => $prediction->character_name,
+                            'character_display_name' => $characterDisplayNames[$prediction->character_name] ?? $prediction->character_name,
+                            'image' => $prediction->image_url,
+                            'description' => $prediction->description,
+                            'likes_count' => $prediction->like_count,
+                            'comments_count' => $prediction->comment->count(),
+                        ];
+                    });
+            }
+
             return $this->view('live', [
                 'match' => $matchData,
                 'comments' => $matchData['comments'] ?? [],
                 'streamingMatches' => $streamingMatches,
-                'stats' => $stats
+                'stats' => $stats,
+                'predictions' => $matchPredictions
             ]);
         } catch (\Exception $e) {
             Log::error('Error loading live page: ' . $e->getMessage());

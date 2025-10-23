@@ -40,6 +40,22 @@ class PredictRepository extends BaseRepository
             ->orderBy('created_at', 'desc');
     }
 
+    /**
+     * Check if match + character combination already exists
+     */
+    public function isDuplicate($matchId, $characterName, $excludeId = null)
+    {
+        $query = Predict::where('match_id', $matchId)
+            ->where('character_name', $characterName)
+            ->whereNull('deleted_at');
+        
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+        
+        return $query->exists();
+    }
+
     public function createPredict(array $input)
     {
         if (isset($input['image'])) {
@@ -124,6 +140,19 @@ class PredictRepository extends BaseRepository
             ->where('id', $id)
             ->where('status', Predict::STATUS['ACTIVE'])
             ->first();
+    }
+
+    /**
+     * Get predictions by match ID
+     */
+    public function getPredictionsByMatchId($matchId, $limit = 10)
+    {
+        return Predict::with(['matches', 'comment'])
+            ->where('status', Predict::STATUS['ACTIVE'])
+            ->where('match_id', $matchId)
+            ->orderBy('created_at', 'desc')
+            ->limit($limit)
+            ->get();
     }
 
     /**

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->softDeletes();
             
             $table->index('like_count');
+            // Unique index: one match can only have one prediction per character
+            $table->unique(['match_id', 'character_name'], 'predict_match_character_unique');
         });
     }
 
