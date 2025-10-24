@@ -297,6 +297,8 @@ class AppController extends BaseController
                     'stream_ended_at' => $currentMatch->stream_ended_at,
                     'thumbnail' => $currentMatch->thumbnail_url,
                     'fixture_image' => $currentMatch->fixture_image_url,
+                    'dvr_recordings' => $currentMatch->dvr_recordings ?? [],
+                    'dvr_last_uploaded_at' => $currentMatch->dvr_last_uploaded_at,
                     'comments' => $currentMatch->comments->map(function ($comment) {
                         return [
                             'id' => $comment->id,

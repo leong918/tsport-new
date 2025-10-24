@@ -7,11 +7,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "dev:streaming": "vite --mode streaming",
-    "build": "vite build",
-    "rtmp:server": "node rtmp-server.cjs",
-    "rtmp:start": "node rtmp-server.cjs",
-    "streaming": "concurrently \"npm run rtmp:server\" \"npm run dev\""
+    "build": "vite build"
   },
   "devDependencies": {
     "axios": "^1.6.1",
