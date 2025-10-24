@@ -1,8 +1,8 @@
 @extends('web.layout.app')
 
 @php
-    $isUpcoming = isset($match['start_at']) && \Carbon\Carbon::parse($match['start_at'])->isFuture();
-    $bodyClass = 'bg-1 no-footer' . ($isUpcoming && (!isset($match['obs_status']) || $match['obs_status'] != 2) ? ' live-upcoming' : '');
+    $isUpcoming = isset($match['start_at']) && \Carbon\Carbon::parse($match['start_at'])->isFuture() && (!isset($match['obs_status']) || $match['obs_status'] == 1);
+    $bodyClass = 'bg-1 no-footer' . ($isUpcoming ? ' live-upcoming' : '');
 @endphp
 
 @section('body-class', $bodyClass)
@@ -10,7 +10,7 @@
 @section('content')
     <div id="page-live" class="screen" data-match-id="{{ $match['url_id'] ?? ($match['id'] ?? '') }}">
 
-        @if ($isUpcoming && (!isset($match['obs_status']) || $match['obs_status'] != 2))
+        @if ($isUpcoming)
             <!-- Match Fixture Section (Before Match Starts) -->
             <section id="section-prediction-top">
                 <div class="container">
@@ -37,7 +37,7 @@
                 <div class="video-container">
                     <!-- Video Player -->
                     <div class="video-player" style="position: relative;">
-                        @if ($match['obs_status'] == 2 && $match['obs_stream_key'])
+                        @if ($match['obs_status'] == 2 && !empty($match['obs_stream_key']))
                             <!-- HLS Video Player for Live Stream -->
                             <video id="live-stream-player" class="video-js vjs-default-skin" autoplay muted playsinline
                                 preload="auto"
@@ -62,17 +62,11 @@
                             </div>
                         @elseif ($match['obs_status'] == 0 && !empty($match['dvr_recordings']))
                             <!-- Replay Video Player (Stream Ended with Recordings) -->
-                            <video id="replay-player" class="video-js vjs-default-skin" controls playsinline
-                                preload="auto"
-                                data-setup='{"fluid": true, "responsive": true, "controls": true}'
+                            <video id="replay-player" controls playsinline preload="auto"
+                                style="width: 100%; height: auto; background: #000;"
                                 data-recordings="{{ json_encode($match['dvr_recordings']) }}"
                                 poster="{{ asset('assets/web/images/live/sample-video.jpg') }}">
-                                <p class="vjs-no-js">
-                                    To view this video please enable JavaScript, and consider upgrading to a web browser
-                                    that
-                                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5
-                                        video</a>.
-                                </p>
+                                您的浏览器不支持视频播放，请使用最新版 Chrome、Edge 或 Firefox 浏览器。
                             </video>
 
                             <!-- Replay Badge -->
@@ -120,16 +114,6 @@
                                 </div>
                             </div>
                         @endif
-
-                        <!-- Video Controls Overlay -->
-                        <div class="video-controls">
-                            <button class="mute-btn" onclick="toggleMute()" title="点击取消静音">
-                                <i class="fas fa-volume-mute"></i>
-                            </button>
-                            <button class="fullscreen-btn" onclick="toggleFullscreen()" title="全屏">
-                                <i class="fas fa-expand"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -330,5 +314,147 @@
             hlsEndpoint: '{{ config('streaming.hls_endpoint') }}',
             rtmpServer: '{{ config('streaming.rtmp_server') }}'
         };
+        
+        let flvPlayer = null;
+        
+        // Prevent live.js from handling replay (we handle it here)
+        window.replayPlayerInitialized = true;
+        
+        // Wait for flvjs to be loaded (it's loaded by live.js via Vite)
+        function waitForFlvjs(callback, maxAttempts = 50) {
+            let attempts = 0;
+            const interval = setInterval(() => {
+                attempts++;
+                if (typeof flvjs !== 'undefined') {
+                    console.log('✅ flv.js loaded after', attempts * 100, 'ms');
+                    clearInterval(interval);
+                    callback();
+                } else if (attempts >= maxAttempts) {
+                    console.error('❌ Timeout waiting for flv.js');
+                    clearInterval(interval);
+                    showReplayError('播放器加载超时，请刷新页面重试');
+                }
+            }, 100);
+        }
+        
+        // Replay player setup with pure flv.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const replayPlayerElement = document.getElementById('replay-player');
+            
+            if (replayPlayerElement) {
+                console.log('🎬 Replay player element found, waiting for flv.js...');
+                
+                // Wait for flvjs to be available
+                waitForFlvjs(function() {
+                    initReplayPlayer(replayPlayerElement);
+                });
+            }
+        });
+        
+        function initReplayPlayer(replayPlayerElement) {
+            const recordingsData = replayPlayerElement.getAttribute('data-recordings');
+            
+            try {
+                const recordings = JSON.parse(recordingsData || '[]');
+                console.log('📼 Found recordings:', recordings.length);
+                
+                if (recordings.length === 0) {
+                    showReplayError('没有可播放的录制文件');
+                    return;
+                }
+                
+                const recording = recordings[0];
+                const videoUrl = recording.file_url || recording.url; // Support both field names
+                console.log('🎥 Loading recording:', videoUrl);
+                
+                if (!videoUrl) {
+                    showReplayError('录制文件URL无效');
+                    return;
+                }
+                
+                if (!flvjs.isSupported()) {
+                    showReplayError('您的浏览器不支持视频播放，请使用最新版 Chrome、Edge 或 Firefox');
+                    return;
+                }
+                
+                // Create FLV player
+                flvPlayer = flvjs.createPlayer({
+                    type: 'flv',
+                    url: videoUrl,
+                    isLive: false,
+                    hasAudio: true,
+                    hasVideo: true
+                });
+                
+                // Attach to video element
+                flvPlayer.attachMediaElement(replayPlayerElement);
+                
+                // Event listeners
+                flvPlayer.on(flvjs.Events.LOADING_COMPLETE, () => {
+                    console.log('✅ Replay loaded successfully');
+                });
+                
+                flvPlayer.on(flvjs.Events.MEDIA_INFO, (info) => {
+                    console.log('📊 Media info:', {
+                        duration: Math.round(info.duration) + 's',
+                        resolution: info.width + 'x' + info.height,
+                        videoCodec: info.videoCodec,
+                        audioCodec: info.audioCodec
+                    });
+                });
+                
+                flvPlayer.on(flvjs.Events.ERROR, (errorType, errorDetail, errorInfo) => {
+                    console.error('❌ Playback error:', errorType, errorDetail);
+                    
+                    let errorMessage = '播放出错';
+                    if (errorType === 'NetworkError') {
+                        errorMessage = '网络错误，无法加载视频';
+                    } else if (errorType === 'MediaError') {
+                        errorMessage = '视频格式错误';
+                    }
+                    
+                    showReplayError(errorMessage);
+                });
+                
+                // Load the video
+                flvPlayer.load();
+                console.log('▶️ Starting playback...');
+                
+                // Store globally for cleanup
+                window.flvPlayer = flvPlayer;
+                
+            } catch (e) {
+                console.error('Error setting up replay:', e);
+                showReplayError('录制数据解析失败');
+            }
+        }
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (flvPlayer) {
+                try {
+                    flvPlayer.pause();
+                    flvPlayer.unload();
+                    flvPlayer.detachMediaElement();
+                    flvPlayer.destroy();
+                } catch (e) {
+                    console.error('Cleanup error:', e);
+                }
+            }
+        });
+        
+        function showReplayError(message) {
+            const videoContainer = document.querySelector('.video-player');
+            if (videoContainer) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'alert alert-warning mt-3';
+                errorDiv.style.margin = '20px';
+                errorDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    ${message}
+                `;
+                videoContainer.appendChild(errorDiv);
+            }
+        }
     </script>
 @endpush

@@ -180,14 +180,10 @@ class LivePage extends BasePage {
      * Setup video player (FLV/HLS streaming or Replay)
      */
     setupVideoPlayer() {
-        // Check for replay player first
-        const replayElement = document.getElementById('replay-player');
-        if (replayElement) {
-            this.setupReplayPlayer(replayElement);
-            return;
-        }
+        // NOTE: Replay player is now handled directly in blade template with flv.js
+        // No need to initialize here anymore
         
-        // Check for live stream player
+        // Check for live stream player only
         const playerElement = document.getElementById('live-stream-player');
         if (!playerElement) {
             console.log('No video player element found');
@@ -322,6 +318,7 @@ class LivePage extends BasePage {
                     autoplay: false,
                     fluid: true,
                     responsive: true,
+                    preload: 'metadata',
                     controlBar: {
                         children: [
                             'playToggle',
@@ -336,38 +333,137 @@ class LivePage extends BasePage {
                     }
                 });
 
-                // Create playlist from recordings
-                const playlist = recordings.map((recording, index) => ({
-                    sources: [{
-                        src: recording.file_url,
-                        type: 'video/x-flv'
-                    }],
-                    name: `录制 ${index + 1}`,
-                    sequence: recording.sequence || (index + 1)
-                }));
+                // Use all recordings
+                const accessibleRecordings = recordings;
 
-                // Load first recording
-                if (playlist.length > 0) {
-                    this.player.src(playlist[0].sources);
-                    this.currentRecordingIndex = 0;
-                    this.playlist = playlist;
-
-                    // Auto-play next recording when current ends
-                    this.player.on('ended', () => {
-                        this.playNextRecording();
-                    });
-
-                    console.log('Replay player initialized with', playlist.length, 'recordings');
+                if (accessibleRecordings.length === 0) {
+                    console.log('No accessible recordings found');
+                    this.showReplayError('No playable recordings available');
+                    return;
                 }
 
-                // Add playlist controls if multiple recordings
+                // Load the recording
+                const recording = accessibleRecordings[0];
+                console.log('Loading recording:', recording);
+                
+                // Determine video type from URL or format field
+                const videoUrl = recording.url;
+                const isMP4 = videoUrl.includes('.mp4') || recording.format === 'mp4';
+                const isFLV = videoUrl.includes('.flv') || recording.format === 'flv';
+                
+                console.log('Video type - MP4:', isMP4, 'FLV:', isFLV);
+
+                if (isMP4) {
+                    // MP4 format - native browser support
+                    console.log('Using native MP4 playback');
+                    
+                    this.player.src({
+                        src: videoUrl,
+                        type: 'video/mp4'
+                    });
+                    
+                    this.player.on('error', () => {
+                        const error = this.player.error();
+                        console.error('MP4 playback error:', error);
+                        this.showReplayError('无法播放录制文件。请检查网络连接或联系技术支持。');
+                    });
+                    
+                    console.log('MP4 player setup complete');
+                    
+                } else if (isFLV && typeof flvjs !== 'undefined' && flvjs.isSupported()) {
+                    // FLV format - use flv.js
+                    console.log('Using flv.js for FLV replay');
+                    
+                    const videoElement = this.player.tech().el();
+                    
+                    const flvPlayer = flvjs.createPlayer({
+                        type: 'flv',
+                        url: videoUrl,
+                        isLive: false,
+                        hasAudio: true,
+                        hasVideo: true,
+                        enableWorker: true,
+                        enableStashBuffer: true,
+                        stashInitialSize: 128
+                    });
+                    
+                    flvPlayer.attachMediaElement(videoElement);
+                    flvPlayer.load();
+                    
+                    flvPlayer.on(flvjs.Events.LOADING_COMPLETE, () => {
+                        console.log('✅ FLV replay loaded successfully');
+                    });
+                    
+                    flvPlayer.on(flvjs.Events.ERROR, (errorType, errorDetail) => {
+                        console.error('❌ FLV replay error:', errorType, errorDetail);
+                        this.showReplayError('FLV播放失败。建议联系技术支持转换为MP4格式。');
+                    });
+                    
+                    this.player.flvPlayer = flvPlayer;
+                    console.log('FLV player setup complete');
+                    
+                } else {
+                    // Unknown format or flv.js not available
+                    console.error('Unsupported video format or flv.js not available');
+                    this.showReplayError('不支持的视频格式。请联系技术支持。');
+                }
+
+                console.log('Replay player initialized');
+
+                // Add recording info if multiple recordings
                 if (recordings.length > 1) {
-                    this.addPlaylistControls(recordings);
+                    this.addRecordingInfo(recordings);
                 }
             }
         } catch (e) {
             console.error('Error setting up replay player:', e);
+            this.showReplayError('Failed to initialize replay player');
         }
+    }
+
+    /**
+     * Show replay error message
+     */
+    showReplayError(message) {
+        const videoContainer = document.querySelector('.video-player');
+        if (!videoContainer) return;
+
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-warning mt-3';
+        errorDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            ${message}
+            <button class="btn btn-sm btn-outline-primary ms-3" onclick="location.reload()">
+                Refresh Page
+            </button>
+        `;
+        
+        videoContainer.appendChild(errorDiv);
+    }
+
+    /**
+     * Add recording information display
+     */
+    addRecordingInfo(recordings) {
+        const videoContainer = document.querySelector('.video-player');
+        if (!videoContainer) return;
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'recording-info mt-2 p-2';
+        infoDiv.style.cssText = 'background: rgba(0,0,0,0.1); border-radius: 4px; font-size: 0.9em; color: #666;';
+        infoDiv.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <i class="fas fa-video me-1"></i>
+                    录制回放 (${recordings.length} 段录制)
+                </span>
+                <span style="font-size: 0.8em;">
+                    ${recordings[0].start_time || 'Unknown time'}
+                </span>
+            </div>
+        `;
+
+        videoContainer.parentElement.appendChild(infoDiv);
     }
 
     /**

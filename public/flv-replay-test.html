@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLV Replay Test - Pure flv.js</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        .video-container {
+            background: #000;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        video {
+            width: 100%;
+            height: 500px;
+            display: block;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 5px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .log {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 4px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+        .log div {
+            margin: 3px 0;
+            padding: 3px 5px;
+        }
+        .log .info { color: #4CAF50; }
+        .log .error { color: #f44336; }
+        .log .warn { color: #ff9800; }
+        .status {
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .status.loading { background: #fff3cd; color: #856404; }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🎬 FLV Replay 测试 (纯 flv.js)</h1>
+    
+    <div class="status loading" id="status">准备中...</div>
+    
+    <div class="video-container">
+        <video id="videoElement" controls></video>
+    </div>
+    
+    <div class="controls">
+        <button onclick="testLoad()">🔄 重新加载</button>
+        <button onclick="clearLogs()">🗑️ 清除日志</button>
+    </div>
+    
+    <div class="log" id="logContainer"></div>
+
+    <script src="/flv.min.js"></script>
+    <script>
+        const FLV_URL = 'https://srs-tsport.sgp1.cdn.digitaloceanspaces.com/dvr/live/stream_7_68fa0d1b38d61/1761294005465.flv';
+        let flvPlayer = null;
+
+        function log(msg, type = 'info') {
+            const container = document.getElementById('logContainer');
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${time}] ${msg}`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+            console.log(`[${type}] ${msg}`);
+        }
+
+        function setStatus(msg, type) {
+            const status = document.getElementById('status');
+            status.textContent = msg;
+            status.className = `status ${type}`;
+        }
+
+        function clearLogs() {
+            document.getElementById('logContainer').innerHTML = '';
+        }
+
+        function cleanup() {
+            if (flvPlayer) {
+                try {
+                    flvPlayer.pause();
+                    flvPlayer.unload();
+                    flvPlayer.detachMediaElement();
+                    flvPlayer.destroy();
+                    log('✅ 清理FLV播放器', 'info');
+                } catch (e) {
+                    log('⚠️ 清理错误: ' + e.message, 'warn');
+                }
+                flvPlayer = null;
+            }
+        }
+
+        function testLoad() {
+            log('=== 开始测试 ===', 'info');
+            setStatus('加载中...', 'loading');
+            
+            cleanup();
+
+            // 检查支持
+            if (typeof flvjs === 'undefined') {
+                log('❌ flv.js 未加载！', 'error');
+                setStatus('flv.js 未加载', 'error');
+                return;
+            }
+
+            log('✅ flv.js 版本: ' + flvjs.version, 'info');
+            
+            if (!flvjs.isSupported()) {
+                log('❌ 浏览器不支持 MSE (Media Source Extensions)', 'error');
+                setStatus('浏览器不支持', 'error');
+                return;
+            }
+            
+            log('✅ 浏览器支持 MSE', 'info');
+
+            // 获取视频元素
+            const videoElement = document.getElementById('videoElement');
+            log('获取视频元素成功', 'info');
+
+            // 创建FLV播放器
+            log('创建FLV播放器...', 'info');
+            log('视频URL: ' + FLV_URL, 'info');
+            
+            try {
+                flvPlayer = flvjs.createPlayer({
+                    type: 'flv',
+                    url: FLV_URL,
+                    isLive: false,
+                    hasAudio: true,
+                    hasVideo: true
+                });
+                
+                log('✅ FLV播放器创建成功', 'info');
+            } catch (e) {
+                log('❌ 创建播放器失败: ' + e.message, 'error');
+                setStatus('创建失败', 'error');
+                return;
+            }
+
+            // 监听错误事件
+            flvPlayer.on(flvjs.Events.ERROR, (errorType, errorDetail, errorInfo) => {
+                log(`❌ 错误类型: ${errorType}`, 'error');
+                log(`❌ 错误详情: ${errorDetail}`, 'error');
+                if (errorInfo) {
+                    log('错误信息: ' + JSON.stringify(errorInfo), 'error');
+                }
+                setStatus('播放错误: ' + errorDetail, 'error');
+            });
+
+            // 监听加载完成
+            flvPlayer.on(flvjs.Events.LOADING_COMPLETE, () => {
+                log('✅ 视频加载完成', 'info');
+            });
+
+            // 监听媒体信息
+            flvPlayer.on(flvjs.Events.MEDIA_INFO, (info) => {
+                log(`📊 分辨率: ${info.width}x${info.height}`, 'info');
+                log(`📊 时长: ${Math.round(info.duration)}秒`, 'info');
+                log(`📊 视频编码: ${info.videoCodec}`, 'info');
+                log(`📊 音频编码: ${info.audioCodec}`, 'info');
+            });
+
+            // 视频元素事件
+            videoElement.onloadedmetadata = () => {
+                log('✅ 元数据加载完成', 'info');
+                log(`时长: ${Math.round(videoElement.duration)}秒`, 'info');
+                setStatus('准备就绪 - 可以播放', 'success');
+            };
+
+            videoElement.oncanplay = () => {
+                log('✅ 缓冲完成，可以播放', 'info');
+            };
+
+            videoElement.onplay = () => {
+                log('▶️ 播放开始', 'info');
+                setStatus('正在播放', 'success');
+            };
+
+            videoElement.onpause = () => {
+                log('⏸️ 播放暂停', 'info');
+            };
+
+            videoElement.onerror = (e) => {
+                log('❌ 视频元素错误', 'error');
+                if (videoElement.error) {
+                    log('错误代码: ' + videoElement.error.code, 'error');
+                    log('错误消息: ' + videoElement.error.message, 'error');
+                }
+                setStatus('视频错误', 'error');
+            };
+
+            // 附加到视频元素
+            log('附加播放器到视频元素...', 'info');
+            try {
+                flvPlayer.attachMediaElement(videoElement);
+                log('✅ 附加成功', 'info');
+            } catch (e) {
+                log('❌ 附加失败: ' + e.message, 'error');
+                setStatus('附加失败', 'error');
+                return;
+            }
+
+            // 加载视频
+            log('开始加载视频流...', 'info');
+            try {
+                flvPlayer.load();
+                log('✅ load() 调用成功', 'info');
+            } catch (e) {
+                log('❌ load() 失败: ' + e.message, 'error');
+                log('错误堆栈: ' + e.stack, 'error');
+                setStatus('加载失败', 'error');
+            }
+        }
+
+        // 页面加载完成后自动测试
+        window.addEventListener('load', () => {
+            log('📄 页面加载完成', 'info');
+            log('🌐 当前URL: ' + window.location.href, 'info');
+            setTimeout(testLoad, 500);
+        });
+
+        // 页面卸载时清理
+        window.addEventListener('beforeunload', cleanup);
+    </script>
+</body>
+</html>

@@ -38,6 +38,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware(['throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class])
                 ->group(base_path('routes/api-viewer-tracking.php'));
 
+            // Public webhook routes - without authentication for external services
+            Route::prefix('api')
+                ->middleware(['throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class])
+                ->group(base_path('routes/api-webhooks.php'));
+
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
