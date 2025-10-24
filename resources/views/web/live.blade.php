@@ -321,3 +321,14 @@
         </section>
     @endauth
 @endpush
+
+@push('scripts')
+    <script>
+        // Streaming configuration from Laravel config
+        window.streamingConfig = {
+            flvEndpoint: '{{ config('streaming.flv_endpoint') }}',
+            hlsEndpoint: '{{ config('streaming.hls_endpoint') }}',
+            rtmpServer: '{{ config('streaming.rtmp_server') }}'
+        };
+    </script>
+@endpush

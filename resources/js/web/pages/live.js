@@ -198,8 +198,9 @@ class LivePage extends BasePage {
         const isLive = playerElement.getAttribute('data-is-live') === 'true';
 
         if (isLive && streamKey) {
-            // Use FLV stream for live broadcasting
-            const flvUrl = `http://localhost:8080/live/${streamKey}.flv`;
+            // Get streaming endpoint from config (passed from Laravel)
+            const flvEndpoint = window.streamingConfig?.flvEndpoint || 'http://localhost:8080';
+            const flvUrl = `${flvEndpoint}/live/${streamKey}.flv`;
 
             if (typeof videojs !== 'undefined') {
                 this.player = videojs('live-stream-player', {
