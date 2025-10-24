@@ -29,19 +29,25 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
+            // Authenticated API routes (with Sanctum)
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            // Viewer tracking routes - without Sanctum middleware
+            // Viewer tracking routes - public, no authentication
             Route::prefix('api')
                 ->middleware(['throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class])
-                ->group(base_path('routes/api-viewer-tracking.php'));
+                ->group(base_path('routes/api/viewer-tracking.php'));
 
-            // Public webhook routes - without authentication for external services
+            // Public webhook routes - for external services (SRS, Python uploader)
             Route::prefix('api')
                 ->middleware(['throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class])
-                ->group(base_path('routes/api-webhooks.php'));
+                ->group(base_path('routes/api/webhooks.php'));
+
+            // Streaming API routes - public, no authentication
+            Route::prefix('api')
+                ->middleware(['throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class])
+                ->group(base_path('routes/api/streams.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
