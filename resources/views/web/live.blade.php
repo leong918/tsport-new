@@ -1,7 +1,13 @@
 @extends('web.layout.app')
 
 @php
-    $isUpcoming = isset($match['start_at']) && \Carbon\Carbon::parse($match['start_at'])->isFuture() && (!isset($match['obs_status']) || $match['obs_status'] == 1);
+    // Check if match is upcoming (only based on time)
+    $hasStartAt = isset($match['start_at']);
+    $isFuture = $hasStartAt ? \Carbon\Carbon::parse($match['start_at'])->isFuture() : false;
+    $obsStatus = $match['obs_status'] ?? 'not set';
+    
+    // Show fixture image if time hasn't arrived yet, regardless of obs_status
+    $isUpcoming = $hasStartAt && $isFuture;
     $bodyClass = 'bg-1 no-footer' . ($isUpcoming ? ' live-upcoming' : '');
 @endphp
 
