@@ -23,4 +23,7 @@ return [
     // Streaming base path
     'stream_path' => env('STREAMING_PATH', '/live'),
 
+    // DVR webhook secret for validating upload notifications
+    'dvr_webhook_secret' => env('DVR_WEBHOOK_SECRET'),
+
 ];

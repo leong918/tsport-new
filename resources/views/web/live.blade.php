@@ -2,7 +2,7 @@
 
 @php
     $isUpcoming = isset($match['start_at']) && \Carbon\Carbon::parse($match['start_at'])->isFuture();
-    $bodyClass = 'bg-1 no-footer' . ($isUpcoming ? ' live-upcoming' : '');
+    $bodyClass = 'bg-1 no-footer' . ($isUpcoming && (!isset($match['obs_status']) || $match['obs_status'] != 2) ? ' live-upcoming' : '');
 @endphp
 
 @section('body-class', $bodyClass)
@@ -10,7 +10,7 @@
 @section('content')
     <div id="page-live" class="screen" data-match-id="{{ $match['url_id'] ?? ($match['id'] ?? '') }}">
 
-        @if ($isUpcoming)
+        @if ($isUpcoming && (!isset($match['obs_status']) || $match['obs_status'] != 2))
             <!-- Match Fixture Section (Before Match Starts) -->
             <section id="section-prediction-top">
                 <div class="container">
