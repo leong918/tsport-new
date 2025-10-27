@@ -11,9 +11,25 @@ export default class BasePage {
         this.pageSelector = '#page-base';
         this.isInitialized = false;
         
-        // Auto-initialize if page elements are present
-        if (this.shouldInitialize()) {
-            this.init();
+        // Auto-initialize after subclass sets props and once DOM is ready
+        const autoInit = () => {
+            if (this.shouldInitialize()) {
+                this.init();
+            }
+        };
+
+        const schedule = () => {
+            if (typeof queueMicrotask === 'function') {
+                queueMicrotask(autoInit);
+            } else {
+                setTimeout(autoInit, 0);
+            }
+        };
+
+        if (typeof document !== 'undefined' && document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => schedule(), { once: true });
+        } else {
+            schedule();
         }
     }
 
@@ -22,8 +38,17 @@ export default class BasePage {
      * Override this method in child classes
      */
     shouldInitialize() {
-        return $(this.pageSelector).length > 0 || 
-               window.location.pathname.includes(`/${this.pageName}`);
+        // If selector exists on the page, initialize
+        if ($(this.pageSelector).length > 0) return true;
+
+        const path = (window.location && window.location.pathname) || '/';
+        // Handle root path: treat as home or when targeting body
+        if (path === '/' && (this.pageName === 'home' || (this.pageSelector || '').includes('body'))) {
+            return true;
+        }
+
+        // Fallback: match by segment
+        return path.includes(`/${this.pageName}`);
     }
 
     /**

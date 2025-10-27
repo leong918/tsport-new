@@ -5,15 +5,15 @@
 @section('content')
     <div id="page-home" class="screen home-page">
         <!-- Horizontal Scroll Section with Panels -->
+        <section class="horizontal-scroll-wrapper">
+            <div class="panel section-1">
+            </div>
+            <div class="panel section-2">
+            </div>
+            <div class="panel section-3">
+            </div>
+        </section>
         <div>
-            <section class="horizontal-panels">
-                <div class="panel section-1">
-                </div>
-                <div class="panel section-2">
-                </div>
-                <div class="panel section-3">
-                </div>
-            </section>
         </div>
     </div>
 @endsection

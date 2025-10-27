@@ -1,16 +1,23 @@
-.horizontal-panels {
+.horizontal-scroll-wrapper {
   display: flex;
   width: max-content;
-  flex-direction: row;
+  height: 100dvh;
+}
 
-  .panel {
-    display: inline-block;
-    width: 100vw;
-    height: 100dvh;
-    background: red;
+.panel {
+  height: 100dvh;
+  width: 100vw;
+  position: relative;
+}
 
-    &:nth-child(even) {
-      background-color: green;
-    }
-  }
+.section-1 {
+  background: red;
+}
+
+.section-2 {
+  background: blue;
+}
+
+.section-3 {
+  background: green;
 }
