@@ -11,6 +11,11 @@
         justify-content: space-between;
         align-items: center;
 
+        // Ensure the menu (hamburger) button sits on the right even when back button is hidden
+        .hamburger-btn {
+            margin-left: auto;
+        }
+
         .header-btn {
             outline: none;
             border: none;

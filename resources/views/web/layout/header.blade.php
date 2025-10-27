@@ -1,8 +1,10 @@
 <header id="header">
     <div class="header-items">
+        @unless (request()->routeIs('web.home'))
         <button class="header-btn back-btn" type="button" aria-label="Go Back">
-            <img src="{{ asset('assets/web/images/global/btn-back.png') }}" class="img img-fluid banner-img">
+            <img src="{{ asset('assets/web/images/global/btn-back.png') }}" class="img img-fluid banner-img" alt="Back">
         </button>
+        @endunless
         <button class="header-btn hamburger-btn" type="button" data-bs-toggle="offcanvas" 
             data-bs-target="#offcanvas-sidebar" aria-controls="offcanvas-sidebar" aria-label="Open Menu">
             <img src="{{ asset('assets/web/images/global/hamburger.png') }}" class="img img-fluid banner-img"

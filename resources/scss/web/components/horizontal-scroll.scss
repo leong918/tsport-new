@@ -8,16 +8,5 @@
   height: 100dvh;
   width: 100vw;
   position: relative;
-}
-
-.section-1 {
-  background: red;
-}
-
-.section-2 {
-  background: blue;
-}
-
-.section-3 {
-  background: green;
+  z-index: 1;
 }
