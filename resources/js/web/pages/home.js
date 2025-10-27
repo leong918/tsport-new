@@ -1,9 +1,4 @@
 import BasePage from './BasePage.js';
-import { 
-  createHorizontalScroll, 
-  createHorizontalScrollGallery,
-  createHorizontalScrollPanels 
-} from '../utils/horizontal-scroll.js';
 
 class HomePage extends BasePage {
   constructor() {
