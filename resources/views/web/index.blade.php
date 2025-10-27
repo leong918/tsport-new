@@ -65,6 +65,18 @@
                 <div class="floating-element ip">
                     <img src="{{ asset('assets/web/images/home/section-7/ip.png') }}" alt="IP Element" class="img-fluid">
                 </div>
+
+                <div class="floating-element chatbox-1">
+                    <img src="{{ asset('assets/web/images/home/section-7/chatbox-1.png') }}" alt="Chatbox 1 Element"
+                        class="img-fluid">
+                    <p class="p1">今晚心水点睇?</p>
+                </div>
+
+                <a href="#" class="floating-element chatbox-2">
+                    <img src="{{ asset('assets/web/images/home/section-7/chatbox-2.png') }}" alt="Chatbox 2 Element"
+                        class="img-fluid">
+                    <p class="p1">輸入留言</p>
+                </a>
             </div>
             <div class="panel section-8">
                 <div class="panel-content">
