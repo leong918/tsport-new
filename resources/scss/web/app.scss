@@ -32,8 +32,10 @@
 @import "components/match-item";
 @import "components/match-slide";
 @import "components/pagination";
+@import "components/horizontal-scroll";
 
 // Pages
+@import "pages/home";
 @import "pages/auth";
 @import "pages/profile";
 @import "pages/matches";

@@ -1,23 +1,17 @@
 @extends('web.layout.app')
 
+@section('body-class', 'bg-1 no-footer no-header-height')
+
 @section('content')
-    <div id="page-home" class="screen">
-        <!-- Example 1: Simple Horizontal Scroll Section -->
-        <div class="horizontal-scroll">
-            <section class="py-5">
-                <div class="container">
+    <div id="page-home" class="screen home-page">
+        <!-- Horizontal Scroll Section with Panels -->
+        <div>
+            <section class="horizontal-panels">
+                <div class="panel section-1">
                 </div>
-            </section>
-    
-            <!-- Example 2: Gallery Section with Snap -->
-            <section class="py-5">
-                <div class="container">
+                <div class="panel section-2">
                 </div>
-            </section>
-    
-            <!-- Regular vertical content -->
-            <section class="py-5">
-                <div class="container">
+                <div class="panel section-3">
                 </div>
             </section>
         </div>

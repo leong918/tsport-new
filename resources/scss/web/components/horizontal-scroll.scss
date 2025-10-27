@@ -1,0 +1,16 @@
+.horizontal-panels {
+  display: flex;
+  width: max-content;
+  flex-direction: row;
+
+  .panel {
+    display: inline-block;
+    width: 100vw;
+    height: 100dvh;
+    background: red;
+
+    &:nth-child(even) {
+      background-color: green;
+    }
+  }
+}

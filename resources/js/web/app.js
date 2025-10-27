@@ -34,6 +34,7 @@ import { AuthService } from './services/AuthService.js';
 import { ProfileService } from './services/ProfileService.js';
 
 // Pages - all pages now auto-initialize via BasePage pattern
+import './pages/home.js';
 import './pages/matches.js';
 import './pages/events.js';
 import './pages/ordering.js';

@@ -32,6 +32,10 @@ body.immersive-page.no-footer {
   }
 }
 
+body.no-header-height {
+  --header-height: 0px;
+}
+
 /* Utility classes for footer control */
 .hide-footer {
   #footer,
