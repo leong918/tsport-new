@@ -1,6 +1,8 @@
 #page-home {
   .panel {
     position: relative;
+    overflow: hidden;
+
   }
 
   .section-title {
@@ -44,6 +46,38 @@
       pointer-events: none;
       touch-action: none;
     }
+  }
+
+  .section-6 {
+    .projector-element {
+      margin-top: 10px;
+      scale: 1.1;
+    }
+
+    .btn-go-live {
+      max-width: 150px;
+      margin: 0 auto;
+      display: block;
+      position: absolute;
+      left: 50%;
+      bottom: 40px;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .floating-element {
+      position: absolute;
+      touch-action: none;
+      pointer-events: none;
+
+      &.ip {
+        max-width: 240px;
+        bottom: 20px;
+        right: -50px;
+        z-index: 4;
+      }
+    }
+
   }
 
   .section-7 {

@@ -15,9 +15,42 @@
             <div class="panel section-4">
             </div>
             <div class="panel section-5">
-            </div>
-            <div class="panel section-6">
             </div> --}}
+            <div class="panel section-6">
+                <div class="panel-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title">
+                                    <img src="{{ asset('assets/web/images/home/section-6/title.png') }}" alt="Title"
+                                        class="img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid px-0">
+                        <div class="row gx-0">
+                            <div class="col-12">
+                                <div class="position-relative">
+                                    <div class="projector-element">
+                                        <img src="{{ asset('assets/web/images/home/section-6/projector.png') }}"
+                                            alt="Projector Element" class="img-fluid">
+                                    </div>
+                                    <a href="{{ route('web.matches') }}" class="btn-go-live">
+                                        <img src="{{ asset('assets/web/images/home/section-6/btn-go-live.png') }}"
+                                            alt="Go Live" class="img-fluid">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- floating elements --}}
+                <div class="floating-element ip">
+                    <img src="{{ asset('assets/web/images/home/section-6/ip.png') }}" alt="IP Element" class="img-fluid">
+                </div>
+            </div>
             <div class="panel section-7">
                 <div class="panel-content">
                     <div class="container">
@@ -31,22 +64,6 @@
                                                 alt="Check Comment" class="img-fluid">
                                         </a>
                                     </div>
-
-                                    {{-- <div class="row justify-content-center g-3">
-                                        <div class="col-12 col-md-8">
-                                            <div class="card shadow-sm border-0">
-                                                <div class="card-body">
-                                                    <label for="home-comment" class="form-label">想说点什么？</label>
-                                                    <div class="input-group">
-                                                        <input type="text" id="home-comment" class="form-control"
-                                                            placeholder="输入留言" aria-label="输入留言">
-                                                        <button class="btn btn-primary" type="button">发表留言</button>
-                                                    </div>
-                                                    <small class="text-muted d-block mt-2">提示：留言后即可参与每周抽奖活动</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </div>
                         </div>
