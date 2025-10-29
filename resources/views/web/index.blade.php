@@ -91,38 +91,49 @@
             </div>
             <div class="panel section-5">
                 <div class="panel-content">
-                    <div class="floating-element s5 showcase">
-                        <img src="{{ asset('assets/web/images/home/section-5/shirt-showcase.png') }}" alt="Showcase"
-                            class="img-fluid">
-                    </div>
-
-                    <div class="s5-text">
-                        <h3 class="fw-bold mb-2">球壇經典</h3>
-                        <p class="s5-desc mb-0">
-                            曼城 vs QPR（2012年5月13日）傷停補時第94分鐘，阿圭羅打入制勝球，
-                            曼城3-2取勝，利亞曼聯首奪英超冠軍。
-                        </p>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="position-relative">
+                                    <div class="showcase-img">
+                                        <img src="{{ asset('assets/web/images/home/section-5/shirt-showcase.png') }}"
+                                            alt="Showcase" class="img-fluid">
+                                    </div>
+                                    <div class="s5-text">
+                                        <h4 class="fw-bold mb-0">球壇經典</h4>
+                                        <p class="mb-0 p2">
+                                            曼城 vs QPR（2012年5月13日）傷停補時第94分鐘，阿圭羅打入制勝球，
+                                            曼城3-2取勝，利亞曼聯首奪英超冠軍。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 {{-- floating elements (section-5) --}}
 
                 <div class="floating-element s5 rack">
-                    <img src="{{ asset('assets/web/images/home/section-5/rack-event.png') }}" alt="Event Rack"
-                        class="img-fluid">
+                    <div class="tap-area">
+                        <div class="text-center">
+                            <h3>點擊查看活動</h3>
+                            <p class="p1">Tap to View Event</p>
+                        </div>
+                        <div class="tap-icon">
+                            <img src="{{ asset('assets/web/images/home/section-5/icon-click.png') }}" alt="Tap"
+                                class="img-fluid">
+                        </div>
+                    </div>
+                    <a href="#" aria-label="Tap to view event">
+                        <img src="{{ asset('assets/web/images/home/section-5/rack-event.png') }}" alt="Event Rack"
+                            class="img-fluid">
+                    </a>
                 </div>
                 <div class="floating-element s5 counter">
                     <img src="{{ asset('assets/web/images/home/section-5/counter.png') }}" alt="Counter"
                         class="img-fluid">
                 </div>
-                <a href="#" class="floating-element s5 tap" aria-label="Tap to view event">
-                    <div class="s5-cta text-center">
-                        <div class="title">點擊查看活動</div>
-                        <div class="subtitle">Tap to View Event</div>
-                    </div>
-                    <img src="{{ asset('assets/web/images/home/section-5/icon-click.png') }}" alt="Tap"
-                        class="img-fluid">
-                </a>
             </div>
 
             <div class="panel section-6">

@@ -212,30 +212,28 @@
   }
 
   .section-5 {
-    .s5-cta {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 150px; /* sit above the tap icon */
-      z-index: 5;
-      color: #2b2b2b;
-      text-align: center;
-
-      .title {
-        font-weight: 800;
-        font-size: 22px;
-        letter-spacing: 0.5px;
-      }
-      .subtitle {
-        font-size: 14px;
-        opacity: 0.9;
-        margin-top: 2px;
-      }
+    .showcase-img {
+      max-width: 280px;
     }
+
     .s5-text {
-      width: 300px;
-      z-index: 5;
-      color: #2b2b2b;
+      max-width: 160px;
+      position: absolute;
+      right: 0px;
+      top: 20px;
+    }
+
+    .tap-area {
+      max-width: 200px;
+      display: flex;
+      flex-flow: column nowrap;
+
+      .tap-icon {
+        max-width: 80px;
+        position: relative;
+        left: 40px;
+        margin-top: -10px;
+      }
     }
 
     .floating-element {
@@ -244,38 +242,22 @@
       pointer-events: none;
       z-index: 2;
 
-      &.s5.showcase {
-        /* framed shirt + clippings */
-        max-width: 240px;
-        top: 60px;
-        left: 36px;
-        z-index: 3;
-      }
-
       &.s5.rack {
         /* event rack on right */
-        max-width: 260px;
-        right: 16px;
+        max-width: 350px;
+        width: 100%;
+        left: 50%;
         bottom: 170px;
         z-index: 2;
       }
 
       &.s5.counter {
         /* counter with cleaver at bottom-left */
-        max-width: 270px;
-        left: 24px;
+        max-width: 600px;
+        width: 100%;
+        right: 55%;
         bottom: 8px;
         z-index: 2;
-      }
-
-      &.s5.tap {
-        /* tap to view icon under CTA */
-        max-width: 70px;
-        left: 50%;
-        transform: translateX(-50%);
-        top: 210px;
-        z-index: 4;
-        pointer-events: auto; /* clickable */
       }
     }
   }
